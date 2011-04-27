@@ -2,83 +2,52 @@
 
 import math
 
+# default voltage at 45nm
 vdd_base = 1
 vdd_scl = {}
-vdd_scl['itrs'] = {45 : 1,
-                   32 : 0.93,
-                   22 : 0.84,
-                   16 : 0.75,
-                   11 : 0.68,
-                   8  : 0.62}
-vdd_scl['cons'] = {45 : 1,
-                   32 : 0.93,
-                   22 : 0.88,
-                   16 : 0.86,
-                   11 : 0.84,
-                   8  : 0.84}
+vdd_scl['itrs'] = {45 : 1, 32 : 0.93,
+                   22 : 0.84, 16 : 0.75,
+                   11 : 0.68, 8  : 0.62}
+vdd_scl['cons'] = {45 : 1, 32 : 0.93,
+                   22 : 0.88, 16 : 0.86,
+                   11 : 0.84, 8  : 0.84}
 
 freq_base = {'io': 4.2, 'o3': 3.7}
 freq_scl = {}
-freq_scl['itrs'] = {45 : 1,
-                    32 : 1.09,
-                    22 : 2.38,
-                    16 : 3.21,
-                    11 : 4.17,
-                    8  : 3.85}
-freq_scl['cons'] = {45 : 1,
-                    32 : 1.10,
-                    22 : 1.19,
-                    16 : 1.25,
-                    11 : 1.30,
-                    8 : 1.34}
+freq_scl['itrs'] = {45 : 1, 32 : 1.09,
+                    22 : 2.38, 16 : 3.21,
+                    11 : 4.17, 8  : 3.85}
+freq_scl['cons'] = {45 : 1, 32 : 1.10,
+                    22 : 1.19, 16 : 1.25,
+                    11 : 1.30, 8 : 1.34}
 
 power_base = {'io':6.14, 'o3': 19.83}
 power_scl = {}
-power_scl['itrs'] = {45 : 1,
-                     32 : 0.66,
-                     22 : 0.54,
-                     16 : 0.38,
-                     11 : 0.25,
-                     8  : 0.12}
-power_scl['cons'] = {45 : 1,
-                     32 : 0.71,
-                     22 : 0.52,
-                     16 : 0.39,
-                     11 : 0.29,
-                     8  : 0.22}
+power_scl['itrs'] = {45 : 1, 32 : 0.66,
+                     22 : 0.54, 16 : 0.38,
+                     11 : 0.25, 8  : 0.12}
+power_scl['cons'] = {45 : 1, 32 : 0.71,
+                     22 : 0.52, 16 : 0.39,
+                     11 : 0.29, 8  : 0.22}
 
 area_base = {'io':7.65, 'o3': 26.48}
-area_scl = {45 : 1,
-            32 : 0.5,
+area_scl = {45 : 1, 32 : 0.5,
             22 : math.pow(0.5, 2),
             16 : math.pow(0.5, 3),
             11 : math.pow(0.5, 4),
             8  : math.pow(0.5, 5)}
 
 # adopted from 2010Tables_FEP_FOCUS_C_ITRS.xls, sheet 2009_FEP2-HPDevice
-vth_base={45 : 0.3201,
-         32 : 0.297,
-         22 : 0.2673,
-         16 : 0.2409,
-         11 : 0.2178,
-         8  : 0.198}
+vth_base={45 : 0.3201, 32 : 0.297,
+          22 : 0.2673, 16 : 0.2409,
+          11 : 0.2178,  8 : 0.198}
 
 # Upper and lower bounds for DVFS ratio
-DVFS_U_BOUND = {}
-DVFS_U_BOUND['itrs'] = {45 : 1.3,
-                        32 : 1.3,
-                        22 : 1.3,
-                        16 : 1.3,
-                        11 : 1.3,
-                        8  : 1.3}
-DVFS_U_BOUND['cons'] = {45 : 1.3,
-                        32 : 1.3,
-                        22 : 1.3,
-                        16 : 1.3,
-                        11 : 1.3,
-                        8  : 1.3}
-DVFS_L_BOUND = {}
-DVFS_L_BOUND['itrs'] = {45 :    
+DVFS_U_BOUND = {'itrs': dict([(tech, 1.3) for tech in vth_base]),
+                'cons': dict([(tech, 1.3) for tech in vth_base])}
+DVFS_L_BOUND = {'itrs': dict([(tech, vth_base[tech]/(vdd_scl['itrs'][tech]*vdd_base)) for tech in vth_base]),    
+                'cons': dict([(tech, vth_base[tech]/(vdd_scl['cons'][tech]*vdd_base)) for tech in vth_base])}    
+
 def freqRatio(vratio, tech, scltable):
     v0 = vdd_base * scltable[tech]
     v1 = v0 * vratio
@@ -86,21 +55,11 @@ def freqRatio(vratio, tech, scltable):
     vmin = v1-vth
 
     
-
-
-#df_voltage = {45: 1,
-              #32: 0.9,
-              #22: 0.8}
-#sc_factor = {"itrs": {}
-
-DVFS_MAX = 1.3
-DVFS_MIN = 0.7
-
 class Core:
-    def __init__ (self, area, frequency, voltage, tech=45):
+    def __init__ (self, area, freq, tech=45):
         self.area = area
         self.tech = tech
-        self.freq = frequency
+        self.freq = freq
         self.volt = voltage
 
     def perf(self):
@@ -137,11 +96,25 @@ class System:
         self.corelist = []
         self.area = area
         self.power = power
-        self.f = 0.9
+        self.cnum = 0 # the number of cores
+        self.sperf = 0 # serial performance
+        self.pperf = 0 # parallel performance
+        self.acnum = 0 # the number of active cores in parallel mode
 
-    def setParaFactor(self, factor):
-        self.f = factor
+    def speedup(self, app):
+        f = app.f
+        return 1/((1-f)/self.sperf + f/(self.pperf*self.acnum))
 
+class Application:
+    """ An application is a program a system runs for. The application has certain characteristics, such as parallel ratio """
+    def __init__(self, f=0.9):
+        """ Initialize an application
+        
+        Arguments:
+        f -- the fraction of parallel part of program (default 0.9)
+        
+        """
+        self.f = f
 
 class O3System(System):
     def build(self):
