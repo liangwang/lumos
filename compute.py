@@ -56,20 +56,33 @@ def freqRatio(vratio, tech, scltable):
 
     
 class Core:
-    def __init__ (self, area, freq, tech=45):
-        self.area = area
-        self.tech = tech
-        self.freq = freq
-        self.volt = voltage
+    def __init__ (self):
+        self.area = 0
+        self.tech = 0
+        self.freq = 0
+        self.volt = 0
+        self.power = 0
+        self.perf = 0
+        self.pbase = 0
+        self.dvfsv = 0
+        self.dvfsf = 0
 
     def perf(self):
         return math.sqrt(self.area)*self.freq
 
+    def power(self):
+        return self.p0 * self.dvfsv**2 * self.dvfsf
+
     def dvfs(self, ratio):
-        if ratio > DVFS_MAX or ratio < DVFS_MIN:
-            return
-        self.freq = self.freq * ratio
-        self.volt = self.volt * ratio
+        if ratio > DVFS_U_BOUND:
+            ratio = DVFS_U_BOUND
+        if ratio < DVFS_L_BOUND:
+            ratio = DVFS_L_BOUND
+
+        self.dvfsv = ratio
+        self.dvfsf = 
+        self.freq = self.freq * self.dvfsf
+        self.volt = self.volt * self.dvfsv
 
 class IOCore(Core):
     def __init__ (self, tech=45, area=7.65, power=6.14, frequency=4.2, voltage=1):
