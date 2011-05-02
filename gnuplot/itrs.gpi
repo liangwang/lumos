@@ -1,0 +1,225 @@
+##FIGSIZE=8.5in,22in
+
+#{{{1 Common settings
+# Power and area budget for the chip
+P = 125
+A = 111
+
+# cut function to show part of line curve
+eps = 0.001
+cut(x,x1,x3) = ((x >= x1 && x <= x1 + (1.0-eps)*(x3-x1)) ? 1.0 : 1/0)
+
+# base perforamnce for IO/O3 core
+ioperf0 = 2.7685
+o3perf0 = 5.1458
+
+# base area@45nm for IO/O3 core
+ioa0 = 7.65
+o3a0 = 26.48
+
+# base power@45nm for IO/O3 core
+o3p0 = 19.83
+iop0 = 6.14
+
+# base frequency@45nm for IO/O3 core
+o3f0 = 3.7
+iof0 = 4.3
+
+set key left top
+TITLE = sprintf("Power=%dW, Area=%dmm^2, X-axis shows utilization ratio, Y-axis shows speedup over base core", P, A)
+set multiplot layout 6,2 title TITLE
+
+set xrange [0:1.1]
+# yrange is automatically set by gnuplot
+
+# set start point for each tech node
+a0(base,af) = base*af
+p0(base,pf) = base*pf
+f0(base,ff) = base*ff
+
+# performance model
+perf(u,perf0,abase,af,pbase,pf,fbase,ff)=(1-f)/(1.3*perf0*f0(fbase,ff)) + f / (dvfs(u,abase,af,pbase,pf)*f0(fbase,ff)*perf0*A*u/a0(abase,af))
+dvfs(u,abase,af,pbase,pf)=(P*a0(abase,af)/u/p0(pbase,pf)/A)**0.3333
+
+#{{{1 8nm
+af=0.5**5
+pf=0.12
+ff=3.85
+#{{{2 O3(subplot 1,1)
+set title 'O3-8nm'
+t3=(P*a0(o3a0,af))/(0.7**3 *p0(o3p0,pf)*A)
+x3=( t3>1 ? 1 : t3) 
+x1=(P*a0(o3a0,af))/(1.3**3 *p0(o3p0,pf)*A)
+plot \
+f=1 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=1", \
+f=0.99 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.99", \
+f=0.9 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.9", \
+f=0.8 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.8", \
+f=0.5 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.5", \
+f=0.01 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.01"
+
+#{{{2 IO(subplot 1,2)
+set title 'IO-8nm'
+t3=(P*a0(ioa0,af))/(0.7**3 *p0(iop0,pf)*A)
+x3=( t3>1 ? 1 : t3) 
+x1=(P*a0(ioa0,af))/(1.3**3 *p0(iop0,pf)*A)
+plot \
+f=1 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=1", \
+f=0.99 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.99", \
+f=0.9 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.9", \
+f=0.8 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.8", \
+f=0.5 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.5", \
+f=0.01 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.01"
+
+#{{{1 11nm
+af=0.5**4
+pf=0.25
+ff=4.17
+#{{{2 O3(subplot 2,1)
+set title 'O3-11nm'
+t3=(P*a0(o3a0,af))/(0.7**3 *p0(o3p0,pf)*A)
+x3=( t3>1 ? 1 : t3) 
+x1=(P*a0(o3a0,af))/(1.3**3 *p0(o3p0,pf)*A)
+plot \
+f=1 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=1", \
+f=0.99 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.99", \
+f=0.9 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.9", \
+f=0.8 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.8", \
+f=0.5 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.5", \
+f=0.01 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.01"
+
+#{{{2 IO(subplot 2,2)
+set title 'IO-11nm'
+t3=(P*a0(ioa0,af))/(0.7**3 *p0(iop0,pf)*A)
+x3=( t3>1 ? 1 : t3) 
+x1=(P*a0(ioa0,af))/(1.3**3 *p0(iop0,pf)*A)
+plot \
+f=1 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=1", \
+f=0.99 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.99", \
+f=0.9 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.9", \
+f=0.8 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.8", \
+f=0.5 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.5", \
+f=0.01 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.01"
+
+#{{{1 16nm
+af=0.5**3
+pf=0.38
+ff=3.21
+#{{{2 O3(subplot 1,1)
+set title 'O3-16nm'
+t3=(P*a0(o3a0,af))/(0.7**3 *p0(o3p0,pf)*A)
+x3=( t3>1 ? 1 : t3) 
+x1=(P*a0(o3a0,af))/(1.3**3 *p0(o3p0,pf)*A)
+plot \
+f=1 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=1", \
+f=0.99 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.99", \
+f=0.9 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.9", \
+f=0.8 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.8", \
+f=0.5 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.5", \
+f=0.01 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.01"
+
+#{{{2 IO(subplot 1,2)
+set title 'IO-16nm'
+t3=(P*a0(ioa0,af))/(0.7**3 *p0(iop0,pf)*A)
+x3=( t3>1 ? 1 : t3) 
+x1=(P*a0(ioa0,af))/(1.3**3 *p0(iop0,pf)*A)
+plot \
+f=1 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=1", \
+f=0.99 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.99", \
+f=0.9 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.9", \
+f=0.8 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.8", \
+f=0.5 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.5", \
+f=0.01 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.01"
+
+#{{{1 22nm
+af=0.5**2
+pf=0.54
+ff=2.38
+#{{{2 O3(subplot 1,1)
+set title 'O3-22nm'
+t3=(P*a0(o3a0,af))/(0.7**3 *p0(o3p0,pf)*A)
+x3=( t3>1 ? 1 : t3) 
+x1=(P*a0(o3a0,af))/(1.3**3 *p0(o3p0,pf)*A)
+plot \
+f=1 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=1", \
+f=0.99 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.99", \
+f=0.9 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.9", \
+f=0.8 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.8", \
+f=0.5 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.5", \
+f=0.01 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.01"
+
+#{{{2 IO(subplot 1,2)
+set title 'IO-22nm'
+t3=(P*a0(ioa0,af))/(0.7**3 *p0(iop0,pf)*A)
+x3=( t3>1 ? 1 : t3) 
+x1=(P*a0(ioa0,af))/(1.3**3 *p0(iop0,pf)*A)
+plot \
+f=1 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=1", \
+f=0.99 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.99", \
+f=0.9 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.9", \
+f=0.8 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.8", \
+f=0.5 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.5", \
+f=0.01 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.01"
+
+#{{{1 32nm
+af=0.5
+pf=0.66
+ff=1.09
+#{{{2 O3(subplot 1,1)
+set title 'O3-32nm'
+t3=(P*a0(o3a0,af))/(0.7**3 *p0(o3p0,pf)*A)
+x3=( t3>1 ? 1 : t3) 
+x1=(P*a0(o3a0,af))/(1.3**3 *p0(o3p0,pf)*A)
+plot \
+f=1 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=1", \
+f=0.99 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.99", \
+f=0.9 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.9", \
+f=0.8 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.8", \
+f=0.5 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.5", \
+f=0.01 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.01"
+
+#{{{2 IO(subplot 1,2)
+set title 'IO-32nm'
+t3=(P*a0(ioa0,af))/(0.7**3 *p0(iop0,pf)*A)
+x3=( t3>1 ? 1 : t3) 
+x1=(P*a0(ioa0,af))/(1.3**3 *p0(iop0,pf)*A)
+plot \
+f=1 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=1", \
+f=0.99 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.99", \
+f=0.9 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.9", \
+f=0.8 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.8", \
+f=0.5 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.5", \
+f=0.01 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.01"
+
+#{{{1 45nm
+af=1
+pf=1
+ff=1
+#{{{2 O3(subplot 1,1)
+set title 'O3-45nm'
+t3=(P*a0(o3a0,af))/(0.7**3 *p0(o3p0,pf)*A)
+x3=( t3>1 ? 1 : t3) 
+x1=(P*a0(o3a0,af))/(1.3**3 *p0(o3p0,pf)*A)
+plot \
+f=1 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=1", \
+f=0.99 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.99", \
+f=0.9 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.9", \
+f=0.8 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.8", \
+f=0.5 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.5", \
+f=0.01 1*cut(x,x1,x3)/perf(x,o3perf0,o3a0,af,o3p0,pf,o3f0,ff) title "f=0.01"
+
+#{{{2 IO(subplot 1,2)
+set title 'IO-45nm'
+t3=(P*a0(ioa0,af))/(0.7**3 *p0(iop0,pf)*A)
+x3=( t3>1 ? 1 : t3) 
+x1=(P*a0(ioa0,af))/(1.3**3 *p0(iop0,pf)*A)
+plot \
+f=1 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=1", \
+f=0.99 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.99", \
+f=0.9 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.9", \
+f=0.8 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.8", \
+f=0.5 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.5", \
+f=0.01 1*cut(x,x1,x3)/perf(x,ioperf0,ioa0,af,iop0,pf,iof0,ff) title "f=0.01"
+
+
+# vim: fdm=marker

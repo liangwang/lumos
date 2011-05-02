@@ -4,9 +4,9 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 
-from core import IOCore, O3Core
-from system import *
-from application import *
+from model.core import IOCore, O3Core
+from model.system import *
+from model.application import *
 
 def get_core_by_type(type):
     if type == 'io':
