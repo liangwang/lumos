@@ -1,4 +1,50 @@
 #!/usr/bin/env python
+    
+class Plot:
+    def __init__(self, name='default'):
+        self.gpi = '%s.gpi' % name
+        self.dat = '%s.dat' % name
+
+        self.dlines = []
+        self.slines = []
+
+        self.xlabel = 'xlabel'
+        self.ylabel = 'ylabel'
+
+        self._opt_list = {}
+
+    def writeDataFile(self):
+        with open(self.dat, 'w') as f:
+            f.writelines(self.datalines)
+
+    def writeGPIFile(self):
+        with open(self.gpi, 'w') as f:
+            f.writelines(self.scriptlines)
+        
+    def writeFiles(self):
+        self.writeDataFile(self)
+        self.writeGPIFile(self)
+        
+    def setOption(opname, value):
+        _opt_list[opname] = value
+
+
+class LinepointPlot(Plot):
+    def __init__(self, name='default'):
+        Plot.__init__(self, name)
+
+    def genScript(self):
+        self.slines.append('##FIGSIZE=%S' % self._op_list['figsize'])
+
+    def genData(self):
+        pass
+
+
+
+
+
+        
+
 
 from core import IOCore, O3Core
 from system import *
@@ -39,7 +85,7 @@ if __name__ == '__main__' :
 
     plt.xlabel('Utilization Ratio')
     plt.ylabel('Speedup')
-    sys = SymmetricSystem(core=O3Core(tech=45))
+    sys = SymmetricSystem(budget={'area':111,'power':125}, core=O3Core(tech=45))
     plt.subplot(3,2,1)
     plot_to_uratio(sys, applist)
 

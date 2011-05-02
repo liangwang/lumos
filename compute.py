@@ -14,36 +14,42 @@ def get_core_by_type(type):
     if type == 'o3':
         return O3Core()
 
+
+
 def main():
-    #sys = O3System()
-    #sys.build()
-    #print "O3System dim: %f" % sys.dimsi()
-    #print "O3System dark: %f" % sys.darksi()
-    #sys = IOSystem()
-    #sys.build()
-    #print "IOSystem dim: %f" % sys.dimsi()
-    #print "IOSystem dark: %f" % sys.darksi()
-    #sys = HeteroSystem()
-    #sys.build()
-    #print "HeteroSystem: %f\n" % sys.speedup()
-    #sys = SymmetricSystem(IOCore(tech=16))
-    #app = Application(f=0.99)
-    #step = 0.01
-    
-    #utils = []
-    #perfs = []
-    #samples = int(math.floor((sys.urmax-sys.urmin)/step))
-    #for i in range(samples):
-        #sys.set_util_ratio(sys.urmin+i*step)
-        #utils.append(sys.ur)
-        #perfs.append(sys.speedup(app))
+    technodes = [45, 32, 22, 16, 11, 8]
+    sys = UnlimitedPowerSystem(area=300)
+    datalines = []
+    line = "tech_node Power(IO) Power(O3)\n"
+    datalines.append(line)
+    for tech in technodes:
+        sys.set_core(IOCore(tech=tech))
+        iopower = sys.power
 
-    #print utils
-    #plt.plot(utils, perfs)
-    #plt.show()
+        sys.set_core(O3Core(tech=tech))
+        o3power = sys.power
 
-    sys = SimpleSystem(IOCore(tech=16))
-    sys.plotDVFS(step=0.001)
+        line = "%d %f %f\n" % (tech, iopower, o3power)
+        datalines.append(line)
+        
+    datalines.append('\n\n')
+
+    line = "tech_node Power(IO) Power(O3)\n"
+    datalines.append(line)
+    for tech in technodes:
+        sys.set_core(IOCore(tech=tech, mech='cons'))
+        iopower = sys.power
+
+        sys.set_core(O3Core(tech=tech, mech='cons'))
+        o3power = sys.power
+
+        line = "%d %f %f\n" % (tech, iopower, o3power)
+        datalines.append(line)
+        
+    with open('power.dat', 'w') as f:
+        f.writelines(datalines)
+
+
 
 
 
