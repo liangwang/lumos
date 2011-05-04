@@ -290,6 +290,12 @@ class SymmetricSystem(System):
         self.pperf = perf
 
         self.acnum = self.cnum * self.ur
+
+    def set_budget(self, budget):
+        self.power = budget['power']
+        self.area = budget['area']
+        
+        self.set_core(self.core)
         
 class SimpleSystem(System):
     def __init__(self, core=IOCore(), 
