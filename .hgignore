@@ -2,4 +2,9 @@ syntax: glob
 *.pyc
 *.dat
 *.gpi
+*.d
+*.log
+*.png
+*.pdf
+*.db
 tags
