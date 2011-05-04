@@ -1,0 +1,45 @@
+##FIGSIZE=8.5in,22in
+set term pngcairo size 32in,24in enhanced
+set output 'o3.png'
+set multiplot layout 3,4 title 'O3 cores utilization ratio plotted to budget of area and power'
+set xrange [100:540]
+set xlabel "Area(mm^2)"
+set xtics rotate by -90
+set yrange [100:200]
+set ylabel "Power(W)"
+set zrange [0:1.1]
+set cbrange [0:1]
+set xyplane 0
+set contour
+set cntrparam levels incremental 0.2,0.2,1
+set style line 2 lw 2 lc 1
+set style line 3 lw 2 lc 3
+set style line 4 lw 2 lc 4
+set style line 5 lw 2 lc 7
+set style line 6 lw 2 lc 9
+set style increment user
+set grid xtics ytics
+set title '45nm ITRS'
+splot 'itrs-o3-45nm.dat' with pm3d notitle
+set title '45nm Conservative'
+splot 'cons-o3-45nm.dat' with pm3d notitle
+set title '32nm ITRS'
+splot 'itrs-o3-32nm.dat' with pm3d notitle
+set title '32nm Conservative'
+splot 'cons-o3-32nm.dat' with pm3d notitle
+set title '22nm ITRS'
+splot 'itrs-o3-22nm.dat' with pm3d notitle
+set title '22nm Conservative'
+splot 'cons-o3-22nm.dat' with pm3d notitle
+set title '16nm ITRS'
+splot 'itrs-o3-16nm.dat' with pm3d notitle
+set title '16nm Conservative'
+splot 'cons-o3-16nm.dat' with pm3d notitle
+set title '11nm ITRS'
+splot 'itrs-o3-11nm.dat' with pm3d notitle
+set title '11nm Conservative'
+splot 'cons-o3-11nm.dat' with pm3d notitle
+set title '8nm ITRS'
+splot 'itrs-o3-8nm.dat' with pm3d notitle
+set title '8nm Conservative'
+splot 'cons-o3-8nm.dat' with pm3d notitle

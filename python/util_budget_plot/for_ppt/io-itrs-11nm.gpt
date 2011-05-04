@@ -1,0 +1,21 @@
+##FIGSIZE=8.5in,22in
+set term pngcairo size 20in,15in enhanced
+set output 'io-itrs-11nm.png'
+set xrange [100:540]
+set xlabel "Area(mm^2)"
+set yrange [100:200]
+set ylabel "Power(W)"
+set zrange [0:1.1]
+set cbrange [0:1]
+set xyplane 0
+set contour
+set cntrparam levels incremental 0.2,0.2,1
+set style line 2 lw 2 lc 1
+set style line 3 lw 2 lc 3
+set style line 4 lw 2 lc 4
+set style line 5 lw 2 lc 7
+set style line 6 lw 2 lc 9
+set style increment user
+set grid xtics ytics
+set title '11nm ITRS'
+splot 'itrs-io-11nm.dat' with pm3d notitle
