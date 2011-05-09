@@ -97,7 +97,7 @@ class Core:
 
     def dvfs_min(self):
         """ Scale to the minimum voltage """
-        self._v_fractor = self.get_dvfs_lb()
+        self._v_factor = self.get_dvfs_lb()
         self._f_factor = self.__v2f_simple(self._v_factor)
 
     def __v2f_simple(self, v_factor):
