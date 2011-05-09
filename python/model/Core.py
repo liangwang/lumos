@@ -1,23 +1,19 @@
 #!/usr/bin/env python
 
 import math
+
 from Technology import Base as techbase
 from Technology import Scale as techscl
 
 class Core:
     def __init__ (self, type='io',
-                 mech='itrs', tech=45,
-                 alpha=0):
+                 mech='itrs', tech=45):
         self._tech = tech
         self._mech = mech
         self._type = type
         self.__update_base()
 
         self.ag_dvfs = False
-
-        # default alpha is 0, perfect scaling without
-        # impact of memory latency
-        self.alpha = alpha
 
         self._f_factor = 1
         self._v_factor = 1
@@ -111,19 +107,16 @@ class Core:
         #vmin0 = self._v0 - vth
 
         #freq_factor = ((v * vmin - vmin**2 / 2) / (self.v0 * vmin0 - vmin0**2 / 2)) / v_factor
-        pass
+
+
 class IOCore(Core):
-    def __init__ (self, mech='itrs', 
-                  tech=45, alpha=0):
+    def __init__ (self, mech='itrs', tech=45):
         Core.__init__(self, type='io',
-                     mech=mech, tech=tech,
-                     alpha=alpha)
+                     mech=mech, tech=tech)
         
         
 class O3Core(Core):
-    def __init__ (self, mech='itrs', 
-                  tech=45, alpha=0):
+    def __init__ (self, mech='itrs', tech=45):
         Core.__init__(self, type='o3',
-                     mech=mech, tech=tech,
-                     alpha=alpha)
+                     mech=mech, tech=tech)
 

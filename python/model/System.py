@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 
-import math
-import matplotlib.pyplot as plt
-from Core import *
+
 
 class System:
     def __init__(self):

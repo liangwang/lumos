@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
 import math
-from Core import *
-from System import *
+from Core import IOCore
+from System import System
 
 class SymmetricSystem(System):
     def __init__(self, core=IOCore(), 
@@ -22,7 +22,7 @@ class SymmetricSystem(System):
 
     def set_core(self, core):
         self._core = core
-        self.cnum = self._area / core.get_area()
+        self._cnum = self._area / core.get_area()
 
         self.__update_util_boundary()
 
@@ -37,7 +37,7 @@ class SymmetricSystem(System):
         self._area = budget['area']
         
         self._core = core
-        self.cnum = self._area / core.get_area()
+        self._cnum = self._area / core.get_area()
 
         self.__update_util_boundary()
         
@@ -76,10 +76,13 @@ class SymmetricSystem(System):
         sperf = self.__serial_perf(app)
         pperf = self.__parallel_perf(app)
 
-        return 1/((1-f)/sperf + f/(pperf*self.cnum*self._util_ratio))
+        return 1/((1-f)/sperf + f/(pperf*self._cnum*self._util_ratio))
 
     def get_util_max(self):
         return self._util_ratio_max
 
     def get_util_min(self):
         return self._util_ratio_min
+    
+    def get_core_num(self):
+        return self._cnum
