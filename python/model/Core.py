@@ -70,6 +70,9 @@ class Core:
     def get_perf0(self):
         return self._perf0
 
+    def get_p0(self):
+        return self._p0
+
     def dvfs(self, v_factor):
         """ When tuning up/down the voltage, how would frequency changes
         
@@ -77,12 +80,15 @@ class Core:
         
         """
         dvfs_ub = self.get_dvfs_ub()
+        dvfs_lb = self.get_dvfs_lb()
+
         if v_factor > dvfs_ub:
             self._v_factor = dvfs_ub
 
-        dvfs_lb = self.get_dvfs_lb()
-        if v_factor < dvfs_lb:
+        elif v_factor < dvfs_lb:
             self._v_factor = dvfs_lb
+        else :
+            self._v_factor = v_factor
 
         self._f_factor =  self.__v2f_simple(self._v_factor)
 
