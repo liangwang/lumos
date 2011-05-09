@@ -89,6 +89,10 @@ def do3():
     p = Speedup2UtilPlot2()
     p.writeFiles()
 
+def do4():
+    p = Speedup2UtilPlot()
+    p.writeFiles()
+
 def test():
     sys = SymmetricSystem()
     print sys.get_util_min(), sys.get_util_max()
@@ -122,4 +126,5 @@ def plot_to_uratio(sys, applist):
 
 
 if __name__ == '__main__':
-    test()
+    #test()
+    do4()

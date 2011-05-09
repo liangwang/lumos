@@ -140,8 +140,8 @@ class Speedup2UtilPlot2(Plot):
 
         self._samples = 100
 
-        self._area = 500
-        self._power = 200
+        self._area = 111
+        self._power = 125
 
         self._tech_nodes = [45, 32, 22, 16, 11, 8]
         self._f_ratio = [0.5,0.2,0.1,0.01]
