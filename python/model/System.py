@@ -2,7 +2,7 @@
 
 import math
 import matplotlib.pyplot as plt
-from core import IOCore, O3Core
+from Core import *
 
 class System:
     def __init__(self):
@@ -13,8 +13,8 @@ class System:
         self.sperf = 0 # serial performance
         self.pperf = 0 # parallel performance
 
-        self.urmax = 0 # the maximum utilization ratio
-        self.urmin = 0 # the minimum utilization ratio
+        self._util_ratio_max = 0 # the maximum utilization ratio
+        self._util_ratio_min = 0 # the minimum utilization ratio
         self.ur = 0 # utilization ratio
 
 
@@ -247,56 +247,82 @@ class SymmetricSystem(System):
                  budget={'area':500, 'power':200}):
         System.__init__(self)
         
-        self.power = budget['power']
-        self.area = budget['area']
-        
-
-        self.set_core(core)
+        self.set_core_budget(core, budget)
 
     
-    def set_core(self, core):
-        self.core = core
-
-        mech = core.mech
-        tech = core.tech
-
-        dvfs_lb = core.get_dvfs_lb() 
-        freq_factor, perf, power = core.dvfs(dvfs_lb)
-        self.urmax = min( (self.power/power)/(self.area/core.area), 1)
-
-        dvfs_ub = core.get_dvfs_ub()
-        freq_factor, perf, power = core.dvfs(dvfs_ub)
-        self.urmin = (self.power/power)/(self.area/core.area)
-
-        self.sperf = perf
-
-        self.cnum = self.area / core.area
-
-        self.set_util_ratio(self.ur) # update parallel perforamnce
-
     def set_util_ratio(self, ratio):
-        if ratio > self.urmax:
-            self.ur = self.urmax
-        elif ratio < self.urmin:
-            self.ur = self.urmin
+        if ratio > self._util_ratio_max:
+            self._util_ratio = self._util_ratio_max
+        elif ratio < self._util_ratio_min:
+            self._util_ratio = self._util_ratio_min
         else:
-            self.ur = ratio
-
-
-        dvfs_factor = math.pow( (self.power*self.core.area)/(self.ur*self.core.p0*self.area), 0.333)
+            self._util_ratio = ratio
+        #dvfs_factor = math.pow( (self.power*self._core.area)/(self.ur*self.core.p0*self.area), 0.333)
         
-        freq_factor, perf, power = self.core.dvfs(dvfs_factor)
+        #freq_factor, perf, power = self.core.dvfs(dvfs_factor)
 
-        self.pperf = perf
+        #self.pperf = perf
 
-        self.acnum = self.cnum * self.ur
+        #self.acnum = self.cnum * self.ur
+
+    def set_core(self, core):
+        self._core = core
+        self.cnum = self._area / core.get_area()
+
+        self.__update_util_boundary()
 
     def set_budget(self, budget):
-        self.power = budget['power']
-        self.area = budget['area']
+        self._power = budget['power']
+        self._area = budget['area']
         
-        self.set_core(self.core)
+        self.__update_util_boundary()
         
+    def set_core_budget(self, core, budget):
+        self._power = budget['power']
+        self._area = budget['area']
+        
+        self._core = core
+        self.cnum = self._area / core.get_area()
+
+        self.__update_util_boundary()
+        
+    def __update_util_boundary(self):
+        core = self._core
+
+        core.dvfs_min()
+        self._util_ratio_max = min( (self._power/core.get_power())/(self._area/core.get_area()), 1)
+
+        core.dvfs_max()
+        self._util_ratio_min = (self._power/core.get_power())/(self._area/core.get_area())
+        
+
+    def __serial_perf(self, app):
+        core = self._core
+        core.dvfs_max()
+        perf0 = core.get_perf0()
+        freq = core.get_freq()
+        return perf0* freq**(1-app.m)
+
+    def __parallel_perf(self, app):
+        core = self._core
+        a0 = core.get_area()
+        p0 = core.get_power()
+        v_factor = math.pow( (self._power*a0)/(self._util_ratio*p0*self._area), 0.333)
+
+        core.dvfs(v_factor)
+
+        perf0 = core.get_perf0()
+        freq = core.get_freq()
+        return perf0* freq**(1-app.m)
+
+    def speedup(self, app):
+        f = app.f
+
+        sperf = self.__serial_perf(app)
+        pperf = self.__parallel_perf(app)
+
+        return 1/((1-f)/sperf + f/(pperf*self.cnum*self._util_ratio))
+
 class SimpleSystem(System):
     def __init__(self, core=IOCore(), 
                  budget={'area':500, 'power':200}):
@@ -346,8 +372,8 @@ class UnlimitedPowerSystem(System):
     def set_core(self, core):
         self.core = core
 
-        mech = core.mech
-        tech = core.tech
+        #mech = core.mech
+        #tech = core.tech
 
         self.cnum = self.area / core.area
 

@@ -7,4 +7,5 @@ syntax: glob
 *.png
 *.pdf
 *.db
+.*
 tags
