@@ -151,28 +151,30 @@ class Speedup2UtilPlot2(Plot):
 
 
     def __writeScript(self):
-        sfname = '%s.gpi' % self._name
-        slines = []
-
-        self._opt_list['figsize'] = '8.5in,22in'
-        figtitle = 'Power=%dW, Area=%dmm^2' % (self._power, self._area)
-        slines.append('##FIGSIZE=%s\n' % self._opt_list['figsize'])
-        slines.append("set multiplot layout 6,2 title '%s'\n" % figtitle)
-        slines.append('set xrange [0:1.1]\n')
-        slines.append('set style data lines\n')
-        slines.append('set key left top\n')
 
         for tech in self._tech_nodes:
-            plottitle = 'IO-%dnm' % tech
-            slines.append("set title '%s'\n" % plottitle)
-            slines.append("plot for [i=1:%d] '%s-io-%dnm.dat' using 1:i+1 title columnhead\n" % (len(self._f_ratio), self._name, tech))
+            sfname = '%s-%dnm.gpi' % (self._name, tech)
+            slines = []
 
-            plottitle = 'O3-%dnm' % tech
-            slines.append("set title '%s'\n" % plottitle)
-            slines.append("plot for [i=1:%d] '%s-o3-%dnm.dat' using 1:i+1 title columnhead\n" % (len(self._f_ratio), self._name, tech))
+            self._opt_list['figsize'] = '11in,8.5in'
+            figtitle = 'Power=%dW, Area=%dmm^2, Tech=%dnm' % (self._power, self._area, tech)
+            slines.append('##FIGSIZE=%s\n' % self._opt_list['figsize'])
+            slines.append("set multiplot layout 2,2 title '%s'\n" % figtitle)
+            slines.append('set xrange [0:1.1]\n')
+            slines.append('set style data lines\n')
+            slines.append('set key left top\n')
 
-        with open(sfname, 'wb') as f:
-            f.writelines(slines)
+            for fratio in self._f_ratio:
+                plottitle = 'f=%g' % fratio
+                slines.append("set title '%s'\n" % plottitle)
+                slines.append("plot for [i=1:%d] '%s-io-%dnm-f%g.dat' using 1:i+1 title columnhead with lines linetype 1 linecolor i,\\\n" % (len(self._f_ratio), self._name, tech, fratio))
+
+                #plottitle = 'O3-%dnm' % tech
+                #slines.append("set title '%s'\n" % plottitle)
+                slines.append("for [i=1:%d] '%s-o3-%dnm-f%g.dat' using 1:i+1 title columnhead with lines linetype 2 linecolor i\n" % (len(self._f_ratio), self._name, tech, fratio))
+
+            with open(sfname, 'wb') as f:
+                f.writelines(slines)
 
     def __writeData(self):
         sys = SymmetricSystem(budget={'power':self._power,'area':self._area})

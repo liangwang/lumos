@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import math
-from Core import IOCore
+from Core import IOCore,O3Core
 from System import System
 
 class SymmetricSystem(System):
@@ -85,5 +85,30 @@ class SymmetricSystem(System):
     def get_util_min(self):
         return self._util_ratio_min
     
+    def get_best_perf(self, app):
+        """ Tune the system to have best performance with certain app """
+        self._util_ratio = self._util_ratio_max
+
+        tech = self._core.get_tech()
+        mech = self._core.get_mech()
+        self.set_core(IOCore(tech=tech, mech=mech))
+
+        ioperf = self.speedup(app)
+
+        self.set_core(O3Core(tech=tech, mech=mech))
+
+        o3perf = self.speedup(app)
+
+        if (ioperf > o3perf):
+            self.set_core(IOCore(tech=tech, mech=mech))
+            perf = ioperf
+        else :
+            perf = o3perf
+
+        return o3perf
+
+    def get_core(self):
+        return self._core
+
     def get_core_num(self):
         return self._cnum

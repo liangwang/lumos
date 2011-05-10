@@ -72,6 +72,15 @@ class Core:
 
     def get_p0(self):
         return self._p0
+    
+    def get_tech(self):
+        return self._tech
+
+    def get_mech(self):
+        return self._mech
+
+    def get_type(self):
+        return self._type
 
     def dvfs(self, v_factor):
         """ When tuning up/down the voltage, how would frequency changes

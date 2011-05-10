@@ -8,9 +8,11 @@ from model.Core import IOCore, O3Core
 from model.System import *
 from model.Application import *
 from model.SymmetricSystem import *
+from model.UnlimitedPowerSystem import *
 
-from plot.Util2BudgetPlot import *
-from plot.Speedup2UtilPlot import *
+from plot.Util2Budget import *
+from plot.Spd2Util import *
+from plot.Spd2Tech import *
 
 def do1():
     technodes = [45, 32, 22, 16, 11, 8]
@@ -45,10 +47,10 @@ def do1():
     with open('power.dat', 'w') as f:
         f.writelines(datalines)
 
-def do2():
+def do_matplot():
     #techbase.dvfs_aggressive = False
     #applist = [Application(f=1),
-               #Application(f=0.99),
+               #Application(f=0.99), @IndentOk
                #Application(f=0.9),
                #Application(f=0.8),
                #Application(f=0.5),
@@ -81,7 +83,9 @@ def do2():
     #plot_to_uratio(sys, applist)
 
     #plt.show()
+    pass
 
+def do2():
     p = Util2BudgetPlot()
     p.writeFiles()
 
@@ -93,9 +97,15 @@ def do4():
     p = Speedup2UtilPlot()
     p.writeFiles()
 
+def do5():
+    p = Spd2TechPlot()
+    p.writeFiles()
+
 def test():
-    sys = SymmetricSystem()
-    print sys.get_util_min(), sys.get_util_max()
+    sys = SymmetricSystem(budget={'area':111,'power':125})
+    app = Application(f=0.5,m=0)
+    sys.set_util_ratio(1)
+    print sys.speedup(app)
 
 def plot_to_uratio(sys, applist):
     samples = 1000
@@ -122,9 +132,6 @@ def plot_to_uratio(sys, applist):
 
 
 
-
-
-
 if __name__ == '__main__':
     #test()
-    do4()
+    do5()
