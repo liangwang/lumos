@@ -1,31 +1,94 @@
 #!/usr/bin/env python
 
 import math
-from Core import IOCore,O3Core
+from Core import Core
 from System import System
 
 class SymmetricSystem(System):
-    def __init__(self, core=IOCore(), 
+    def __init__(self, core=Core(), 
                  budget={'area':500, 'power':200}):
         System.__init__(self)
         
         self.set_core_budget(core, budget)
 
+        self._util_ratio = self._util_min
+
     
-    def set_util_ratio(self, ratio):
-        if ratio > self._util_ratio_max:
-            self._util_ratio = self._util_ratio_max
-        elif ratio < self._util_ratio_min:
-            self._util_ratio = self._util_ratio_min
-        else:
-            self._util_ratio = ratio
+    def util_ratio():
+        """ @property: util_ratio """
+        doc = "util_ratio: utilizaton ratio of the system"
+        def fget(self):
+            return self._util_ratio
+        def fset(self, value):
+            if value > self._util_max:
+                self._util_ratio = self._util_max
+            elif value < self._util_min:
+                self._util_ratio = self._util_min
+            else:
+                self._util_ratio = value
+        return locals()
+    util_ratio = property(**util_ratio())
+    
+    def core():
+        """ @property: core """
+        doc = "core: base core for the system"
+        def fget(self):
+            return self._core
+        def fset(self, value):
+            self._core = value
+            self._core_num = self._area / self._core.area
+            self.__update_util_boundary()
+        return locals()
+    core = property(**core())
+    
+    def core_num():
+        """ @property: core_num """
+        doc = "core_num: the number of available cores in system"
+        def fget(self):
+            return self._core_num
+        return locals()
+    core_num = property(**core_num())
 
-    def set_core(self, core):
-        self._core = core
-        self._cnum = self._area / core.get_area()
-
-        self.__update_util_boundary()
-
+    def power():
+        """ @property: power """
+        doc = "power: power budget for the system"
+        def fget(self):
+            return self._power
+        def fset(self, value):
+            self._power = value
+            self.__update_util_boundary()
+        return locals()
+    power = property(**power())
+    
+    def area():
+        """ @property: area """
+        doc = "area: area budget for the system"
+        def fget(self):
+            return self._area
+        def fset(self, value):
+            self._area = value
+            self.__update_util_boundary()
+        return locals()
+    area = property(**area())
+    
+    def util_max():
+        """ @property: util_max """
+        doc = "util_max: maximum utilization ratio of the system"
+        def fget(self):
+            return self._util_max
+        return locals()
+    util_max = property(**util_max())
+    
+    def util_min():
+        """ @property: util_min """
+        doc = "util_min: minimum utilization ratio of the system"
+        def fget(self):
+            return self._util_min
+        return locals()
+    util_min = property(**util_min())
+    
+    
+    
     def set_budget(self, budget):
         self._power = budget['power']
         self._area = budget['area']
@@ -37,37 +100,37 @@ class SymmetricSystem(System):
         self._area = budget['area']
         
         self._core = core
-        self._cnum = self._area / core.get_area()
+        self._core_num = self._area / core.area
 
         self.__update_util_boundary()
         
     def __update_util_boundary(self):
         core = self._core
 
-        core.dvfs_min()
-        self._util_ratio_max = min( (self._power/core.get_power())/(self._area/core.get_area()), 1)
+        core.dvfs(core.vsf_min)
+        self._util_max = min( (self._power/core.power)/(self._area/core.area), 1)
 
-        core.dvfs_max()
-        self._util_ratio_min = (self._power/core.get_power())/(self._area/core.get_area())
+        core.dvfs(core.vsf_max)
+        self._util_min = (self._power/core.power)/(self._area/core.area)
         
 
     def __serial_perf(self, app):
         core = self._core
-        core.dvfs_max()
-        perf0 = core.get_perf0()
-        freq = core.get_freq()
+        core.dvfs(core.vsf_max)
+        perf0 = core.perf0
+        freq = core.freq
         return perf0* freq**(1-app.m)
 
     def __parallel_perf(self, app):
         core = self._core
-        a0 = core.get_area()
-        p0 = core.get_p0()
+        a0 = core.area
+        p0 = core.p0
         v_factor = math.pow( (self._power*a0)/(self._util_ratio*p0*self._area), 0.333)
 
         core.dvfs(v_factor)
 
-        perf0 = core.get_perf0()
-        freq = core.get_freq()
+        perf0 = core.perf0
+        freq = core.freq
         return perf0* freq**(1-app.m)
 
     def speedup(self, app):
@@ -76,39 +139,30 @@ class SymmetricSystem(System):
         sperf = self.__serial_perf(app)
         pperf = self.__parallel_perf(app)
 
-        #return 1/((1-f)/sperf + f/(pperf*self._cnum*self._util_ratio))
-        return 1/((1-f)/sperf + f/(pperf*self._util_ratio*self._area/self._core.get_area()))
+        #return 1/((1-f)/sperf + f/(pperf*self._core_num*self._util_ratio))
+        return 1/((1-f)/sperf + f/(pperf*self._util_ratio*self._area/self._core.area))
 
-    def get_util_max(self):
-        return self._util_ratio_max
-
-    def get_util_min(self):
-        return self._util_ratio_min
     
     def get_best_perf(self, app):
         """ Tune the system to have best performance with certain app """
-        self._util_ratio = self._util_ratio_max
+        self._util_ratio = self._util_max
 
-        tech = self._core.get_tech()
-        mech = self._core.get_mech()
-        self.set_core(IOCore(tech=tech, mech=mech))
+        tech = self._core.tech
+        mech = self._core.mech
+
+        self.core = Core(type='IO', tech=tech, mech=mech)
 
         ioperf = self.speedup(app)
 
-        self.set_core(O3Core(tech=tech, mech=mech))
+        self.core = O3Core(tech=tech, mech=mech)
 
         o3perf = self.speedup(app)
 
         if (ioperf > o3perf):
-            self.set_core(IOCore(tech=tech, mech=mech))
+            self.core=Core(type='IO', tech=tech, mech=mech)
             perf = ioperf
         else :
             perf = o3perf
 
         return o3perf
 
-    def get_core(self):
-        return self._core
-
-    def get_core_num(self):
-        return self._cnum

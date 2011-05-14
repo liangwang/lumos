@@ -5,21 +5,27 @@ import math
 from Technology import Base as techbase
 from Technology import Scale as techscl
 
-class Core:
-    def __init__ (self, type='io',
-                 mech='itrs', tech=45):
+class Core(object):
+    def __init__ (self, type='IO',
+                 mech='ITRS', tech=45,
+                 dvfs_simple=True, alpha=1.4,
+                 vslope=0.09, nth=0.2):
         self._tech = tech
         self._mech = mech
         self._type = type
-        self.__update_base()
 
-        self.ag_dvfs = False
+        # Velocity saturation factor (alpha power law)
+        self._alpha = alpha
 
-        self._f_factor = 1
-        self._v_factor = 1
+        # use simple scaling or not
+        self.dvfs_simple = dvfs_simple
 
+        # sub-threshold voltage slope
+        self.vslope = vslope
 
-    def __update_base(self):
+        # length of near threshold region
+        self.nth = nth
+
         # default frequency
         self._f0=techbase.freq[self._type]* techscl.freq[self._mech][self._tech]
 
@@ -35,103 +41,204 @@ class Core:
         # Area 
         self._area=techbase.area[self._type]* techscl.area[self._tech]
 
-    def set_tech(self, tech):
-        self._tech=tech
+        # Threshold Voltage
+        self._vth = techbase.vth[self._tech]
 
-        self.__update_base()
+        self.__update_scaling_constant()
 
-    def set_mech(self, mech):
-        self._mech = mech
-        self.__update_base()
+        self._fsf = 1
+        self._vsf = 1
 
-    def set_type(self, type):
-        self._type = type
-        self.__update_base()
+    def __update_scaling_constant(self):
+        #v_pivot = self._alpha*self.vslope/math.log(10)+self._vth
+        v_pivot=self._vth + self.nth
+        self._csuper = self._f0 * self._v0 / (self._v0-self._vth)**self._alpha
 
-    def get_dvfs_lb(self):
-        if self.ag_dvfs : 
-            vth = techbase.vth[self._tech]
-            return vth/self._v0
-        else:
-            return 0.7
+        self._csub = self._csuper * (v_pivot-self._vth)**self._alpha / 10**((v_pivot-self._vth)/(self.vslope))
 
-    def get_dvfs_ub(self):
-        return 1.3
+    def alpha():
+        """ @property: alpha """
+        doc = "alpha: velocity saturation factor in alpha-power law"
+        def fget(self):
+            return self._alpha
+        def fset(self, value):
+            self._alpha = value
+            self.__update_scaling_constant()
+        return locals()
+    alpha = property(**alpha())
 
-    def get_freq(self):
-        return self._f0 * self._f_factor
-
-    def get_power(self):
-        return self._p0 * self._f_factor * self._v_factor**2
-
-    def get_area(self):
-        return self._area
-
-    def get_perf0(self):
-        return self._perf0
-
-    def get_p0(self):
-        return self._p0
+    def tech():
+        """ @property: tech """
+        doc = "tech: technology node in nm, default is 45"
+        def fget(self):
+            return self._tech
+        def fset(self, value):
+            self._tech = value
+            # default frequency
+            self._f0=techbase.freq[self._type]* techscl.freq[self._mech][self._tech]
+            # Power at norminal frequency
+            self._p0=techbase.power[self._type]* techscl.power[self._mech][self._tech]
+            # Norminal power at norminal frequency
+            self._v0=techbase.vdd * techscl.vdd[self._mech][self._tech]
+            # Area 
+            self._area=techbase.area[self._type]* techscl.area[self._tech]
+            # Threshold Voltage
+            self._vth = techbase.vth[self._tech]
+            self.__update_scaling_constant()
+        return locals()
+    tech = property(**tech())
     
-    def get_tech(self):
-        return self._tech
+    def freq():
+        """ @property: freq """
+        doc = "The freq property."
+        def fget(self):
+            return self._f0 * self._fsf
+        return locals()
+    freq = property(**freq())
 
-    def get_mech(self):
-        return self._mech
+    def power():
+        """ @property: power """
+        doc = "The power property."
+        def fget(self):
+            return self._p0 * self._fsf * self._vsf**2
+        return locals()
+    power = property(**power())
 
-    def get_type(self):
-        return self._type
+    def area():
+        """ @property: area """
+        doc = "The area property."
+        def fget(self):
+            return self._area
+        return locals()
+    area = property(**area())
 
-    def dvfs(self, v_factor):
+    def perf0():
+        """ @property: perf0 """
+        doc = "The perf0 property."
+        def fget(self):
+            return self._perf0
+        return locals()
+    perf0 = property(**perf0())
+
+    def p0():
+        """ @property: p0 """
+        doc = "The p0 property."
+        def fget(self):
+            return self._p0
+        return locals()
+    p0 = property(**p0())
+    
+    def mech():
+        """ @property: mech """
+        doc = "mech: scaling mechanism, default is 'ITRS'"
+        def fget(self):
+            return self._mech
+        def fset(self, value):
+            self._mech = value
+            # default frequency
+            self._f0=techbase.freq[self._type]* techscl.freq[self._mech][self._tech]
+            # Power at norminal frequency
+            self._p0=techbase.power[self._type]* techscl.power[self._mech][self._tech]
+            # Norminal power at norminal frequency
+            self._v0=techbase.vdd * techscl.vdd[self._mech][self._tech]
+            self.__update_scaling_constant()
+        return locals()
+    mech = property(**mech())
+
+    def type():
+        """ @property: type """
+        doc = "type: core type, default is 'io'"
+        def fget(self):
+            return self._type
+        def fset(self, value):
+            self._type = value
+            # default frequency
+            self._f0=techbase.freq[self._type]* techscl.freq[self._mech][self._tech]
+            # Power at norminal frequency
+            self._p0=techbase.power[self._type]* techscl.power[self._mech][self._tech]
+            # Perforamnce base factor (Pollack's Rule)
+            self._perf0 = math.sqrt(techbase.area[self._type])
+            # Area 
+            self._area=techbase.area[self._type]* techscl.area[self._tech]
+            self.__update_scaling_constant()
+        return locals()
+    type = property(**type())
+    
+    def vth():
+        """ @property: vth """
+        doc = "vth: threshold voltage for a certain technology node"
+        def fget(self):
+            return self._vth
+        return locals()
+    vth = property(**vth())
+
+    def vsf_min():
+        """ @property: vsf_min """
+        doc = "vsf_min: voltage scaling factor, minimum"
+        def fget(self):
+            return 0.7 if self.dvfs_simple else self._vth/self._v0
+        return locals()
+    vsf_min = property(**vsf_min())
+    
+    def vsf_max():
+        """ @property: vsf_max """
+        doc = "vsf_max: voltage scaling factor, maximum"
+        def fget(self):
+            return 1.3
+        return locals()
+    vsf_max = property(**vsf_max())
+
+
+    def dvfs(self, vsf):
         """ When tuning up/down the voltage, how would frequency changes
         
-        ratio -- scaling factor for voltage
+        vsf -- voltage scaling factor
         
         """
-        dvfs_ub = self.get_dvfs_ub()
-        dvfs_lb = self.get_dvfs_lb()
+        self._vsf = vsf
 
-        if v_factor > dvfs_ub:
-            self._v_factor = dvfs_ub
+        self._fsf =  self.__v2f_scaling(self._vsf)
 
-        elif v_factor < dvfs_lb:
-            self._v_factor = dvfs_lb
+        return self._fsf
+
+    def __v2f_scaling(self, vsf):
+        if self.dvfs_simple:
+            return self.__v2f_simple(vsf)
         else :
-            self._v_factor = v_factor
+            return self.__v2f_real(vsf)
 
-        self._f_factor =  self.__v2f_simple(self._v_factor)
+    def __v2f_simple(self, vsf):
+        return vsf
 
-    def dvfs_max(self):
-        """ Scale to the maximum voltage """
-        self._v_factor = self.get_dvfs_ub()
-        self._f_factor = self.__v2f_simple(self._v_factor)
-
-    def dvfs_min(self):
-        """ Scale to the minimum voltage """
-        self._v_factor = self.get_dvfs_lb()
-        self._f_factor = self.__v2f_simple(self._v_factor)
-
-    def __v2f_simple(self, v_factor):
-        return v_factor
-
-    def __v2f_near_threshold(self, v_factor):
+    def __v2f_real(self, vsf):
         """ More realistic scaling """
-        #v = self._v0 * self._v_factor
-        #vth = techbase.vth[self._tech]
-        #vmin = v - vth
-        #vmin0 = self._v0 - vth
+        v = self._v0 * vsf
+        base = self._csuper*(self._v0-self._vth)**self._alpha/self._v0
+        if v >= self._vth + self.nth: 
+            # super-threshold region
+            super = self._csuper * (v-self._vth)**self._alpha / v
+            return super/base
+        elif v >= self._vth: 
+            # near-threshold region
+            super = self._csuper * (v-self._vth)**self._alpha / v
+            sub = self._csub * 10**((v-self._vth)/self.vslope)
+            f = (v-self._vth)/self.nth
+            return ((1-f)*sub+f*super) / base
+        else :
+            # sub-threshold region
+            #  should not happen in this case
+            sub = self._csub * 10**((v-self._vth)/self.vslope)
+            return sub/base
 
-        #freq_factor = ((v * vmin - vmin**2 / 2) / (self.v0 * vmin0 - vmin0**2 / 2)) / v_factor
 
-
-class IOCore(Core):
-    def __init__ (self, mech='itrs', tech=45):
-        Core.__init__(self, type='io',
-                     mech=mech, tech=tech)
+#class IOCore(Core):
+    #def __init__ (self, mech='ITRS', tech=45):
+        #Core.__init__(self, type='io',
+                     #mech=mech, tech=tech)
         
         
-class O3Core(Core):
-    def __init__ (self, mech='itrs', tech=45):
-        Core.__init__(self, type='o3',
-                     mech=mech, tech=tech)
+#class O3Core(Core):
+    #def __init__ (self, mech='ITRS', tech=45):
+        #Core.__init__(self, type='o3',
+                     #mech=mech, tech=tech)
 
