@@ -104,8 +104,33 @@ def do5():
 def test():
     sys = SymmetricSystem(budget={'area':111,'power':125})
     app = Application(f=0.5,m=0)
-    sys.set_util_ratio(1)
+    sys.util_ratio=1
     print sys.speedup(app)
+
+def testCore():
+    core = IOCore()
+    core.set_dvfs_simple(False)
+    vfactor_lb = 0.1
+    vfactor_ub = core.get_dvfs_ub()
+    samples = 200
+    dlines = []
+    step = 0.002
+    v=vfactor_lb
+    for i in range(samples):
+        dlines.append('%g ' % v)
+        dlines.append('%g\n' % core.dvfs(v))
+        v = v+step
+
+    samples = 100
+    step = (vfactor_ub - v)/samples
+    for i in range(samples):
+        dlines.append('%g ' % v)
+        dlines.append('%g\n' % core.dvfs(v))
+        v = v+step
+
+
+    with open('test.dat', 'wb') as f:
+        f.writelines(dlines)
 
 def plot_to_uratio(sys, applist):
     samples = 1000
@@ -133,5 +158,6 @@ def plot_to_uratio(sys, applist):
 
 
 if __name__ == '__main__':
-    #test()
-    do5()
+    test()
+    #do5()
+    #testCore()

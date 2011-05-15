@@ -1,14 +1,21 @@
 #!/usr/bin/env python
-    
+
+HOME_DIR='/home/lw2aw/eclipse_ws/analytical/python'
+
+import sys
+sys.path.append(HOME_DIR)
+
 from model.Core import *
 from model.SymmetricSystem import *
 from model.Application import *
 
-from Plot import *
+from plot.Plot import *
+
+import matplotlib.pyplot as plt
 
 
 class Speedup2UtilPlot(Plot):
-    def __init__(self, name='itrs'):
+    def __init__(self, name='ITRS'):
         Plot.__init__(self, name)
 
         self._samples = 100
@@ -19,7 +26,8 @@ class Speedup2UtilPlot(Plot):
         self._tech_nodes = [45, 32, 22, 16, 11, 8]
         self._f_ratio = [1,0.99,0.9,0.8,0.5,0.01]
 
-        self._mech = 'itrs'
+        self._mech = 'ITRS'
+
 
 
     def __writeScript(self):
@@ -135,7 +143,7 @@ class Speedup2UtilPlot(Plot):
 class Speedup2UtilPlot2(Plot):
     """ Speedup to Utilization ratio with memory factor alpha
     """
-    def __init__(self, name='itrs-mem'):
+    def __init__(self, name='ITRS-mem'):
         Plot.__init__(self, name)
 
         self._samples = 100
@@ -147,7 +155,7 @@ class Speedup2UtilPlot2(Plot):
         self._f_ratio = [0.5,0.2,0.1,0.01]
         self._m_ratio = [0,0.2,0.4,0.6,0.8]
 
-        self._mech = 'itrs'
+        self._mech = 'ITRS'
 
 
     def __writeScript(self):
@@ -267,3 +275,94 @@ class Speedup2UtilPlot2(Plot):
 
     def setTechnodeList(self, tlist):
         self._tech_nodes = tlist
+
+class Spd2Util(Plot):
+    def __init__(self, 
+                prefix='spd2util',
+                mech='ITRS'):
+
+        Plot.__init__(self)
+        self.prefix = "spd2util"
+        self.mech = mech
+
+        self.area = 500
+        self.power = 200
+
+        self.samples = 100
+        self.dvfs_simple = True
+
+        self.tech_list = [45, 32, 22, 16, 11, 8]
+        self.pr_list = [0.1, 0.5, 0.8, 0.9, 0.99]
+        self.mr_list = [0, 0.2, 0.4, 0.6, 0.8]
+
+        self.outdir = os.path.join(HOME_DIR,'speedup_util_plot')
+
+    
+    def __figname(self):
+        return '-'.join([self.prefix,str(self.area),str(self.power),self.mech,
+                         'simple' if self.dvfs_simple else 'real'])
+
+    def plot(self):
+        sys = SymmetricSystem(budget={'power':self.power, 'area':self.area})
+
+        fig = plt.figure(figsize=(8.5,22))
+        fig.suptitle(r'%d$mm^2$, %d$watts$, %s' % (self.area, self.power, self.mech),
+                    y=0.99)
+        adjustprops = dict(left=0.05, bottom=0.02, right=0.97, top=0.96, wspace=0.2, hspace=0.2)
+        fig.subplots_adjust(**adjustprops)
+        fig_index = 1
+        for t in self.tech_list:
+            for type in ['IO','O3']:
+                sys.core = Core(type=type, tech=t, dvfs_simple=self.dvfs_simple, mech=self.mech)
+
+                step = (sys.util_max-sys.util_min)/self.samples
+
+                axes = fig.add_subplot(6,2,fig_index)
+
+                utils = []
+                for i in range(self.samples):
+                    util_ratio = sys.util_min + i*step
+                    utils.append(util_ratio)
+
+                for pr in self.pr_list:
+                    perfs = []
+                    for util in utils:
+                        sys.util_ratio = util
+                        perfs.append(sys.speedup(Application(f=pr)))
+                    axes.plot(utils, perfs)
+                axes.set_title('%dnm-%s' %(t, type), size='small')
+                axes.set_xlim(0,1.1)
+                for label in axes.xaxis.get_ticklabels():
+                    label.set_fontsize('small')
+                for label in axes.yaxis.get_ticklabels():
+                    label.set_fontsize('small')
+
+                axes.legend(axes.lines, [r'$\rho=%g$' % pr for pr in self.pr_list], 'upper left', 
+                            prop=dict(size='x-small'))
+                fig_index = fig_index + 1
+
+
+        filename = self.__figname() + '.' + self.format
+        fullname = os.path.join(self.outdir,filename)
+        fig.savefig(fullname)
+
+
+if __name__ == '__main__':
+    p = Spd2Util()
+    p.format='png'
+    for power,area in [(125,111),(200,500)]:
+        p.power=power
+        p.area=area
+        for mech in ['ITRS', 'CONS']:
+            p.mech=mech
+            for dvfs_simple in [True, False]:
+                p.dvfs_simple = dvfs_simple
+                p.plot()
+
+    
+    
+    
+    
+    
+    
+    

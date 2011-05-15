@@ -154,7 +154,7 @@ class SymmetricSystem(System):
 
         ioperf = self.speedup(app)
 
-        self.core = O3Core(tech=tech, mech=mech)
+        self.core = Core(type='O3',tech=tech, mech=mech)
 
         o3perf = self.speedup(app)
 
