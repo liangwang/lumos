@@ -1,7 +1,11 @@
 #!/usr/bin/env python
-    
-HOME_DIR='/home/lw2aw/eclipse_ws/analytical/python'
 
+import platform
+if platform.system() == 'Linux':
+    HOME_DIR='/home/lw2aw/eclipse_ws/analytical/python'
+else:
+    HOME_DIR='..'
+    
 import sys
 sys.path.append(HOME_DIR)
 
@@ -13,6 +17,7 @@ from plot.Plot import Matplot, Gnuplot
 
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 class Util2BudgetPlot(Gnuplot):
@@ -104,12 +109,14 @@ class Util2Budget(Matplot):
                 util_axis = []
                 for area in range(100,500,4):
                     for power in range(100,200):
-                        sys.set_bduget({'area':area, 'power':power})
+                        sys.set_budget({'area':area, 'power':power})
                         area_axis.append(area)
                         power_axis.append(power)
                         util_axis.append(sys.util_max)
-
-                axes.plot_surface(area_axis, power_axis, util_axis)
+                X=np.fromiter(area_axis,np.int).reshape((100,-1))
+                Y=np.fromiter(power_axis,np.int).reshape((100,-1))
+                Z=np.fromiter(util_axis,np.int).reshape((100,-1))
+                axes.plot_surface(X,Y,Z)
 
                 fig_index = fig_index + 1
         
