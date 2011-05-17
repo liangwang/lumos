@@ -59,7 +59,7 @@ class Speedup2UtilPlot(Plot):
 
         for t in self._tech_nodes:
             # IO Core
-            sys.set_core(IOCore(tech=t))
+            sys.set_core_prop(type='IO',tech=t)
             dfname = '%s-io-%dnm.dat' % (self._name, t)
 
             dlines = []
@@ -88,7 +88,7 @@ class Speedup2UtilPlot(Plot):
                 f.writelines(dlines)
 
             # O3 Core
-            sys.set_core(O3Core(tech=t))
+            sys.set_core_prop(type='O3',tech=t)
             dfname = '%s-o3-%dnm.dat' % (self._name, t)
 
             dlines = []
@@ -192,7 +192,7 @@ class Speedup2UtilPlot2(Plot):
                 app = Application(fratio)
 
                 # IO Core
-                sys.set_core(IOCore(tech=t))
+                sys.set_core_prop(type='IO', tech=t)
                 dfname = '%s-io-%dnm-f%g.dat' % (self._name, t, fratio)
 
                 dlines = []
@@ -223,7 +223,7 @@ class Speedup2UtilPlot2(Plot):
                     f.writelines(dlines)
 
                 # O3 Core
-                sys.set_core(O3Core(tech=t))
+                sys.set_core_prop(type='O3', tech=t)
                 dfname = '%s-o3-%dnm-f%g.dat' % (self._name, t, fratio)
 
                 dlines = []
@@ -303,7 +303,9 @@ class Spd2Util(Plot):
                          'simple' if self.dvfs_simple else 'real'])
 
     def plot(self):
-        sys = SymmetricSystem(budget={'power':self.power, 'area':self.area})
+        sys = SymmetricSystem(budget={'power':self.power, 'area':self.area},
+                             core=Core(dvfs_simple=self.dvfs_simple, mech=self.mech))
+        apps = dict([(pr, Application(f=pr)) for pr in self.pr_list])
 
         fig = plt.figure(figsize=(8.5,22))
         fig.suptitle(r'%d$mm^2$, %d$watts$, %s' % (self.area, self.power, self.mech),
@@ -313,7 +315,7 @@ class Spd2Util(Plot):
         fig_index = 1
         for t in self.tech_list:
             for type in ['IO','O3']:
-                sys.core = Core(type=type, tech=t, dvfs_simple=self.dvfs_simple, mech=self.mech)
+                sys.set_core_prop(type=type, tech=t)
 
                 step = (sys.util_max-sys.util_min)/self.samples
 
@@ -328,7 +330,7 @@ class Spd2Util(Plot):
                     perfs = []
                     for util in utils:
                         sys.util_ratio = util
-                        perfs.append(sys.speedup(Application(f=pr)))
+                        perfs.append(sys.speedup(apps[pr]))
                     axes.plot(utils, perfs)
                 axes.set_title('%dnm-%s' %(t, type), size='small')
                 axes.set_xlim(0,1.1)
@@ -346,8 +348,7 @@ class Spd2Util(Plot):
         fullname = os.path.join(self.outdir,filename)
         fig.savefig(fullname)
 
-
-if __name__ == '__main__':
+def main():
     p = Spd2Util()
     p.format='png'
     for power,area in [(125,111),(200,500)]:
@@ -358,6 +359,10 @@ if __name__ == '__main__':
             for dvfs_simple in [True, False]:
                 p.dvfs_simple = dvfs_simple
                 p.plot()
+
+
+if __name__ == '__main__':
+    main()
 
     
     

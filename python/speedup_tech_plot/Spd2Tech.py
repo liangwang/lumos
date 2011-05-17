@@ -21,6 +21,9 @@ class Spd2TechPlot(Plot):
         self._area = 111
         self._power = 125
 
+        self._sys = SymmetricSystem(budget={'power':self._power,'area':self._area})
+        self._sys.set_core_prop(dvfs_simple=False)
+
         self._tech_nodes = [45, 32, 22, 16, 11, 8]
         self._f_ratio = [0.99, 0.9, 0.8, 0.5, 0.1, 0.01]
         self._m_ratio = [0, 0.2, 0.4, 0.6, 0.8]
@@ -28,10 +31,63 @@ class Spd2TechPlot(Plot):
         self._opt_list = {'figsize':'11in,8in'}
 
 
+
+    def __get_best_perf(self, app):
+        """ Tune the system to have best performance with certain app """
+
+        sys = self._sys
+
+        if (self._sys.core.dvfs_simple):
+            sys.util_ratio = sys.util_max
+
+            sys.set_core_prop(type='IO')
+            ioperf = sys.speedup(app)
+
+            sys.set_core_prop(type='O3')
+            o3perf = sys.speedup(app)
+        else:
+            sys.set_core_prop(type='O3')
+            
+            util_step = 0.01
+            util = sys.util_min
+            perf = 0
+            while util < sys.util_max:
+                sys.util_ratio = util
+                speedup = sys.speedup(app)
+                if speedup > perf:
+                    perf = speedup
+                #else:
+                    #break
+                util = util + util_step
+            o3perf = perf
+
+            sys.set_core_prop(type='IO')
+
+            util = sys.util_min
+            perf = 0
+            while util < sys.util_max:
+                sys.util_ratio = util
+                speedup = sys.speedup(app)
+                if speedup > perf:
+                    perf = speedup
+                #else:
+                    #break
+                util = util + util_step
+            ioperf = perf
+
+
+        if (ioperf > o3perf):
+            ret = ioperf
+        else :
+            sys.set_core_prop(type='O3')
+            ret = o3perf
+
+        return ret
+
+
     def __writeData(self):
-        sys = SymmetricSystem(budget={'power':self._power,'area':self._area})
 
-
+        sys = self._sys
         for f in self._f_ratio:
             dfname = '%s-f%g.dat' % (self._name, f)
 
@@ -43,15 +99,13 @@ class Spd2TechPlot(Plot):
             dlines.append('\n')
 
             for t in self._tech_nodes:
+                sys.set_core_prop(tech=t)
                 dlines.append('%dnm ' % t)
                 for mratio in self._m_ratio:
-                    sys.set_core(core=IOCore(tech=t, mech=self._mech))
-                    ioperf = sys.get_best_perf(Application(f=f,m=mratio))
 
-                    sys.set_core(core=O3Core(tech=t, mech=self._mech))
-                    o3perf = sys.get_best_perf(Application(f=f,m=mratio))
+                    perf = self.__get_best_perf(Application(f=f,m=mratio))
 
-                    dlines.append('%g ' % (ioperf if ioperf>o3perf else o3perf))
+                    dlines.append('%g ' % perf)
 
                 dlines.append('\n')
 
@@ -61,7 +115,8 @@ class Spd2TechPlot(Plot):
 
 
     def __writeScript(self):
-        sfname = '%s.gpi' % self._name
+        sfname = '%s-logscale.gpi' % self._name
+        #sfname = '%s.gpi' % self._name
         slines = []
 
         figtitle = 'Power=%dW, Area=%dmm^2' % (self._power, self._area)
@@ -95,6 +150,7 @@ class Spd2TechPlot(Plot):
     def set_mech(self, mech):
         self._mech = mech
         self._name = "%s-%s" % (self._prefix, self._mech)
+        self._sys.set_core_prop(mech = mech)
 
     def set_plot_prefix(self, prefix):
         self._prefix = prefix
@@ -103,6 +159,7 @@ class Spd2TechPlot(Plot):
     def set_budget(self, budget):
         self._area = budget['area']
         self._power = budget['power']
+        self._sys.set_budget(budget)
 
     def set_fratio_list(self, flist):
         self._f_ratio = flist
@@ -121,7 +178,7 @@ if __name__ == '__main__':
     p.set_mech('ITRS')
     p.write_files()
 
-    p.set_mech('cons')
+    p.set_mech('CONS')
     p.write_files()
 
     budget = {'area':111, 'power': 125}
@@ -130,6 +187,6 @@ if __name__ == '__main__':
     p.set_mech('ITRS')
     p.write_files()
 
-    p.set_mech('cons')
+    p.set_mech('CONS')
     p.write_files()
 

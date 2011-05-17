@@ -20,12 +20,7 @@ class SymmetricSystem(System):
         def fget(self):
             return self._util_ratio
         def fset(self, value):
-            if value > self._util_max:
-                self._util_ratio = self._util_max
-            elif value < self._util_min:
-                self._util_ratio = self._util_min
-            else:
-                self._util_ratio = value
+            self._util_ratio = value
         return locals()
     util_ratio = property(**util_ratio())
     
@@ -34,10 +29,10 @@ class SymmetricSystem(System):
         doc = "core: base core for the system"
         def fget(self):
             return self._core
-        def fset(self, value):
-            self._core = value
-            self._core_num = self._area / self._core.area
-            self.__update_util_boundary()
+        #def fset(self, value):
+            #self._core = value
+            #self._core_num = self._area / self._core.area
+            #self.__update_util_boundary()
         return locals()
     core = property(**core())
     
@@ -140,29 +135,14 @@ class SymmetricSystem(System):
         pperf = self.__parallel_perf(app)
 
         #return 1/((1-f)/sperf + f/(pperf*self._core_num*self._util_ratio))
-        return 1/((1-f)/sperf + f/(pperf*self._util_ratio*self._area/self._core.area))
+        speedup = 1/((1-f)/sperf + f/(pperf*self._util_ratio*self._area/self._core.area))
+        return speedup
 
     
-    def get_best_perf(self, app):
-        """ Tune the system to have best performance with certain app """
-        self._util_ratio = self._util_max
+    def set_core_prop(self, **kwargs):
+        for k,v in kwargs.items():
+            k=k.lower()
+            setattr(self._core, k, v)
 
-        tech = self._core.tech
-        mech = self._core.mech
-
-        self.core = Core(type='IO', tech=tech, mech=mech)
-
-        ioperf = self.speedup(app)
-
-        self.core = Core(type='O3',tech=tech, mech=mech)
-
-        o3perf = self.speedup(app)
-
-        if (ioperf > o3perf):
-            self.core=Core(type='IO', tech=tech, mech=mech)
-            perf = ioperf
-        else :
-            perf = o3perf
-
-        return o3perf
+        self.__update_util_boundary()
 

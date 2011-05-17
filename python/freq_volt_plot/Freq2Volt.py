@@ -145,8 +145,7 @@ class Freq2Volt(object):
         self._samples = 100
 
     def matplot(self):
-        core = IOCore()
-        core.dvfs_simple = False
+        core = Core(type='IO', dvfs_simple=True)
         
         vfactor_lb = core.vsf_min * 0.3
         vfactor_ub = core.vsf_max
@@ -225,8 +224,8 @@ class Freq2Volt(object):
 
 
 if __name__ == '__main__':
-    #p = Freq2Volt()
-    #p.matplot()
-    p = Freq2VoltPlot()
-    p.write_files()
+    p = Freq2Volt()
+    p.matplot()
+    #p = Freq2VoltPlot()
+    #p.write_files()
 

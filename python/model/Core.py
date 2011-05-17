@@ -96,6 +96,14 @@ class Core(object):
         return locals()
     freq = property(**freq())
 
+    def volt():
+        """ @property: volt """
+        doc = "volt: voltage of the core"
+        def fget(self):
+            return self._v0 * self._vsf
+        return locals()
+    volt = property(**volt())
+    
     def power():
         """ @property: power """
         doc = "The power property."
@@ -188,7 +196,6 @@ class Core(object):
         return locals()
     vsf_max = property(**vsf_max())
 
-
     def dvfs(self, vsf):
         """ When tuning up/down the voltage, how would frequency changes
         
@@ -197,48 +204,29 @@ class Core(object):
         """
         self._vsf = vsf
 
-        self._fsf =  self.__v2f_scaling(self._vsf)
-
-        return self._fsf
-
-    def __v2f_scaling(self, vsf):
         if self.dvfs_simple:
-            return self.__v2f_simple(vsf)
-        else :
-            return self.__v2f_real(vsf)
+            fsf = vsf
+        else:
+            """ More realistic scaling """
+            v = self._v0 * vsf
+            base = self._csuper*(self._v0-self._vth)**self._alpha/self._v0
+            if v >= self._vth + self.nth: 
+                # super-threshold region
+                super = self._csuper * (v-self._vth)**self._alpha / v
+                fsf = super/base
+            elif v >= self._vth: 
+                # near-threshold region
+                super = self._csuper * (v-self._vth)**self._alpha / v
+                sub = self._csub * 10**((v-self._vth)/self.vslope)
+                f = (v-self._vth)/self.nth
+                fsf = ((1-f)*sub+f*super) / base
+            else :
+                # sub-threshold region
+                #  should not happen in this case
+                sub = self._csub * 10**((v-self._vth)/self.vslope)
+                fsf = sub/base
 
-    def __v2f_simple(self, vsf):
-        return vsf
+        self._fsf = fsf 
 
-    def __v2f_real(self, vsf):
-        """ More realistic scaling """
-        v = self._v0 * vsf
-        base = self._csuper*(self._v0-self._vth)**self._alpha/self._v0
-        if v >= self._vth + self.nth: 
-            # super-threshold region
-            super = self._csuper * (v-self._vth)**self._alpha / v
-            return super/base
-        elif v >= self._vth: 
-            # near-threshold region
-            super = self._csuper * (v-self._vth)**self._alpha / v
-            sub = self._csub * 10**((v-self._vth)/self.vslope)
-            f = (v-self._vth)/self.nth
-            return ((1-f)*sub+f*super) / base
-        else :
-            # sub-threshold region
-            #  should not happen in this case
-            sub = self._csub * 10**((v-self._vth)/self.vslope)
-            return sub/base
-
-
-#class IOCore(Core):
-    #def __init__ (self, mech='ITRS', tech=45):
-        #Core.__init__(self, type='io',
-                     #mech=mech, tech=tech)
-        
-        
-#class O3Core(Core):
-    #def __init__ (self, mech='ITRS', tech=45):
-        #Core.__init__(self, type='o3',
-                     #mech=mech, tech=tech)
+        return fsf, self._f0*fsf
 

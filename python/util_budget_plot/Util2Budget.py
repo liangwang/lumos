@@ -84,7 +84,7 @@ class Util2BudgetPlot(Gnuplot):
         self.__writeScript()
         self.__writeData()
 
-class Util2Budget(Matplot):
+class Util2Budget(Matplot): # do not work well
     def __init__(self, name='ITRS'):
         Matplot.__init__(self)
 
@@ -124,5 +124,5 @@ class Util2Budget(Matplot):
 
 
 if __name__ == '__main__':
-    p = Util2Budget()
-    p.plot()
+    p = Util2BudgetPlot()
+    p.writeFiles()

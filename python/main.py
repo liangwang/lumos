@@ -4,15 +4,12 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 
-from model.Core import IOCore, O3Core
+from model.Core import Core
 from model.System import *
 from model.Application import *
 from model.SymmetricSystem import *
-from model.UnlimitedPowerSystem import *
+#from model.UnlimitedPowerSystem import *
 
-from plot.Util2Budget import *
-from plot.Spd2Util import *
-from plot.Spd2Tech import *
 
 def do1():
     technodes = [45, 32, 22, 16, 11, 8]
@@ -101,36 +98,32 @@ def do5():
     p = Spd2TechPlot()
     p.writeFiles()
 
-def test():
-    sys = SymmetricSystem(budget={'area':111,'power':125})
-    app = Application(f=0.5,m=0)
-    sys.util_ratio=1
+def testSystem():
+    sys = SymmetricSystem(budget={'area':500,'power':200})
+    app = Application(f=0.99,m=0)
+    sys.util_ratio=0.52
+    sys.set_core_prop(type='O3',tech=11)
     print sys.speedup(app)
 
 def testCore():
-    core = IOCore()
-    core.set_dvfs_simple(False)
-    vfactor_lb = 0.1
-    vfactor_ub = core.get_dvfs_ub()
-    samples = 200
-    dlines = []
-    step = 0.002
-    v=vfactor_lb
-    for i in range(samples):
-        dlines.append('%g ' % v)
-        dlines.append('%g\n' % core.dvfs(v))
-        v = v+step
+    core = Core(tech=32)
+    core.dvfs_simple=False
+    vmin = core.volt * 0.8
+    vmax = core.volt * 1.3
+    v = vmin
+    print "Real DVFS\n"
+    while v <= vmax:
+        core.dvfs(v)
+        print (v, core.freq, core.power)
+        v = v+0.1
 
-    samples = 100
-    step = (vfactor_ub - v)/samples
-    for i in range(samples):
-        dlines.append('%g ' % v)
-        dlines.append('%g\n' % core.dvfs(v))
-        v = v+step
-
-
-    with open('test.dat', 'wb') as f:
-        f.writelines(dlines)
+    print "Simple DVFS\n"
+    core.dvfs_simple = True
+    v = vmin
+    while v <= vmax:
+        core.dvfs(v)
+        print (v, core.freq, core.power)
+        v = v+0.1
 
 def plot_to_uratio(sys, applist):
     samples = 1000
@@ -158,6 +151,6 @@ def plot_to_uratio(sys, applist):
 
 
 if __name__ == '__main__':
-    test()
+    #test()
     #do5()
-    #testCore()
+    testSystem()
