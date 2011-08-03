@@ -7,6 +7,7 @@ from model.Core import *
 
 from plot.Plot import *
 import matplotlib.pyplot as plt
+import numpy as np
 
 class Freq2VoltPlot(Plot):
     """ This class facilitate gnuplot to genearte figures """
@@ -140,20 +141,21 @@ class Freq2Volt(object):
         # only one subplot
         self._axes = self._fig.add_subplot(111)
 
-        self._alpha_list = [1.2, 1.4, 1.6, 1.8, 2]
+        #self._alpha_list = [1.2, 1.4, 1.6, 1.8, 2]
+        self._alpha_list = [2]
 
         self._samples = 100
 
     def matplot(self):
-        core = Core(type='IO', dvfs_simple=True)
+        core = Core(type='IO', dvfs_simple=False)
         
         vfactor_lb = core.vsf_min * 0.3
         vfactor_ub = core.vsf_max
         vth = core.vth
-        vnear = core.vth+0.2
+        vnear = core.vth+core.nth
 
         volts = []
-        freqs = dict([ (alpha, []) for alpha in self._alpha_list])
+        freqs = dict( (alpha, []) for alpha in self._alpha_list)
 
         step = (vth - vfactor_lb)/self._samples
         v = vfactor_lb
@@ -162,7 +164,8 @@ class Freq2Volt(object):
             volts.append(v)
             for alpha in self._alpha_list:
                 core.alpha=alpha
-                freqs[alpha].append(core.dvfs(v))
+                fsf, freq = core.dvfs(v)
+                freqs[alpha].append(freq)
             
         v = vth
         step = (vnear - vth) /self._samples
@@ -171,7 +174,8 @@ class Freq2Volt(object):
             volts.append(v)
             for alpha in self._alpha_list:
                 core.alpha=alpha
-                freqs[alpha].append(core.dvfs(v))
+                fsf, freq = core.dvfs(v)
+                freqs[alpha].append(freq)
 
         v = vnear
         step = (vfactor_ub - vnear) / self._samples
@@ -180,7 +184,8 @@ class Freq2Volt(object):
             volts.append(v)
             for alpha in self._alpha_list:
                 core.alpha = alpha
-                freqs[alpha].append(core.dvfs(v))
+                fsf, freq = core.dvfs(v)
+                freqs[alpha].append(freq)
 
         for alpha in self._alpha_list:
             self._axes.plot(volts, freqs[alpha])
@@ -189,7 +194,19 @@ class Freq2Volt(object):
         self._axes.legend(self._axes.lines, [r'$\alpha$=%g' % alpha for alpha in self._alpha_list], 'upper left')
         self._axes.set_title('Frequency scaling (%dnm, %s)' % (core.tech, core.mech.upper()))
         self._axes.set_xlabel(r'$V_{dd}$ ($V$)')
-        self._axes.set_ylabel(r'$f/f_{norm}$')
+        #self._axes.set_ylabel(r'$f/f_{norm}$')
+        self._axes.set_ylabel(r'$f$ ($GHz$)')
+
+
+        volts=[0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]
+        freqs=[0.000165613, 0.002407551, 0.02976908, 0.2534172, 0.9923408, 2.012021, 2.910693, 3.601527, 4.2]
+        self._axes.plot(volts, freqs, 'black')
+
+        x = np.arange(0.4,0.7,0.01)
+        y = 2.916-15.2052*x+19.9008*x**2
+        self._axes.plot(x,y)
+
+
         self._fig.savefig('matplot.pdf')
 
         self._axes.set_yscale('log')

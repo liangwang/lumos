@@ -5,11 +5,13 @@ import math
 from Technology import Base as techbase
 from Technology import Scale as techscl
 
+from Freq import FreqScale as FS
+
 class Core(object):
     def __init__ (self, type='IO',
                  mech='ITRS', tech=45,
                  dvfs_simple=True, alpha=1.4,
-                 vslope=0.09, nth=0.2):
+                 vslope=0.075, nth=0.2):
         self._tech = tech
         self._mech = mech
         self._type = type
@@ -50,11 +52,21 @@ class Core(object):
         self._vsf = 1
 
     def __update_scaling_constant(self):
-        #v_pivot = self._alpha*self.vslope/math.log(10)+self._vth
-        v_pivot=self._vth + self.nth
+        # pivot is the boundary of near threshold region
+
+        # boundary is dynamically set
+        v_pivot = self._alpha*self.vslope+self._vth
+        self.nth=v_pivot - self._vth
+
+        # boundary is constantly set
+        #v_pivot=self._vth + self.nth
+
         self._csuper = self._f0 * self._v0 / (self._v0-self._vth)**self._alpha
 
         self._csub = self._csuper * (v_pivot-self._vth)**self._alpha / 10**((v_pivot-self._vth)/(self.vslope))
+        #self._csub = self._csub * 10
+
+        self.dirty_scale()
 
     def alpha():
         """ @property: alpha """
@@ -216,17 +228,116 @@ class Core(object):
                 fsf = super/base
             elif v >= self._vth: 
                 # near-threshold region
-                super = self._csuper * (v-self._vth)**self._alpha / v
-                sub = self._csub * 10**((v-self._vth)/self.vslope)
-                f = (v-self._vth)/self.nth
-                fsf = ((1-f)*sub+f*super) / base
+                #super = self._csuper * (v-self._vth)**self._alpha / v
+                #sub = self._csub * 10**((v-self._vth)/self.vslope) / v
+                #f = (v-self._vth)/self.nth
+                #fsf = ((1-f)*sub+f*super) / base
+
+                # dirty scaling for 45nm
+                fsf = self._cnear * (2.916-15.2052*v+19.9008*v*v) / base
             else :
                 # sub-threshold region
                 #  should not happen in this case
-                sub = self._csub * 10**((v-self._vth)/self.vslope)
+                sub = self._csub * 10**((v-self._vth)/self.vslope) / v
                 fsf = sub/base
 
         self._fsf = fsf 
 
         return fsf, self._f0*fsf
 
+    # only for 45nm
+    def dirty_scale(self):
+        self.nth=0.3
+        self._csuper = self._f0 / ( self._v0 / (self._v0-self._vth)**self._alpha / self._v0 )
+        self._cnear = (self._csuper * (0.7-self._vth)**self._alpha / 0.7) / (2.916-15.2052*0.7+19.9008*0.7*0.7)
+        self._csub = self._cnear * (2.916-15.2052*0.4+19.9008*0.4*0.4) * self._vth
+        #print self._vth, self._csuper, self._cnear, self._csub
+
+#discrete scaling core model
+class Core45nm(object):
+    def __init__(self):
+        self.volt = 1.0
+        self.freq = FS.freq[self.volt]
+
+        self.p0=techbase.power['IO']
+        self.f0=techbase.freq['IO']
+        self.v0=techbase.vdd
+        self.perf0 = math.sqrt(techbase.area['IO'])
+        self.area=techbase.area['IO']
+
+        self._fsf = 1
+        self._vsf = 1
+
+        self.vsf_max = 1
+        self.vsf_min = 0.2
+
+    def power():
+        """ @property: power """
+        doc = "The power property."
+        def fget(self):
+            return self.p0 * self._fsf * self._vsf**2
+        return locals()
+    power = property(**power())
+
+
+    def dvfs(self, vsf):
+        self.volt = self.v0 * vsf
+        self._vsf = vsf
+
+        self.freq =  FS.freq[self.volt]
+        self._fsf = self.freq / self.f0
+
+        
+    def set_prop(self, **kwargs):
+        for k,v in kwargs.items():
+            k=k.lower()
+            setattr(self, k, v)
+
+# concret scaling core model
+import numpy as np
+from scipy import interpolate as itpl
+class Core45nmCon(object):
+    def __init__(self):
+        self.volt = 1.0
+        self.freq = FS.freq[self.volt]
+
+        self.p0=techbase.power['IO']
+        self.f0=techbase.freq['IO']
+        self.v0=techbase.vdd
+        self.perf0 = math.sqrt(techbase.area['IO'])
+        self.area=techbase.area['IO']
+        self.pleak = techbase.pleak['IO']
+
+        self._fsf = 1
+        self._vsf = 1
+
+        self.vsf_max = 1
+        self.vsf_min = 0.2
+
+        #build interpolation model
+        volts=np.arange(0.2,1.1,0.1) #from 0.2 to 1
+        freqs=np.array([0.00017,0.00241,0.02977,0.25342,0.99234,2.01202,2.91069,3.60153,4.2])
+        self.model = itpl.InterpolatedUnivariateSpline(volts,freqs,k=2)
+
+    def power():
+        """ @property: power """
+        doc = "The power property."
+        def fget(self):
+            return self.p0 * self._fsf * self._vsf**2 + self.pleak * self._vsf * 10**(self._vsf/0.8)/10**(1/0.8)
+        return locals()
+    power = property(**power())
+
+
+    def dvfs(self, vsf):
+        self.volt = self.v0 * vsf
+        self._vsf = vsf
+
+        scale = self.model
+        self.freq = scale(self.volt)[0]
+        self._fsf = self.freq / self.f0
+
+        
+    def set_prop(self, **kwargs):
+        for k,v in kwargs.items():
+            k=k.lower()
+            setattr(self, k, v)

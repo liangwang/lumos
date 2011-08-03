@@ -37,16 +37,22 @@ class Scale:
 
 
 class Base:
+    """ vth base values were adopted from 2010Tables_FEP_FOCUS_C_ITRS.xls, sheet 2009_FEP2-HPDevice
+    """
     vdd = 1
 
     freq = {'IO': 4.2, 'O3': 3.7}
 
     power = {'IO':6.14, 'O3': 19.83}
 
+    pleak = {'IO': 1.058, 'O3': 5.34}
+
     area = {'IO':7.65, 'O3': 26.48}
 
-    # adopted from 2010Tables_FEP_FOCUS_C_ITRS.xls, sheet 2009_FEP2-HPDevice
-    vth ={45 : 0.3201, 32 : 0.297,
+    #vth ={45 : 0.3201, 32 : 0.297,
+          #22 : 0.2673, 16 : 0.2409,
+          #11 : 0.2178,  8 : 0.198}
+
+    vth ={45 : 0.4, 32 : 0.297,
           22 : 0.2673, 16 : 0.2409,
           11 : 0.2178,  8 : 0.198}
-
