@@ -5,7 +5,7 @@ import math
 from Technology import Base as techbase
 from Technology import Scale as techscl
 
-from Freq import FreqScale as FS
+
 
 class Core(object):
     def __init__ (self, type='IO',
@@ -295,11 +295,11 @@ class Core45nm(object):
 
 # concret scaling core model
 import numpy as np
-from scipy import interpolate as itpl
+from Freq import FreqScale
 class Core45nmCon(object):
     def __init__(self):
         self.volt = 1.0
-        self.freq = FS.freq[self.volt]
+        self.freq = FreqScale.freq_in_ghz[self.volt]
 
         self.p0=techbase.power['IO']
         self.f0=techbase.freq['IO']
@@ -315,9 +315,9 @@ class Core45nmCon(object):
         self.vsf_min = 0.2
 
         #build interpolation model
-        volts=np.arange(0.2,1.1,0.1) #from 0.2 to 1
-        freqs=np.array([0.00017,0.00241,0.02977,0.25342,0.99234,2.01202,2.91069,3.60153,4.2])
-        self.model = itpl.InterpolatedUnivariateSpline(volts,freqs,k=2)
+#        volts=np.arange(0.2,1.1,0.1) #from 0.2 to 1
+#        freqs=np.array([0.00017,0.00241,0.02977,0.25342,0.99234,2.01202,2.91069,3.60153,4.2])
+        self.model = FreqScale()
 
     def power():
         """ @property: power """
@@ -333,7 +333,7 @@ class Core45nmCon(object):
         self._vsf = vsf
 
         scale = self.model
-        self.freq = scale(self.volt)[0]
+        self.freq = scale.get_freqs_in_ghz(self.volt)
         self._fsf = self.freq / self.f0
 
         

@@ -39,8 +39,11 @@ class System2(object):
 
         perf_base = core.perf0 * core.freq
         perf_max = perf_base
+        core_num = min(self.area/core.area, self.power/core.power)
+        util = core_num*core.area/self.area
+        volt = core.volt
 
-        for vsf in [(1-0.001*i) for i in range(0,1000)]:
+        for vsf in [(1-0.001*i) for i in range(1,1000)]:
             core.dvfs(vsf)
             active_num = min(self.area/core.area, self.power/core.power)
             perf = 1/ ( (1-para_ratio)/perf_base + para_ratio/(active_num*core.perf0*core.freq))
@@ -106,7 +109,7 @@ def voltage_scaling_plot():
         fig.savefig(figname)
 
 def area_scaling_plot():
-    area_list = range(100,30000,100)
+    area_list = range(100,3000,100)
     sys = System2()
     format = 'png'
     speedup = []
@@ -126,15 +129,18 @@ def area_scaling_plot():
     ax1.set_ylabel('Speedup over single core running at nominal voltage(1v)')
     ax2.set_ylabel('Utilization')
 
-    ax1.plot(area_list, speedup,'b')
-    ax2.plot(area_list, util,'r')
+    l_speedup, = ax1.plot(area_list, speedup,'b')
+    l_util, = ax2.plot(area_list, util,'r')
 
     ax1.set_ylim(0,55)
     ax2.set_ylim(0,1.1)
 
+    lines = [l_speedup, l_util]
+    ax1.legend(lines, ['Speedup', 'Utilization'], loc="lower right")
+    ax1.grid(True)
     fig.savefig('area_scaling')
 
 if __name__ == '__main__':
-#    voltage_scaling_plot()
-    area_scaling_plot()
+    voltage_scaling_plot()
+#    area_scaling_plot()
 
