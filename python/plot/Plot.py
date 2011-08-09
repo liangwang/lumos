@@ -3,9 +3,6 @@
 import os
 from os.path import abspath, join as joinpath
 
-from model.Core import *
-from model.SymmetricSystem import *
-from model.Application import *
 
 class Plot(object):
     def __init__(self):
@@ -16,7 +13,8 @@ class Plot(object):
 
 
 class Matplot(Plot):
-    pass
+    def __init__(self):
+        Plot.__init__(self)
 
 class Gnuplot(Plot):
     def __init__(self):
