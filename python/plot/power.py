@@ -13,10 +13,8 @@ class PowerPlot(Matplot):
         scaler = FreqScale()
 
         volts=np.linspace(0.2,1,81) #from 0.2 to 1
-        freqs=scaler.get_freqs(volts)
+        freqs=scaler.get_freqs_in_mhz(volts)
         freqs = freqs / 4200
-
-
 
         dp0=np.ones_like(volts)*6.14 # base dynamic power
         dp = dp0*volts**2*freqs
@@ -37,6 +35,7 @@ class PowerPlot(Matplot):
         axes.set_xlim(0,1.1)
         axes.set_yscale('log')
         axes.legend(axes.lines, ['Dynamic Power','Static Power','Overall'], 'upper left', prop=dict(size='medium'))
+        axes.grid(True)
         
         fig.savefig('power.pdf')
 
