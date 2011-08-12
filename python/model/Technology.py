@@ -2,6 +2,16 @@
 
 import math
 
+class Base:
+    vdd = 1
+    vth = 0.45
+    
+    # Picked up from McPAT
+    freq={'IO': 4.2, 'O3': 3.7}
+    power={'IO': 6.14, 'O3': 19.83}
+    pleak={'IO': 1.058, 'O3': 5.34}
+    area={'IO': 7.65, 'O3': 26.48}
+
 class Scale:
     mech = ['ITRS','CONS']
 
@@ -35,24 +45,13 @@ class Scale:
             11 : math.pow(0.5, 4),
             8  : math.pow(0.5, 5)}
 
-
-class Base:
     """ vth base values were adopted from 2010Tables_FEP_FOCUS_C_ITRS.xls, sheet 2009_FEP2-HPDevice
-    """
-    vdd = 1
+    """    
+    vth_itrs = {45: 0.33, 32: 0.297,
+                22: 0.2673, 16: 0.2409,
+                11: 0.2178, 8:0.198}    
+    
+    vth = dict([(tech, vth_itrs[tech]/vth_itrs[45]) for tech in sorted(vth_itrs.iterkeys())])
 
-    freq = {'IO': 4.2, 'O3': 3.7}
 
-    power = {'IO':6.14, 'O3': 19.83}
 
-    pleak = {'IO': 1.058, 'O3': 5.34}
-
-    area = {'IO':7.65, 'O3': 26.48}
-
-    #vth ={45 : 0.3201, 32 : 0.297,
-          #22 : 0.2673, 16 : 0.2409,
-          #11 : 0.2178,  8 : 0.198}
-
-    vth ={45 : 0.4, 32 : 0.297,
-          22 : 0.2673, 16 : 0.2409,
-          11 : 0.2178,  8 : 0.198}

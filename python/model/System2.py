@@ -22,7 +22,7 @@ class System2(object):
             k=k.lower()
             setattr(self, k, v)
 
-    def build(self,type='sym-io',area=200,power=160,tech=45):
+    def build(self,type='sym-io',area=200,power=80,tech=45):
         self.area = area
         self.power = power
         self.tech = tech
@@ -125,7 +125,7 @@ def area_scaling_plot():
     ax1 = fig.add_subplot(111) # speedup scale
     ax2 = ax1.twinx() # utilization scale
 
-    ax1.set_title('Area scaling')
+    ax1.set_title('Area scaling (TDP=%dW)' % sys.power)
     ax1.set_ylabel('Speedup over single core running at nominal voltage(1v)')
     ax2.set_ylabel('Utilization')
 
@@ -138,9 +138,9 @@ def area_scaling_plot():
     lines = [l_speedup, l_util]
     ax1.legend(lines, ['Speedup', 'Utilization'], loc="lower right")
     ax1.grid(True)
-    fig.savefig('area_scaling')
+    fig.savefig('area_scaling_%dw' % sys.power)
 
 if __name__ == '__main__':
-    voltage_scaling_plot()
-#    area_scaling_plot()
+#    voltage_scaling_plot()
+    area_scaling_plot()
 

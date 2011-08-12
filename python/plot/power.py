@@ -4,10 +4,15 @@ import matplotlib.pyplot as plt
 from model.Freq import FreqScale
 from plot.Plot import Matplot
 
+from os.path import join as joinpath
+
 class PowerPlot(Matplot):
     ''' This class plot dynamic and static power scaled to voltage. '''
     def __init__(self):
         Matplot.__init__(self)
+        
+        self.figname = 'power'
+        self.format='pdf'
         
     def do_plot(self):
         scaler = FreqScale()
@@ -37,7 +42,9 @@ class PowerPlot(Matplot):
         axes.legend(axes.lines, ['Dynamic Power','Static Power','Overall'], 'upper left', prop=dict(size='medium'))
         axes.grid(True)
         
-        fig.savefig('power.pdf')
+        fname = '.'.join([self.figname,self.format])
+        fullname = joinpath(self.outdir, fname)
+        fig.savefig(fullname)
 
 if __name__=='__main__':
     p = PowerPlot()

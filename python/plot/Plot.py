@@ -15,6 +15,8 @@ class Plot(object):
 class Matplot(Plot):
     def __init__(self):
         Plot.__init__(self)
+        
+        self.outdir = joinpath(self.outdir, 'outputs', 'figures')
 
 class Gnuplot(Plot):
     def __init__(self):
