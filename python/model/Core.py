@@ -2,8 +2,8 @@
 
 import math
 
-from Technology import Base as techbase
-from Technology import Scale as techscl
+from Tech import Base as techbase
+from Tech import Scale as techscl
 
 
 
@@ -299,10 +299,13 @@ from Freq import FreqScale
 class Core45nmCon(object):
     def __init__(self):
         self.volt = 1.0
-        self.freq = FreqScale.freq_in_ghz[self.volt]
+#        self.freq = FreqScale.freq_in_ghz[self.volt]
+        
+        self.vth = techbase.vth
 
         self.p0=techbase.power['IO']
         self.f0=techbase.freq['IO']
+        self.freq = techbase.freq['IO']
         self.v0=techbase.vdd
         self.perf0 = math.sqrt(techbase.area['IO'])
         self.area=techbase.area['IO']
@@ -317,7 +320,7 @@ class Core45nmCon(object):
         #build interpolation model
 #        volts=np.arange(0.2,1.1,0.1) #from 0.2 to 1
 #        freqs=np.array([0.00017,0.00241,0.02977,0.25342,0.99234,2.01202,2.91069,3.60153,4.2])
-        self.model = FreqScale()
+        self.model = FreqScale(self.vth, self.v0, self.f0)
 
     def power():
         """ @property: power """
@@ -333,7 +336,8 @@ class Core45nmCon(object):
         self._vsf = vsf
 
         scale = self.model
-        self.freq = scale.get_freqs_in_ghz(self.volt)
+#        self.freq = scale.get_freqs_in_ghz(self.volt)
+        self.freq = scale.get_freqs(self.volt)
         self._fsf = self.freq / self.f0
 
         

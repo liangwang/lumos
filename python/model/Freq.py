@@ -2,6 +2,7 @@
 
 import numpy as np
 import scipy.interpolate as itpl
+from Tech import Base as TechBase
 
 class FreqScale:
     inv_mhz = {   1: 22306.73,
@@ -15,6 +16,11 @@ class FreqScale:
                 0.3: 12.78681,
                0.25: 3.35367,
                 0.2: 0.879594}
+    inv_v = [v for v in sorted(inv_mhz.iterkeys())]
+    inv_f = [inv_mhz[v] for v in inv_v]
+    model = itpl.InterpolatedUnivariateSpline(np.array(inv_v),
+                                              np.array(inv_f),
+                                              k=3)
     
     data = {1: 4200,
             0.9: 3601.53,
@@ -31,7 +37,14 @@ class FreqScale:
     freq_in_ghz = dict([(v, data[v]/1000) for v in sorted(data.iterkeys())])
     freq_in_mhz = dict([(v, data[v]) for v in sorted(data.iterkeys())])
     
-    def __init__(self):
+    def __init__(self, vth, vnorm, fnorm):
+        self.v_translator = TechBase.vth / vth
+        
+        v = vnorm * self.v_translator
+        f = self.model(v)
+        self.f_translator = fnorm/f
+        
+        # FIXME: to be removed
         self.volts = np.array([volt for volt in sorted(self.data.iterkeys())])
         self.freqs_in_mhz = np.array([self.freq_in_mhz[volt] for volt in self.volts])
         self.freqs_in_ghz = np.array([self.freq_in_ghz[volt] for volt in self.volts])
@@ -44,7 +57,10 @@ class FreqScale:
     
     def get_freqs_in_ghz(self, volts):
         return self._model_in_ghz(volts)
-        
+    
+    def get_freqs(self, volts):
+        return self.model(volts*self.v_translator)*self.f_translator        
+
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
     scaler = FreqScale()
