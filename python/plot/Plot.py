@@ -10,6 +10,11 @@ class Plot(object):
 
         self.outdir = abspath(os.path.curdir)
         self.indir = abspath(os.path.curdir)
+    
+    def set_prop(self, **kwargs):
+        for k,v in kwargs.items():
+            k=k.lower()
+            setattr(self, k, v)
 
 
 class Matplot(Plot):

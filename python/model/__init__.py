@@ -1,2 +1,2 @@
-__all__ = ["Application", "Core", "System", "Technology", \
+__all__ = ["Application", "Core", "System", "Tech", \
            "Freq", "SymmetricSystem", "UnlimitedPowerSystem"]

@@ -8,8 +8,8 @@ class Base:
     
     # Picked up from McPAT
     freq={'IO': 4.2, 'O3': 3.7}
-    power={'IO': 6.14, 'O3': 19.83}
-    pleak={'IO': 1.058, 'O3': 5.34}
+    dp={'IO': 6.14, 'O3': 19.83} # dynamic power
+    sp={'IO': 1.058, 'O3': 5.34} # static(leakage) power
     area={'IO': 7.65, 'O3': 26.48}
 
 class Scale:
@@ -47,11 +47,11 @@ class Scale:
 
     """ vth base values were adopted from 2010Tables_FEP_FOCUS_C_ITRS.xls, sheet 2009_FEP2-HPDevice
     """    
-    vth_itrs = {45: 0.33, 32: 0.297,
+    _vth_itrs = {45: 0.33, 32: 0.297,
                 22: 0.2673, 16: 0.2409,
                 11: 0.2178, 8:0.198}    
     
-    vth = dict([(tech, vth_itrs[tech]/vth_itrs[45]) for tech in sorted(vth_itrs.iterkeys())])
+    vth = dict([(tech, _vth_itrs[tech]/_vth_itrs[45]) for tech in sorted(_vth_itrs.iterkeys())])
 
 
 

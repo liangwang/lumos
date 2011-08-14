@@ -11,7 +11,7 @@ class PowerPlot(Matplot):
     def __init__(self):
         Matplot.__init__(self)
         
-        self.figname = 'power'
+        self.prefix = 'power'
         self.format='pdf'
         
     def do_plot(self):
@@ -42,7 +42,7 @@ class PowerPlot(Matplot):
         axes.legend(axes.lines, ['Dynamic Power','Static Power','Overall'], 'upper left', prop=dict(size='medium'))
         axes.grid(True)
         
-        fname = '.'.join([self.figname,self.format])
+        fname = '.'.join([self.prefix,self.format])
         fullname = joinpath(self.outdir, fname)
         fig.savefig(fullname)
 

@@ -2,7 +2,7 @@
 
 import numpy as np
 import scipy.interpolate as itpl
-from Tech import Base as TechBase
+from Tech import Base as techbase
 
 class FreqScale:
     inv_mhz = {   1: 22306.73,
@@ -38,7 +38,7 @@ class FreqScale:
     freq_in_mhz = dict([(v, data[v]) for v in sorted(data.iterkeys())])
     
     def __init__(self, vth, vnorm, fnorm):
-        self.v_translator = TechBase.vth / vth
+        self.v_translator = techbase.vth / vth
         
         v = vnorm * self.v_translator
         f = self.model(v)
