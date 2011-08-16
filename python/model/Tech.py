@@ -23,9 +23,18 @@ class Scale:
                     11 : 0.84, 8  : 0.84}
           }
 
-    freq = {'ITRS': {45 : 1, 32 : 1.09,
-                     22 : 2.38, 16 : 3.21,
-                     11 : 4.17, 8  : 3.85},
+    """ ITRS 2009
+            adopted from 2009Tables_FINAL_ORTC_v14.xls, sheet 2009_ORTC-4, frequency in MHz
+            45: 5875, due 2010
+            32: 6817, due 2012
+            22: 8522, due 2015
+            16:10652, due 2018
+            11:13315, due 2021
+             8:15451, due 2023
+    """
+    freq = {'ITRS': {45 : 1, 32 : 1.16,
+                     22 : 1.45, 16 : 1.81,
+                     11 : 2.26, 8  : 2.63},
             'CONS': {45 : 1, 32 : 1.10,
                      22 : 1.19, 16 : 1.25,
                      11 : 1.30, 8 : 1.34}
@@ -52,6 +61,15 @@ class Scale:
                 11: 0.2178, 8:0.198}    
     
     vth = dict([(tech, _vth_itrs[tech]/_vth_itrs[45]) for tech in sorted(_vth_itrs.iterkeys())])
+    
+    """ effective gate capacitance from 2010Tables_PIDS_FOCUS_C_ITRS.xls, sheet 2009_PIDS2
+            45: 0.97
+            32: 0.95
+            22: 0.68
+            16: 0.61
+            11: 0.53
+             8: 0.48
+    """
 
 
 
