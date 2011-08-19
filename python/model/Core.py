@@ -172,13 +172,13 @@ class Core45nmCon(object):
         
         self.vth = techbase.vth
 
-        self.p0=techbase.power['IO']
+        self.p0=techbase.dp['IO']
         self.f0=techbase.freq['IO']
         self.freq = techbase.freq['IO']
         self.v0=techbase.vdd
         self.perf0 = math.sqrt(techbase.area['IO'])
         self.area=techbase.area['IO']
-        self.pleak = techbase.pleak['IO']
+        self.pleak = techbase.sp['IO']
 
         self._fsf = 1
         self._vsf = 1
