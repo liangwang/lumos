@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+#FIXME: make it compatible with new core module
+
 import sys
 sys.path.append('..')
 
