@@ -1,4 +1,6 @@
-#!/usr/bin/env python
+#@PydevCodeAnalysisIgnore
+
+
 
 HOME_DIR='/home/lw2aw/eclipse_ws/analytical/python'
 
@@ -16,9 +18,11 @@ import matplotlib.pyplot as plt
 
 class Speedup2UtilPlot(Plot):
     def __init__(self, name='ITRS'):
+        
         Plot.__init__(self, name)
 
         self._samples = 100
+        
 
         self._area = 111
         self._power = 125

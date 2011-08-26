@@ -84,12 +84,13 @@ class System(object):
 def area_scaling_plot():
     area_list = range(100,3000,100)
     sys = System()
+    sys.set_prop(power=120)
     format = 'png'
     speedup = []
     util = []
     
     for area in area_list:
-        sys.build(area=area)
+        sys.set_prop(area=area)
         sys.probe()
         speedup.append(sys.speedup)
         util.append(sys.util)
@@ -105,14 +106,14 @@ def area_scaling_plot():
     l_speedup, = ax1.plot(area_list, speedup,'b')
     l_util, = ax2.plot(area_list, util,'r')
 
-    ax1.set_ylim(0,55)
+#    ax1.set_ylim(0,55)
     ax2.set_ylim(0,1.1)
 
     lines = [l_speedup, l_util]
     ax1.legend(lines, ['Speedup', 'Utilization'], loc="lower right")
     ax1.grid(True)
-    fig.savefig('area_scaling_%dw' % sys.power)
+    fig.savefig('area_scaling_%dw.%s' % (sys.power,format))
 
 if __name__ == '__main__':
-    pass
+    area_scaling_plot()
 

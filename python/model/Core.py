@@ -195,7 +195,7 @@ class Core45nmCon(object):
         """ @property: power """
         doc = "The power property."
         def fget(self):
-            return self.p0 * self._fsf * self._vsf**2 + self.pleak * self._vsf * 10**(self._vsf/0.8)/10**(1/0.8)
+            return self.p0 * self._fsf * self._vsf**2 + self.pleak * self._vsf * 10**(self._vsf/2.5)/10**(1/2.5)
         return locals()
     power = property(**power())
 

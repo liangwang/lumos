@@ -1,4 +1,6 @@
-#!/usr/bin/env python
+#@PydevCodeAnalysisIgnore
+
+
 
 HOME_DIR='/home/lw2aw/eclipse_ws/analytical/python'
 

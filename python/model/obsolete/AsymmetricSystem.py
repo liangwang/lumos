@@ -1,4 +1,7 @@
+#@PydevCodeAnalysisIgnore
+
 #!/usr/bin/env python
+
 
 import math
 from Core import Core

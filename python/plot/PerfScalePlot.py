@@ -30,7 +30,7 @@ class PerfScalePlot(Matplot):
 
         
     def do_plot(self):
-        v = [(0.1*i) for i in range(2,11)]
+        v = [(0.05*i) for i in range(4,21)]
         
         self.sys.build(area=self.area,power=self.power)
         s = self.sys.get_speedup(v)
@@ -40,7 +40,7 @@ class PerfScalePlot(Matplot):
         fig.suptitle('%dmm, %dw' % (self.area,self.power))
         axes = fig.add_subplot(111)
         axes.plot(v,s)
-        axes.set_ylim(0,55)
+#        axes.set_ylim(0,55)
         
         figname = '%s_%dmm_%dw' % (self.prefix, self.area, self.power)
         fname = '.'.join([figname,self.format])

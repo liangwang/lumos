@@ -1,3 +1,5 @@
+#@PydevCodeAnalysisIgnore
+
 #!/usr/bin/env python
 
 #FIXME: make it compatible with new core module
