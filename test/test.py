@@ -20,3 +20,4 @@ for row in range(sh.nrows):
     values[key]=val_row
 
 print values
+print titles
