@@ -4,7 +4,7 @@ Created on Aug 11, 2011
 @author: liang
 '''
 from Plot import Matplot
-from model import System
+from model.System import System
 import matplotlib.pyplot as plt
 from os.path import join as joinpath
 
@@ -26,7 +26,7 @@ class PerfScalePlot(Matplot):
         self.area = area
         self.prefix = prefix
         
-        self.sys = System.System()
+        self.sys = System()
 
         
     def do_plot(self):
@@ -42,7 +42,7 @@ class PerfScalePlot(Matplot):
         axes.plot(v,s)
 #        axes.set_ylim(0,55)
         
-        figname = '%s_%dmm_%dw' % (self.prefix, self.area, self.power)
+        figname = '%dw_%s_%dmm' % (self.power, self.prefix, self.area)
         fname = '.'.join([figname,self.format])
         fullname = joinpath(self.outdir, fname)
         fig.savefig(fullname)
@@ -76,7 +76,7 @@ if __name__=='__main__':
     index = 0
     for p in (80,120,160,200):
         plot.set_prop(power=p)
-        for a in (100, 200, 300, 400, 500, 600):
+        for a in (100, 200, 300, 400, 500, 600,1000, 2000, 4000, 8000, 16000):
             prefix = '%02d_power' % (index,)
             plot.set_prop(prefix=prefix,area=a)
             plot.do_plot()

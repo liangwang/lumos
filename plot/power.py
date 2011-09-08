@@ -15,18 +15,18 @@ class PowerPlot(Matplot):
         self.format='png'
         
     def do_plot(self):
-        scaler = FreqScale(0.45,1.0,4.2)
+        scaler = FreqScale(0.5,1.0,4.2)
 
-        volts=np.linspace(0.2,1,81) #from 0.2 to 1
-        freqs=scaler.get_freqs_in_mhz(volts)
-        freqs = freqs / 4200
+        volts=np.linspace(0.2,1,100) #from 0.2 to 1
+        freqs = scaler.get_freqs(volts)
 
         dp0=np.ones_like(volts)*6.14 # base dynamic power
-        dp = dp0*volts**2*freqs
+        dp = dp0*volts**2*freqs/4.2
 
         sp0=np.ones_like(volts)*1.06 # base static power
         # @FIXME: make sure the formula is right
-        sp=sp0*volts*10**(volts/2.5)/10**(1/2.5)
+        slope = scaler.sp_slope
+        sp=sp0*10**(volts*slope)/10**(1*slope)
 
         power=dp+sp
         

@@ -1,36 +1,44 @@
 #!/usr/bin/env python
+""""
+@author: Liang Wang <liang@cs.virginia.edu>
+"""
 
 import math
 from Tech import Base as techbase, Scale as techscl
 from Freq import FreqScale
 
 class Core(object):
-    def __init__(self, type='IO', mech='ITRS', tech=45):
+    """
+    Core module
+    """
+    def __init__(self, ctype='IO', mech='ITRS', tech=45):
+
         self._tech = tech
         self._mech = mech
-        self._type = type
+        self._ctype = ctype
  
         self._vth = techbase.vth * techscl.vth[self._tech]
-        self._v_nom = techbase.vdd * techscl.vdd[self._tech]
-        self._f_nom = techbase.freq[self._type] * techscl.freq[self._mech][self._tech]
+        self._v0 = techbase.vdd * techscl.vdd[self._mech][self._tech]
+        self._f0 = techbase.freq[self._ctype] * techscl.freq[self._mech][self._tech]
         
         # dynamic power and static power use the same scaling factors
-        self._dp_nom = techbase.dp[self._type] * techscl.power[self._mech][self._tech]
-        self._sp_nom = techbase.sp[self._type] * techscl.power[self._mech][self._tech]
+        self._dp0 = techbase.dp[self._ctype] * techscl.power[self._mech][self._tech]
+        self._sp0 = techbase.sp[self._ctype] * techscl.power[self._mech][self._tech]
         
-        self._perf_nom = math.sqrt(techbase.area[self._type])
+        self._perf0 = math.sqrt(techbase.area[self._ctype])
         
-        self._area = techbase.area[self._type] * techscl.area[self._tech]
+        self._area = techbase.area[self._ctype] * techscl.area[self._tech]
         
         self._fsf = 1
         self._vsf = 1       
         
 
         self._vsf_max = 1
-        self._vsf_min = self._vth/self._v_nom
+        self._vsf_min = self._vth/self._v0
 
 
-        self._model = FreqScale(self._vth, self._v_nom, self._f_nom)
+        self._model = FreqScale(self._vth, self._v0, self._f0)
+        self._sp_slope = self._model.sp_slope
 
     @property
     def tech(self):
@@ -43,29 +51,33 @@ class Core(object):
         return self._mech
     
     @property
-    def type(self):
+    def ctype(self):
         """ Get the core type, either IO or O3 """
-        return self._type
+        return self._ctype
     
     @property
-    def dp_nom(self):
+    def dp0(self):
         """ Get the dynamic power in nominal voltage and frequency """
-        return self._dp_nom
+        return self._dp0
     @property
     def dp(self):
         """ Get the dynamic power """
-        return self._dp_nom * self._fsf * self._vsf**2
+        return self._dp0 * self._fsf * self._vsf**2
     
     @property
-    def sp_nom(self):
+    def sp0(self):
         """ Get the static(leakage) power in nominal voltage and frequency """
-        return self._sp_nom
+        return self._sp0
+
     @property
     def sp(self):
         """ Get the static power """
         
         # FIXME: validate slope of 0.8?
-        return self._sp_nom * self._vsf * 10**(self._vsf/0.8)/10**(1/0.8)
+        #return (self._sp0 * self._vsf *  
+        return (self._sp0 *  
+                10**(self._v0 * self._vsf * self._sp_slope) / 
+                10**(self._v0 * self._sp_slope) )
     
     @property
     def power(self):
@@ -73,22 +85,29 @@ class Core(object):
         return self.sp + self.dp
     
     @property
-    def v_nom(self):
+    def v0(self):
         """ Get the nominal voltage """
-        return self._v_nom
+        return self._v0
     @property
     def vdd(self):
         """ Get the supplying voltage """
-        return self._v_nom * self._vsf
+        return self._v0 * self._vsf
     
     @property
-    def f_nom(self):
+    def f0(self):
         """ Get the nominal frequency """
-        return self._f_nom   
+        return self._f0   
+
     @property
     def freq(self):
         """ Get the frequency """
-        return self._f_nom * self._fsf
+        return self._f0 * self._fsf
+
+
+    @property
+    def perf0(self):
+        """ Get the base performance """
+        return self._perf0
     
     @property
     def vth(self):
@@ -111,21 +130,23 @@ class Core(object):
         return self._vsf_min
     
     # Update core configuration
-    _config_options = ('mech','type','tech')
+    _config_options = ('mech','ctype','tech')
     
-    def _update_config(self):
-        """ Internal function to update value of mech/type/tech specific parameters """
+    def __update_config(self):
+        """ Internal function to update value of mech/ctype/tech specific parameters """
         self._vth = techbase.vth * techscl.vth[self._tech]
-        self._v_nom = techbase.vdd * techscl.vdd[self._tech]
-        self._f_nom = techbase.freq[self._type] * techscl.freq[self._mech][self._tech]
+        self._v0 = techbase.vdd * techscl.vdd[self._mech][self._tech]
+        self._f0 = techbase.freq[self._ctype] * techscl.freq[self._mech][self._tech]
+
+        self._model.config(self._vth, self._v0, self._f0)
         
         # dynamic power and static power use the same scaling factors
-        self._dp_nom = techbase.dp[self._type] * techscl.power[self._mech][self._tech]
-        self._sp_nom = techbase.sp[self._type] * techscl.power[self._mech][self._tech]
+        self._dp0 = techbase.dp[self._ctype] * techscl.power[self._mech][self._tech]
+        self._sp0 = techbase.sp[self._ctype] * techscl.power[self._mech][self._tech]
         
-        self._perf_nom = math.sqrt(techbase.area[self._type])
+        self._perf0 = math.sqrt(techbase.area[self._ctype])
         
-        self._area = techbase.area[self._type] * techscl.area[self._tech]
+        self._area = techbase.area[self._ctype] * techscl.area[self._tech]
         
         # reset all DVFS scaling factors
         # FiXME: necessary?
@@ -133,30 +154,31 @@ class Core(object):
         self._vsf = 1
         
         self._vsf_max = 1
-        self._vsf_min = self._vth/self._v_nom
+        self._vsf_min = self._vth/self._v0
         
     def config(self, **kwargs):
         """ Configurate core, available options are:
             tech: Technology node, possible values: 45, 32, 22, 16, 11, 8
             mech: Scaling mechanism, possible values: ITRS, CONS
-            type: Core type, possible values: IO, O3
+            ctype: Core type, possible values: IO, O3
             """
         for k,v in kwargs.items():
             k=k.lower()
             if k not in self._config_options:
                 raise AttributeError("Can NOT set attribute %s" % k)
-            setattr(self,k,v)       
-        self._update_config()
+            kk = '_'+k # translate key into internal name
+            setattr(self,kk,v)       
+        self.__update_config()
 
 
     def dvfs(self, vsf):
-        self.volt = self.v0 * vsf
+        volt = self._v0 * vsf
         self._vsf = vsf
 
         scale = self._model
 #        self.freq = scale.get_freqs_in_ghz(self.volt)
-        self.freq = scale.get_freqs(self.volt)
-        self._fsf = self.freq / self.f0
+        freq = scale.get_freq(volt)
+        self._fsf = freq / self._f0
 
         
     def set_prop(self, **kwargs):
@@ -165,52 +187,92 @@ class Core(object):
             setattr(self, k, v)
 
 
-class Core45nmCon(object):
-    def __init__(self):
-        self.volt = 1.0
-#        self.freq = FreqScale.freq_in_ghz[self.volt]
+#class Core45nmCon(object):
+    #def __init__(self):
+        #self.volt = 1.0
+##        self.freq = FreqScale.freq_in_ghz[self.volt]
         
-        self.vth = techbase.vth
+        #self.vth = techbase.vth
 
-        self.p0=techbase.dp['IO']
-        self.f0=techbase.freq['IO']
-        self.freq = techbase.freq['IO']
-        self.v0=techbase.vdd
-        self.perf0 = math.sqrt(techbase.area['IO'])
-        self.area=techbase.area['IO']
-        self.pleak = techbase.sp['IO']
+        #self.p0=techbase.dp['IO']
+        #self.f0=techbase.freq['IO']
+        #self.freq = techbase.freq['IO']
+        #self.v0=techbase.vdd
+        #self.perf0 = math.sqrt(techbase.area['IO'])
+        #self.area=techbase.area['IO']
+        #self.pleak = techbase.sp['IO']
 
-        self._fsf = 1
-        self._vsf = 1
+        #self._fsf = 1
+        #self._vsf = 1
 
-        self.vsf_max = 1
-        self.vsf_min = 0.2
+        #self.vsf_max = 1
+        #self.vsf_min = 0.2
 
-        #build interpolation model
-#        volts=np.arange(0.2,1.1,0.1) #from 0.2 to 1
-#        freqs=np.array([0.00017,0.00241,0.02977,0.25342,0.99234,2.01202,2.91069,3.60153,4.2])
-        self.model = FreqScale(self.vth, self.v0, self.f0)
+        ##build interpolation model
+##        volts=np.arange(0.2,1.1,0.1) #from 0.2 to 1
+##        freqs=np.array([0.00017,0.00241,0.02977,0.25342,0.99234,2.01202,2.91069,3.60153,4.2])
+        #self.model = FreqScale(self.vth, self.v0, self.f0)
 
-    def power():
-        """ @property: power """
-        doc = "The power property."
-        def fget(self):
-            return self.p0 * self._fsf * self._vsf**2 + self.pleak * self._vsf * 10**(self._vsf/2.5)/10**(1/2.5)
-        return locals()
-    power = property(**power())
+    #def power():
+        #""" @property: power """
+        #doc = "The power property."
+        #def fget(self):
+            #return self.p0 * self._fsf * self._vsf**2 + self.pleak * self._vsf * 10**(self._vsf/2.5)/10**(1/2.5)
+        #return locals()
+    #power = property(**power())
 
 
-    def dvfs(self, vsf):
-        self.volt = self.v0 * vsf
-        self._vsf = vsf
+    #def dvfs(self, vsf):
+        #self.volt = self.v0 * vsf
+        #self._vsf = vsf
 
-        scale = self.model
-#        self.freq = scale.get_freqs_in_ghz(self.volt)
-        self.freq = scale.get_freqs(self.volt)
-        self._fsf = self.freq / self.f0
+        #scale = self.model
+##        self.freq = scale.get_freqs_in_ghz(self.volt)
+        #self.freq = scale.get_freqs(self.volt)
+        #self._fsf = self.freq / self.f0
 
         
-    def set_prop(self, **kwargs):
-        for k,v in kwargs.items():
-            k=k.lower()
-            setattr(self, k, v)
+    #def set_prop(self, **kwargs):
+        #for k,v in kwargs.items():
+            #k=k.lower()
+            #setattr(self, k, v)
+
+if __name__ == '__main__':
+    """"
+    This is a test program to generate freq/power plots for Core
+    """
+    import matplotlib.pyplot as plt
+    c = Core()
+    #c.config(tech=32)
+
+    vs = [ x*0.05 for x in xrange(4,27) ]
+    fs = []
+    dp = []
+    sp = []
+    p=[]
+
+    for v in vs:
+        c.dvfs(v)
+        fs.append(c.freq)
+        dp.append(c.dp)
+        sp.append(c.sp)
+        p.append(c.power)
+        
+
+    fig = plt.figure(figsize=(9.5, 6.9))
+
+    # Frequency scaling plot
+    axes1 = fig.add_subplot(121)
+    axes1.plot(vs, fs)
+    axes1.set_yscale('log')
+    axes1.set_title('Freq')
+
+    # Power scaling plot
+    axes2 = fig.add_subplot(122)
+    axes2.plot(vs,dp, vs,sp, vs,p)
+    axes2.set_yscale('log')
+    axes2.set_title('Power')
+
+    fig.savefig('core.png')
+
+

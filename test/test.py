@@ -1,5 +1,5 @@
 import xlrd
-wb = xlrd.open_workbook('data\inverter_45.xls')
+wb = xlrd.open_workbook('data/inverter_45.xls')
 sh=wb.sheet_by_name(u'Sheet1')
 ROW_TITLE=0
 COL_MASTER_KEY=1 #VDD
