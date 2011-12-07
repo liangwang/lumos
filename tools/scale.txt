@@ -1,0 +1,20 @@
+HKMGS normalized to the same vdd
+      freq      dp        sp        
+32nm  1.21994   0.748163  1.48155   
+22nm  1.49207   0.539665  3.5089    
+16nm  1.8916    0.422907  23.247    
+HKMGS normalized to the nominal vdd
+      freq      dp        sp        
+32nm  1.10509   0.525097  0.567029  
+22nm  1.14276   0.238888  0.324521  
+16nm  1.15482   0.116664  0.492075  
+LP normalized to the same vdd
+      freq      dp        sp        
+32nm  1.31087   0.802408  3.60049   
+22nm  1.42398   0.497222  11.5101   
+16nm  1.73854   0.404122  54.0187   
+LP normalized to the nominal vdd
+      freq      dp        sp        
+32nm  1.08331   0.529175  1.72632   
+22nm  0.950427  0.234182  3.59763   
+16nm  0.911238  0.124815  11.1351   

@@ -5,40 +5,115 @@
 
 import math
 from Tech import Base as techbase, Scale as techscl
-from Freq import FreqScale
+from Tech import LPBase as lpbase, PTMScale as ptmscl
+from Freq import FreqScale,FreqScale2,FreqScaleMC
 
+from conf import misc as miscConfig
+
+MC_CKT='adder'
+#TODO: add code to MC_BEST case
+MC_BEST = False
 class Core(object):
     """
     Core module
     """
-    def __init__(self, ctype='IO', mech='ITRS', tech=45):
+    def __init__(self, ctype='IO', mech='ITRS', tech=45, variation=False):
 
         self._tech = tech
         self._mech = mech
         self._ctype = ctype
+        
+        self._variation = variation
+
  
-        self._vth = techbase.vth * techscl.vth[self._tech]
-        self._v0 = techbase.vdd * techscl.vdd[self._mech][self._tech]
-        self._f0 = techbase.freq[self._ctype] * techscl.freq[self._mech][self._tech]
+
+        if mech == 'ITRS' or mech == 'CONS':
+            self._vt = techbase.vt * techscl.vt[tech]
+            self._v0 = techbase.vdd * techscl.vdd[mech][tech]
+            self._f0 = techbase.freq[ctype] * techscl.freq[mech][tech]
+            
+            # dynamic power and static power use the same scaling factors
+            self._dp0 = techbase.dp[ctype] * techscl.power[mech][tech]
+            self._sp0 = techbase.sp[ctype] * techscl.power[mech][tech]
+        elif mech == 'HKMGS':
+            if variation:
+                self._vt = ptmscl.vt[mech][tech]
+                v0 = ptmscl.vdd[mech][tech]
+                f0 = techbase.freq[ctype] * ptmscl.freq[mech][tech]
+                model=FreqScaleMC(MC_CKT, mech, tech, v0, f0)
+                self._v0 = v0
+                self._f0 = f0 * model.freq_down
+                if miscConfig.debug:
+                    print 'mech: %s, tech: %d, freq_down: %g' % (self._mech, self._tech, model.freq_down)
+                # dynamic power and static power use the same scaling factors
+                self._dp0 = techbase.dp[ctype] * techscl.power[mech][tech]
+                self._sp0 = techbase.sp[ctype] * techscl.power[mech][tech]
+
+                if MC_BEST:
+                    self._dp0 = self._dp0 * model.dp_down
+                    self._sp0 = self._sp0 * model.sp_down
+
+            else:
+                self._vt = ptmscl.vt[mech][tech]
+                self._v0 = ptmscl.vdd[mech][tech]
+                self._f0 = techbase.freq[ctype] * ptmscl.freq[mech][tech]
+                
+                # dynamic power and static power use the same scaling factors
+                self._dp0 = techbase.dp[ctype] * techscl.power[mech][tech]
+                self._sp0 = techbase.sp[ctype] * techscl.power[mech][tech]
+            #self._dp0 = techbase.dp[ctype] * ptmscl.dp[mech][tech]
+            #self._sp0 = techbase.sp[ctype] * ptmscl.sp[mech][tech]
+
+        elif mech == 'LP':
+            if variation:
+                self._vt = ptmscl.vt[mech][tech]
+                v0 = ptmscl.vdd[mech][tech]
+                f0 = techbase.freq[ctype] * lpbase.freq[tech] * ptmscl.freq[mech][tech]
+                model=FreqScaleMC(MC_CKT, mech, tech, v0, f0)
+                self._v0 = v0
+                self._f0 = f0 * model.freq_down
+                if miscConfig.debug:
+                    print 'mech: %s, tech: %d, freq_down: %g' % (self._mech, self._tech, model.freq_down)
+
+            else:
+                self._vt = ptmscl.vt[mech][tech]
+                self._v0 = ptmscl.vdd[mech][tech]
+                self._f0 = techbase.freq[ctype] * lpbase.freq[tech] * ptmscl.freq[mech][tech]
+            
+            # dynamic power and static power use the same scaling factors
+            self._dp0 = techbase.dp[ctype] * lpbase.dp[tech] * techscl.power[mech][tech]
+            self._sp0 = techbase.sp[ctype] * lpbase.sp[tech] * techscl.power[mech][tech]
+            #self._dp0 = techbase.dp[ctype] * lpbase.dp[tech] * ptmscl.dp[mech][tech]
+            #self._sp0 = techbase.sp[ctype] * lpbase.sp[tech] * ptmscl.sp[mech][tech]
+        else:
+            print 'Unknown mech'
         
-        # dynamic power and static power use the same scaling factors
-        self._dp0 = techbase.dp[self._ctype] * techscl.power[self._mech][self._tech]
-        self._sp0 = techbase.sp[self._ctype] * techscl.power[self._mech][self._tech]
+
+        self._perf0 = math.sqrt(techbase.area[ctype])
         
-        self._perf0 = math.sqrt(techbase.area[self._ctype])
-        
-        self._area = techbase.area[self._ctype] * techscl.area[self._tech]
+        self._area = techbase.area[ctype] * techscl.area[tech]
         
         self._fsf = 1
         self._vsf = 1       
         
 
-        self._vsf_max = 1
-        self._vsf_min = self._vth/self._v0
+        if mech == 'ITRS' or mech == 'CONS':
+            self._vsf_max = 1
+            self._vsf_min = self._vt/self._v0
+
+            self._model = FreqScale(self._vt, self._v0, self._f0)
+            self._sp_slope = self._model.sp_slope
+        elif mech == 'HKMGS' or mech == 'LP':
+            self._vsf_max = 1.1 / self._v0
+            self._vsf_min = 0.3 / self._v0
+
+            if variation:
+                self._model = model
+            else:
+                self._model = FreqScale2(MC_CKT, mech, tech, self._v0, self._f0)
+            self._sp_slope = self._model.sp_slope
 
 
-        self._model = FreqScale(self._vth, self._v0, self._f0)
-        self._sp_slope = self._model.sp_slope
 
     @property
     def tech(self):
@@ -110,9 +185,9 @@ class Core(object):
         return self._perf0
     
     @property
-    def vth(self):
+    def vt(self):
         """ Get the threshold voltage """
-        return self._vth
+        return self._vt
     
     @property
     def area(self):
@@ -130,31 +205,85 @@ class Core(object):
         return self._vsf_min
     
     # Update core configuration
-    _config_options = ('mech','ctype','tech')
+    _config_options = ('mech','ctype','tech','variation')
     
     def __update_config(self):
         """ Internal function to update value of mech/ctype/tech specific parameters """
-        self._vth = techbase.vth * techscl.vth[self._tech]
-        self._v0 = techbase.vdd * techscl.vdd[self._mech][self._tech]
-        self._f0 = techbase.freq[self._ctype] * techscl.freq[self._mech][self._tech]
-
-        self._model.config(self._vth, self._v0, self._f0)
-        
         # dynamic power and static power use the same scaling factors
         self._dp0 = techbase.dp[self._ctype] * techscl.power[self._mech][self._tech]
         self._sp0 = techbase.sp[self._ctype] * techscl.power[self._mech][self._tech]
+        if self._mech == 'ITRS' or self._mech == 'CONS':
+            self._vt = techbase.vt * techscl.vt[self._tech]
+            self._v0 = techbase.vdd * techscl.vdd[self._mech][self._tech]
+            self._f0 = techbase.freq[self._ctype] * techscl.freq[self._mech][self._tech]
+            
+            self._dp0 = techbase.dp[self._ctype] * techscl.power[self._mech][self._tech]
+            self._sp0 = techbase.sp[self._ctype] * techscl.power[self._mech][self._tech]
+        elif self._mech == 'HKMGS':
+            if self._variation:
+                self._vt = ptmscl.vt[self._mech][self._tech]
+                v0 = ptmscl.vdd[self._mech][self._tech]
+                f0 = techbase.freq[self._ctype] * ptmscl.freq[self._mech][self._tech]
+                model=FreqScaleMC(MC_CKT, self._mech, self._tech, v0, f0)
+                self._v0 = v0
+                self._f0 = f0*model.freq_down
+                if miscConfig.debug:
+                    print 'mech: %s, tech: %d, freq_down: %g' % (self._mech, self._tech, model.freq_down)
+            else:
+                self._vt = ptmscl.vt[self._mech][self._tech]
+                self._v0 = ptmscl.vdd[self._mech][self._tech]
+                self._f0 = techbase.freq[self._ctype] * ptmscl.freq[self._mech][self._tech]
+            
+            # dynamic power and static power use the same scaling factors
+            self._dp0 = techbase.dp[self._ctype] * techscl.power[self._mech][self._tech]
+            self._sp0 = techbase.sp[self._ctype] * techscl.power[self._mech][self._tech]
+            #self._dp0 = techbase.dp[self._ctype] * ptmscl.dp[self._mech][self._tech]
+            #self._sp0 = techbase.sp[self._ctype] * ptmscl.sp[self._mech][self._tech]
+
+        elif self._mech == 'LP':
+            if self._variation:
+                self._vt = ptmscl.vt[self._mech][self._tech]
+                v0 = ptmscl.vdd[self._mech][self._tech]
+                f0 = techbase.freq[self._ctype] * lpbase.freq[self._tech] * ptmscl.freq[self._mech][self._tech]
+                model=FreqScaleMC(MC_CKT, self._mech, self._tech, v0, f0)
+                self._v0 = v0
+                self._f0 = f0*model.freq_down
+                if miscConfig.debug:
+                    print 'mech: %s, tech: %d, freq_down: %g' % (self._mech, self._tech, model.freq_down)
+            else:
+                self._vt = ptmscl.vt[self._mech][self._tech]
+                self._v0 = ptmscl.vdd[self._mech][self._tech]
+                self._f0 = techbase.freq[self._ctype] * lpbase.freq[self._tech] * ptmscl.freq[self._mech][self._tech]
+            
+            # dynamic power and static power use the same scaling factors
+            self._dp0 = techbase.dp[self._ctype] * lpbase.dp[self._tech] * techscl.power[self._mech][self._tech]
+            self._sp0 = techbase.sp[self._ctype] * lpbase.sp[self._tech] * techscl.power[self._mech][self._tech]
+            #self._dp0 = techbase.dp[self._ctype] * lpbase.dp[self._tech] * ptmscl.dp[self._mech][self._tech]
+            #self._sp0 = techbase.sp[self._ctype] * lpbase.sp[self._tech] * ptmscl.sp[self._mech][self._tech]
         
         self._perf0 = math.sqrt(techbase.area[self._ctype])
         
         self._area = techbase.area[self._ctype] * techscl.area[self._tech]
         
-        # reset all DVFS scaling factors
-        # FiXME: necessary?
         self._fsf = 1
-        self._vsf = 1
+        self._vsf = 1       
         
-        self._vsf_max = 1
-        self._vsf_min = self._vth/self._v0
+
+        if self._mech == 'ITRS' or self._mech == 'CONS':
+            self._vsf_max = 1
+            self._vsf_min = self._vt/self._v0
+
+            self._model = FreqScale(self._vt, self._v0, self._f0)
+            self._sp_slope = self._model.sp_slope
+        elif self._mech == 'HKMGS' or self._mech == 'LP':
+            self._vsf_max = 1.1 / self._v0
+            self._vsf_min = 0.3 / self._v0
+
+            if self._variation:
+                self._model = model
+            else:
+                self._model = FreqScale2(MC_CKT, self._mech, self._tech, self._v0, self._f0)
+            self._sp_slope = self._model.sp_slope
         
     def config(self, **kwargs):
         """ Configurate core, available options are:
@@ -171,15 +300,20 @@ class Core(object):
         self.__update_config()
 
 
-    def dvfs(self, vsf):
+    def dvfs_by_factor(self, vsf):
+
         volt = self._v0 * vsf
         self._vsf = vsf
 
         scale = self._model
-#        self.freq = scale.get_freqs_in_ghz(self.volt)
         freq = scale.get_freq(volt)
         self._fsf = freq / self._f0
 
+    def dvfs_by_volt(self, v):
+        self._vsf = v / self._v0
+        scale = self._model
+        freq = scale.get_freq(v)
+        self._fsf = freq / self._f0
         
     def set_prop(self, **kwargs):
         for k,v in kwargs.items():
@@ -187,92 +321,80 @@ class Core(object):
             setattr(self, k, v)
 
 
-#class Core45nmCon(object):
-    #def __init__(self):
-        #self.volt = 1.0
-##        self.freq = FreqScale.freq_in_ghz[self.volt]
-        
-        #self.vth = techbase.vth
 
-        #self.p0=techbase.dp['IO']
-        #self.f0=techbase.freq['IO']
-        #self.freq = techbase.freq['IO']
-        #self.v0=techbase.vdd
-        #self.perf0 = math.sqrt(techbase.area['IO'])
-        #self.area=techbase.area['IO']
-        #self.pleak = techbase.sp['IO']
+def plot_split(v, f, dp, sp, p, tech):
+    fig = plt.figure()
+    fig.suptitle('Technology node at %dnm' % (tech,))
+    axes = fig.add_subplot(111)
+    axes.set_xlabel('Supply Voltage (V)')
+    axes.set_ylabel('Frequency (GHz)')
+    axes.plot(v,f,v,f,'rD')
+    axes.set_xlim(0,1.1)
+    axes.set_yscale('log')
+    axes.legend(axes.lines, ['Fitting', 'Simulated'], loc='upper left')
+    axes.grid(True)
+    fig.savefig('freq_volt.pdf')
 
-        #self._fsf = 1
-        #self._vsf = 1
+    fig = plt.figure()
+    axes = fig.add_subplot(111)
+    axes.set_xlabel('Supply Voltage (V)')
+    axes.set_ylabel('Power (W)')
+    axes.plot(v,dp,'-D', v,sp,'-o', v,p,'-^')
+    axes.set_xlim(0,1.1)
+    axes.set_yscale('log')
+    axes.legend(axes.lines, ['Dynamic Power', 'Static Power','Overall'], loc='upper left', prop=dict(size='medium'))
+    axes.grid(True)
+    fig.savefig('power.pdf')
+    
+def plot_nosplit(v,f,dp,sp,p, tech, mech):
+    fig = plt.figure(figsize=(13.5, 6.9))
+    fig.suptitle('%dnm' % (tech,))
 
-        #self.vsf_max = 1
-        #self.vsf_min = 0.2
+    # Frequency scaling plot
+    axes1 = fig.add_subplot(121)
+    axes1.plot(v, f, marker='s')
+    axes1.set_yscale('log')
+    axes1.set_title('Freq')
+    axes1.set_xlim(0.2,1.2)
 
-        ##build interpolation model
-##        volts=np.arange(0.2,1.1,0.1) #from 0.2 to 1
-##        freqs=np.array([0.00017,0.00241,0.02977,0.25342,0.99234,2.01202,2.91069,3.60153,4.2])
-        #self.model = FreqScale(self.vth, self.v0, self.f0)
+    # Power scaling plot
+    axes2 = fig.add_subplot(122)
+    axes2.plot(v,dp, v,sp, v,p)
+    axes2.set_yscale('log')
+    axes2.set_title('Power')
+    axes2.set_xlim(0.2,1.2)
 
-    #def power():
-        #""" @property: power """
-        #doc = "The power property."
-        #def fget(self):
-            #return self.p0 * self._fsf * self._vsf**2 + self.pleak * self._vsf * 10**(self._vsf/2.5)/10**(1/2.5)
-        #return locals()
-    #power = property(**power())
+    fig.savefig('%s_core_%dnm.png' % (mech,tech,))
 
 
-    #def dvfs(self, vsf):
-        #self.volt = self.v0 * vsf
-        #self._vsf = vsf
 
-        #scale = self.model
-##        self.freq = scale.get_freqs_in_ghz(self.volt)
-        #self.freq = scale.get_freqs(self.volt)
-        #self._fsf = self.freq / self.f0
-
-        
-    #def set_prop(self, **kwargs):
-        #for k,v in kwargs.items():
-            #k=k.lower()
-            #setattr(self, k, v)
 
 if __name__ == '__main__':
     """"
     This is a test program to generate freq/power plots for Core
     """
     import matplotlib.pyplot as plt
-    c = Core()
-    #c.config(tech=32)
+    techList = (45,32,22,16)
+    mechList = ('LP', 'HKMGS')
+    vsList = [ x*0.05 for x in xrange(6,23) ]
+    for tech in techList:
+        for mech in mechList:
+            c = Core(tech=tech, mech=mech)
+            #c.config(tech=32)
+            #print 'tech:%d, mech: %s, dp: %f, sp: %f, freq:%f' % (tech, mech, c.dp0, c.sp0, c.freq)
 
-    vs = [ x*0.05 for x in xrange(4,27) ]
-    fs = []
-    dp = []
-    sp = []
-    p=[]
+            fs = []
+            dp = []
+            sp = []
+            p=[]
 
-    for v in vs:
-        c.dvfs(v)
-        fs.append(c.freq)
-        dp.append(c.dp)
-        sp.append(c.sp)
-        p.append(c.power)
-        
-
-    fig = plt.figure(figsize=(9.5, 6.9))
-
-    # Frequency scaling plot
-    axes1 = fig.add_subplot(121)
-    axes1.plot(vs, fs)
-    axes1.set_yscale('log')
-    axes1.set_title('Freq')
-
-    # Power scaling plot
-    axes2 = fig.add_subplot(122)
-    axes2.plot(vs,dp, vs,sp, vs,p)
-    axes2.set_yscale('log')
-    axes2.set_title('Power')
-
-    fig.savefig('core.png')
-
+            for v in vsList:
+                c.dvfs_by_volt(v)
+                fs.append(c.freq)
+                dp.append(c.dp)
+                sp.append(c.sp)
+                p.append(c.power)
+                
+            #plot_split(vs, fs, dp, sp, p, tech)
+            plot_nosplit(vsList, fs, dp, sp, p, tech, mech)
 

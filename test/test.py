@@ -1,23 +1,19 @@
-import xlrd
-wb = xlrd.open_workbook('data/inverter_45.xls')
-sh=wb.sheet_by_name(u'Sheet1')
-ROW_TITLE=0
-COL_MASTER_KEY=1 #VDD
-titles=[]
-values={}
+from config import misc
 
-for row in range(sh.nrows):
-    if  row == ROW_TITLE:
-        for col in range(sh.ncols):
-            titles.append(sh.cell_value(row,col))
-        continue
+class test1(object):
+    def check(self):
+        if misc.debug:
+            print 'Debug mode on, now turn it off'
+            misc.debug = False
+        else:
+            print 'Debug mode off, now turn it on'
+            misc.debug = True
 
-    val_row=[]
-    for col in range(sh.ncols):
-        if col==COL_MASTER_KEY:
-            key = sh.cell_value(row,col)
-        val_row.append(sh.cell_value(row,col))
-    values[key]=val_row
-
-print values
-print titles
+class test2(object):
+    def check(self):
+        if misc.debug:
+            print 'Debug mode on, now turn it off'
+            misc.debug = False
+        else:
+            print 'Debug mode off, now turn it on'
+            misc.debug = True

@@ -1,7 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from model.Freq import FreqScale
+from model.Freq import FreqScale,FreqScale2
+from model.Tech import Base as techbase, Scale as techscl
 from plot.Plot import Matplot
 
 from os.path import join as joinpath
@@ -30,7 +31,7 @@ class PowerPlot(Matplot):
 
         power=dp+sp
         
-        fig=plt.figure(figsize=(6,8))
+        fig=plt.figure(figsize=(8,6))
         axes = fig.add_subplot(111)
         axes.set_xlabel('Supply Voltage(V)')
         axes.set_ylabel('Power (W)')
@@ -46,6 +47,24 @@ class PowerPlot(Matplot):
         fullname = joinpath(self.outdir, fname)
         fig.savefig(fullname)
 
+    def do_plot2(self, ckt, ttype, tech, mech):
+        v0 = techbase.vdd * techscl.vdd[mech][tech]
+        f0 = techbase.freq['IO']*techscl.freq[mech][tech]
+
+        scaler = FreqScale2(ckt, ttype, tech, v0, f0)
+
+        volts = np.linspace(0.3, 1.1, 50)
+        freqs = scaler.get_freqs(volts)
+
+        _dp0 = techbase.dp['IO'] * techscl.power[mech][tech]
+        dp0 = np.ones_like(volts)*_dp0
+        dp = dp0*volts**2*freqs/f0
+
+        _sp0 = techbase.sp['IO'] * techscl.freq[mech][tech]
+        sp0 = np.ones_like(volts)*_sp0
+        sp = sp0*10**(volts*slope)/10**(v0*slope)
+
+        power=dp+sp
 if __name__=='__main__':
     p = PowerPlot()
     p.do_plot()

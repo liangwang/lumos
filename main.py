@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from model.Core import Core
 from model.System import *
 from model.Application import *
-from model.SymmetricSystem import *
+#from model.SymmetricSystem import *
 #from model.UnlimitedPowerSystem import *
 
 
@@ -150,7 +150,37 @@ def plot_to_uratio(sys, applist):
 
 
 
+
+import optparse
 if __name__ == '__main__':
-    #test()
-    #do5()
-    testSystem()
+    parser = optparse.OptionParser()
+    parser.add_option('-x', '--gui', action='store_true', default=False,
+                      help='Start a GUI environment to analyze and plot')
+    parser.add_option('-r', '--run-mode', default='a',
+                      help='Run mode, analysis, plot, or both')
+    parser.add_option('--sys-area', type='int', default=400,
+                      help='Area budget (mm^2) for the whole chip')
+    parser.add_option('--sys-power', type='int', default=100,
+                      help='Power budget (W) for the whole chip')
+    parser.add_option('--use-sys2', action='store_true', default=False,
+                      help='Use System2')
+    options, args = parser.parse_args()
+
+    if options.gui:
+        import gui.test as GUITest
+        from PyQt4.QtCore import *
+        from PyQt4.QtGui import *
+        import sys
+        app=QApplication(sys.argv)
+        form = GUITest.AppForm()
+        form.show()
+        app.exec_()
+
+    if options.run_mode == 'a':
+        pass
+    elif options.run_mode == 'p':
+        pass
+    elif options.run_mode == 'ap':
+        pass
+    else:
+        print 'Unknown run mode: %s' % options.run_mode
