@@ -1,4 +1,5 @@
 
 debug=False
 
-HOMEDIR='/home/lw2aw/projects/qual/model/'
+from os.path import join as joinpath, expanduser
+HOMEDIR=joinpath(expanduser('~'), 'projects', 'qual', 'model-new')
