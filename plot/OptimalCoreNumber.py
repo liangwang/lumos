@@ -1,11 +1,12 @@
 from Plot import Matplot
-from model.Application import Application as App
-from model.System import System2
-from model.Core import Core
+from model.app import App
+import model.system
+from model.system import System2
+from model.core import Core
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
 
-
+# Plots for ECE6332 project
 def ece6332_report_variation(area, power):
 
     #areaList = (1000,)
@@ -167,6 +168,97 @@ def ece6332_report_mechs(area, power):
                      loc='upper center', bbox_to_anchor=(-1.5, 1.1),
                      ncol=2, fancybox=True, shadow=True)
     fig_perf.savefig('ece6332_report_perf_%dmm_%dw.pdf' % (area, power))
+
+def plotWithVmin(area, power, var, suffix):
+
+    #areaList = (1000,)
+    #powerList = (80,120,160)
+    vminList = (model.system.VMIN, 1.3, 1.2, 1.1)
+    ctechList = (45,32,22,16)
+    #cmechList = ('LP','HKMGS','ITRS','CONS')
+    var = False
+    if var:
+        varList = (False, True, False, True)
+        cmechList = ('LP', 'LP', 'HKMGS', 'HKMGS')
+    else:
+        varList = (False, False, False, False, False, False, False, False)
+        cmechList = ('LP','LP','LP','LP','HKMGS','HKMGS','HKMGS','HKMGS')
+        vminList = (0, 1.1, 1.2, 1.3, 0, 1.1, 1.2, 1.3)
+        legendList = ('LP-free', 'LP-1.1Vt', 'LP-1.2Vt', 'LP-1.3Vt',
+                      'HP-free', 'HP-1.1Vt', 'HP-1.2Vt', 'HP-1.3Vt')
+
+    sys = System2()
+    sys.set_sys_prop(area=area, power=power, core=Core())
+
+    lsList = ('o-', 's-', '*-', '^-','o-', 's-', '*-', '^-')
+    ctype='IO'
+    fig = plt.figure(figsize=(12,10))
+    fig.subplots_adjust(left=0.05, right=0.95, top=0.9, bottom=0.05)
+    #fig.suptitle(r'%d$mm^2$, %dw, %s' % (area, power, ctype))
+    axes_cnum = fig.add_subplot(221)
+    axes_perf = fig.add_subplot(222)
+    axes_util = fig.add_subplot(223)
+    axes_vdd = fig.add_subplot(224)
+    xList = range(1, len(ctechList)+1)
+    for (var, mech, vminr, ls) in zip(varList, cmechList, vminList, lsList):
+    #for cmech in cmechList:
+        #idx = cmech.find('Var')
+        #if idx != -1:
+            #mech = cmech[:idx]
+            #variation = True
+        #else:
+            #mech = cmech
+            #variation = False
+        cnumList = []
+        perfList = []
+        utilList = []
+        vddList = []
+        for ctech in ctechList:
+
+            sys.set_core_prop(tech=ctech, ctype=ctype, mech=mech)
+            vmin = sys.core.vt * vminr
+            result=sys.opt_core_num(vmin=vmin)
+            cnumList.append(result['cnum'])
+            perfList.append(result['perf'])
+            utilList.append(result['util'])
+            vddList.append(result['vdd'])
+
+
+        axes_cnum.plot(xList, cnumList, ls)
+        axes_perf.plot(xList, perfList, ls)
+        axes_util.plot(xList, utilList, ls)
+        axes_vdd.plot(xList, vddList, ls)
+
+    majorLocator=MultipleLocator()
+
+    axes_cnum.set_xlim(0.5, len(cnumList)+0.5)
+    axes_cnum.set_title('Optimal Core Number')
+    axes_cnum.xaxis.set_major_locator(majorLocator)
+    axes_cnum.set_xticklabels(['45nm', '32nm', '22nm', '16nm'])
+    axes_cnum.legend(axes_cnum.lines, legendList, loc='center',
+                    bbox_to_anchor=(1.1, 1.17), ncol=4,
+                    fancybox=True, shadow=True)
+
+    axes_perf.set_xlim(0.5, len(cnumList)+0.5)
+    axes_perf.set_title('Best Performance')
+    axes_perf.xaxis.set_major_locator(majorLocator)
+    axes_perf.set_xticklabels(['45nm', '32nm', '22nm', '16nm'])
+    #axes_perf.legend(axes_perf.lines, legendList, loc='upper left')
+
+    axes_util.set_xlim(0.5, len(cnumList)+0.5)
+    axes_util.set_ylim(0,100)
+    axes_util.set_title('Chip Utilization')
+    axes_util.xaxis.set_major_locator(majorLocator)
+    axes_util.set_xticklabels(['45nm', '32nm', '22nm', '16nm'])
+    #axes_util.legend(axes_util.lines, legendList, loc='lower left')
+
+    axes_vdd.set_xlim(0.5, len(cnumList)+0.5)
+    axes_vdd.set_title('Supply Voltage')
+    axes_vdd.xaxis.set_major_locator(majorLocator)
+    axes_vdd.set_xticklabels(['45nm', '32nm', '22nm', '16nm'])
+    #axes_vdd.legend(axes_vdd.lines, legendList, loc='lower left')
+    
+    fig.savefig('ocn_%dmm_%dw_%s.%s' % (area, power, ctype, suffix))
 
 def plotMechWithTypeCombined(area, power, suffix):
     ctechList = (45,32,22,16)
@@ -496,6 +588,7 @@ if __name__ == '__main__':
     parser.add_option('--plot-mech', action='store_true', default=False)
     parser.add_option('--plot-mech-comb', action='store_true', default=False)
     parser.add_option('--plot-mech-comb-dark', action='store_true', default=False)
+    parser.add_option('--plot-vmin', action='store_true', default=True)
     parser.add_option('--sys-area', type='int', default=400)
     parser.add_option('--sys-power', type='int', default=100)
     parser.add_option('--var', action='store_true', default=False)
@@ -530,4 +623,7 @@ if __name__ == '__main__':
     if options.plot_report:
         #ece6332_report_mechs(options.sys_area, options.sys_power)
         ece6332_report_variation(options.sys_area, options.sys_power)
+
+    if options.plot_vmin:
+        plotWithVmin(options.sys_area, options.sys_power, options.var, suffix)
 

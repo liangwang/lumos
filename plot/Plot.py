@@ -7,14 +7,6 @@ from conf import misc as miscConfig
 
 FIG_BASE = joinpath(miscConfig.homedir, 'outputs', 'figures')
 
-try:
-    os.makedirs(fig_base)
-except OSError:
-    if os.path.isdir(fig_base):
-        pass
-    else:
-        raise
-
 class Plot(object):
     def __init__(self):
         self.format = 'pdf'

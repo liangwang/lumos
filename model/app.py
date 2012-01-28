@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-class Application:
+class App:
     """ An application is a program a system runs for. The application has certain characteristics, such as parallel ratio """
     def __init__(self, f=0.9, m=0):
         """ Initialize an application

@@ -11,14 +11,16 @@ import paramiko
 
 DATAF_PREFIX='outputPTMBengroup'
 REMOTE_WDIR='/var/home/lw2aw/simulation/ece6332'
-LOCAL_WDIR='/home/lw2aw/projects/qual/model/data'
+LOCAL_WDIR='/home/lw2aw/projects/qual/model-new/data'
 HOST='ivycreek.ece.virginia.edu'
 PRIV_KEY_FILE=os.path.expanduser(os.path.join(
     '~', '.ssh', 'id_rsa'))
 HOST_KEY=os.path.expanduser(os.path.join(
     '~', '.ssh', 'known_hosts'))
+import conf.misc
+USE_REMOTE=conf.misc.use_remote
 
-def readNormData(ckt, ttype, tech, ccase='TT', use_remote=True):
+def readNormData(ckt, ttype, tech, ccase='TT', use_remote=USE_REMOTE):
     """
     ckt: 'inv', 'adder'
     ttype: 'HKMGS', 'LP'
@@ -40,7 +42,7 @@ def readNormData(ckt, ttype, tech, ccase='TT', use_remote=True):
         freader = csv.reader(remote_df, delimiter='\t')
     else:
         lfname = '%s_%s_%d.data' % (ckt, ttype, tech)
-        lfullname = joinpath(LOCAL_WDIR, lfname)
+        lfullname = os.path.join(LOCAL_WDIR, lfname)
         file = open(lfullname, 'rb')
 
         freader = csv.reader(file, delimiter='\t')
@@ -74,7 +76,7 @@ def readNormData(ckt, ttype, tech, ccase='TT', use_remote=True):
 
     return {'vdd':vdd,'freq':freq,'dp':dp,'sp':sp}
 
-def readMCData(ckt, ttype, tech, ccase='TT', use_remote=True):
+def readMCData(ckt, ttype, tech, ccase='TT', use_remote=USE_REMOTE):
     """
     ckt: 'inv', 'adder'
     ttype: 'HKMGS', 'LP'
@@ -96,7 +98,7 @@ def readMCData(ckt, ttype, tech, ccase='TT', use_remote=True):
         freader = csv.reader(remote_df, delimiter='\t')
     else:
         lfname = '%s_%s_%d.mcdata' % (ckt, ttype, tech)
-        lfullname = joinpath(LOCAL_WDIR, lfname)
+        lfullname = os.path.join(LOCAL_WDIR, lfname)
         file = open(lfullname, 'rb')
 
         freader = csv.reader(file, delimiter='\t')

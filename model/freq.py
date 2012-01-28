@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 
 import numpy as np
+import math
+import XLSParser
 from scipy.interpolate import InterpolatedUnivariateSpline as IUSpline
 import scipy.interpolate
-from Tech import Base as techbase
-import XLSParser
 from os.path import join as joinpath
-import math
+from data import reader
 
-class FreqScale:
+class ProjectionScale:
     __DATA_FILE=joinpath('data','inv_45.xls')
     __DATA_OLD=joinpath('data','inv_45_sudhanshu.xls')
 
@@ -93,7 +93,73 @@ class FreqScale:
 
         self.f_translator = f0/f
 
-from data import reader
+class PTMScale:
+    """ Voltage-to-Frequency scaling based on circuits simulation with PTM
+    """
+
+    def __init__(self, ckt, ttype, tech, v0, f0):
+        """
+        ckt: the name of simulated circuit
+        ttype: the technology type, HKMGS and LP
+        tech: technology node, such as 45, 32, 22, 16
+        v0: nominal vdd
+        f0: frequency under nomial vdd
+        """
+        
+        dset = reader.readNormData(ckt, ttype, tech)
+        vdd_to_interp = dset['vdd'][::-1]
+        freq_to_interp= dset['freq'][::-1]
+        self.model = scipy.interpolate.interp1d(vdd_to_interp, freq_to_interp, kind='cubic')
+        
+        f = self.model(v0)
+
+        # use relative frequency
+        #   f = f_inv * f_translator
+        self.f_translator = f0/f
+        
+        st_power = dset['sp'].tolist()
+        volts = dset['vdd'].tolist()
+        self.sp_slope = ((math.log10(st_power[-1])-math.log10(st_power[0])) /
+                         (volts[-1]-volts[0]))
+
+        
+    def get_freqs(self, volts):
+        """"
+        volts must be a numpy.ndarray, otherwise, use get_freq
+        """
+        if isinstance(volts,np.ndarray):
+            # use relative voltage
+            #return self.model(volts*self.v_translator)*self.f_translator        
+            # use over-drive voltage
+            return self.model(volts)*self.f_translator        
+        else:
+            print 'volts must be a numpy ndarray'
+            return 0
+
+    def get_freq(self, volt):
+        """""
+        volt must be a float/int, otherwise, use get_freqs
+        """
+        if (isinstance(volt,float) or 
+            isinstance(volt,int)):
+            # input is a single number
+            freq_np = self.model(volt)*self.f_translator
+            return float(freq_np)
+
+        else:
+            print 'volts can be a number of float/int.'
+            return 0
+
+    def config(self, v0, f0):
+        """"
+        Configurate model with new set of parameters (vt, v0, f0)
+          v0 : nominal voltage
+          f0 : frequency under nominal voltage
+        """
+        f = self.model(v0)
+
+        self.f_translator = f0/f
+
 class FreqScale2:
 
     def __init__(self, ckt, ttype, tech, v0, f0):
@@ -167,7 +233,7 @@ class FreqScale2:
 
         self.f_translator = f0/f
 
-class FreqScaleMC:
+class PTMScaleMC:
 
     def __init__(self, ckt, ttype, tech, v0, f0):
         

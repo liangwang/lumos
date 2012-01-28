@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-from Core import Core
-from Application import Application as App
+from core import Core
+from app import App 
 import matplotlib.pyplot as plt
 
 #class SystemConfig(dict):
@@ -19,27 +19,25 @@ import matplotlib.pyplot as plt
         #self['vdd']=0
         #self['speedup']=0
 
-from Tech import Base
+from tech import Base
 import math
 PERF_BASE = math.sqrt(Base.area['IO']) * Base.freq['IO']
+VMIN = 0.3
+VMAX = 1.1
+V_PRECISION = 0.001 # 1mV
+PROBE_PRECISION = 0.0001
+
+
+from conf import misc as miscConfig
+DEBUG=miscConfig.debug
+
 class System2(object):
-    PROBE_PRECISION = 0.0001
-    VFS_MIN = 0.2
-    VFS_MAX = 1.0
 
-    V_MIN = 0.3
-    V_MAX = 1.1
-    #V_PRECISION = 0.001 # 1mV
-    V_PRECISION = 0.001 # 1mV
-
-
+    area=0
+    power=0
 
     def __init__(self):
-        self.area=0
-        self.power=0
-
-        self.core=Core()
-        self.vfs = 1.0
+        core=Core()
 
     def set_core_prop(self, **kwargs):
         self.core.config(**kwargs)
@@ -57,7 +55,7 @@ class System2(object):
         core = self.core
         f = app.f
 
-        core.dvfs_by_volt(self.V_MAX)
+        core.dvfs_by_volt(VMAX)
         sperf=core.perf0*core.freq
 
         core.dvfs_by_factor(vfs)
@@ -75,7 +73,7 @@ class System2(object):
         core = self.core
         f = app.f
 
-        core.dvfs_by_volt(self.V_MAX)
+        core.dvfs_by_volt(VMAX)
         sperf=core.perf0*core.freq
 
         core.dvfs_by_volt(vdd)
@@ -89,28 +87,51 @@ class System2(object):
                 'core' : core_num,
                 'util': util}
 
-    def perf_by_cnum(self, active_cnum, app=App(f=0.99)):
+    def perf_by_cnum(self, cnum, app=App(f=0.99), vmin=VMIN):
 
         core = self.core
         f = app.f
 
-        cnum = int(self.area/core.area)
+        cnum_max = int(self.area/core.area)
 
-        if active_cnum > cnum or active_cnum < 0:
+        if cnum > cnum_max or cnum < 0:
             return None
 
-        cpower = self.power/float(active_cnum)
+        cpower = self.power/float(cnum)
         #print cpower
 
-        core.dvfs_by_volt(self.V_MAX)
+        # Serial performance is achieved by the highest vdd
+        core.dvfs_by_volt(VMAX)
         sperf=core.perf0*core.freq
-        #print 'sperf: %g, freq: %g' % (sperf, core.freq)
+        if DEBUG:
+            print 'sperf: %g, freq: %g' % (sperf, core.freq)
 
-        vl = self.V_MIN
-        vr = self.V_MAX
+        # Check whether vmin can meet the power requirement
+        if vmin > VMIN:
+            core.dvfs_by_volt(vmin)
+            if core.power > cpower:
+                # Either vmin is too high or active_cnum is too large
+                # so that the system could not meet the power budget even
+                # with the minimum vdd. Return the active core number with vmin
+                # Users can capture the exception by comparing the active_cnum 
+                # and the returned active_cnum
+                active_cnum = min(int(self.area/core.area), 
+                                 int(self.power/core.power))
+                perf = 1/((1-f)/sperf + f/(active_cnum*core.perf0*core.freq))
+                util = float(100*active_cnum)/float(cnum)
+                return {'perf': perf/PERF_BASE,
+                        'vdd': vmin,
+                        'cnum': active_cnum,
+                        'util': util}
+        else:
+            vmin = VMIN
+            
+
+        vl = vmin
+        vr = VMAX
         vm = (vl+vr)/2
 
-        while (vr-vl)>self.V_PRECISION:
+        while (vr-vl)>V_PRECISION:
             vm = (vl+vr)/2
             core.dvfs_by_volt(vm)
             
@@ -123,19 +144,44 @@ class System2(object):
                 vl = vm
                 vr = vr
 
+        core.dvfs_by_volt(vl)
+        lpower = core.power
+        lcnum = min(int(self.area/core.area), 
+                    int(self.power/lpower))
+        lperf = 1/((1-f)/sperf + f/(cnum*core.perf0*core.freq))
 
-        if vr == vm:
-            core.dvfs_by_volt(vl)
+        core.dvfs_by_volt(vr)
+        rpower = core.power
+        rcnum = min(int(self.area/core.area), 
+                    int(self.power/rpower))
+        rperf = 1/((1-f)/sperf + f/(cnum*core.perf0*core.freq))
 
-        # debug use only
-        #if active_cnum == cnum:
-            #print 'freq: %g, vdd: %g, perf_base: %g' % (core.freq, core.vdd, PERF_BASE)
-        # end debug
-        perf = 1/((1-f)/sperf + f/(active_cnum*core.perf0*core.freq))
-        util = float(100*active_cnum)/float(cnum)
-        return {'perf': perf/PERF_BASE,
-                'vdd': vm,
-                'util': util}
+        if rpower <= cpower:
+            # right bound meets the power constraint
+            return {'perf': rperf/PERF_BASE,
+                    'vdd': vr,
+                    'cnum': cnum,
+                    'util': float(100*cnum)/float(cnum_max)}
+        else:
+            return {'perf': lperf/PERF_BASE,
+                    'vdd': vl,
+                    'cnum': cnum,
+                    'util': float(100*cnum)/float(cnum_max)}
+
+
+        #if vr == vm:
+            #core.dvfs_by_volt(vl)
+
+        ## debug use only
+        ##if active_cnum == cnum:
+            ##print 'freq: %g, vdd: %g, perf_base: %g' % (core.freq, core.vdd, PERF_BASE)
+        ## end debug
+        #perf = 1/((1-f)/sperf + f/(active_cnum*core.perf0*core.freq))
+        #util = float(100*active_cnum)/float(cnum)
+        #return {'perf': perf/PERF_BASE,
+                #'vdd': vm,
+                #'cnum': active_cnum,
+                #'util': util}
 
 
     def probe2(self, app=App(f=0.99)):
@@ -143,16 +189,16 @@ class System2(object):
         f = app.f
 
         v0 = core.v0
-        vleft = self.V_MIN
-        vright = self.V_MAX
+        vleft = VMIN
+        vright = VMAX
         vpivot = (vleft+vright)/2
 
-        core.dvfs_by_volt(self.V_MAX)
+        core.dvfs_by_volt(VMAX)
         sperf = core.perf0*core.freq
 
-        while (vpivot-vleft) > (self.PROBE_PRECISION/2) :
-            vl = vpivot - self.PROBE_PRECISION / 2
-            vr = vpivot + self.PROBE_PRECISION / 2
+        while (vpivot-vleft) > (PROBE_PRECISION/2) :
+            vl = vpivot - PROBE_PRECISION / 2
+            vr = vpivot + PROBE_PRECISION / 2
 
             core.dvfs_by_volt(vl)
             active_num = min(self.area/core.area, self.power/core.power)
@@ -193,7 +239,7 @@ class System2(object):
         #para_ratio = 0.99
         f = app.f
 
-        core.dvfs_by_volt(self.V_MAX)
+        core.dvfs_by_volt(VMAX)
         sperf = core.perf0*core.freq
 
         perf_list = []
@@ -233,7 +279,7 @@ class System2(object):
         #para_ratio = 0.99
         f = app.f
 
-        core.dvfs_by_volt(self.V_MAX)
+        core.dvfs_by_volt(VMAX)
         sperf = core.perf0*core.freq
 
         perf_list = []
@@ -265,14 +311,16 @@ class System2(object):
 
         return (speedup_list,util_list)
 
-    def opt_core_num(self, app=App(f=0.99)):
+    def opt_core_num(self, app=App(f=0.99), vmin=VMIN):
 
         cnum_max = self.get_core_num()
         cnumList = range(1, cnum_max+1)
 
         perf = 0
         for cnum in cnumList:
-            r = self.perf_by_cnum(cnum, app)
+            r = self.perf_by_cnum(cnum, app, vmin)
+            if r['cnum'] < cnum:
+                break
             if r['perf'] > perf:
                 perf = r['perf']
                 vdd = r['vdd']
@@ -289,7 +337,7 @@ class System2(object):
         core = self.core
         f = app.f
 
-        core.dvfs_by_volt(self.V_MAX)
+        core.dvfs_by_volt(VMAX)
         sperf=core.perf0*core.freq
 
         vdd = core.v0
@@ -304,6 +352,7 @@ class System2(object):
                 'active': active_num,
                 'core' : core_num,
                 'util': util}
+
 class System(object):
 
 
@@ -321,7 +370,7 @@ class System(object):
         self.area = 0
         self.power= 0
 
-        from Tech import Base
+        from tech import Base
         import math
         # Performance of IO core at nominal frequency, according to Pollack's Rule
         self.perf_base = math.sqrt(Base.area['IO']) * Base.freq['IO']

@@ -8,15 +8,20 @@ import os
 
 DATAF_PREFIX='outputPTMBengroup'
 REMOTE_WDIR='/var/home/lw2aw/simulation/ece6332'
+LOCAL_WDIR='/home/lw2aw/projects/qual/model-new/data'
 HOST='ivycreek.ece.virginia.edu'
 PRIV_KEY_FILE=os.path.expanduser(os.path.join(
     '~', '.ssh', 'id_rsa'))
 HOST_KEY=os.path.expanduser(os.path.join(
     '~', '.ssh', 'known_hosts'))
+import conf.misc
+USE_REMOTE=conf.misc.use_remote
 
 parser = OptionParser()
 parser.add_option('-f', '--file', dest='file', default='LP_nom2.txt')
 parser.add_option('-d', '--dir', dest='dir', default='inv')
+parser.add_option('--tech', action='store_true', default=False)
+parser.add_option('--h2l', action='store_true', default=False)
 parser.add_option('--ckt', default='inv')
 parser.add_option('--type', default='nom')
 (options, args) = parser.parse_args()
@@ -100,4 +105,7 @@ def printHP2LP():
         print '%d: %g' % (tech, 
                           lpdata['sp'][tech]/hpdata['sp'][tech])
 
-printHP2LP()
+if options.tech:
+    printSingle()
+elif options.h2l:
+    printHP2LP()
