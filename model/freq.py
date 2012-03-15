@@ -110,8 +110,10 @@ class PTMScale:
         vdd_to_interp = dset['vdd'][::-1]
         freq_to_interp= dset['freq'][::-1]
         self.model = scipy.interpolate.interp1d(vdd_to_interp, freq_to_interp, kind='cubic')
-        
         f = self.model(v0)
+        #self.model = IUSpline(vdd_to_interp, freq_to_interp)
+        #f = self.model(v0)[0]
+        
 
         # use relative frequency
         #   f = f_inv * f_translator
@@ -144,6 +146,7 @@ class PTMScale:
             isinstance(volt,int)):
             # input is a single number
             freq_np = self.model(volt)*self.f_translator
+            #freq_np = self.model(volt)[0]*self.f_translator
             return float(freq_np)
 
         else:
@@ -235,14 +238,17 @@ class FreqScale2:
 
 class PTMScaleMC:
 
-    def __init__(self, ckt, ttype, tech, v0, f0):
+    def __init__(self, ckt, ttype, tech, v0, f0, pen_adjust=1.0):
         
         dset = reader.readNormData(ckt, ttype, tech)
         #self.model = IUSpline(dset['vdd'], dset['freq'], k=3)
         vdd_to_interp = dset['vdd'][::-1]
         freq_to_interp= dset['freq'][::-1]
         #self.model = IUSpline(vdd_to_interp, freq_to_interp)
+        #f = self.model(v0)[0]
         self.model = scipy.interpolate.interp1d(vdd_to_interp, freq_to_interp, kind='cubic')
+        f = self.model(v0)
+        self.f_translator = f0/f
 
 
         # FIXME: confirm vt for this technology
@@ -261,34 +267,38 @@ class PTMScaleMC:
 
         mcdset = reader.readMCData(ckt, ttype, tech)
         vdd_tointerp = mcdset['vdd'][::-1]
-        freq_tointerp = mcdset['freq_min'][::-1]
+        freq_tointerp = mcdset['freq_3sigma'][::-1]
         self.mcmodel = scipy.interpolate.interp1d(vdd_tointerp, freq_tointerp, kind='cubic')
-        self.freq_down = self.mcmodel(v0)/self.model(v0)
+        #self.mcmodel = IUSpline(vdd_tointerp, freq_tointerp)
+        #self.freq_down = self.mcmodel(v0)/self.model(v0)
 
-        f = self.mcmodel(v0)
-        self.f_translator = f0*self.freq_down/f
+        #f = self.mcmodel(v0)
+        #self.f_translator = f0*self.freq_down/f
 
-        st_power = mcdset['sp_min'].tolist()
+        #st_power = mcdset['sp_min'].tolist()
+        st_power = dset['sp'].tolist()
         volts = mcdset['vdd'].tolist()
         self.sp_slope = ((math.log10(st_power[-1])-math.log10(st_power[0])) /
                          (volts[-1]-volts[0]))
 
-        dp_nom = dset['dp'][::-1]
-        model = scipy.interpolate.interp1d(vdd_to_interp, dp_nom, kind='cubic')
-        dp_mc = mcdset['dp_min'][::-1]
-        mcmodel = scipy.interpolate.interp1d(vdd_to_interp, dp_mc, kind='cubic')
-        self.dp_down = mcmodel(v0) / model(v0)
+        self.pen_adjust = pen_adjust
 
-        sp_nom = dset['sp'][::-1]
-        model = scipy.interpolate.interp1d(vdd_to_interp, sp_nom, kind='cubic')
-        sp_mc = mcdset['sp_min'][::-1]
-        mcmodel = scipy.interpolate.interp1d(vdd_to_interp, sp_mc, kind='cubic')
-        self.sp_down = mcmodel(v0) / model(v0)
+        #dp_nom = dset['dp'][::-1]
+        #model = scipy.interpolate.interp1d(vdd_to_interp, dp_nom, kind='cubic')
+        #dp_mc = mcdset['dp_min'][::-1]
+        #mcmodel = scipy.interpolate.interp1d(vdd_to_interp, dp_mc, kind='cubic')
+        #self.dp_down = mcmodel(v0) / model(v0)
 
-        # FIXME: to be removed
-        self.volts = dset['vdd']
-        self.freqs = dset['freq']
-        
+        #sp_nom = dset['sp'][::-1]
+        #model = scipy.interpolate.interp1d(vdd_to_interp, sp_nom, kind='cubic')
+        #sp_mc = mcdset['sp_min'][::-1]
+        #mcmodel = scipy.interpolate.interp1d(vdd_to_interp, sp_mc, kind='cubic')
+        #self.sp_down = mcmodel(v0) / model(v0)
+
+        ## FIXME: to be removed
+        #self.volts = dset['vdd']
+        #self.freqs = dset['freq']
+
     def get_freqs(self, volts):
         """"
         volts must be a numpy.ndarray, otherwise, use get_freq
@@ -297,7 +307,7 @@ class PTMScaleMC:
             # use relative voltage
             #return self.model(volts*self.v_translator)*self.f_translator        
             # use over-drive voltage
-            return self.mcmodel(volts)*self.f_translator        
+            return self.model(volts)*self.f_translator        
         else:
             print 'volts must be a numpy ndarray'
             return 0
@@ -309,50 +319,93 @@ class PTMScaleMC:
         if (isinstance(volt,float) or 
             isinstance(volt,int)):
             # input is a single number
-            freq_np = self.mcmodel(volt)*self.f_translator
-            return freq_np
+            freq_np = self.model(volt)*self.f_translator
+            #freq_np = self.model(volt)[0]*self.f_translator
+            return float(freq_np)
 
         else:
             print 'volts can be a number of float/int.'
             return 0
+        
+    def get_penalties(self, volts):
+        """"
+        volts must be a numpy.ndarray, otherwise, use get_penalty
+        """
+        if isinstance(volts,np.ndarray):
+            # use relative voltage
+            #return self.model(volts*self.v_translator)*self.f_translator        
+            # use over-drive voltage
+            freq_mc = self.mcmodel(volts)
+            freq_nom = self.model(volts)
+            freq_adjust = freq_mc+(freq_nom-freq_mc)*self.pen_adjust
+            return freq_adjust/freq_nom
+        else:
+            print 'volts must be a numpy ndarray'
+            return 0
 
-    #def config(self, v0, f0):
-        #""""
-        #Configurate model with new set of parameters (vt, v0, f0)
-          #v0 : nominal voltage
-          #f0 : frequency under nominal voltage
-        #"""
-        #f = self.model(v0)
+    def get_penalty(self, volt):
+        """""
+        volt must be a float/int, otherwise, use get_panelties
+        """
+        if (isinstance(volt,float) or 
+            isinstance(volt,int)):
+            # input is a single number
+            freq_mc = self.mcmodel(volt)
+            freq_nom = self.model(volt)
+            freq_adjust = freq_nom-(freq_nom-freq_mc)*self.pen_adjust
+            return freq_adjust/freq_nom
+        else:
+            print 'volts can be a number of float/int.'
+            return 0
 
-        #self.f_translator = f0/f
+    def config(self, v0, f0, pen_adjust=None):
+        """"
+        Configurate model with new set of parameters (vt, v0, f0)
+          v0 : nominal voltage
+          f0 : frequency under nominal voltage
+        """
+        f = self.model(v0)
+
+        self.f_translator = f0/f
+
+        if pen_adjust:
+            self.pen_adjust = pen_adjust
 
 if __name__ == '__main__':
-    import matplotlib.pyplot as plt
+    #import matplotlib.pyplot as plt
     scaler = FreqScale2('inv', 'LP', 45, 1, 4.2)
     #scaler = FreqScale(0.5, 1, 4.2)
     
-    volts_orig = scaler.volts
-    freqs_orig = scaler.freqs/1e9
+    #volts_orig = scaler.volts
+    #freqs_orig = scaler.freqs/1e9
 
     
-    volts = np.linspace(0.3,1.1,100)
-    print volts
+    volts = np.linspace(0.3,1.1,10000)
+    #freqs = scaler.get_freqs(volts)
+
+    freqs = []
+    for volt in volts:
+        freqs.append(scaler.get_freq(volt))
+
+
+
+
+    #print volts
     #freqs = scaler.get_freqs_in_mhz(volts)
-    freqs = scaler.get_freqs(volts)
-    print freqs
+    #print freqs
     
-    fig = plt.figure()
-    axes = fig.add_subplot(111)
-    axes.set_xlabel('Supplying Voltage(V)')
-    axes.set_ylabel('Frequency (MHz)')
+    #fig = plt.figure()
+    #axes = fig.add_subplot(111)
+    #axes.set_xlabel('Supplying Voltage(V)')
+    #axes.set_ylabel('Frequency (MHz)')
     
-    axes.plot(volts,freqs, volts_orig, freqs_orig, 'rD')
-    #axes.set_xlim(0,1.4)
-    axes.set_yscale('log')
-    axes.legend(axes.lines, ['Fitting','simulated'], loc='upper left')
-    axes.grid(True)
+    #axes.plot(volts,freqs, volts_orig, freqs_orig, 'rD')
+    ##axes.set_xlim(0,1.4)
+    #axes.set_yscale('log')
+    #axes.legnd(axes.lines, ['Fitting','simulated'], loc='upper left')
+    #axes.grid(True)
     
-    fig.savefig('freq_volt.pdf')
+    #fig.savefig('freq_volt.pdf')
 
         
 

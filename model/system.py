@@ -2,28 +2,13 @@
 
 from core import Core
 from app import App 
-import matplotlib.pyplot as plt
-
-#class SystemConfig(dict):
-    #def __init__(self):
-        #from Tech import Base
-        #self['tech'] = 45
-        #self['mech'] = 'ITRS'
-        #self['ctype'] = 'IO'
-        #self['area'] = Base.area[self['ctype']]
-        #self['power']=Base.dp[self['ctype']]+Base.sp[self['ctype']]
-
-#class SystemAttribute(dict):
-    #def __init__(self):
-        #self['util']=0
-        #self['vdd']=0
-        #self['speedup']=0
 
 from tech import Base
 import math
 PERF_BASE = math.sqrt(Base.area['IO']) * Base.freq['IO']
 VMIN = 0.3
 VMAX = 1.1
+VSF_MAX = 1.3 # maxium vdd is 1.3 * vdd_nominal
 V_PRECISION = 0.001 # 1mV
 PROBE_PRECISION = 0.0001
 
@@ -31,13 +16,17 @@ PROBE_PRECISION = 0.0001
 from conf import misc as miscConfig
 DEBUG=miscConfig.debug
 
-class System2(object):
+class SymSystem(object):
+    def __init__(self, area=None, power=None):
+        if area:
+            self.area=area
+        else:
+            self.area=0
 
-    area=0
-    power=0
-
-    def __init__(self):
-        core=Core()
+        if power:
+            self.power= power
+        else:
+            self.power = 0
 
     def set_core_prop(self, **kwargs):
         self.core.config(**kwargs)
@@ -55,7 +44,8 @@ class System2(object):
         core = self.core
         f = app.f
 
-        core.dvfs_by_volt(VMAX)
+        #core.dvfs_by_volt(VMAX)
+        core.dvfs_by_factor(VSF_MAX)
         sperf=core.perf0*core.freq
 
         core.dvfs_by_factor(vfs)
@@ -68,12 +58,12 @@ class System2(object):
                 'active': active_num,
                 'core' : core_num,
                 'util': util}
-    
     def perf_by_vdd(self, vdd, app=App(f=0.99)):
         core = self.core
         f = app.f
 
-        core.dvfs_by_volt(VMAX)
+        #core.dvfs_by_volt(VMAX)
+        core.dvfs_by_factor(VSF_MAX)
         sperf=core.perf0*core.freq
 
         core.dvfs_by_volt(vdd)
@@ -101,7 +91,8 @@ class System2(object):
         #print cpower
 
         # Serial performance is achieved by the highest vdd
-        core.dvfs_by_volt(VMAX)
+        #core.dvfs_by_volt(VMAX)
+        core.dvfs_by_factor(VSF_MAX)
         sperf=core.perf0*core.freq
         if DEBUG:
             print 'sperf: %g, freq: %g' % (sperf, core.freq)
@@ -128,7 +119,7 @@ class System2(object):
             
 
         vl = vmin
-        vr = VMAX
+        vr = core.v0 * VSF_MAX
         vm = (vl+vr)/2
 
         while (vr-vl)>V_PRECISION:
@@ -190,10 +181,11 @@ class System2(object):
 
         v0 = core.v0
         vleft = VMIN
-        vright = VMAX
+        vright = v0 * VSF_MAX
         vpivot = (vleft+vright)/2
 
-        core.dvfs_by_volt(VMAX)
+        #core.dvfs_by_volt(VMAX)
+        core.dvfs_by_factor(VSF_MAX)
         sperf = core.perf0*core.freq
 
         while (vpivot-vleft) > (PROBE_PRECISION/2) :
@@ -239,7 +231,8 @@ class System2(object):
         #para_ratio = 0.99
         f = app.f
 
-        core.dvfs_by_volt(VMAX)
+        #core.dvfs_by_volt(VMAX)
+        core.dvfs_by_factor(VSF_MAX)
         sperf = core.perf0*core.freq
 
         perf_list = []
@@ -279,7 +272,8 @@ class System2(object):
         #para_ratio = 0.99
         f = app.f
 
-        core.dvfs_by_volt(VMAX)
+        #core.dvfs_by_volt(VMAX)
+        core.dvfs_by_factor(VSF_MAX)
         sperf = core.perf0*core.freq
 
         perf_list = []
@@ -337,11 +331,13 @@ class System2(object):
         core = self.core
         f = app.f
 
-        core.dvfs_by_volt(VMAX)
+        #core.dvfs_by_volt(VMAX)
+        core.dvfs_by_factor(VSF_MAX)
         sperf=core.perf0*core.freq
 
-        vdd = core.v0
-        core.dvfs_by_volt(vdd)
+        #vdd = min(core.v0*1.3, VMAX)
+        vdd = core.v0 * VSF_MAX
+        #core.dvfs_by_volt(vdd)
         #print 'Area:%d, Power: %d, tech: %d, mech: %s, vdd: %g, freq: %g, power: %g' % (self.area, self.power, core.tech, core.mech, core.vdd, core.freq, core.power)
         active_num = min(int(self.area/core.area), 
                          int(self.power/core.power))
@@ -351,7 +347,9 @@ class System2(object):
         return {'perf': perf/PERF_BASE,
                 'active': active_num,
                 'core' : core_num,
-                'util': util}
+                'util': util,
+                'vdd': vdd}
+
 
 class System(object):
 

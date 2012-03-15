@@ -7,4 +7,4 @@ debug=False
 use_remote=False
 
 from os.path import join as joinpath, expanduser
-homedir=joinpath(expanduser('~'), 'projects', 'qual-remote', 'model-new')
+homedir=joinpath(expanduser('~'), 'projects', 'qual', 'model-new')

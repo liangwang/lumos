@@ -163,7 +163,7 @@ if __name__ == '__main__':
     parser.add_option('--sys-power', type='int', default=100,
                       help='Power budget (W) for the whole chip')
     parser.add_option('--use-sys2', action='store_true', default=False,
-                      help='Use System2')
+                      help='Use SymSys')
     options, args = parser.parse_args()
 
     if options.gui:

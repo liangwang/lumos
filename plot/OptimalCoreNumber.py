@@ -1,7 +1,7 @@
 from Plot import Matplot
 from model.app import App
 import model.system
-from model.system import System2
+from model.system import SymSys
 from model.core import Core
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
@@ -16,7 +16,7 @@ def ece6332_report_variation(area, power):
     #cmechList = ('LP','HKMGS','ITRS','CONS')
     cmechList = ('LP', 'LPVar', 'HKMGS', 'HKMGSVar')
 
-    sys = System2()
+    sys = SymSys()
 
     lsList = ('o-', 's-', '*-', '^-')
     xList = range(1, len(ctechList)+1)
@@ -110,7 +110,7 @@ def ece6332_report_mechs(area, power):
     lsList = ('o-', 's-', '*-', '^-')
     legendList = []
 
-    sys = System2()
+    sys = SymSys()
 
     fig_cnum = plt.figure(figsize=(6,4.5))
     #fig.suptitle(r'%d$mm^2$, %dw' % (area, power))
@@ -187,7 +187,7 @@ def plotWithVmin(area, power, var, suffix):
         legendList = ('LP-free', 'LP-1.1Vt', 'LP-1.2Vt', 'LP-1.3Vt',
                       'HP-free', 'HP-1.1Vt', 'HP-1.2Vt', 'HP-1.3Vt')
 
-    sys = System2()
+    sys = SymSys()
     sys.set_sys_prop(area=area, power=power, core=Core())
 
     lsList = ('o-', 's-', '*-', '^-','o-', 's-', '*-', '^-')
@@ -267,7 +267,7 @@ def plotMechWithTypeCombined(area, power, suffix):
     lsList = ('o-', 's-', '*-', '^-')
     legendList = []
 
-    sys = System2()
+    sys = SymSys()
 
     fig = plt.figure(figsize=(16,6))
     #fig.suptitle(r'%d$mm^2$, %dw' % (area, power))
@@ -322,7 +322,7 @@ def plotMechWithTypeCombinedDark(area, power, suffix):
     lsList = ('o-', 's-', '*-', '^-', 'p-', 'x-')
     legendList = []
 
-    sys = System2()
+    sys = SymSys()
 
     fig = plt.figure(figsize=(14,6))
     #fig.suptitle(r'%d$mm^2$, %dw' % (area, power))
@@ -404,7 +404,7 @@ def plotWithMechs(area, power, var, suffix):
     else:
         cmechList = ('LP','HKMGS')
 
-    sys = System2()
+    sys = SymSys()
 
     lsList = ('o-', 's-', '*-', '^-')
     for ctype in ctypeList:
@@ -485,7 +485,7 @@ def plotWithParaRatios(area, power, suffix):
     fList = (0.1, 0.5, 0.9, 0.99, 1)
     legend_f = [ ('f=%g'%f) for f in fList]
 
-    sys = System2()
+    sys = SymSys()
 
     lsList = ('o-', 's-', '*-', '^-', 'p-')
     for cmech in cmechList:
@@ -558,7 +558,7 @@ def printWithParaRatios(area, power, suffix):
     fList = (0.1, 0.5, 0.9, 0.99, 1)
     legend_f = [ ('f=%g'%f) for f in fList]
 
-    sys = System2()
+    sys = SymSys()
 
     for cmech in cmechList:
         mechtitle = 'mech=%s' % cmech

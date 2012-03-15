@@ -6,7 +6,7 @@ Created on Aug 11, 2011
 from Plot import Matplot
 from model.Application import Application as App
 import Plot
-from model.System import System,System2
+from model.System import System,SymSys
 import matplotlib.path as mpath
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
@@ -309,7 +309,7 @@ class PerfScalePlot2(Matplot):
 
         self.prefix = prefix
         
-        self.sys = System2()
+        self.sys = SymSys()
         self.sys.set_sys_prop(area=area, power=power)
         self.sys.set_core_prop(ctype=ctype, mech=mech, tech=tech)
 
@@ -801,7 +801,7 @@ if __name__=='__main__':
 
 # old code for reference
 #        area_list = (100, 200, 300, 400, 500, 1000, 2000, 3000, 4000)
-#        sys = System2.System2()
+#        sys = SymSys.SymSys()
 #        index = 0
 # 
 #        for area in area_list:

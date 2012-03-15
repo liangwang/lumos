@@ -18,7 +18,7 @@ class Core(object):
     """
     Core module
     """
-    def __init__(self, ctype=None, mech=None, tech=None, variation=False):
+    def __init__(self, ctype=None, mech=None, tech=None, pv=False, pen_adjust=None):
 
         update = True
 
@@ -36,8 +36,10 @@ class Core(object):
             update=False
         else:
             self._tech = tech
+
         
-        self._variation = variation
+        self._pv = pv
+        self.pen_adjust = pen_adjust
 
         if update:
             self.__update_config()
@@ -48,7 +50,7 @@ class Core(object):
         tech = self._tech
         mech = self._mech
         ctype = self._ctype
-        variation = self._variation
+        pv = self._pv
 
         self._perf0 = math.sqrt(techbase.area[ctype])
         
@@ -65,22 +67,24 @@ class Core(object):
             
             self._dp0 = techbase.dp[ctype] * techscl.power[mech][tech]
             self._sp0 = techbase.sp[ctype] * techscl.power[mech][tech]
-            if variation:
-                print 'Projection-based scaling does not support variation'
+            if pv:
+                print 'Projection-based scaling does not support process variation'
+
         elif mech == 'HKMGS':
             
             self._vt = ptmscl.vt[mech][tech]
             v0 = ptmscl.vdd[mech][tech]
             f0 = techbase.freq[ctype] * ptmscl.freq[mech][tech]
-            if variation:
-                mcmodel=freq.PTMScaleMC(MC_CKT, mech, tech, v0, f0)
-                self._v0 = v0
-                self._f0 = f0*mcmodel.freq_down
-                if DEBUG:
-                    print 'mech: %s, tech: %d, freq_down: %g' % (mech, tech, model.freq_down)
-            else:
-                self._v0 = v0
-                self._f0 = f0
+            #if pv:
+                #mcmodel=freq.PTMScaleMC(MC_CKT, mech, tech, v0, f0)
+                #self._v0 = v0
+                #self._f0 = f0*mcmodel.freq_down
+                #self._f0_nom = f0
+                #if DEBUG:
+                    #print 'mech: %s, tech: %d, freq_down: %g' % (mech, tech, model.freq_down)
+            #else:
+            self._v0 = v0
+            self._f0 = f0
             
             self._dp0 = techbase.dp[ctype] * ptmscl.dp[mech][tech]
             self._sp0 = techbase.sp[ctype] * ptmscl.sp[mech][tech]
@@ -91,15 +95,16 @@ class Core(object):
             self._vt = ptmscl.vt[mech][tech]
             v0 = ptmscl.vdd[mech][tech]
             f0 = techbase.freq[ctype] * ptmscl.freq['HKMGS'][tech] * lpbase.freq[tech]
-            if variation:
-                mcmodel=freq.PTMScaleMC(MC_CKT, mech, tech, v0, f0)
-                self._v0 = v0
-                self._f0 = f0*mcmodel.freq_down
-                if DEBUG:
-                    print 'mech: %s, tech: %d, freq_down: %g' % (mech, tech, model.freq_down)
-            else:
-                self._v0 = v0
-                self._f0 = f0
+            #if pv:
+                #mcmodel=freq.PTMScaleMC(MC_CKT, mech, tech, v0, f0)
+                #self._v0 = v0
+                #self._f0 = f0*mcmodel.freq_down
+                #self._f0_nom = f0
+                #if DEBUG:
+                    #print 'mech: %s, tech: %d, freq_down: %g' % (mech, tech, model.freq_down)
+            #else:
+            self._v0 = v0
+            self._f0 = f0
             
             # dynamic power and static power use the same scaling factors
             #self._dp0 = techbase.dp[ctype] * lpbase.dp[tech] * techscl.power[mech][tech]
@@ -119,10 +124,16 @@ class Core(object):
             self._vsf_max = 1.1 / self._v0
             self._vsf_min = 0.3 / self._v0
 
-            if variation:
-                self._model = mcmodel
+            if pv:
+                self._model = freq.PTMScaleMC(MC_CKT, mech, tech, v0, f0, self.pen_adjust)
+                self.var_penalty = self._model.get_penalty(v0)
+                #self._model_nom = freq.PTMScale(MC_CKT, mech, tech, self._v0, self._f0)
             else:
                 self._model = freq.PTMScale(MC_CKT, mech, tech, self._v0, self._f0)
+
+            #if pv:
+                #self._sp_slope = self._mcmodel.sp_slope
+            #else:
             self._sp_slope = self._model.sp_slope
 
 
@@ -148,6 +159,9 @@ class Core(object):
     @property
     def dp(self):
         """ Get the dynamic power """
+        #if self._pv:
+            #return self._dp0 * self._fsf_nom * self._vsf**2
+        #else:
         return self._dp0 * self._fsf * self._vsf**2
     
     @property
@@ -187,7 +201,10 @@ class Core(object):
     @property
     def freq(self):
         """ Get the frequency """
-        return self._f0 * self._fsf
+        if self._pv:
+            return self._f0 * self._fsf * self.var_penalty
+        else:
+            return self._f0 * self._fsf
 
 
     @property
@@ -216,9 +233,9 @@ class Core(object):
         return self._vsf_min
     
     ## Update core configuration
-    #_config_options = ('mech','ctype','tech','variation')
+    #_config_options = ('mech','ctype','tech','pv')
     
-    def config(self, mech=None, ctype=None, tech=None, variation=None):
+    def config(self, mech=None, ctype=None, tech=None, pv=None, pen_adjust=None):
         if mech is not None:
             self._mech=mech
         elif self._mech is None:
@@ -234,10 +251,13 @@ class Core(object):
         elif self._tech is None:
             print 'tech is not set, failed to config core'
 
-        if variation is not None:
-            self._variation=variation
-        elif self._variation is None:
-            print 'variation is not set, failed to config core'
+        if pv is not None:
+            self._pv=pv
+        elif self._pv is None:
+            print 'pv is not set, failed to config core'
+
+        if pen_adjust is not None:
+            self.pen_adjust = pen_adjust
 
         self.__update_config()
 
@@ -266,19 +286,33 @@ class Core(object):
         freq = scale.get_freq(volt)
         self._fsf = freq / self._f0
 
+        if self._pv:
+            self.var_penalty = scale.get_penalty(volt)
+
     def dvfs_by_volt(self, v):
         self._vsf = v / self._v0
         scale = self._model
         freq = scale.get_freq(v)
         self._fsf = freq / self._f0
+
+        if self._pv:
+            self.var_penalty = scale.get_penalty(v)
         
     def scale_with_vlist(self, vlist):
         freqs = self._model.get_freqs(vlist)
         sp = 10**(vlist * self._sp_slope)/10**(self._v0*self._sp_slope) *self._sp0 
+        #if not self._pv:
         dp = (freqs/self._f0) * (vlist/self._v0)**2 * self._dp0 
-        return {'freq': freqs,
-                'dp': dp,
-                'sp': sp}
+        #else:
+            #freqs_nom = self._model_nom.get_freqs(vlist)
+            #dp = (freqs_nom/self._f0_nom) * (vlist/self._v0)**2 * self._dp0
+
+        if self._pv:
+            var_penalties = self._model.get_penalties(vlist)
+            return {'freq':freqs*var_penalties,
+                    'dp': dp, 'sp': sp}
+        else:
+            return {'freq': freqs, 'dp': dp, 'sp': sp}
 
 
     def set_prop(self, **kwargs):
@@ -346,7 +380,7 @@ if __name__ == '__main__':
     vsList = [ x*0.05 for x in xrange(6,23) ]
     for tech in techList:
         for mech in mechList:
-            c = Core(tech=tech, mech=mech)
+            c = Core(tech=tech, mech=mech, ctype='IO', pv=True)
             #c.config(tech=32)
             #print 'tech:%d, mech: %s, dp: %f, sp: %f, freq:%f' % (tech, mech, c.dp0, c.sp0, c.freq)
 

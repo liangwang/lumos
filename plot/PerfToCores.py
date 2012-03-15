@@ -1,11 +1,11 @@
 from Plot import Matplot
 from model.Application import Application as App
-from model.System import System2
+from model.System import SymSys
 from model.Core import Core
 import matplotlib.pyplot as plt
 
 def plotPerf2Cores(sys_area, sys_power, ctech, ctype, cmech, app=App(f=0.99)):
-    sys = System2()
+    sys = SymSys()
     core = Core(tech=ctech, ctype=ctype, mech=cmech)
     sys.set_sys_prop(area=sys_area, power=sys_power, core=core)
 
