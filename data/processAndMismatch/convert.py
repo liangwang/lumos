@@ -63,6 +63,8 @@ def readMCData(ckt, ttype, tech, ccase='TT'):
         f.writelines(ols)
 
     return {'vdd':vdd, 'freq_3sigma': freq_3sigma,
+            'freq_2sigma': freq_2sigma,
+            'freq_sigma': freq_sigma,
             'freq_mean': numpy.reciprocal(delay_mean),
             'freq_min': numpy.reciprocal(delay_max),
             'freq_miu': numpy.reciprocal(delay_miu),

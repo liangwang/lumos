@@ -11,7 +11,7 @@ import paramiko
 
 DATAF_PREFIX='outputPTMBengroup'
 REMOTE_WDIR='/var/home/lw2aw/simulation/ece6332'
-LOCAL_WDIR='/home/lw2aw/projects/qual/model-new/data'
+LOCAL_WDIR='/home/lw2aw/projects/qual/model/data'
 HOST='ivycreek.ece.virginia.edu'
 PRIV_KEY_FILE=os.path.expanduser(os.path.join(
     '~', '.ssh', 'id_rsa'))

@@ -34,7 +34,7 @@ class MyPlotter(object):
                     data_mc = reader.readMCData(ckt, ttype, tech)
                     plot_idx = plot_idx + 1
                     axes_freq = fig.add_subplot(num_of_techs,2,plot_idx)
-                    
+
                     yerr_max = data_mc['freq_max']-data_norm['freq']
                     yerr_min = data_norm['freq'] - data_mc['freq_min']
                     axes_freq.errorbar(data_norm['vdd'], data_norm['freq'], yerr=[yerr_min, yerr_max]) 

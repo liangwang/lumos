@@ -10,3 +10,8 @@ syntax: glob
 .*
 *.bak
 tags
+cacti
+swig
+*.pypkl
+mcpat
+outputs

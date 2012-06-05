@@ -7,6 +7,10 @@ from scipy.interpolate import InterpolatedUnivariateSpline as IUSpline
 import scipy.interpolate
 from os.path import join as joinpath
 from data import reader
+import logging
+import cPickle as pickle
+import conf.misc
+SIM_RESULT_DIR = joinpath(conf.misc.homedir, 'data')
 
 class ProjectionScale:
     __DATA_FILE=joinpath('data','inv_45.xls')
@@ -62,7 +66,7 @@ class ProjectionScale:
             # use over-drive voltage
             return self.model(volts-self.v_translator)*self.f_translator        
         else:
-            print 'volts must be a numpy ndarray'
+            logging.error('volts must be a numpy ndarray')
             return 0
 
     def get_freq(self, volt):
@@ -76,7 +80,7 @@ class ProjectionScale:
             return freq_np[0]
 
         else:
-            print 'volts can be a number of float/int.'
+            loggin.error('volts can be a number of float/int.')
             return 0
 
     def config(self, vt, v0, f0):
@@ -135,7 +139,7 @@ class PTMScale:
             # use over-drive voltage
             return self.model(volts)*self.f_translator        
         else:
-            print 'volts must be a numpy ndarray'
+            logging.error('volts must be a numpy ndarray')
             return 0
 
     def get_freq(self, volt):
@@ -150,8 +154,60 @@ class PTMScale:
             return float(freq_np)
 
         else:
-            print 'volts can be a number of float/int.'
+            logging.error('volts can be a number of float/int.')
             return 0
+
+    def config(self, v0, f0):
+        """"
+        Configurate model with new set of parameters (vt, v0, f0)
+          v0 : nominal voltage
+          f0 : frequency under nominal voltage
+        """
+        f = self.model(v0)
+
+        self.f_translator = f0/f
+
+simdata= dict()
+for ckt in ('adder',):
+    simdata[ckt]=dict()
+    for ttype in ('HKMGS',):
+        simdata[ckt][ttype]=dict()
+        for tech in (45, 32, 22, 16):
+            simdata[ckt][ttype][tech] = dict()
+            dfn = joinpath(SIM_RESULT_DIR, '%s_%s_%d.pypkl' % (ckt, ttype, tech))
+            with open(dfn, 'rb') as f:
+                freq_dict = pickle.load(f)
+                sp_slope = pickle.load(f)
+            simdata[ckt][ttype][tech]['freq_dict'] = freq_dict
+            simdata[ckt][ttype][tech]['sp_slope'] = sp_slope
+
+class PTMScale2:
+    """ Voltage-to-Frequency scaling based on circuits simulation with PTM
+    """
+
+    def __init__(self, ckt, ttype, tech, v0, f0):
+        """
+        ckt: the name of simulated circuit
+        ttype: the technology type, HKMGS and LP
+        tech: technology node, such as 45, 32, 22, 16
+        v0: nominal vdd
+        f0: frequency under nomial vdd
+        """
+
+        self.freq_dict = simdata[ckt][ttype][tech]['freq_dict']
+        f = self.freq_dict[int(v0*1000)]
+
+        # use relative frequency
+        self.f_translator = f0/f
+
+        self.sp_slope = simdata[ckt][ttype][tech]['sp_slope']
+
+
+    def get_freq(self, volt):
+        """""
+        volt must be a float/int, otherwise, use get_freqs
+        """
+        return self.freq_dict[int(volt*1000)]*self.f_translator
 
     def config(self, v0, f0):
         """"
@@ -209,7 +265,7 @@ class FreqScale2:
             # use over-drive voltage
             return self.model(volts)*self.f_translator        
         else:
-            print 'volts must be a numpy ndarray'
+            logging.error('volts must be a numpy ndarray')
             return 0
 
     def get_freq(self, volt):
@@ -223,7 +279,7 @@ class FreqScale2:
             return freq_np
 
         else:
-            print 'volts can be a number of float/int.'
+            logging.error('volts can be a number of float/int.')
             return 0
 
     def config(self, v0, f0):
@@ -238,7 +294,7 @@ class FreqScale2:
 
 class PTMScaleMC:
 
-    def __init__(self, ckt, ttype, tech, v0, f0, pen_adjust=1.0):
+    def __init__(self, ckt, ttype, tech, v0, f0, pen_adjust=1.0, sigma_level=3):
         
         dset = reader.readNormData(ckt, ttype, tech)
         #self.model = IUSpline(dset['vdd'], dset['freq'], k=3)
@@ -267,7 +323,13 @@ class PTMScaleMC:
 
         mcdset = reader.readMCData(ckt, ttype, tech)
         vdd_tointerp = mcdset['vdd'][::-1]
-        freq_tointerp = mcdset['freq_3sigma'][::-1]
+        if sigma_level == 2:
+            freq_tointerp = mcdset['freq_2sigma'][::-1]
+        elif sigma_level == 1:
+            freq_tointerp = mcdset['freq_sigma'][::-1]
+        else:
+            freq_tointerp = mcdset['freq_3sigma'][::-1]
+
         self.mcmodel = scipy.interpolate.interp1d(vdd_tointerp, freq_tointerp, kind='cubic')
         #self.mcmodel = IUSpline(vdd_tointerp, freq_tointerp)
         #self.freq_down = self.mcmodel(v0)/self.model(v0)
@@ -309,7 +371,7 @@ class PTMScaleMC:
             # use over-drive voltage
             return self.model(volts)*self.f_translator        
         else:
-            print 'volts must be a numpy ndarray'
+            logging.error('volts must be a numpy ndarray')
             return 0
 
     def get_freq(self, volt):
@@ -324,7 +386,7 @@ class PTMScaleMC:
             return float(freq_np)
 
         else:
-            print 'volts can be a number of float/int.'
+            logging.error('volts can be a number of float/int.')
             return 0
         
     def get_penalties(self, volts):
@@ -340,7 +402,7 @@ class PTMScaleMC:
             freq_adjust = freq_mc+(freq_nom-freq_mc)*self.pen_adjust
             return freq_adjust/freq_nom
         else:
-            print 'volts must be a numpy ndarray'
+            logging.error('volts must be a numpy ndarray')
             return 0
 
     def get_penalty(self, volt):
@@ -355,7 +417,7 @@ class PTMScaleMC:
             freq_adjust = freq_nom-(freq_nom-freq_mc)*self.pen_adjust
             return freq_adjust/freq_nom
         else:
-            print 'volts can be a number of float/int.'
+            logging.error('volts can be a number of float/int.')
             return 0
 
     def config(self, v0, f0, pen_adjust=None):
