@@ -298,8 +298,15 @@ class HeteroSys(object):
 
         for kernel in app.kernels:
             if self.use_gpacc:
-                acc = gp_acc
-                perf = perf + app.kernels[kernel] / (acc.perf(kernel, power=self.sys_power, bandwidth=self.sys_bandwidth) / PERF_BASE)
+                if kernel in asics:
+                    acc = asics[kernel]
+                else:
+                    acc = None
+
+                if acc and acc.area > 0:
+                    perf = perf + app.kernels[kernel] / (acc.perf(power=self.sys_power, bandwidth=self.sys_bandwidth) / PERF_BASE)
+                else:
+                    perf = perf + app.kernels[kernel] / (gp_acc.perf(kernel, power=self.sys_power, bandwidth=self.sys_bandwidth) / PERF_BASE)
             else:
                 if kernel in asics:
                     acc = asics[kernel]

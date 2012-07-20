@@ -1,0 +1,27 @@
+<kernels>
+  <kernel name="dummy">
+    <fpga miu="1"/>
+    <asic miu="1"/>
+    <occur>0</occur>
+  </kernel>
+  <kernel name="BS">
+    <fpga miu="0.001"/>
+    <asic miu="17"/>
+    <occur>3.206e-03</occur>
+  </kernel>
+  <kernel name="FFT1024">
+    <fpga miu="0.001"/>
+    <asic miu="489"/>
+    <occur>2.089e-02</occur>
+  </kernel>
+  <kernel name="FFT16">
+    <fpga miu="0.001"/>
+    <asic miu="733"/>
+    <occur>9.075e-02</occur>
+  </kernel>
+  <kernel name="DMM">
+    <fpga miu="0.001"/>
+    <asic miu="27.4"/>
+    <occur>2.414e-01</occur>
+  </kernel>
+</kernels>

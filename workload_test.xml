@@ -1,0 +1,51 @@
+<workload>
+  <app name="app0">
+    <f_parallel>1.000e+00</f_parallel>
+    <kernel_config>
+      <kernel name="_gen_fixednorm_003" cov="5.000e-02"/>
+      <kernel name="_gen_fixednorm_005" cov="5.000e-02"/>
+    </kernel_config>
+  </app>
+  <app name="app1">
+    <f_parallel>1.000e+00</f_parallel>
+    <kernel_config>
+      <kernel name="_gen_fixednorm_005" cov="5.000e-02"/>
+      <kernel name="_gen_fixednorm_006" cov="5.000e-02"/>
+    </kernel_config>
+  </app>
+  <app name="app2">
+    <f_parallel>1.000e+00</f_parallel>
+    <kernel_config>
+      <kernel name="_gen_fixednorm_005" cov="5.000e-02"/>
+      <kernel name="_gen_fixednorm_007" cov="5.000e-02"/>
+    </kernel_config>
+  </app>
+  <app name="app3">
+    <f_parallel>1.000e+00</f_parallel>
+    <kernel_config>
+      <kernel name="_gen_fixednorm_003" cov="5.000e-02"/>
+      <kernel name="_gen_fixednorm_005" cov="5.000e-02"/>
+    </kernel_config>
+  </app>
+  <app name="app4">
+    <f_parallel>1.000e+00</f_parallel>
+    <kernel_config>
+      <kernel name="_gen_fixednorm_005" cov="5.000e-02"/>
+      <kernel name="_gen_fixednorm_006" cov="5.000e-02"/>
+    </kernel_config>
+  </app>
+  <app name="app5">
+    <f_parallel>1.000e+00</f_parallel>
+    <kernel_config>
+      <kernel name="_gen_fixednorm_006" cov="5.000e-02"/>
+    </kernel_config>
+  </app>
+  <app name="app6">
+    <f_parallel>1.000e+00</f_parallel>
+    <kernel_config>
+      <kernel name="_gen_fixednorm_005" cov="5.000e-02"/>
+      <kernel name="_gen_fixednorm_007" cov="5.000e-02"/>
+      <kernel name="_gen_fixednorm_006" cov="5.000e-02"/>
+    </kernel_config>
+  </app>
+</workload>

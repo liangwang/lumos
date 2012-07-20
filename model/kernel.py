@@ -5,6 +5,7 @@ import numpy
 import ConfigParser
 import random
 import math
+from lxml import etree
 
 ASIC_PERF_RATIO = 5
 
@@ -78,8 +79,6 @@ def get_kernel(kid):
     else:
         return None
 
-def gauss_pdf(rv, mean, std):
-    return (1/math.sqrt(2*math.pi*(std**2)) * math.exp(-(rv-mean)**2)/(2*(std**2)))
 
 def gen_kernel_gauss(mean, std, num=None):
     ken_gauss = dict()
@@ -99,7 +98,7 @@ def gen_kernel_gauss(mean, std, num=None):
             #prob = gauss_pdf(uc_miu, mean, std)
             #ken_gauss['gauss%d' % id ] = {'FPGA': UCoreParam(miu=uc_miu),
                                         #'prob': prob}
-            
+
     else:
         rv = scipy.stats.norm.rvs(mean, std)
         prob = scipy.stats.norm.pdf(rv, mean, std)
@@ -110,7 +109,8 @@ def gen_kernel_gauss(mean, std, num=None):
     kernel_pool.update(ken_gauss)
     return ken_gauss
 
-def create_fixednorm(dist_params, fname='fixednorm.cfg', size=100, kid_prefix='fixednorm', occur=None):
+def create_fixednorm(dist_params, fname='fixednorm.cfg', size=100, kid_prefix='fixednorm', 
+        occur=None, perf_range=None):
     """Create kernels with performance in normal distribution,
     but fixed kernel sample points
 
@@ -118,6 +118,7 @@ def create_fixednorm(dist_params, fname='fixednorm.cfg', size=100, kid_prefix='f
     :fname: file to store kernels
     :size: number of kernels to create
     :kid_prefix: prefix string for kernel id
+    :perf_range: (min,max) of performance range, if not set, default to 0.5*mean, and 1.5*mean
     :returns: N/A
 
     """
@@ -144,6 +145,49 @@ def create_fixednorm(dist_params, fname='fixednorm.cfg', size=100, kid_prefix='f
     with open(fname, 'wb') as f:
         cfg.write(f)
 
+
+def create_fixednorm_xml(dist_params, fname='fixednorm.xml', size=100, kid_prefix='fixednorm', 
+        occur=None, perf_range=None):
+    """Create kernels with performance in normal distribution,
+    but fixed kernel sample points
+
+    :dist_params: distribution parameters, including mean, std, etc.
+    :fname: file to store kernels
+    :size: number of kernels to create
+    :kid_prefix: prefix string for kernel id
+    :perf_range: (min,max) of performance range, if not set, default to 0.5*mean, and 1.5*mean
+    :returns: N/A
+
+    """
+    kernels = ['_gen_%s_%03d' % (kid_prefix, idx) for idx in xrange(size)]
+    perf_mean = dist_params['mean']
+    perf_std = dist_params['std']
+    rvs = numpy.linspace(0.5*perf_mean, 1.5*perf_mean, size)
+    if occur:
+        probs = occur
+    else:
+        rvs2 = numpy.linspace(0.5*perf_mean, 1.5*perf_mean, size-1)
+        cdfs = scipy.stats.norm.cdf(rvs2, perf_mean, perf_std)
+        probs1 = numpy.insert(cdfs, 0, 0)
+        probs2 = numpy.append(cdfs, 1)
+        probs = (probs2-probs1) * 1.5 # 1.5 is kernel_count_per_app (average)
+
+    root = etree.Element('kernels')
+    for kernel,perf,prob in zip(kernels, rvs, probs):
+        k_root = etree.SubElement(root, 'kernel')
+        k_root.set('name', kernel)
+
+        fpga_root = etree.SubElement(k_root, 'fpga')
+        fpga_root.set('miu', '%.3e'% (perf/ASIC_PERF_RATIO))
+
+        asic_root = etree.SubElement(k_root, 'asic')
+        asic_root.set('miu', '%.3e'%perf)
+
+        ele = etree.SubElement(k_root, 'occur')
+        ele.text = '%.3e' % prob
+
+    tree = etree.ElementTree(root)
+    tree.write(fname, pretty_print=True)
 
 def create_randnorm(dist_params,fname='norm.cfg', size=100, kid_prefix='randnorm'):
     """Create kernels with performance in normal distribution,
@@ -188,13 +232,38 @@ def load(fname='norm.cfg'):
 
     return sorted(cfg.sections())
 
+def load_xml(fname='norm.xml'):
+    tree = etree.parse(fname)
+    kernels = []
+    for k_root in tree.iter('kernel'):
+        k_name = k_root.get('name')
+        kernels.append(k_name)
+
+        ele = k_root.find('fpga')
+        fpga_miu = float(ele.get('miu'))
+        ele = k_root.find('asic')
+        asic_miu = float(ele.get('miu'))
+        ele = k_root.find('occur')
+        prob = float(ele.text)
+
+        kernel_pool[k_name] = {
+                'FPGA': UCoreParam(miu=fpga_miu),
+                'ASIC': UCoreParam(miu=asic_miu),
+                'occur': prob
+                }
+
+    return sorted(kernels)
+
+
 def do_test():
     params = {'mean': 80,
             'std': 10}
-    create_fixednorm(params, fname='ker_test.cfg', size=20)
+    #create_fixednorm_xml(params, fname='ker_test.xml', size=20)
     #create_randnorm(params, fname='ker_test.cfg', size=10)
-    kernels = load('ker_test.cfg')
+    #kernels = load_xml('ker_test.xml')
+    kernels = load_xml('kernels_asic_inc.xml')
     print kernels
+    print kernel_pool
     #for i in xrange(20):
         #print random.gauss(6,2)
     #rvs = scipy.stats.norm.rvs(80,20,size=20)
@@ -203,10 +272,13 @@ def do_test():
     #print probs
 
 def do_generate():
-    params = {'mean': 200,
-            'std': 35}
-    occur = numpy.linspace(0.9, 0.1, 10)
-    create_fixednorm(params, fname='fixednorm_10.cfg', size=10)
+    #params = {'mean': 200,
+            #'std': 35}
+    #occur = numpy.linspace(0.9, 0.1, 10)
+    #create_fixednorm_xml(params, fname='fixednorm_10.xml', size=10)
+    params = {'mean': 400,
+            'std': 70}
+    create_fixednorm_xml(params, fname='fixednorm_fpga80x.xml', size=10)
 
 if __name__ == '__main__':
     #do_test()

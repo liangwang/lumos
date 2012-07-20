@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 import logging
+import numpy.random
+import scipy.stats
 
 
 class App(object):
     """ An application is a program a system runs for. The application has certain characteristics, such as parallel ratio """
-    def __init__(self, f=0.9, m=0):
+    def __init__(self, f=0.9, m=0, name='app'):
         """ Initialize an application
 
         Arguments:
@@ -16,6 +18,8 @@ class App(object):
         self.f_noacc = f
 
         self.m = m
+
+        self.name = name
 
         self.kernels = {}
 
@@ -164,6 +168,66 @@ class AppFFT64(dict):
 
         self.tag = '_'.join([self.name,
             '-'.join([str(int(100*(1-f))), str(int(100*(f-f_acc))), str(int(100*f_acc))])])
+
+
+def build(cov, occ, probs, kernels, name, f_parallel=1):
+    """Build an application from a set of kernels
+
+    :cov: coverage percentage of all present kernels
+    :occ: occurance bit-vector for all kernels
+    :probs: probability vector of all kernels for appearance
+    :kernels: all possible kernels (kernel pool)
+    :name: The name of the application
+    :f_parallel: the fraction of parallel part
+    :returns: the resulting application
+
+    """
+    active_kernels = dict()
+    psum = 0
+    for o,p,acc in zip(occ, probs, kernels):
+        if o:
+            active_kernels[p] = acc
+            psum = psum + p
+
+    ksorted = sorted(active_kernels.items())
+    krever = ksorted[:] # make another copy
+    krever.reverse()
+    app = App(f=f_parallel, name=name)
+
+    for (p, acc),(prv,acc2) in zip(ksorted, krever):
+        #kcov = cov * prv / psum
+        kcov = 0.05
+        app.reg_kernel(acc, kcov)
+
+    return app
+
+def random_uc_cov(dist, param1, param2):
+    """@todo: Docstring for rand_uc_cov
+
+    :dist: @todo
+    :param1: @todo
+    :param2: @todo
+    :returns: @todo
+
+    """
+    if dist == 'norm':
+        mean = param1
+        std = param2
+        r = scipy.stats.norm.rvs(mean, std)
+        while r < 0:
+            r = scipy.stats.norm.rvs(mean, std)
+    elif dist == 'lognorm':
+        mean = param1
+        std = param2
+        r = numpy.random.lognormal(mean, std)
+    elif dist == 'uniform':
+        rmin = param1
+        rmax = param2
+        r = numpy.random.uniform(rmin, rmax)
+        while r < 0:
+            r = numpy.random.uniform(rmin, rmax)
+
+    return r
 
 if __name__ == '__main__':
     app = App(1)

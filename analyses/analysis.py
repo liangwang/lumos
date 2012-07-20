@@ -7,6 +7,8 @@ from matplotlib.ticker import MultipleLocator
 import os
 from os.path import join as joinpath
 import conf.misc
+
+HOME = joinpath(conf.misc.homedir, 'analyses')
 OUTPUT_HOME = joinpath(conf.misc.homedir, 'outputs')
 DATA_DIR = joinpath(conf.misc.homedir,
                     'outputs', 'analyses')
@@ -14,7 +16,7 @@ FIG_DIR = joinpath(conf.misc.homedir,
                     'outputs', 'figures')
 
 
-def mk_dir(parent, dname):
+def mk_dir(parent,  dname):
     abspath = joinpath(parent, dname)
     try:
         os.makedirs(abspath)
@@ -31,6 +33,33 @@ def make_ws(anl_name):
     fdir = mk_dir(ws_dir, 'figures')
     ddir = mk_dir(ws_dir, 'data')
     return (fdir, ddir)
+
+
+def make_ws_dirs(anl_name):
+    ws_dir = joinpath(HOME, anl_name)
+    fdir = mk_dir(ws_dir, 'figures')
+    ddir = mk_dir(ws_dir, 'data')
+    return (fdir, ddir)
+
+
+def try_update(config, options, section, name):
+    if config.has_option(section, name):
+        if not hasattr(options, name):
+            setattr(options, name, config.get(section, name))
+        elif options.override:
+            setattr(options, name, config.get(section, name))
+
+
+def parse_bw(bw_cfg):
+    cfg_striped = ''.join(bw_cfg.split())
+    bw_dict = dict()
+    for bw in cfg_striped.split(','):
+        tmp = bw.split(':')
+        t = int(tmp[0])
+        v = float(tmp[1])
+        bw_dict[t] = v
+
+    return bw_dict
 
 
 def plot_twinx(x_list, y1_lists, y2_lists,
@@ -144,7 +173,7 @@ def plot_errbar(x_list, y_lists, err_lists, xlabel, ylabel, legend_labels=None, 
     fig.savefig(ofile, bbox_inches='tight')
 
 
-def plot_data(x_list, y_lists, xlabel, ylabel, legend_labels=None, legend_loc=None, ylim=None, xlim=None, ylog=False, xgrid=True, ygrid=True, title=None, figsize=None, marker_list=None, ms_list=None, figdir=None, ofn=None, cb_func=None):
+def plot_data(x_list, y_lists, xlabel, ylabel, legend_title=None, legend_labels=None, legend_loc=None, ylim=None, xlim=None, ylog=False, xgrid=True, ygrid=True, title=None, figsize=None, marker_list=None, ms_list=None, figdir=None, ofn=None, cb_func=None):
     if not marker_list:
         marker_list = ['s', 'o', 'v', '*', '<', '>', '^', '+', 'x', 'D', 'd',
                        '1', '2', '3', '4', 'h', 'H', 'p', '|', '_']
@@ -174,13 +203,17 @@ def plot_data(x_list, y_lists, xlabel, ylabel, legend_labels=None, legend_loc=No
     axes.set_xlabel(xlabel)
     axes.set_ylabel(ylabel)
     if legend_labels:
-        if legend_loc:
-            axes.legend(axes.lines, legend_labels, loc=legend_loc,  prop=dict(size='medium'))
-        else:
-            axes.legend(axes.lines, legend_labels, prop=dict(size='medium'))
+        #if legend_loc:
+        axes.legend(axes.lines, legend_labels, loc=legend_loc,
+                title=legend_title, prop=dict(size='medium'))
+        #else:
+            #axes.legend(axes.lines, legend_labels, prop=dict(size='medium'))
 
     axes.xaxis.grid(xgrid)
     axes.yaxis.grid(ygrid)
+
+    if title:
+        axes.set_title(title)
 
     if cb_func:
         cb_func(axes, fig)

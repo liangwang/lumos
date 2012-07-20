@@ -1,0 +1,26 @@
+<workload>
+  <app name="app0">
+    <f_parallel>1.000e+00</f_parallel>
+    <kernel_config>
+      <kernel name="BS" cov="0.9"/>
+    </kernel_config>
+  </app>
+  <app name="app1">
+    <f_parallel>1.000e+00</f_parallel>
+    <kernel_config>
+      <kernel name="FFT1024" cov="0.9"/>
+    </kernel_config>
+  </app>
+  <app name="app2">
+    <f_parallel>1.000e+00</f_parallel>
+    <kernel_config>
+      <kernel name="FFT16" cov="0.9"/>
+    </kernel_config>
+  </app>
+  <app name="app3">
+    <f_parallel>1.000e+00</f_parallel>
+    <kernel_config>
+      <kernel name="DMM" cov="0.9"/>
+    </kernel_config>
+  </app>
+</workload>
