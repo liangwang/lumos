@@ -3,12 +3,11 @@
 
 import logging
 import cPickle as pickle
-import matplotlib
-matplotlib.use('Agg')
+#import matplotlib
+#matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 from model.system import HeteroSys
-from model.app import App
 from model import kernel, workload
 from model.budget import *
 
@@ -19,26 +18,24 @@ from analyses.analysis import try_update, parse_bw
 from optparse import OptionParser, OptionGroup
 import ConfigParser
 from os.path import join as joinpath
-import os
-import string
 
 import multiprocessing
 import Queue
 import scipy.stats
 import numpy
 
-ANALYSIS_NAME = 'diminc'
+ANALYSIS_NAME = 'asicinc'
 HOME = joinpath(analysis.HOME, ANALYSIS_NAME)
 FIG_DIR,DATA_DIR = analysis.make_ws_dirs(ANALYSIS_NAME)
 
 
-class DimInc(object):
+class ASICInc(object):
     """ Single ASIC accelerator with incremental area allocation """
 
     class Worker(multiprocessing.Process):
 
         def __init__(self, work_queue, result_queue,
-                budget, workload):
+                budget, workload, asic_ratio):
 
             multiprocessing.Process.__init__(self)
 
@@ -48,6 +45,7 @@ class DimInc(object):
 
             self.budget = budget
             self.workload = workload
+            self.asic_ratio = asic_ratio
 
         def run(self):
             while not self.kill_received:
@@ -63,24 +61,50 @@ class DimInc(object):
                 self.result_queue.put(result)
 
         def process(self, job):
-            dim_ratio = job
+            ker, ker_ratio = job
 
-            dummy_alloc = (100-dim_ratio) * 0.01
+            #debug
+            #if ker_ratio != 0 and ker_ratio != 1:
+                #return (ker, ker_ratio, 0,0,0,0)
+            #end of debug
+
+            asic_alloc = self.asic_ratio * 0.01
+            ker_alloc = ker_ratio * 0.01
+            dummy_alloc = (self.asic_ratio - ker_ratio) * 0.01
 
             sys = HeteroSys(self.budget)
             sys.set_mech('HKMGS')
             sys.set_tech(16)
+            sys.set_asic(ker, ker_alloc)
             sys.set_asic('dummy', dummy_alloc)
             #sys.use_gpacc = True
 
             perfs = numpy.array([ sys.get_perf(app)['perf'] for app in self.workload ])
-            mean = sys.get_perf(app)['perf']
 
-            return (dim_ratio, mean)
+            #debug
+            #perf_list = []
+            #for app in self.workload:
+                #perf = sys.get_perf(app)['perf']
+                #perf_list.append(perf)
+                #if ker == '_gen_fixednorm_001' and perf > 106 and perf < 107:
+                    #print app.name, perf
+            #perfs = numpy.array(perf_list)
+            #print ker, ker_ratio
+            #print perfs
+
+            #end of debug
+
+            mean = perfs.mean()
+            std = perfs.std()
+            gmean = scipy.stats.gmean(perfs)
+            hmean = scipy.stats.hmean(perfs)
+
+            return (ker, ker_ratio, mean, std, gmean, hmean)
 
 
     def __init__(self, options, budget):
-        self.prefix = 'asicinc'
+        self.prefix = ANALYSIS_NAME
+
         self.fmt = options.fmt
 
         self.budget = budget
@@ -92,73 +116,122 @@ class DimInc(object):
         self.options = options
 
         kernels = kernel.load_xml(options.kernels)
+        self.accelerators = [k for k in kernels if k != 'dummy']
         self.workload = workload.load_xml(options.workload)
 
-        self.dim_ratio = int(options.dim_ratio)
+        self.asic_ratio = int(options.asic_ratio)
+        ker_ratio_max = int(options.ker_ratio_max)
+        self.asic_ratio_eff = min(self.asic_ratio, ker_ratio_max)
+
+        if options.series:
+            self.FIG_DIR = analysis.mk_dir(FIG_DIR, options.series)
+            self.DATA_DIR = analysis.mk_dir(DATA_DIR, options.series)
+        else:
+            self.FIG_DIR = FIG_DIR
+            self.DATA_DIR = DATA_DIR
+
+
 
     def analyze(self):
-        dfn = joinpath(DATA_DIR, ('%s-%d.pypkl' % (self.id, self.dim_ratio)))
+        dfn = joinpath(self.DATA_DIR, ('%s-%d.pypkl' % (self.id, self.asic_ratio)))
         f = open(dfn, 'wb')
 
         work_queue = multiprocessing.Queue()
         work_count = 0
-        for dim_ratio in xrange(self.dim_ratio, 101):
-            work_queue.put(  dim_ratio )
-            work_count = work_count + 1
+        for ker in self.accelerators:
+            for ker_ratio in xrange(self.asic_ratio_eff+1):
+                work_queue.put( (ker, ker_ratio) )
+                work_count = work_count + 1
 
 
         result_queue = multiprocessing.Queue()
 
         for i in xrange(self.nprocs):
-            worker = DimInc.Worker(work_queue, result_queue,
-                    self.budget, self.workload)
+            worker = ASICInc.Worker(work_queue, result_queue,
+                    self.budget, self.workload, self.asic_ratio)
             worker.start()
 
-        # Collect all results
-        mean_list = [ -1 for x in xrange(101)]
-        for i in xrange(work_count):
-            dim_alloc, mean = result_queue.get()
-            mean_list[dim_alloc] = mean
+        # Initialize result lists
+        mean_dict = dict()
+        for ker in self.accelerators:
+            mean_dict[ker] = [-1 for x in xrange(self.asic_ratio_eff+1)]
 
-        pickle.dump(mean_list, f)
+        # Collect all results
+        for i in xrange(work_count):
+            ker, ker_alloc, mean, std, gmean, hmean = result_queue.get()
+            mean_dict[ker][ker_alloc] = mean
+
+        pickle.dump(mean_dict, f)
         f.close()
 
     def plot(self):
-        #self.plot_speedup()
-        self.plot_derivative(step=1)
+        self.plot_speedup()
+        self.plot_derivative()
 
 
     def plot_speedup(self):
-        dfn = joinpath(DATA_DIR, ('%s-%d.pypkl' % (self.id, self.dim_ratio)))
+        dfn = joinpath(self.DATA_DIR, ('%s-%d.pypkl' % (self.id, self.asic_ratio)))
         with open(dfn, 'rb') as f:
-            mean_list = pickle.load(f)
+            mean_dict = pickle.load(f)
 
-            x_lists = [x for x in xrange(self.dim_ratio, 101)]
-            analysis.plot_data(x_lists, [mean_list[self.dim_ratio:],],
+            mean_lists = []
+            for ker in self.accelerators:
+                mean_lists.append(mean_dict[ker][:self.asic_ratio_eff+1])
+
+            x_lists = [x for x in xrange(self.asic_ratio_eff+1)]
+            analysis.plot_data(x_lists, mean_lists,
                     xlabel='Total ASIC allocation',
                     ylabel='Speedup (mean)',
-                    title='%d%% ASIC allocation'%self.dim_ratio,
-                    xlim=(self.dim_ratio, 101),
-                    figdir=FIG_DIR,
-                    ofn='%s-%d.%s' % (self.id, self.dim_ratio, self.fmt)
+                    legend_labels=[ accl[-1:] for accl in self.accelerators ],
+                    title='%d%% ASIC allocation'%self.asic_ratio,
+                    xlim=(0, self.asic_ratio_eff+1),
+                    figdir=self.FIG_DIR,
+                    ofn='%s-%d.%s' % (self.id, self.asic_ratio, self.fmt)
                     )
 
-    def plot_derivative(self, step=1):
-        dfn = joinpath(DATA_DIR, ('%s-%d.pypkl' % (self.id, self.dim_ratio)))
+            #analysis.plot_data(self.asic_alloc, gmean_lists,
+                    #xlabel='ASIC allocation in percentage',
+                    #ylabel='Speedup (gmean)',
+                    #legend_labels=self.accelerators,
+                    #xlim=(0, 0.5),
+                    #figdir=FIG_DIR,
+                    #ofn='%s-gmean.png'%self.id)
+
+            #analysis.plot_data(self.asic_alloc, hmean_lists,
+                    #xlabel='ASIC allocation in percentage',
+                    #ylabel='Speedup (hmean)',
+                    #legend_labels=self.accelerators,
+                    #xlim=(0, 0.5),
+                    #figdir=FIG_DIR,
+                    #ofn='%s-hmean.png'%self.id)
+
+
+    def plot_derivative(self):
+        dfn = joinpath(self.DATA_DIR, ('%s-%d.pypkl' % (self.id, self.asic_ratio)))
         with open(dfn, 'rb') as f:
-            mean_list = pickle.load(f)
+            mean_dict = pickle.load(f)
 
-            mean_len = len(mean_list)
-            deriv_list = [ (mean_list[i+step]-mean_list[i]) for i in xrange(self.dim_ratio, 100, step) ]
+            mean_lists = []
+            for ker in self.accelerators:
+                mean_lists.append(mean_dict[ker])
 
-            x_lists = [x for x in xrange(self.dim_ratio, 100, step)]
-            analysis.plot_data(x_lists, [deriv_list,],
+            deriv_lists = []
+            for mean_list in mean_lists:
+                #deriv_list = [ (mean_list[i+1]-mean_list[i]) for i in xrange(self.asic_ratio) ][:10]
+                deriv_list = [ (mean_list[i+1]-mean_list[i]) for i in xrange(self.asic_ratio_eff) ][:self.asic_ratio_eff]
+                deriv_lists.append(deriv_list)
+
+            #x_lists = [x+1 for x in xrange(self.asic_ratio)][:10]
+            x_lists = [x+1 for x in xrange(self.asic_ratio_eff)]
+            analysis.plot_data(x_lists, deriv_lists,
                     xlabel='Total ASIC allocation',
                     ylabel='Speedup (derivative)',
-                    title='%d%% ASIC allocation'%self.dim_ratio,
-                    xlim=(self.dim_ratio, 101),
-                    figdir=FIG_DIR,
-                    ofn='%s-deriv-%d.%s' % (self.id, self.dim_ratio, self.fmt)
+                    legend_labels=[ accl[-1:] for accl in self.accelerators ],
+                    title='%d%% ASIC allocation'%self.asic_ratio,
+                    xlim=(0, self.asic_ratio_eff+1),
+                    #xlim=(0, 11),
+                    figdir=self.FIG_DIR,
+                    ofn='%s-deriv-%d.%s' % (self.id, self.asic_ratio, self.fmt)
                     )
 
 LOGGING_LEVELS = {'critical': logging.CRITICAL,
@@ -186,7 +259,8 @@ def option_override(options):
         try_update(config, options, section, 'sys_area')
         try_update(config, options, section, 'sys_power')
         try_update(config, options, section, 'sys_bw')
-        try_update(config, options, section, 'dim_ratio')
+        try_update(config, options, section, 'asic_ratio')
+        try_update(config, options, section, 'ker_ratio_max')
 
     section = 'app'
     if config.has_section(section):
@@ -196,6 +270,7 @@ def option_override(options):
     section = 'analysis'
     if config.has_section(section):
         try_update(config, options, section, 'sec')
+        try_update(config, options, section, 'series')
         try_update(config, options, section, 'action')
         try_update(config, options, section, 'fmt')
         try_update(config, options, section, 'nprocs')
@@ -217,8 +292,10 @@ def build_optparser():
     sys_options.add_option('--sys-bw', metavar='BANDWIDTH',
             default='45:180,32:198,22:234,16:252',
             help='Power budget in Watts, default: {%default}. This option will be discarded when budget is NOT custom')
-    sys_options.add_option('--dim-ratio', type='int',
-            help='The percentage value of die area allocated to Dim Silicon. For example, --dim-raito=50 means 50% of total area budget is allocated to dim silicon')
+    sys_options.add_option('--asic-ratio', type='int',
+            help='The percentage value of die area allocated to ASIC accelerators. For example, --asic-raito=50 means 50% of total area budget is allocated to ASIC accelerators')
+    sys_options.add_option('--ker-ratio-max', type='int',
+            help='The maximum allocation for a single accelerator')
     parser.add_option_group(sys_options)
 
     app_options = OptionGroup(parser, "Application Configurations")
@@ -229,8 +306,8 @@ def build_optparser():
     parser.add_option_group(app_options)
 
     anal_options = OptionGroup(parser, "Analysis options")
-    section_choices = ('fpga', 'asic')
-    anal_options.add_option('--sec', default='fpga',
+    section_choices = ('asicinc',)
+    anal_options.add_option('--sec', default='asicinc',
             choices=section_choices, metavar='SECTION',
             help='choose the secitons of plotting, choose from ('
             + ','.join(section_choices)
@@ -246,6 +323,7 @@ def build_optparser():
             help='choose the format of output, choose from ('
             + ','.join(fmt_choices)
             + '), default: %default')
+    anal_options.add_option('--series', help='Select series')
     parser.add_option_group(anal_options)
 
     llevel_choices = ('info', 'debug', 'error')
@@ -254,7 +332,7 @@ def build_optparser():
             help='Logging level of LEVEL, choose from ('
             + ','.join(llevel_choices)
             + '), default: %default')
-    parser.add_option('-f', '--config-file', default='%s.cfg'%ANALYSIS_NAME,
+    parser.add_option('-f', '--config-file', default='config/%s.cfg'%ANALYSIS_NAME,
             metavar='FILE', help='Use configurations in FILE, default: %default')
     parser.add_option('-n', action='store_false', dest='override', default=True,
             help='DONOT override command line options with the same one in the configuration file. '
@@ -289,9 +367,8 @@ def main():
     else:
         logging.error('No action specified')
 
-    if options.sec == 'diminc':
-        anl = DimInc(options,budget=budget)
-
+    if options.sec == 'asicinc':
+        anl = ASICInc(options,budget=budget)
         if 'analysis' in actions:
             anl.analyze()
         if 'plot' in actions:

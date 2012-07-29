@@ -3,14 +3,16 @@
 
 import logging
 import cPickle as pickle
-import matplotlib
-matplotlib.use('Agg')
+import itertools
+#import matplotlib
+#matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 from model.system import HeteroSys
 from model.app import App
 from model import kernel, workload
 from model.budget import *
+from model.kernel import UCoreParam
 
 import analyses.analysis as analysis
 from analyses.analysis import plot_data, plot_twinx, plot_series, plot_series2
@@ -19,24 +21,28 @@ from analyses.analysis import try_update, parse_bw
 from optparse import OptionParser, OptionGroup
 import ConfigParser
 from os.path import join as joinpath
+import os
+import string
 
 import multiprocessing
 import Queue
 import scipy.stats
 import numpy
+import numpy.random
+from mpl_toolkits.mplot3d import Axes3D
+from mpltools import style
 
-ANALYSIS_NAME = 'fpgainc'
+ANALYSIS_NAME = 'asicquad'
 HOME = joinpath(analysis.HOME, ANALYSIS_NAME)
 FIG_DIR,DATA_DIR = analysis.make_ws_dirs(ANALYSIS_NAME)
 
 
-class FPGAInc(object):
-    """ Single ASIC accelerator with incremental area allocation """
+class ASICQuad(object):
+    """ only one accelerators per system """
 
     class Worker(multiprocessing.Process):
 
-        def __init__(self, work_queue, result_queue,
-                budget, workload, ucore_ratio):
+        def __init__(self, work_queue, result_queue, budget, workload, kids):
 
             multiprocessing.Process.__init__(self)
 
@@ -44,9 +50,10 @@ class FPGAInc(object):
             self.result_queue = result_queue
             self.kill_received = False
 
+            #self.asic_area_list = range(5, 91, 2)
             self.budget = budget
             self.workload = workload
-            self.ucore_ratio = ucore_ratio
+            self.kids = kids
 
         def run(self):
             while not self.kill_received:
@@ -62,21 +69,16 @@ class FPGAInc(object):
                 self.result_queue.put(result)
 
         def process(self, job):
-            fpga_ratio = job
-
-            fpga_alloc = fpga_ratio * 0.01
-            dummy_alloc = (self.ucore_ratio - fpga_ratio) * 0.01
+            cid, config, asic_area = job
+            alloc = asic_area * 0.01
+            kids = self.kids
+            #kfirst = k * 0.01
 
             sys = HeteroSys(self.budget)
             sys.set_mech('HKMGS')
             sys.set_tech(16)
-            sys.set_asic('dummy', dummy_alloc)
-
-            if fpga_ratio != 0:
-                sys.realloc_gpacc(fpga_alloc)
-                sys.use_gpacc = True
-            else:
-                sys.use_gpacc = False
+            for idx,kid in enumerate(kids):
+                sys.set_asic(kid, alloc*config[idx]*0.01)
 
             perfs = numpy.array([ sys.get_perf(app)['perf'] for app in self.workload ])
             mean = perfs.mean()
@@ -84,29 +86,62 @@ class FPGAInc(object):
             gmean = scipy.stats.gmean(perfs)
             hmean = scipy.stats.hmean(perfs)
 
-            return (fpga_ratio, mean, std, gmean, hmean)
+            print '{cid}, {asic}, {perf}, {config}'.format(
+                    cid=cid,
+                    asic=asic_area,
+                    perf=mean,
+                    config=config)
+
+            return (cid, asic_area, mean, std, gmean, hmean)
 
 
-    def __init__(self, options, budget):
+    def __init__(self, options, budget, pv=False):
         self.prefix = ANALYSIS_NAME
-
         self.fmt = options.fmt
 
         self.budget = budget
 
+        self.pv = pv
+
+        #self.fpga_area_list = (5, 10, 15, 20, 25, 30, 35, 40, 45, 50,
+                #55, 60, 65, 70, 75, 80, 85, 90, 95)
+        #self.fpga_area_list = range(5, 91) 
+        #self.cov_list = (0.1, 0.2, 0.3, 0.4, 0.5, 0.6)
+
+
         self.id = self.prefix
 
-        self.nprocs = int(options.nprocs)
+        self.num_processes = int(options.nprocs)
+
+        #self.asic_alloc = (5, 10, 15, 20, 25, 30, 35, 40, 45)
+        #self.asic_alloc = (0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1)
+        #self.kfirst_alloc = (10, 30, 50, 70, 90)
+        self.asic_area_list = (5, 10, 15, 20, 30, 40)
+
+        #self.kalloc1 = 0.1
+        #self.kalloc2 = 0.3
+        #self.kalloc3 = 0.6
+        self.kalloc = (10, 20, 30, 40)
+
+        #self.kid1 = '_gen_fixednorm_004'
+        #self.kid2 = '_gen_fixednorm_005'
+        #self.kid3 = '_gen_fixednorm_006'
+        #self.kids = ('_gen_fixednorm_004','_gen_fixednorm_005','_gen_fixednorm_006')
+        self.kids = ['_gen_fixednorm_00%s' % kid for kid in options.kids.split(',')]
+
+        self.alloc_configs = (
+                (10, 30, 40, 20),
+                (20, 30, 40, 10),
+                (10, 40, 30, 20),
+                (20, 40, 30, 10),
+                (25, 25, 25, 25)
+                )
 
         self.options = options
 
         kernels = kernel.load_xml(options.kernels)
         self.accelerators = [k for k in kernels if k != 'dummy']
         self.workload = workload.load_xml(options.workload)
-
-        self.ucore_ratio = int(options.ucore_ratio)
-        fpga_ratio_max = 100
-        self.fpga_ratio_eff = min(self.ucore_ratio, fpga_ratio_max)
 
         if options.series:
             self.FIG_DIR = analysis.mk_dir(FIG_DIR, options.series)
@@ -115,55 +150,91 @@ class FPGAInc(object):
             self.FIG_DIR = FIG_DIR
             self.DATA_DIR = DATA_DIR
 
+
     def analyze(self):
-        dfn = joinpath(self.DATA_DIR, ('%s-%d.pypkl' % (self.id, self.ucore_ratio)))
-        f = open(dfn, 'wb')
+        asic_area_list = self.asic_area_list
+        kernel_miu_list = []
+        cov_list = []
+
+        kids = self.kids
+        alloc_configs = self.alloc_configs
+        n_alloc_configs = len(alloc_configs)
 
         work_queue = multiprocessing.Queue()
-        work_count = 0
-        for fpga_ratio in xrange(self.fpga_ratio_eff+1):
-            work_queue.put( fpga_ratio )
-            work_count = work_count + 1
-
+        for cid in range(n_alloc_configs):
+            for asic_area in asic_area_list:
+                work_queue.put( (cid, alloc_configs[cid], asic_area) )
 
         result_queue = multiprocessing.Queue()
 
-        for i in xrange(self.nprocs):
-            worker = FPGAInc.Worker(work_queue, result_queue,
-                    self.budget, self.workload, self.ucore_ratio)
+        for i in range(self.num_processes):
+            worker = self.Worker(work_queue, result_queue, self.budget, self.workload, kids)
             worker.start()
 
-        # Collect all results
-        mean_list = [ -1 for x in xrange(self.fpga_ratio_eff+1) ]
-        for i in xrange(work_count):
-            fpga_alloc, mean, std, gmean, hmean = result_queue.get()
-            mean_list[fpga_alloc] = mean
+        alloc_list = []
+        acc_list = []
+        mean_list = []
+        std_list = []
+        meandict = dict()
+        stddict = dict()
+        gmeandict = dict()
+        hmeandict = dict()
+        for i in xrange(n_alloc_configs*len(self.asic_area_list)):
+            cid, asic_area, mean, std, gmean, hmean = result_queue.get()
+            if cid not in meandict:
+                meandict[cid] = dict()
+                stddict[cid] = dict()
+                gmeandict[cid] = dict()
+                hmeandict[cid] = dict()
+            meandict[cid][asic_area] = mean
+            stddict[cid][asic_area] = std
+            gmeandict[cid][asic_area] = gmean
+            hmeandict[cid][asic_area] = hmean
 
-        pickle.dump(mean_list, f)
-        f.close()
+        mean_lists = []
+        std_lists = []
+        gmean_lists = []
+        hmean_lists = []
+        for cid in xrange(n_alloc_configs):
+            mean_lists.append( [ meandict[cid][asic_area] for asic_area in self.asic_area_list ])
+            std_lists.append( [ stddict[cid][asic_area] for asic_area in self.asic_area_list ])
+            gmean_lists.append( [ gmeandict[cid][asic_area] for asic_area in self.asic_area_list ])
+            hmean_lists.append( [ hmeandict[cid][asic_area] for asic_area in self.asic_area_list ])
+
+
+        #pickle.dump(self.accelerators, f)
+        #pickle.dump(self.asic_alloc, f)
+        dfn = joinpath(self.DATA_DIR, ('%s.pypkl' % self.id))
+        with open(dfn, 'wb') as f:
+            pickle.dump(mean_lists, f)
+            pickle.dump(std_lists, f)
+            pickle.dump(gmean_lists, f)
+            pickle.dump(hmean_lists, f)
 
     def plot(self):
-        self.plot_speedup()
-        self.plot_derivative()
-
-
-    def plot_speedup(self):
-        dfn = joinpath(self.DATA_DIR, ('%s-%d.pypkl' % (self.id, self.ucore_ratio)))
+        style.use('ggplot')
+        dfn = joinpath(DATA_DIR, ('%s.pypkl' % self.id))
         with open(dfn, 'rb') as f:
-            mean_list = pickle.load(f)
+            mean_lists = pickle.load(f)
+            std_lists = pickle.load(f)
+            gmean_lists = pickle.load(f)
+            hmean_lists = pickle.load(f)
 
-            mean_lists = []
-            mean_lists.append(mean_list)
-
-            x_lists = [x for x in xrange(self.fpga_ratio_eff+1)]
-            analysis.plot_data(x_lists, mean_lists,
-                    xlabel='Total ASIC allocation',
-                    ylabel='Speedup (mean)',
-                    title='%d%% U-core allocation'%self.ucore_ratio,
-                    xlim=(0, self.fpga_ratio_eff+1),
-                    figdir=self.FIG_DIR,
-                    ofn='%s-%d.%s' % (self.id, self.ucore_ratio, self.fmt)
-                    )
+        x_lists = numpy.array(self.asic_area_list) * 0.01
+        analysis.plot_data(x_lists, mean_lists,
+                xlabel='Total ASIC allocation',
+                ylabel='Speedup (mean)',
+                legend_labels=['-'.join(['%d'%a for a in alloc_config]) for alloc_config in self.alloc_configs],
+                legend_loc='lower right',
+                #title=','.join([s[-1:] for s in self.kids]),
+                xlim=(0, 0.42),
+                ylim=(127, 160),
+                figsize=(6, 4.5),
+                #xlim=(0, 0.11),
+                figdir=FIG_DIR,
+                ofn='%s-%s.%s' % (self.id,
+                    '-'.join([s[-1:] for s in self.kids]), self.fmt)
+                )
 
             #analysis.plot_data(self.asic_alloc, gmean_lists,
                     #xlabel='ASIC allocation in percentage',
@@ -182,25 +253,13 @@ class FPGAInc(object):
                     #ofn='%s-hmean.png'%self.id)
 
 
-    def plot_derivative(self):
-        dfn = joinpath(self.DATA_DIR, ('%s-%d.pypkl' % (self.id, self.ucore_ratio)))
-        with open(dfn, 'rb') as f:
-            mean_list = pickle.load(f)
 
-            deriv_lists = []
-            mean_len = len(mean_list)
-            deriv_list = [ (mean_list[i+1]-mean_list[i]) for i in xrange(mean_len-1) ]
-            deriv_lists.append(deriv_list)
 
-            x_lists = [x+1 for x in xrange(self.fpga_ratio_eff)]
-            analysis.plot_data(x_lists, deriv_lists,
-                    xlabel='Total ASIC allocation',
-                    ylabel='Speedup (derivative)',
-                    title='%d%% U-core allocation'%self.ucore_ratio,
-                    xlim=(0, self.fpga_ratio_eff+1),
-                    figdir=self.FIG_DIR,
-                    ofn='%s-deriv-%d.%s' % (self.id, self.ucore_ratio, self.fmt)
-                    )
+
+
+
+
+
 
 
 LOGGING_LEVELS = {'critical': logging.CRITICAL,
@@ -209,11 +268,13 @@ LOGGING_LEVELS = {'critical': logging.CRITICAL,
         'info': logging.INFO,
         'debug': logging.DEBUG}
 
+
+
 def option_override(options):
     """Override cmd options by using values from configconfiguration file
 
     :options: option parser (already parsed from cmd line) to be overrided
-    :returns: N/A
+    :returns: @todo
 
     """
     if not options.config_file:
@@ -228,7 +289,8 @@ def option_override(options):
         try_update(config, options, section, 'sys_area')
         try_update(config, options, section, 'sys_power')
         try_update(config, options, section, 'sys_bw')
-        try_update(config, options, section, 'ucore_ratio')
+        try_update(config, options, section, 'asic_ratio')
+        try_update(config, options, section, 'ker_ratio_max')
 
     section = 'app'
     if config.has_section(section):
@@ -242,6 +304,7 @@ def option_override(options):
         try_update(config, options, section, 'action')
         try_update(config, options, section, 'fmt')
         try_update(config, options, section, 'nprocs')
+
 
 def build_optparser():
     # Init command line arguments parser
@@ -260,8 +323,10 @@ def build_optparser():
     sys_options.add_option('--sys-bw', metavar='BANDWIDTH',
             default='45:180,32:198,22:234,16:252',
             help='Power budget in Watts, default: {%default}. This option will be discarded when budget is NOT custom')
-    sys_options.add_option('--ucore-ratio', type='int',
-            help='The percentage value of die area allocated to ASIC accelerators. For example, --ucore-raito=50 means 50% of total area budget is allocated to ASIC accelerators')
+    sys_options.add_option('--asic-ratio', type='int',
+            help='The percentage value of die area allocated to ASIC accelerators. For example, --asic-raito=50 means 50% of total area budget is allocated to ASIC accelerators')
+    sys_options.add_option('--ker-ratio-max', type='int',
+            help='The maximum allocation for a single accelerator')
     parser.add_option_group(sys_options)
 
     app_options = OptionGroup(parser, "Application Configurations")
@@ -272,8 +337,8 @@ def build_optparser():
     parser.add_option_group(app_options)
 
     anal_options = OptionGroup(parser, "Analysis options")
-    section_choices = ('fpgainc',)
-    anal_options.add_option('--sec', default='fpgainc',
+    section_choices = ('asicinc',)
+    anal_options.add_option('--sec', default='asicinc',
             choices=section_choices, metavar='SECTION',
             help='choose the secitons of plotting, choose from ('
             + ','.join(section_choices)
@@ -290,6 +355,7 @@ def build_optparser():
             + ','.join(fmt_choices)
             + '), default: %default')
     anal_options.add_option('--series', help='Select series')
+    anal_options.add_option('--kids', default='3,4,5,6')
     parser.add_option_group(anal_options)
 
     llevel_choices = ('info', 'debug', 'error')
@@ -298,7 +364,7 @@ def build_optparser():
             help='Logging level of LEVEL, choose from ('
             + ','.join(llevel_choices)
             + '), default: %default')
-    parser.add_option('-f', '--config-file', default='%s.cfg'%ANALYSIS_NAME,
+    parser.add_option('-f', '--config-file', default='config/%s.cfg'%ANALYSIS_NAME,
             metavar='FILE', help='Use configurations in FILE, default: %default')
     parser.add_option('-n', action='store_false', dest='override', default=True,
             help='DONOT override command line options with the same one in the configuration file. '
@@ -306,9 +372,10 @@ def build_optparser():
 
     return parser
 
-
 def main():
+    # Init command line arguments parser
     parser = build_optparser()
+
     (options, args) = parser.parse_args()
     option_override(options)
 
@@ -328,20 +395,21 @@ def main():
     else:
         logging.error('unknwon budget')
 
+
     if options.action:
-        actions = options.action.split(',')
+        actions=options.action.split(',')
     else:
-        logging.error('No action specified')
+        logging.error("No action specified")
 
-    if options.sec == 'fpgainc':
-        anl = FPGAInc(options,budget=budget)
+    if options.sec == 'asicquad':
+        anl = ASICQuad(options,budget=budget)
+    else:
+        logging.error('unknow analysis %s' % options.sec)
 
-        if 'analysis' in actions:
-            anl.analyze()
-
-        if 'plot' in actions:
-            anl.plot()
-
+    if 'analysis' in actions:
+        anl.analyze()
+    if 'plot' in actions:
+        anl.plot()
 
 if __name__ == '__main__':
     main()

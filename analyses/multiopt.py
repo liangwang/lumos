@@ -177,7 +177,6 @@ def optimize_alloc2(alloc, area_unalloc, asic_perf,
             alloc[key_max] = alloc[key_max] + step
             area_unalloc = area_unalloc - step
 
-        print alloc
 
         # post-alloc check
         fpga_alloc = alloc['fpga']
@@ -211,7 +210,6 @@ def optimize_fpgaonly(alloc, area_unalloc, dim_deriv, fpga_deriv):
 
         print ucore_ratio, alloc['fpga']
 
-    print alloc
     return alloc
 
 
@@ -360,7 +358,6 @@ class MultiOpt(object):
                 fpga_perf, dim_perf)
 
         alloc_init = alloc.copy()
-        print alloc_init
 
         #alloc_opt = optimize_fpgaonly(alloc, area_unalloc, dim_deriv, fpga_deriv)
 
@@ -422,16 +419,19 @@ class MultiOpt(object):
         listlen = len(dim_perf)
         dim_deriv = [ (dim_perf[i+1]-dim_perf[i]) for i in xrange(listlen-1) ]
 
-        dim_alloc_seed = 20
+        dim_alloc_seed = 80
         alloc, area_unalloc = init_asiconly(dim_alloc_seed,
                 asic_perf, dim_perf)
 
         alloc_init = alloc.copy()
 
+        #alloc_opt = optimize_asiconly(alloc, area_unalloc,
+                #asic_deriv, dim_deriv, dim_max=60, asic_max=20)
         alloc_opt = optimize_asiconly(alloc, area_unalloc,
-                asic_deriv, dim_deriv, dim_max=60, asic_max=20)
+                asic_deriv, dim_deriv)
         #alloc_opt = optimize_alloc2(alloc, area_unalloc,
                 #asic_perf, fpga_perf, dim_perf)
+
 
         area_unalloc = 0
         alloc_justify = dict()
@@ -444,7 +444,9 @@ class MultiOpt(object):
         alloc_justify['dim'] = alloc_opt['dim']
 
         alloc_opt = optimize_asiconly(alloc_justify, area_unalloc,
-                asic_deriv, dim_deriv, dim_max=60, asic_max=20)
+                asic_deriv, dim_deriv)
+        #alloc_opt = optimize_asiconly(alloc_justify, area_unalloc,
+                #asic_deriv, dim_deriv, dim_max=60, asic_max=20)
         #alloc_opt = optimize_alloc2(alloc_justify, area_unalloc,
                 #asic_perf, fpga_perf, dim_perf)
 
@@ -542,31 +544,54 @@ def verify(budget, kfn, wfn):
     #mean = perfs.mean()
     #print mean
 
+    # seed = 80
     sys1 = HeteroSys(budget)
     sys1.set_mech('HKMGS')
     sys1.set_tech(16)
-    #sys1.set_asic('_gen_fixednorm_005', 0.05)
-    #sys1.set_asic('_gen_fixednorm_004', 0.05)
+    sys1.set_asic('_gen_fixednorm_003', 0.04)
+    sys1.set_asic('_gen_fixednorm_004', 0.06)
+    sys1.set_asic('_gen_fixednorm_005', 0.05)
+    sys1.set_asic('_gen_fixednorm_006', 0.04)
     sys1.realloc_gpacc(0.19)
     sys1.use_gpacc = True
 
     perfs = numpy.array([ sys1.get_perf(app)['perf'] for app in wld ])
     mean = perfs.mean()
-    print mean
+    print '80: {mean}'.format(mean=mean)
 
-    sys2 = HeteroSys(budget)
-    sys2.set_mech('HKMGS')
-    sys2.set_tech(16)
-    sys2.set_asic('_gen_fixednorm_003', 0.04)
-    sys2.set_asic('_gen_fixednorm_004', 0.04)
-    sys2.set_asic('_gen_fixednorm_005', 0.04)
-    sys2.set_asic('_gen_fixednorm_006', 0.04)
-    sys2.realloc_gpacc(0.14)
-    sys2.use_gpacc = True
+    # seed = 70
+    sys1 = HeteroSys(budget)
+    sys1.set_mech('HKMGS')
+    sys1.set_tech(16)
+    sys1.set_asic('_gen_fixednorm_002', 0.03)
+    sys1.set_asic('_gen_fixednorm_003', 0.05)
+    sys1.set_asic('_gen_fixednorm_004', 0.06)
+    sys1.set_asic('_gen_fixednorm_005', 0.05)
+    sys1.set_asic('_gen_fixednorm_006', 0.04)
+    sys1.set_asic('_gen_fixednorm_007', 0.02)
+    sys1.realloc_gpacc(0.19)
+    sys1.use_gpacc = True
 
-    perfs = numpy.array([ sys2.get_perf(app)['perf'] for app in wld ])
+    perfs = numpy.array([ sys1.get_perf(app)['perf'] for app in wld ])
     mean = perfs.mean()
-    print mean
+    print '70: {mean}'.format(mean=mean)
+
+    # seed = 60
+    sys1 = HeteroSys(budget)
+    sys1.set_mech('HKMGS')
+    sys1.set_tech(16)
+    sys1.set_asic('_gen_fixednorm_002', 0.04)
+    sys1.set_asic('_gen_fixednorm_003', 0.06)
+    sys1.set_asic('_gen_fixednorm_004', 0.07)
+    sys1.set_asic('_gen_fixednorm_005', 0.06)
+    sys1.set_asic('_gen_fixednorm_006', 0.05)
+    sys1.set_asic('_gen_fixednorm_007', 0.03)
+    sys1.realloc_gpacc(0.19)
+    sys1.use_gpacc = True
+
+    perfs = numpy.array([ sys1.get_perf(app)['perf'] for app in wld ])
+    mean = perfs.mean()
+    print '60: {mean}'.format(mean=mean)
 
 
 LOGGING_LEVELS = {'critical': logging.CRITICAL,
@@ -663,7 +688,7 @@ def build_optparser():
             help='Logging level of LEVEL, choose from ('
             + ','.join(llevel_choices)
             + '), default: %default')
-    parser.add_option('-f', '--config-file', default='%s.cfg'%ANALYSIS_NAME,
+    parser.add_option('-f', '--config-file', default='config/%s.cfg'%ANALYSIS_NAME,
             metavar='FILE', help='Use configurations in FILE, default: %default')
     parser.add_option('-n', action='store_false', dest='override', default=True,
             help='DONOT override command line options with the same one in the configuration file. '
