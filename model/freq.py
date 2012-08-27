@@ -17,9 +17,9 @@ class ProjectionScale:
     __DATA_OLD=joinpath('data','inv_45_sudhanshu.xls')
 
     inv_vt = 0.5
-    
+
     def __init__(self, vt, v0, f0):
-        
+
         p = XLSParser.XLSParser()
         p.parse(self.__DATA_FILE)
         dict_freq = p.get_freqs()
@@ -38,7 +38,7 @@ class ProjectionScale:
         #   v = v_inv + v_translator
         self.v_translator = vt - self.inv_vt
         v = v0 - self.v_translator
-        
+
         f = self.model(v)
 
         # use relative frequency
@@ -109,7 +109,7 @@ class PTMScale:
         v0: nominal vdd
         f0: frequency under nomial vdd
         """
-        
+
         dset = reader.readNormData(ckt, ttype, tech)
         vdd_to_interp = dset['vdd'][::-1]
         freq_to_interp= dset['freq'][::-1]
@@ -117,18 +117,17 @@ class PTMScale:
         f = self.model(v0)
         #self.model = IUSpline(vdd_to_interp, freq_to_interp)
         #f = self.model(v0)[0]
-        
+
 
         # use relative frequency
         #   f = f_inv * f_translator
         self.f_translator = f0/f
-        
+
         st_power = dset['sp'].tolist()
         volts = dset['vdd'].tolist()
         self.sp_slope = ((math.log10(st_power[-1])-math.log10(st_power[0])) /
                          (volts[-1]-volts[0]))
 
-        
     def get_freqs(self, volts):
         """"
         volts must be a numpy.ndarray, otherwise, use get_freq
@@ -137,7 +136,7 @@ class PTMScale:
             # use relative voltage
             #return self.model(volts*self.v_translator)*self.f_translator        
             # use over-drive voltage
-            return self.model(volts)*self.f_translator        
+            return self.model(volts)*self.f_translator
         else:
             logging.error('volts must be a numpy ndarray')
             return 0
@@ -435,19 +434,19 @@ class PTMScaleMC:
 
 if __name__ == '__main__':
     #import matplotlib.pyplot as plt
-    scaler = FreqScale2('inv', 'LP', 45, 1, 4.2)
+    #scaler = FreqScale2('inv', 'LP', 45, 1, 4.2)
     #scaler = FreqScale(0.5, 1, 4.2)
     
     #volts_orig = scaler.volts
     #freqs_orig = scaler.freqs/1e9
 
     
-    volts = np.linspace(0.3,1.1,10000)
+    #volts = np.linspace(0.3,1.1,10000)
     #freqs = scaler.get_freqs(volts)
 
-    freqs = []
-    for volt in volts:
-        freqs.append(scaler.get_freq(volt))
+    #freqs = []
+    #for volt in volts:
+        #freqs.append(scaler.get_freq(volt))
 
 
 
@@ -468,6 +467,4 @@ if __name__ == '__main__':
     #axes.grid(True)
     
     #fig.savefig('freq_volt.pdf')
-
-        
-
+    pass
