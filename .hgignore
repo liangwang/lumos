@@ -16,3 +16,4 @@ swig
 mcpat
 outputs
 *.txt
+*.orig
