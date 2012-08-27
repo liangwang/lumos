@@ -5,7 +5,7 @@ import math
 class Base:
     vdd = 1
     vt = 0.45
-    
+
     # Picked up from McPAT
     freq={'IO': 4.2, 'O3': 3.7}
     dp={'IO': 6.14, 'O3': 19.83} # dynamic power
