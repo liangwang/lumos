@@ -47,7 +47,7 @@ def gen_interp(ckt, ttype, tech):
     vdd_mv_np = numpy.linspace(vmin, vmax, num=samples)
     vdd_np = numpy.array([ (float(v)/1000) for v in vdd_mv_np])
     freq_np = model(vdd_np)
-    freq_dict = dict( (int(v*1000), f) for (v,f) in zip(vdd_np, freq_np) )
+    freq_dict = dict( (v, f) for (v,f) in zip(vdd_mv_np, freq_np) )
     sp_slopes = ((math.log10(sp_list[-1])-math.log10(sp_list[0])) / (vdd_list[-1]-vdd_list[0]))
 
     #print freq_dict
