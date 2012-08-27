@@ -217,6 +217,47 @@ def create_randnorm(dist_params,fname='norm.cfg', size=100, kid_prefix='randnorm
     with open(fname, 'wb') as f:
         cfg.write(f)
 
+
+def create_randnorm_xml(dist_params,fname='config/randnorm_kernels.xml', size=100, kid_prefix='randnorm'):
+    """Create kernels with performance in normal distribution,
+    and randomly choose kernel sample points
+
+    :dist_params: distribution parameters, including mean, std, etc.
+    :fname: file to store kernels
+    :size: number of kernels to create
+    :kid_prefix: prefix string for kernel id
+    :returns: N/A
+
+    """
+
+    miu = dist_params['mean']
+    sigma = dist_params['std']
+    rvs = numpy.random.normal(miu, sigma, size*2)
+    rvs_positive = [ rv for rv in rvs if rv > 0][:1000]
+    rvs = rvs_positive
+
+    probs = scipy.stats.norm.pdf(rvs, miu, sigma)
+    ids = numpy.arange(size)
+    kernels = ['_gen_%s_%03d' % (kid_prefix, idx) for idx in xrange(size)]
+
+    root = etree.Element('kernels')
+    for kernel,perf,prob in zip(kernels, rvs, probs):
+        k_root = etree.SubElement(root, 'kernel')
+        k_root.set('name', kernel)
+
+        fpga_root = etree.SubElement(k_root, 'fpga')
+        fpga_root.set('miu', '%.3e'% (perf/ASIC_PERF_RATIO))
+
+        asic_root = etree.SubElement(k_root, 'asic')
+        asic_root.set('miu', '%.3e'% (perf))
+
+        ele = etree.SubElement(k_root, 'occur')
+        ele.text = '%.3e' % prob
+
+    tree = etree.ElementTree(root)
+    tree.write(fname, pretty_print=True)
+
+
 def load(fname='norm.cfg'):
     cfg = ConfigParser.RawConfigParser()
     cfg.read(fname)
@@ -276,9 +317,10 @@ def do_generate():
             #'std': 35}
     #occur = numpy.linspace(0.9, 0.1, 10)
     #create_fixednorm_xml(params, fname='fixednorm_10.xml', size=10)
-    params = {'mean': 400,
-            'std': 70}
-    create_fixednorm_xml(params, fname='fixednorm_fpga80x.xml', size=10)
+    params = {'mean': 100,
+            'std': 25}
+    #create_fixednorm_xml(params, fname='fixednorm_fpga80x.xml', size=10)
+    create_randnorm_xml(params, size=1000, fname='config/kernels_norm20x5.xml')
 
 if __name__ == '__main__':
     #do_test()

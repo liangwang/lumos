@@ -98,7 +98,7 @@ class App(object):
         return self.kernels.keys()
 
     def get_cov(self, kid):
-        return kids
+        return self.kernels[kid]
 
     def has_kernels(self):
         if self.kernels:
@@ -195,11 +195,19 @@ def build(cov, occ, probs, kernels, name, f_parallel=1):
     app = App(f=f_parallel, name=name)
 
     for (p, acc),(prv,acc2) in zip(ksorted, krever):
-        #kcov = cov * prv / psum
-        kcov = 0.05
+        kcov = cov * prv / psum
+        #kcov = 0.05
         app.reg_kernel(acc, kcov)
 
     return app
+
+
+def build_single(cov, kernel, name, f_parallel=1):
+    app = App(f=f_parallel, name=name)
+    app.reg_kernel(kernel, cov)
+
+    return app
+
 
 def random_uc_cov(dist, param1, param2):
     """@todo: Docstring for rand_uc_cov
@@ -226,6 +234,34 @@ def random_uc_cov(dist, param1, param2):
         r = numpy.random.uniform(rmin, rmax)
         while r < 0:
             r = numpy.random.uniform(rmin, rmax)
+    else:
+        loggging.error('Unknown distribution for coverage: %s' % dist)
+        r = 0
+
+    return r
+
+def random_kernel_cov(cov_params):
+    dist = cov_params['dist']
+
+    if dist == 'norm':
+        mean = cov_params['mean']
+        std = cov_params['std']
+        r = scipy.stats.norm.rvs(mean, std)
+        while r < 0:
+            r = scipy.stats.norm.rvs(mean, std)
+    elif dist == 'lognorm':
+        mean = cov_params['mean']
+        std = cov_params['std']
+        r = numpy.random.lognormal(mean, std)
+    elif dist == 'uniform':
+        rmin = cov_params['min']
+        rmax = cov_params['max']
+        r = numpy.random.uniform(rmin, rmax)
+        while r < 0:
+            r = numpy.random.uniform(rmin, rmax)
+    else:
+        loggging.error('Unknown distribution for coverage: %s' % dist)
+        r = 0
 
     return r
 

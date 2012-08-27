@@ -9,6 +9,20 @@ import ConfigParser
 from lxml import etree
 
 
+def build_with_single_kernel(kernels, cov_params):
+    workload = []
+
+    app_num = len(kernels)
+    name_idx_len = app_num % 10
+    for kernel,app_idx in zip(kernels, xrange(app_num)):
+        cov = application.random_kernel_cov(cov_params)
+        app_name = '%0*d' % (name_idx_len, app_idx)
+        app = application.build_single(cov, kernel, name=app_name)
+        workload.append(app)
+
+    return workload
+
+
 def build(app_num, kernels, cov_dist, cov_param1, cov_param2):
     """@todo: Docstring for build_workload
 
@@ -136,16 +150,39 @@ def load_xml(fname='workload.xml'):
 
     return workload
 
+def add_fixedcov(workload_from, kernels, fixedcov, workload_to):
+    if 'fixedcov' not in kernels:
+        logging.error("can not find the kernel to have fixed coverage")
+
+    workload = load_xml(workload_from)
+
+    for app in workload:
+        app.reg_kernel('fixedcov', fixedcov*0.01)
+
+    dump_xml(workload, workload_to)
+
+
 if __name__ == '__main__':
     import kernel
-    kernels = kernel.load_xml('fixednorm_10.xml')
-    workload = build(10, kernels, 'norm', 0.4, 0.1)
-    dump_xml(workload, fname='workload_test.xml')
+    #kernels = kernel.load_xml('config/fixednorm_10.xml')
+    #workload = build(10, kernels, 'norm', 0.4, 0.1)
+    #dump_xml(workload, fname='workload_test.xml')
+
+    kernels = kernel.load_xml('analyses/asicopt/kernels_norm40x10_fixed40.xml')
+    add_fixedcov(workload_from='workload_fpga40x_cov40.xml', kernels=kernels,
+            fixedcov=40, workload_to='analyses/asicopt/workload_fixed40_norm40x10_cov40.xml')
+    #cov_dist_params = {'dist': 'norm',
+            #'mean': 0.4, 'std': 0.1}
+    #workload = build_with_single_kernel(kernels, cov_dist_params)
+    #dump_xml(workload, fname='config/workload_norm80x20_cov40x10.xml')
+    #kernels = kernel.load_xml('analyses/asicopt/kernels_norm40x10.xml')
     #workload = build_fixedcov(500, kernels, 0.5)
     #dump_xml(workload, fname='workload_fpga40x_cov50.xml')
     #workload = build_fixedcov(500, kernels, 0.7)
     #dump_xml(workload, fname='workload_fpga40x_cov70.xml')
     #workload = build_fixedcov(500, kernels, 0.3)
     #dump_xml(workload, fname='workload_fpga40x_cov30.xml')
+    #workload = build_fixedcov(500, kernels, 0.4)
+    #dump_xml(workload, fname='workload_fpga40x_cov40.xml')
     #workload = load_xml()
     #dump_xml(workload, fname='workload2.xml')
