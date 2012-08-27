@@ -21,8 +21,13 @@ MC_CKT = 'adder'
 #TODO: add code to MC_BEST case
 MC_BEST = False
 
-# SPECfp_rate2006 / 8(cores) * 3 (freq increse by go from 1.6GHz at 65nm to 4.7GHz at 45nm)
-PERF_BASE = 25.69
+# from: http://www.spec.org/cpu2006/results/res2009q3/cpu2006-20090721-08251.html
+# SPECfp_rate2006 / 8(cores) / 4 (threads) * (4.2/1.58) (freq scaling factor) * 1.4 ( 1/0.7, tech scaling factor)
+PERF_BASE = 7.96
+
+# from: http://www.spec.org/cpu2006/results/res2010q1/cpu2006-20100215-09685.html
+# SPECfp2006 * (3.7/3.3) (freq scaling factor)
+O3_PERF_BASE = 28.48
 
 class _Core(object):
     """
@@ -65,7 +70,7 @@ class _Core(object):
         mech = self._mech
         pv = self._pv
 
-        self._perf0 = PERF_BASE
+        self._perf0 = self.base_perf
 
         self._area = self.base_area * techscl.area[tech]
 
@@ -76,7 +81,7 @@ class _Core(object):
             self._vt = projscl.vt[mech][tech]
             v0 = projscl.vdd[mech][tech]
             f0 = self.base_freq * projscl.freq[mech][tech]
-            self._perf0 = PERF_BASE * projscl.freq[mech][tech]
+            self._perf0 = self.base_perf * projscl.freq[mech][tech]
             self._bw0 = projscl.freq[mech][tech]
             self._v0 = v0
             self._f0 = f0
@@ -88,7 +93,7 @@ class _Core(object):
             self._vt = ptmscl.vt[mech][tech]
             v0 = ptmscl.vdd[mech][tech]
             f0 = self.base_freq * ptmscl.freq[mech][tech]
-            self._perf0 = PERF_BASE * ptmscl.freq[mech][tech]
+            self._perf0 = self.base_perf * ptmscl.freq[mech][tech]
             self._bw0 = ptmscl.freq[mech][tech]
             self._v0 = v0
             self._f0 = f0
@@ -100,7 +105,7 @@ class _Core(object):
             self._vt = ptmscl.vt[mech][tech]
             v0 = ptmscl.vdd[mech][tech]
             f0 = self.base_freq * ptmscl.freq['HKMGS'][tech] * lpbase.freq[tech]
-            self._perf0 = PERF_BASE * ptmscl.freq['HKMGS'][tech] * lpbase.freq[tech]
+            self._perf0 = self.base_perf * ptmscl.freq['HKMGS'][tech] * lpbase.freq[tech]
             self._bw0 = ptmscl.freq['HKMGS'][tech] * lpbase.freq[tech]
             self._v0 = v0
             self._f0 = f0
@@ -351,6 +356,7 @@ class IOCore(_Core):
 
         self.base_area = techbase.area['IO']
         self.base_freq = techbase.freq['IO']
+        self.base_perf = PERF_BASE
         self.base_dp = techbase.dp['IO']
         self.base_sp = techbase.sp['IO']
         super(IOCore, self).__init__(mech=mech, tech=tech, pv=pv,
@@ -362,6 +368,7 @@ class O3Core(_Core):
 
         self.base_area = techbase.area['O3']
         self.base_freq = techbase.freq['O3']
+        self.base_perf = O3_PERF_BASE
         self.base_dp = techbase.dp['O3']
         self.base_sp = techbase.sp['O3']
         super(O3Core, self).__init__(mech=mech, tech=tech, pv=pv,
