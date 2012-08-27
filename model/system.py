@@ -38,14 +38,14 @@ class HeteroSys(object):
         self.gp_acc = FPGA()
         self.use_gpacc = False
 
-        self.thru_core = IOCore()
+        self.thru_core = IOCore(mech=mech, tech=tech)
         self.dim_perf = None
 
         if serial_core:
             self.serial_core = serial_core
             self.thru_core_area = self.sys_area - serial_core.area
         else:
-            self.serial_core = IOCore()
+            self.serial_core = IOCore(mech=mech,tech=tech)
             self.thru_core_area = self.sys_area
 
     def set_asic(self, kid, area_ratio):
