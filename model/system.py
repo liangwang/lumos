@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
 import logging
-from core import Core, PERF_BASE
+from core import IOCore, O3Core, PERF_BASE
 from ucore import UCore, ASIC, FPGA
-from app import App, AppMMM, AppBS, AppFFT64
+from app import App
 
 VMIN = 0.3
 VMAX = 1.1
@@ -15,7 +15,351 @@ PROBE_PRECISION = 0.0001
 from conf import misc as miscConfig
 DEBUG = miscConfig.debug
 
+
 class HeteroSys(object):
+    """Heterogenous system composed by regular cores, accelerators
+    such as ASICs, FPGA, and GPU"""
+
+    def __init__(self, budget, mech=None, tech=None,
+                 serial_core=None):
+        """Initialize system with budget
+
+        :budget: @todo
+
+        """
+        self.sys_area = budget.area
+        self.sys_power = budget.power
+        self.sys_bw = budget.bw
+
+        self.mech = mech
+        self.tech = tech
+
+        self.asic_dict = {}
+        self.gp_acc = FPGA()
+        self.use_gpacc = False
+
+        self.thru_core = IOCore()
+        self.dim_perf = None
+
+        if serial_core:
+            self.serial_core = serial_core
+            self.thru_core_area = self.sys_area - serial_core.area
+        else:
+            self.serial_core = IOCore()
+            self.thru_core_area = self.sys_area
+
+    def set_asic(self, kid, area_ratio):
+        area = self.sys_area * area_ratio
+
+        if kid not in self.asic_dict:
+            if self.thru_core_area < area:
+                logging.error('not enough area for this ASIC %s' % kid)
+                return False
+            self.thru_core_area = self.thru_core_area - area
+            self.asic_dict[kid] = ASIC(kid=kid, area=area, mech=self.mech, tech=self.tech)
+
+            self.dim_perf = None # need to update dim_perf later
+            return True
+        else:
+            asic_core = self.asic_dict[kid]
+
+            if self.thru_core_area + asic_core.area < area:
+                logging.error('not enough area for this ASIC %s' % kid)
+                return False
+
+            self.thru_core_area = self.thru_core_area + asic_core.area - area
+            asic_core.config(area=area)
+
+            self.dim_perf = None # need to update dim_perf later
+            return True
+
+
+    # replaced by set_asic
+    #def add_asic(self, kid, area_ratio):
+        #"""Add a ASIC with certain area (in persentage of total system area)
+
+        #:kid: @todo
+        #:area: @todo
+        #:returns: @todo
+
+        #"""
+        #area = self.sys_area * area_ratio
+
+        #if self.core_area < area:
+            #logging.error('not enough area for this ASIC %s' % kid)
+            #return False
+
+        #self.core_area = self.core_area - area
+        #self.asic_dict[kid] = ASIC(kid=kid, area=area, mech=self.mech, tech=self.tech)
+
+        #return True
+
+    # replaced by set_asic
+    #def realloc_asic(self, kid, area_ratio):
+        #"""Set the area ratio of a asic kernel
+
+        #:kid: @todo
+        #:area_ratio: @todo
+        #:returns: @todo
+
+        #"""
+        #if kid not in self.asic_dict:
+            #logging.error('kernel %s has not been registered' % kid)
+            #return False
+
+        #asic_core = self.asic_dict[kid]
+
+        #area = self.sys_area * area_ratio
+        #if self.core_area + asic_core.area < area:
+            #logging.error('not enough area for this ASIC %s' % kid)
+            #return False
+
+        #self.core_area = self.core_area + asic_core.area - area
+        #asic_core.config(area=area)
+
+        #return True
+
+    def del_asic(self, kid):
+        if kid not in self.asic_dict:
+            logging.error('kernel %s has not been registered' % kid)
+            return False
+
+        asic_core = self.asic_dict[kid]
+        self.thru_core_area = self.thru_core_area + asic_core.area
+
+        del self.asic_dict[kid]
+
+        self.dim_perf = None # need ot update dim_perf later
+        return True
+
+    def del_asics(self):
+        for kid in self.asic_dict.keys():
+            self.del_asic(kid)
+
+    def realloc_gpacc(self, area_ratio, ctype='FPGA'):
+        """Add a general-purpose accelerator with certain area
+
+        :ctype: @todo
+        :area_ratio: @todo
+        :returns: @todo
+
+        """
+        area = self.sys_area * area_ratio
+        if self.thru_core_area + self.gp_acc.area < area:
+            logging.error('not enough area for this GP accelerator %s' % ctype)
+            return False
+
+        self.thru_core_area = self.thru_core_area + self.gp_acc.area - area
+        self.gp_acc.config(area=area, mech=self.mech, tech=self.tech)
+
+        self.dim_perf = None # need to update dim_perf later
+        return True
+
+    def set_mech(self, mech):
+        """Set the mech of all cores and ucores
+
+        :mech: @todo
+        :returns: @todo
+
+        """
+        self.thru_core.config(mech=mech)
+        self.serial_core.config(mech=mech)
+        self.gp_acc.config(mech=mech)
+
+        for k in self.asic_dict:
+            self.asic_dict[k].config(mech=mech)
+
+        self.mech = mech
+
+        self.dim_perf = None # need to update dim_perf later
+
+    def set_tech(self, tech):
+        """Set the technology node of all cores and ucores
+
+        :tech: @todo
+        :returns: @todo
+
+        """
+        self.thru_core.config(tech=tech)
+        self.serial_core.config(tech=tech)
+        self.gp_acc.config(tech=tech)
+
+        for k in self.asic_dict:
+            self.asic_dict[k].config(tech=tech)
+
+        self.tech = tech
+        self.sys_bandwidth = self.sys_bw[tech]
+
+        self.dim_perf = None # need to update dim_perf later
+
+    def set_core_pv(self, pv):
+        """Whether consider process variations
+
+        :pv: @todo
+        :returns: @todo
+
+        """
+        self.thru_core.config(pv=pv)
+        self.serial_core.config(pv=pv)
+
+        self.dim_perf = None # need to update dim_perf later
+
+    def _dim_perf_cnum(self, cnum, vmin=VMIN):
+        """Get the performance of Dim silicon with given active number of cores
+
+        :cnum: @todo
+        :app: @todo
+        :returns: @todo
+
+        """
+        core = self.thru_core
+
+        cnum_max = int(self.thru_core_area / core.area)
+
+        if cnum > cnum_max or cnum < 0:
+            return None
+
+        cpower = self.thru_core_power / float(cnum)
+
+        if vmin > VMIN:
+            core.dvfs_by_volt(vmin)
+            if core.power > cpower:
+                active_cnum = min(int(self.thru_core_area / core.area),
+                                  int(self.core_power / core.power))
+
+                perf = active_cnum * core.perf
+                return {'perf': perf / PERF_BASE,
+                        'vdd': vmin,
+                        'cnum': active_cnum,
+                        'util': float(100 * active_cnum) / float(cnum_max)}
+        else:
+            vmin = VMIN
+
+        vl = vmin
+        vr = core.v0 * VSF_MAX
+        vm = (vl + vr) / 2
+
+        while (vr - vl) > V_PRECISION:
+            vm = (vl + vr) / 2
+            core.dvfs_by_volt(vm)
+
+            if core.power > cpower:
+                vl = vl
+                vr = vm
+            else:
+                vl = vm
+                vr = vr
+
+        core.dvfs_by_volt(vr)
+        rpower = core.power
+
+        if rpower <= cpower:
+            rperf = cnum * core.perf
+            return {'perf': rperf / PERF_BASE,
+                    'vdd': vr,
+                    'cnum': cnum,
+                    'util': float(100 * cnum) / float(cnum_max)}
+        else:
+            core.dvfs_by_volt(vl)
+            lperf = cnum * core.perf
+            return {'perf': lperf / PERF_BASE,
+                    'vdd': vl,
+                    'cnum': cnum,
+                    'util': float(100 * cnum) / float(cnum_max)}
+
+    def _dim_perf_opt(self):
+        """Get the performance of Dim silicon subsystem
+
+        :returns: @todo
+
+        """
+        core = self.thru_core
+        cnum_max = int(self.thru_core_area / core.area)
+        cnum_list = range(1, cnum_max + 1)
+
+        perf = 0
+        for cnum in cnum_list:
+            r = self._dim_perf_cnum(cnum)
+            if r['cnum'] < cnum:
+                break
+            if r['perf'] > perf:
+                perf = r['perf']
+                vdd = r['vdd']
+                util = r['util']
+                opt_cnum = cnum
+
+        return {'cnum': opt_cnum,
+                'vdd': vdd,
+                'util': util,
+                'perf': perf}
+
+    def calc_dim_perf(self, thru_core_power=None):
+        if thru_core_power:
+            self.thru_core_power = thru_core_power
+        else:
+            self.thru_core_power = self.sys_power
+
+        ret = self._dim_perf_opt()
+
+        self.dim_perf = ret['perf']
+        self.opt_cnum = ret['cnum']
+        self.opt_vdd = ret['vdd']
+
+    def get_perf(self, app):
+        """The overall performance
+
+        :app: @todo
+        :returns: @todo
+
+        """
+        #thru_core = self.thru_core
+        serial_core = self.serial_core
+        gp_acc = self.gp_acc
+
+        asics = self.asic_dict
+
+        serial_core.dvfs_by_factor(VSF_MAX)
+        serial_perf = serial_core.perf / PERF_BASE
+
+        if not self.dim_perf:
+            # need to update dim_perf
+            self.thru_core_power = self.sys_power
+            ret = self._dim_perf_opt()
+            self.dim_perf = ret['perf']
+            self.opt_cnum = ret['cnum']
+            self.opt_vdd = ret['vdd']
+
+        dim_perf = self.dim_perf
+        perf = (1 - app.f) / serial_perf + app.f_noacc / dim_perf
+
+        for kernel in app.kernels:
+            if self.use_gpacc:
+                if kernel in asics:
+                    acc = asics[kernel]
+                else:
+                    acc = None
+
+                if acc and acc.area > 0:
+                    perf = perf + app.kernels[kernel] / (acc.perf(power=self.sys_power, bandwidth=self.sys_bandwidth) / PERF_BASE)
+                else:
+                    perf = perf + app.kernels[kernel] / (gp_acc.perf(kernel, power=self.sys_power, bandwidth=self.sys_bandwidth) / PERF_BASE)
+            else:
+                if kernel in asics:
+                    acc = asics[kernel]
+                else:
+                    acc = None
+
+                if acc and acc.area > 0:
+                    perf = perf + app.kernels[kernel] / (acc.perf(power=self.sys_power, bandwidth=self.sys_bandwidth) / PERF_BASE)
+                else:
+                    perf = perf + app.kernels[kernel] / dim_perf
+
+        return {'perf': 1 / perf,
+                'cnum': self.opt_cnum,
+                'vdd': self.opt_vdd}
+
+
+class HeteroSys_old(object):
     """Heterogenous system composed by regular cores, accelerators
     such as ASICs, FPGA, and GPU"""
 
@@ -36,9 +380,9 @@ class HeteroSys(object):
         self.asic_dict = {}
         self.gp_acc = FPGA()
         self.use_gpacc = False
-        self.core = Core(ctype='IO')
+        self.core = IOCore()
 
-    def set_asic(self, kid , area_ratio):
+    def set_asic(self, kid, area_ratio):
         area = self.sys_area * area_ratio
 
         if kid not in self.asic_dict:
@@ -60,7 +404,6 @@ class HeteroSys(object):
             asic_core.config(area=area)
 
             return True
-
 
     def add_asic(self, kid, area_ratio):
         """Add a ASIC with certain area (in persentage of total system area)
@@ -136,7 +479,6 @@ class HeteroSys(object):
         self.core_area = self.core_area + self.gp_acc.area - area
         self.gp_acc.config(area=area, mech=self.mech, tech=self.tech)
 
-
     def set_mech(self, mech):
         """Set the mech of all cores and ucores
 
@@ -195,16 +537,16 @@ class HeteroSys(object):
         cpower = self.core_power / float(cnum)
 
         if vmin > VMIN:
-            core.dvfs_by_volt
+            core.dvfs_by_volt(vmin)
             if core.power > cpower:
                 active_cnum = min(int(self.core_area / core.area),
-                        int(self.core_power / core.power))
+                                  int(self.core_power / core.power))
 
                 perf = active_cnum * core.perf
                 return {'perf': perf / PERF_BASE,
                         'vdd': vmin,
                         'cnum': active_cnum,
-                        'util': util}
+                        'util': float(active_cnum * 100) / float(cnum_max)}
         else:
             vmin = VMIN
 
@@ -223,29 +565,22 @@ class HeteroSys(object):
                 vl = vm
                 vr = vr
 
-        core.dvfs_by_volt(vl)
-        lpower = core.power
-        lcnum = min(int(self.core_area / core.area),
-                int(self.core_power / lpower))
-        lperf = cnum * core.perf
-
         core.dvfs_by_volt(vr)
         rpower = core.power
-        rcnum = min(int(self.core_area / core.area),
-                int(self.core_power / rpower))
-        rperf = cnum * core.perf
 
         if rpower <= cpower:
+            rperf = cnum * core.perf
             return {'perf': rperf / PERF_BASE,
                     'vdd': vr,
                     'cnum': cnum,
                     'util': float(100 * cnum) / float(cnum_max)}
         else:
+            core.dvfs_by_volt(vl)
+            lperf = cnum * core.perf
             return {'perf': lperf / PERF_BASE,
                     'vdd': vl,
                     'cnum': cnum,
                     'util': float(100 * cnum) / float(cnum_max)}
-
 
     def _dim_perf_opt(self):
         """Get the performance of Dim silicon subsystem
@@ -268,7 +603,7 @@ class HeteroSys(object):
                 util = r['util']
                 opt_cnum = cnum
 
-        return {'cnum':opt_cnum,
+        return {'cnum': opt_cnum,
                 'vdd': vdd,
                 'util': util,
                 'perf': perf}
@@ -318,7 +653,7 @@ class HeteroSys(object):
                 else:
                     perf = perf + app.kernels[kernel] / dim_perf
 
-        return {'perf': 1/perf,
+        return {'perf': 1 / perf,
                 'cnum': opt_cnum,
                 'vdd': opt_vdd}
 
@@ -337,7 +672,7 @@ class AsymSys(object):
         self.sys_power = budget.power
         self.bw = budget.bw
 
-        self.core = Core(ctype='IO')
+        self.core = IOCore()
         self.ucore = UCore()
 
     def set_sys_prop(self, **kwargs):
@@ -399,7 +734,7 @@ class AsymSys(object):
 
         """
         core = self.core
-        f = app.f - app.f_acc
+        #f = app.f - app.f_acc
 
         cnum_max = int(self.core_area / core.area)
 
@@ -412,13 +747,13 @@ class AsymSys(object):
             core.dvfs_by_volt
             if core.power > cpower:
                 active_cnum = min(int(self.core_area / core.area),
-                        int(self.core_power / core.power))
+                                  int(self.core_power / core.power))
 
                 perf = active_cnum * core.perf
                 return {'perf': perf / PERF_BASE,
                         'vdd': vmin,
                         'cnum': active_cnum,
-                        'util': util}
+                        'util': float(active_cnum * 100) / float(cnum_max)}
         else:
             vmin = VMIN
 
@@ -437,29 +772,23 @@ class AsymSys(object):
                 vl = vm
                 vr = vr
 
-        core.dvfs_by_volt(vl)
-        lpower = core.power
-        lcnum = min(int(self.core_area / core.area),
-                int(self.core_power / lpower))
-        lperf = cnum * core.perf
-
         core.dvfs_by_volt(vr)
         rpower = core.power
-        rcnum = min(int(self.core_area / core.area),
-                int(self.core_power / rpower))
-        rperf = cnum * core.perf
 
         if rpower <= cpower:
+            rperf = cnum * core.perf
             return {'perf': rperf / PERF_BASE,
                     'vdd': vr,
                     'cnum': cnum,
                     'util': float(100 * cnum) / float(cnum_max)}
         else:
+            core.dvfs_by_volt(vl)
+            lpower = core.power
+            lperf = cnum * core.perf
             return {'perf': lperf / PERF_BASE,
                     'vdd': vl,
                     'cnum': cnum,
                     'util': float(100 * cnum) / float(cnum_max)}
-
 
     def _dim_perf_opt(self, app):
         """Get the performance of Dim silicon subsystem
@@ -572,7 +901,6 @@ class AsymSys(object):
             self.ucore.config(area=ucore_area)
 
         return alloc_ok
-
 
 class SymSys(object):
     """
@@ -937,7 +1265,6 @@ class SymSys(object):
                 'util': util,
                 'vdd': vdd}
 
-
 class System(object):
 
 
@@ -958,7 +1285,11 @@ class System(object):
         # Performance of IO core at nominal frequency, according to Pollack's Rule
         self.perf_base = PERF_BASE
 
-        self.core = Core(ctype=ctype, mech=mech, tech=tech)
+        if ctype == 'IO':
+            self.core = IOCore(mech=mech, tech=tech)
+        else:
+            self.core = O3Core(mech=mech, tech=tech)
+
         self.ctype = ctype
         self.mech = mech
         self.tech = tech
@@ -991,7 +1322,10 @@ class System(object):
         Sweep voltage (by core.dvfs) to get the best performance for a given app
         """
         #core = Core45nmCon()
-        core = Core(ctype=self.ctype, mech=self.mech, tech=self.tech)
+        if self.ctype == 'IO':
+            core = IOCore(mech=self.mech, tech=self.tech)
+        else:
+            core = O3Core(mech=self.mech, tech=self.tech)
 
         #para_ratio = 0.99
         para_ratio = app.f
@@ -1127,12 +1461,9 @@ class System(object):
 
         return (speedup_list,util_list)
 
-
-
-
 if __name__ == '__main__':
     sys = SymSys(area=600, power=120)
-    sys.set_sys_prop(core=Core(mech='HKMGS', tech=45, ctype='IO'))
+    sys.set_sys_prop(core=IOCore(mech='HKMGS', tech=45))
     app=App(f=1)
     for cnum in (2,4,8,16,32,64):
         r = sys.perf_by_cnum(cnum, app)
