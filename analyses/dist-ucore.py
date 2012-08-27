@@ -3,8 +3,9 @@
 
 import logging
 import cPickle as pickle
-import matplotlib
-matplotlib.use('Agg')
+import itertools
+#import matplotlib
+#matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 from model.system import HeteroSys
@@ -30,6 +31,7 @@ import scipy.stats
 import numpy
 import numpy.random
 from mpl_toolkits.mplot3d import Axes3D
+from mpltools import style
 
 FIG_DIR,DATA_DIR = analysis.make_ws('dist-ucore')
 
@@ -71,9 +73,10 @@ class Hybrid(BaseAnalysis):
             sys = HeteroSys(self.budget)
             sys.set_mech('HKMGS')
             sys.set_tech(16)
-            sys.set_asic('_gen_fixednorm_004', alloc*kfirst*0.33)
-            sys.set_asic('_gen_fixednorm_005', alloc*kfirst*0.33)
-            sys.set_asic('_gen_fixednorm_006', alloc*kfirst*0.34)
+            if kfirst != 0:
+                sys.set_asic('_gen_fixednorm_004', alloc*kfirst*0.33)
+                sys.set_asic('_gen_fixednorm_005', alloc*kfirst*0.33)
+                sys.set_asic('_gen_fixednorm_006', alloc*kfirst*0.34)
             sys.realloc_gpacc(alloc*(1-kfirst))
             sys.use_gpacc = True
 
@@ -109,7 +112,7 @@ class Hybrid(BaseAnalysis):
 
         self.asic_alloc = (10, 20, 30, 40, 50, 60)
         #self.asic_alloc = (0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1)
-        self.kfirst_alloc = (10, 30, 50, 70, 90)
+        self.kfirst_alloc = (0, 10, 30, 50, 70, 90)
 
         self.options = options
 
@@ -131,7 +134,7 @@ class Hybrid(BaseAnalysis):
         result_queue = multiprocessing.Queue()
 
         for i in range(self.num_processes):
-            worker = Hybrid.Worker(work_queue, result_queue,
+            worker = self.Worker(work_queue, result_queue,
                     self.budget, self.workload)
             worker.start()
 
@@ -175,6 +178,7 @@ class Hybrid(BaseAnalysis):
         f.close()
 
     def plot(self):
+        style.use('ggplot')
         dfn = joinpath(DATA_DIR, ('%s.pypkl' % self.id))
         with open(dfn, 'rb') as f:
             mean_lists = pickle.load(f)
@@ -209,18 +213,41 @@ class Hybrid(BaseAnalysis):
             #axes.set_ylim(0, 35)
             #ofn = joinpath(FIG_DIR, '%s.png'%self.id)
             #fig.savefig(ofn, bbox_inches='tight')
-            x_lists = numpy.array(self.asic_alloc) * 0.01
-            analysis.plot_data(x_lists, mean_lists,
-                    xlabel='Total U-Cores allocation',
-                    ylabel='Speedup (mean)',
-                    legend_labels=['%d%% U-Cores' % kfirst for kfirst in self.kfirst_alloc],
-                    legend_title='Total ASIC out\nof Total U-Core',
-                    legend_loc='lower center',
-                    xlim=(0, 0.65),
-                    #xlim=(0, 0.11),
-                    #title = 'ASICs: acc4(50%) + acc5(50%)',
-                    figdir=FIG_DIR,
-                    ofn='%s-amean.%s'%(self.id,self.fmt))
+            legend_labels=['%d%% U-Cores' % kfirst for kfirst in self.kfirst_alloc]
+            legend_labels[0] = '0 (FPGA only)'
+            x_list = numpy.array(self.asic_alloc) * 0.01
+
+            fig = plt.figure(figsize=(6,4.5))
+            axes = fig.add_subplot(111)
+
+            for y, marker in itertools.izip(mean_lists, itertools.cycle(analysis.marker_cycle)):
+                axes.plot(x_list, y, marker=marker, ms=8)
+
+            axes.set_ylim(95, 165)
+            axes.set_xlim(0, 0.65)
+            axes.legend(axes.lines, legend_labels, loc='lower right',
+                    title='Total ASIC out of Total U-Core',
+                    ncol=2,
+                    prop=dict(size='medium')
+                    )
+            axes.set_xlabel('Total U-Cores allocation')
+            axes.set_ylabel('Speedup (mean)')
+
+            ofn = '{id}_amean.{fmt}'.format(id=self.id, fmt=self.fmt)
+            ofile = joinpath(FIG_DIR, ofn)
+            fig.savefig(ofile, bbox_inches='tight')
+            #analysis.plot_data(x_lists, mean_lists,
+                    #xlabel='Total U-Cores allocation',
+                    #ylabel='Speedup (mean)',
+                    #legend_labels=['%d%% U-Cores' % kfirst for kfirst in self.kfirst_alloc],
+                    #legend_title='Total ASIC out\nof Total U-Core',
+                    #legend_loc='lower center',
+                    #xlim=(0, 0.65),
+                    #ylim=(95, 160),
+                    ##xlim=(0, 0.11),
+                    ##title = 'ASICs: acc4(50%) + acc5(50%)',
+                    #figdir=FIG_DIR,
+                    #ofn='%s-amean.%s'%(self.id,self.fmt))
 
             #analysis.plot_data(self.asic_alloc, gmean_lists,
                     #xlabel='ASIC allocation in percentage',
@@ -237,6 +264,250 @@ class Hybrid(BaseAnalysis):
                     #xlim=(0, 0.5),
                     #figdir=FIG_DIR,
                     #ofn='%s-hmean.png'%self.id)
+
+class ASICQuad(BaseAnalysis):
+    """ only one accelerators per system """
+
+    class Worker(multiprocessing.Process):
+
+        def __init__(self, work_queue, result_queue, budget, workload, kids):
+
+            multiprocessing.Process.__init__(self)
+
+            self.work_queue = work_queue
+            self.result_queue = result_queue
+            self.kill_received = False
+
+            #self.asic_area_list = range(5, 91, 2)
+            self.budget = budget
+            self.workload = workload
+            self.kids = kids
+
+        def run(self):
+            while not self.kill_received:
+
+                try:
+                    job = self.work_queue.get_nowait()
+                except Queue.Empty:
+                    break
+
+                # the actual processing
+                result = self.process(job)
+
+                self.result_queue.put(result)
+
+        def process(self, job):
+            cid, config, asic_area = job
+            print job
+            alloc = asic_area * 0.01
+            kids = self.kids
+            #kfirst = k * 0.01
+
+            sys = HeteroSys(self.budget)
+            sys.set_mech('HKMGS')
+            sys.set_tech(16)
+            for idx in xrange(3):
+                sys.set_asic(kids[idx], alloc*config[idx]*0.01)
+            #sys.set_asic('_gen_fixednorm_004', alloc*kfirst)
+            #sys.set_asic('_gen_fixednorm_005', alloc*(1-kfirst))
+            #sys.use_gpacc = True
+
+            perfs = numpy.array([ sys.get_perf(app)['perf'] for app in self.workload ])
+            mean = perfs.mean()
+            std = perfs.std()
+            gmean = scipy.stats.gmean(perfs)
+            hmean = scipy.stats.hmean(perfs)
+
+            return (cid, asic_area, mean, std, gmean, hmean)
+
+
+    def __init__(self, options, budget, pv=False):
+        self.prefix = 'asictriple'
+        self.fmt = options.fmt
+
+        self.budget = budget
+
+        self.pv = pv
+
+        #self.fpga_area_list = (5, 10, 15, 20, 25, 30, 35, 40, 45, 50,
+                #55, 60, 65, 70, 75, 80, 85, 90, 95)
+        #self.fpga_area_list = range(5, 91) 
+        #self.cov_list = (0.1, 0.2, 0.3, 0.4, 0.5, 0.6)
+
+        self.app_f = float(options.app_f)
+
+        self.id = self.prefix
+
+        self.num_processes = int(options.nprocs)
+        self.num_samples = int(options.samples)
+
+        #self.asic_alloc = (5, 10, 15, 20, 25, 30, 35, 40, 45)
+        #self.asic_alloc = (0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1)
+        #self.kfirst_alloc = (10, 30, 50, 70, 90)
+        self.asic_area_list = (5, 10, 20, 30, 40)
+
+        #self.kalloc1 = 0.1
+        #self.kalloc2 = 0.3
+        #self.kalloc3 = 0.6
+        self.kalloc = (10, 30, 60)
+
+        #self.kid1 = '_gen_fixednorm_004'
+        #self.kid2 = '_gen_fixednorm_005'
+        #self.kid3 = '_gen_fixednorm_006'
+        #self.kids = ('_gen_fixednorm_004','_gen_fixednorm_005','_gen_fixednorm_006')
+        self.kids = ['_gen_fixednorm_00%s' % kid for kid in options.kids.split(',')]
+
+        self.alloc_configs = ( (self.kalloc[0],self.kalloc[1],self.kalloc[2]),
+                (self.kalloc[0],self.kalloc[2],self.kalloc[1]),
+                (self.kalloc[1],self.kalloc[0],self.kalloc[2]),
+                (self.kalloc[1],self.kalloc[2],self.kalloc[0]),
+                (self.kalloc[2],self.kalloc[1],self.kalloc[0]),
+                (self.kalloc[2],self.kalloc[0],self.kalloc[1]),
+                (33, 33, 34))
+
+        self.ker_perf_mean = float(options.kernel_perf_dist_norm_mean)
+        self.ker_perf_std = float(options.kernel_perf_dist_norm_std)
+        self.ker_num = int(options.kernel_total_count)
+        self.app_num = int(options.app_total_count)
+        self.ker_count_per_app = float(options.kernel_count_per_app)
+        self.options = options
+
+        kernel_cfg = options.kernels_cfg
+        self.accelerators = kernel.load(kernel_cfg)
+
+
+    def analyze(self):
+        dfn = joinpath(DATA_DIR, ('%s.pypkl' % self.id))
+        f = open(dfn, 'wb')
+
+        self.workload = workload.load_xml(self.options.workload)
+        asic_area_list = self.asic_area_list
+        kernel_miu_list = []
+        cov_list = []
+
+        kalloc = self.kalloc
+        kids = self.kids
+        alloc_configs = self.alloc_configs
+        n_alloc_configs = len(alloc_configs)
+
+        work_queue = multiprocessing.Queue()
+        for cid in range(n_alloc_configs):
+            for asic_area in asic_area_list:
+                work_queue.put( (cid, alloc_configs[cid], asic_area) )
+
+        result_queue = multiprocessing.Queue()
+
+        for i in range(self.num_processes):
+            worker = self.Worker(work_queue, result_queue, self.budget, self.workload, kids)
+            worker.start()
+
+        alloc_list = []
+        acc_list = []
+        mean_list = []
+        std_list = []
+        meandict = dict()
+        stddict = dict()
+        gmeandict = dict()
+        hmeandict = dict()
+        for i in xrange(n_alloc_configs*len(self.asic_area_list)):
+            cid, asic_area, mean, std, gmean, hmean = result_queue.get()
+            if cid not in meandict:
+                meandict[cid] = dict()
+                stddict[cid] = dict()
+                gmeandict[cid] = dict()
+                hmeandict[cid] = dict()
+            meandict[cid][asic_area] = mean
+            stddict[cid][asic_area] = std
+            gmeandict[cid][asic_area] = gmean
+            hmeandict[cid][asic_area] = hmean
+
+        mean_lists = []
+        std_lists = []
+        gmean_lists = []
+        hmean_lists = []
+        for cid in xrange(n_alloc_configs):
+            mean_lists.append( [ meandict[cid][asic_area] for asic_area in self.asic_area_list ])
+            std_lists.append( [ stddict[cid][asic_area] for asic_area in self.asic_area_list ])
+            gmean_lists.append( [ gmeandict[cid][asic_area] for asic_area in self.asic_area_list ])
+            hmean_lists.append( [ hmeandict[cid][asic_area] for asic_area in self.asic_area_list ])
+
+
+        #pickle.dump(self.accelerators, f)
+        #pickle.dump(self.asic_alloc, f)
+        pickle.dump(mean_lists, f)
+        pickle.dump(std_lists, f)
+        pickle.dump(gmean_lists, f)
+        pickle.dump(hmean_lists, f)
+        f.close()
+
+    def plot(self):
+        style.use('ggplot')
+        dfn = joinpath(DATA_DIR, ('%s.pypkl' % self.id))
+        with open(dfn, 'rb') as f:
+            mean_lists = pickle.load(f)
+            std_lists = pickle.load(f)
+            gmean_lists = pickle.load(f)
+            hmean_lists = pickle.load(f)
+
+            #fig = plt.figure(figsize=(12,9))
+            #axes = fig.add_subplot(111)
+
+            #x = numpy.array(self.asic_alloc)
+            #for mean, std in zip(mean_lists, std_lists):
+            #for mean, std in zip(mean_lists[0:1], std_lists[0:1]):
+                #y = numpy.array(mean)
+                #err = numpy.array(std)
+
+                #axes.errorbar(x, y, yerr=err)
+                #axes.plot(x, y)
+            #y = numpy.array(cov_list)
+            #z = numpy.array(asic_area_list)
+            #X, Y = np.meshgrid(x,y)
+            #Z = np.array(fpga_area_lists)
+            #axes = fig.add_subplot(111, projection='3d')
+
+            #surf = axes.scatter(x, y, c=z)
+            #cb = fig.colorbar(surf, shrink=0.8)
+            #cb.set_label("Optimal ASIC allocation")
+            #axes.set_xlabel('ASIC allocation in percentage')
+            #axes.set_ylabel('Speedup (mean)')
+            #axes.set_xlim(0, 0.11)
+            #axes.legend(axes.lines, self.accelerators)
+            #axes.set_ylim(0, 35)
+            #ofn = joinpath(FIG_DIR, '%s.png'%self.id)
+            #fig.savefig(ofn, bbox_inches='tight')
+            x_lists = numpy.array(self.asic_area_list) * 0.01
+            analysis.plot_data(x_lists, mean_lists,
+                    xlabel='Total ASIC allocation',
+                    ylabel='Speedup (mean)',
+                    legend_labels=['-'.join(['%d'%a for a in alloc_config]) for alloc_config in self.alloc_configs],
+                    title=','.join([s[-3:] for s in self.kids]),
+                    xlim=(0, 0.42),
+                    ylim=(127, 155),
+                    figsize=(6, 4.5),
+                    #xlim=(0, 0.11),
+                    figdir=FIG_DIR,
+                    ofn='%s-%s.%s' % (self.id,
+                        '-'.join([s[-1:] for s in self.kids]), self.fmt)
+                    )
+
+            #analysis.plot_data(self.asic_alloc, gmean_lists,
+                    #xlabel='ASIC allocation in percentage',
+                    #ylabel='Speedup (gmean)',
+                    #legend_labels=self.accelerators,
+                    #xlim=(0, 0.5),
+                    #figdir=FIG_DIR,
+                    #ofn='%s-gmean.png'%self.id)
+
+            #analysis.plot_data(self.asic_alloc, hmean_lists,
+                    #xlabel='ASIC allocation in percentage',
+                    #ylabel='Speedup (hmean)',
+                    #legend_labels=self.accelerators,
+                    #xlim=(0, 0.5),
+                    #figdir=FIG_DIR,
+                    #ofn='%s-hmean.png'%self.id)
+
+
 
 
 class ASICTriple(BaseAnalysis):
@@ -318,7 +589,7 @@ class ASICTriple(BaseAnalysis):
         #self.asic_alloc = (5, 10, 15, 20, 25, 30, 35, 40, 45)
         #self.asic_alloc = (0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1)
         #self.kfirst_alloc = (10, 30, 50, 70, 90)
-        self.asic_area_list = (10, 20, 30, 40, 50)
+        self.asic_area_list = (5, 10, 20, 30, 40)
 
         #self.kalloc1 = 0.1
         #self.kalloc2 = 0.3
@@ -427,7 +698,8 @@ class ASICTriple(BaseAnalysis):
         dfn = joinpath(DATA_DIR, ('%s.pypkl' % self.id))
         f = open(dfn, 'wb')
 
-        self.build_workload()
+        #self.build_workload()
+        self.workload = workload.load_xml(self.options.workload)
         asic_area_list = self.asic_area_list
         kernel_miu_list = []
         cov_list = []
@@ -445,7 +717,7 @@ class ASICTriple(BaseAnalysis):
         result_queue = multiprocessing.Queue()
 
         for i in range(self.num_processes):
-            worker = ASICTriple.Worker(work_queue, result_queue, self.budget, self.workload, kids)
+            worker = self.Worker(work_queue, result_queue, self.budget, self.workload, kids)
             worker.start()
 
         alloc_list = []
@@ -488,6 +760,7 @@ class ASICTriple(BaseAnalysis):
         f.close()
 
     def plot(self):
+        style.use('ggplot')
         dfn = joinpath(DATA_DIR, ('%s.pypkl' % self.id))
         with open(dfn, 'rb') as f:
             mean_lists = pickle.load(f)
@@ -528,7 +801,9 @@ class ASICTriple(BaseAnalysis):
                     ylabel='Speedup (mean)',
                     legend_labels=['-'.join(['%d'%a for a in alloc_config]) for alloc_config in self.alloc_configs],
                     title=','.join([s[-3:] for s in self.kids]),
-                    xlim=(0.05, 0.55),
+                    xlim=(0, 0.42),
+                    ylim=(127, 155),
+                    figsize=(6, 4.5),
                     #xlim=(0, 0.11),
                     figdir=FIG_DIR,
                     ofn='%s-%s.%s' % (self.id,
@@ -730,7 +1005,7 @@ class ASICDual(BaseAnalysis):
         result_queue = multiprocessing.Queue()
 
         for i in range(self.num_processes):
-            worker = ASICDual.Worker(work_queue, result_queue, self.budget, self.workload)
+            worker = self.Worker(work_queue, result_queue, self.budget, self.workload)
             worker.start()
 
         alloc_list = []
@@ -816,7 +1091,7 @@ class ASICDual(BaseAnalysis):
                     xlim=(0, 0.5),
                     #xlim=(0, 0.11),
                     figdir=FIG_DIR,
-                    ofn='%s-amean.png'%self.id)
+                    ofn='%s-amean.%s'%(self.id, self.fmt))
 
             #analysis.plot_data(self.asic_alloc, gmean_lists,
                     #xlabel='ASIC allocation in percentage',
@@ -1009,7 +1284,7 @@ class ASICSingle(BaseAnalysis):
         result_queue = multiprocessing.Queue()
 
         for i in range(self.num_processes):
-            worker = ASICSingle.Worker(work_queue, result_queue, self.budget, self.workload)
+            worker = self.Worker(work_queue, result_queue, self.budget, self.workload)
             worker.start()
 
         alloc_list = []
@@ -1243,7 +1518,7 @@ class ASICAnalysis(BaseAnalysis):
         result_queue = multiprocessing.Queue()
 
         for i in range(self.num_processes):
-            worker = ASICAnalysis.Worker(work_queue, result_queue, self.budget)
+            worker = self.Worker(work_queue, result_queue, self.budget)
             worker.start()
 
         for i in xrange(self.num_samples):
@@ -1426,7 +1701,7 @@ class FPGAAnalysis(BaseAnalysis):
         result_queue = multiprocessing.Queue()
 
         for i in range(self.num_processes):
-            worker = FPGAAnalysis.Worker(work_queue, result_queue, self.budget, self.fixed_area)
+            worker = self.Worker(work_queue, result_queue, self.budget, self.fixed_area)
             worker.start()
 
         for i in xrange(self.num_samples):
@@ -1640,7 +1915,7 @@ class FPGAFixedArea(BaseAnalysis):
         result_queue = multiprocessing.Queue()
 
         for i in range(self.num_processes):
-            worker = FPGAFixedArea.Worker(work_queue, result_queue, self.budget, self.fixed_area)
+            worker = self.Worker(work_queue, result_queue, self.budget, self.fixed_area)
             worker.start()
 
         for i in xrange(self.num_samples):
@@ -1867,7 +2142,7 @@ class FPGAFixedArea2(BaseAnalysis):
         result_queue = multiprocessing.Queue()
 
         for i in range(min(self.num_processes, len(self.fpga_alloc))):
-            worker = FPGAFixedArea2.Worker(work_queue, result_queue, self.budget, self.workload)
+            worker = self.Worker(work_queue, result_queue, self.budget, self.workload)
             worker.start()
 
         alloc_list = []
@@ -2025,7 +2300,7 @@ def main():
     parser.add_option_group(anal_options)
 
     parser.add_option('-l', '--logging-level', default='info', help='Logging level')
-    parser.add_option('-f', '--config-file', default='dist-ucore.cfg',
+    parser.add_option('-f', '--config-file', default='config/dist-ucore.cfg',
             help='Use configurations in the specified file')
 
 

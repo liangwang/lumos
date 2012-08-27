@@ -15,6 +15,10 @@ DATA_DIR = joinpath(conf.misc.homedir,
 FIG_DIR = joinpath(conf.misc.homedir,
                     'outputs', 'figures')
 
+marker_cycle = ['s', 'o', 'v', '*', '<',
+'>', '^', '+', 'x', 'D',
+'d', '1', '2', '3', '4',
+'h', 'H', 'p', '|', '_']
 
 def mk_dir(parent,  dname):
     abspath = joinpath(parent, dname)
@@ -64,7 +68,7 @@ def parse_bw(bw_cfg):
 
 def plot_twinx(x_list, y1_lists, y2_lists,
                xlabel, y1label, y2label,
-               legend_labels, legend_loc, title=None,
+               legend_labels=None, legend_loc=None, title=None,
                xlim=None, y1lim=None, y2lim=None,
                figsize=None, marker_list=None, ms_list=None,
                figdir=None, ofn=None, cb_func=None):
@@ -99,7 +103,8 @@ def plot_twinx(x_list, y1_lists, y2_lists,
         for y2, marker, ms in itertools.izip(y2_lists, itertools.cycle(marker_list), itertools.cycle(ms_list)):
             ax2.plot(x_list, y2, marker=marker, ms=ms)
 
-    ax1.legend(ax1.lines, legend_labels, loc=legend_loc,  prop=dict(size='medium'))
+    if legend_labels and legend_loc:
+        ax1.legend(ax1.lines, legend_labels, loc=legend_loc,  prop=dict(size='medium'))
 
     ax1.set_xlabel(xlabel)
     ax1.set_ylabel(y1label)
@@ -225,6 +230,52 @@ def plot_data(x_list, y_lists, xlabel, ylabel, legend_title=None, legend_labels=
 
     fig.savefig(ofile, bbox_inches='tight')
 
+
+def plot_data_nomarker(x_list, y_lists, xlabel, ylabel, legend_title=None, legend_labels=None, legend_loc=None, ylim=None, xlim=None, ylog=False, xgrid=True, ygrid=True, title=None, figsize=None, marker_list=None, ms_list=None, figdir=None, ofn=None, cb_func=None):
+
+    if not ofn:
+        ofn = 'data_plot.png'
+
+    if not figsize:
+        figsize = (8, 6)
+
+    fig = plt.figure(figsize=figsize)
+    axes = fig.add_subplot(111)
+
+    for y in y_lists:
+        axes.plot(x_list, y)
+
+    if ylim:
+        axes.set_ylim(ylim[0], ylim[1])
+    if xlim:
+        axes.set_xlim(xlim[0], xlim[1])
+    if ylog:
+        axes.set_yscale('log')
+
+    axes.set_xlabel(xlabel)
+    axes.set_ylabel(ylabel)
+    if legend_labels:
+        #if legend_loc:
+        axes.legend(axes.lines, legend_labels, loc=legend_loc,
+                title=legend_title, prop=dict(size='medium'))
+        #else:
+            #axes.legend(axes.lines, legend_labels, prop=dict(size='medium'))
+
+    axes.xaxis.grid(xgrid)
+    axes.yaxis.grid(ygrid)
+
+    if title:
+        axes.set_title(title)
+
+    if cb_func:
+        cb_func(axes, fig)
+
+    if not figdir:
+        ofile = joinpath(FIG_DIR, ofn)
+    else:
+        ofile = joinpath(figdir, ofn)
+
+    fig.savefig(ofile, bbox_inches='tight')
 
 def plot_series(x_list, y_lists, xlabel, ylabel, legend_labels=None, legend_loc=None, ylim=None, set_grid=True, title=None, figsize=None, marker_list=None, ms_list=None, figdir=None, ofn=None, cb_func=None):
     if not marker_list:

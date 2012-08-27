@@ -364,7 +364,7 @@ def build_optparser():
             help='Logging level of LEVEL, choose from ('
             + ','.join(llevel_choices)
             + '), default: %default')
-    parser.add_option('-f', '--config-file', default='config/%s.cfg'%ANALYSIS_NAME,
+    parser.add_option('-f', '--config-file', default='%s/%s.cfg'%(HOME,ANALYSIS_NAME),
             metavar='FILE', help='Use configurations in FILE, default: %default')
     parser.add_option('-n', action='store_false', dest='override', default=True,
             help='DONOT override command line options with the same one in the configuration file. '
