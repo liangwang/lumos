@@ -22,8 +22,10 @@ MC_CKT = 'adder'
 MC_BEST = False
 
 # from: http://www.spec.org/cpu2006/results/res2009q3/cpu2006-20090721-08251.html
-# SPECfp_rate2006 / 8(cores) / 4 (threads) * (4.2/1.58) (freq scaling factor) * 1.4 ( 1/0.7, tech scaling factor)
-PERF_BASE = 7.96
+# SPECfp_rate2006 / 8(cores) / 2 (threads) * (4.2/1.58) (freq scaling factor) * 1.4 ( 1/0.7, tech scaling factor)
+#PERF_BASE = 15.92
+# adjust to federation
+PERF_BASE = 12.92
 
 # from: http://www.spec.org/cpu2006/results/res2010q1/cpu2006-20100215-09685.html
 # SPECfp2006 * (3.7/3.3) (freq scaling factor)
