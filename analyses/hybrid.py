@@ -4,12 +4,9 @@
 import logging
 import cPickle as pickle
 import itertools
-#import matplotlib
-#matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 from model.system import HeteroSys
-from model.app import App
 from model import kernel, workload
 from model.budget import *
 from model.kernel import UCoreParam
@@ -402,6 +399,7 @@ def build_optparser():
             help='choose the format of output, choose from ('
             + ','.join(fmt_choices)
             + '), default: %default')
+    anal_options.add_option('--series', help='Select series')
     #anal_options.add_option('--kids', default='4,5,6')
     parser.add_option_group(anal_options)
 
