@@ -16,5 +16,5 @@ ratio=range(10,90,5)
 
 for s,k,w in zip(series, kernels, workloads):
     for r in ratio:
-        cmd = 'python analyses/asicinc/asicinc.py --asic-ratio=%d --kernels=%s --workload=%s --series=%s' % (r, k, w, s)
+        cmd = 'python analyses/asicinc/asicinc.py --asic-ratio=%d --kernels=config/%s --workload=config/%s --series=%s' % (r, k, w, s)
         os.system(cmd)
