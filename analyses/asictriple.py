@@ -4,19 +4,15 @@
 import logging
 import cPickle as pickle
 import itertools
-#import matplotlib
-#matplotlib.use('Agg')
-import matplotlib.pyplot as plt
+import matplotlib
 
 from model.system import HeteroSys
-from model.app import App
 from model import kernel, workload
 from model.budget import *
 from model.kernel import UCoreParam
 
-import analyses.analysis as analysis
-from analyses.analysis import plot_data, plot_twinx, plot_series, plot_series2
-from analyses.analysis import try_update, parse_bw
+import analysis
+from analysis import plot_data, plot_twinx, plot_series, plot_series2
 
 from optparse import OptionParser, OptionGroup
 import ConfigParser
@@ -29,7 +25,6 @@ import Queue
 import scipy.stats
 import numpy
 import numpy.random
-from mpl_toolkits.mplot3d import Axes3D
 from mpltools import style
 
 ANALYSIS_NAME = 'asictriple'
@@ -86,11 +81,11 @@ class ASICTriple(object):
             gmean = scipy.stats.gmean(perfs)
             hmean = scipy.stats.hmean(perfs)
 
-            print '{cid}, {asic}, {perf}, {config}'.format(
-                    cid=cid,
-                    asic=asic_area,
-                    perf=mean,
-                    config=config)
+            #print '{cid}, {asic}, {perf}, {config}'.format(
+                    #cid=cid,
+                    #asic=asic_area,
+                    #perf=mean,
+                    #config=config)
 
             return (cid, asic_area, mean, std, gmean, hmean)
 
@@ -116,12 +111,12 @@ class ASICTriple(object):
         #self.asic_alloc = (5, 10, 15, 20, 25, 30, 35, 40, 45)
         #self.asic_alloc = (0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1)
         #self.kfirst_alloc = (10, 30, 50, 70, 90)
-        self.asic_area_list = (5, 10, 15, 20, 30, 40)
+        self.asic_area_list = (5, 10, 15, 20, 30, 40, 45)
 
         #self.kalloc1 = 0.1
         #self.kalloc2 = 0.3
         #self.kalloc3 = 0.6
-        self.kalloc = (10, 20, 30, 40)
+        self.kalloc = (10, 30, 60)
 
         #self.kid1 = '_gen_fixednorm_004'
         #self.kid2 = '_gen_fixednorm_005'
@@ -129,13 +124,13 @@ class ASICTriple(object):
         #self.kids = ('_gen_fixednorm_004','_gen_fixednorm_005','_gen_fixednorm_006')
         self.kids = ['_gen_fixednorm_00%s' % kid for kid in options.kids.split(',')]
 
-        self.alloc_configs = (
-                (10, 30, 40, 20),
-                (20, 30, 40, 10),
-                (10, 40, 30, 20),
-                (20, 40, 30, 10),
-                (25, 25, 25, 25)
-                )
+        self.alloc_configs = ( (self.kalloc[0],self.kalloc[1],self.kalloc[2]),
+                (self.kalloc[0],self.kalloc[2],self.kalloc[1]),
+                (self.kalloc[1],self.kalloc[0],self.kalloc[2]),
+                (self.kalloc[1],self.kalloc[2],self.kalloc[0]),
+                (self.kalloc[2],self.kalloc[1],self.kalloc[0]),
+                (self.kalloc[2],self.kalloc[0],self.kalloc[1]),
+                (33, 33, 34))
 
         self.options = options
 
@@ -212,54 +207,36 @@ class ASICTriple(object):
             pickle.dump(hmean_lists, f)
 
     def plot(self):
-        style.use('ggplot')
-        dfn = joinpath(DATA_DIR, ('%s.pypkl' % self.id))
+        dfn = joinpath(self.DATA_DIR, ('%s.pypkl' % self.id))
         with open(dfn, 'rb') as f:
             mean_lists = pickle.load(f)
             std_lists = pickle.load(f)
             gmean_lists = pickle.load(f)
             hmean_lists = pickle.load(f)
 
+        style.use('ggplot')
         x_lists = numpy.array(self.asic_area_list) * 0.01
+        legend_labels=['-'.join(['%d'%a for a in alloc_config]) for alloc_config in self.alloc_configs]
+        def cb_func(axes,fig):
+            matplotlib.rc('xtick', labelsize=8)
+            matplotlib.rc('ytick', labelsize=8)
+            matplotlib.rc('legend', fontsize=8)
+            axes.legend(axes.lines, legend_labels, loc='lower left',
+                    title='Acc4, 5, 6 allocation', ncol=2)
+
         analysis.plot_data(x_lists, mean_lists,
                 xlabel='Total ASIC allocation',
                 ylabel='Speedup (mean)',
-                legend_labels=['-'.join(['%d'%a for a in alloc_config]) for alloc_config in self.alloc_configs],
-                legend_loc='lower right',
-                #title=','.join([s[-1:] for s in self.kids]),
-                xlim=(0, 0.42),
-                ylim=(127, 160),
-                figsize=(6, 4.5),
+                xlim=(0, 0.5),
+                #ylim=(127, 160),
+                ms_list=(8,),
+                figsize=(4, 3),
+                cb_func=cb_func,
                 #xlim=(0, 0.11),
-                figdir=FIG_DIR,
+                figdir=self.FIG_DIR,
                 ofn='%s-%s.%s' % (self.id,
                     '-'.join([s[-1:] for s in self.kids]), self.fmt)
                 )
-
-            #analysis.plot_data(self.asic_alloc, gmean_lists,
-                    #xlabel='ASIC allocation in percentage',
-                    #ylabel='Speedup (gmean)',
-                    #legend_labels=self.accelerators,
-                    #xlim=(0, 0.5),
-                    #figdir=FIG_DIR,
-                    #ofn='%s-gmean.png'%self.id)
-
-            #analysis.plot_data(self.asic_alloc, hmean_lists,
-                    #xlabel='ASIC allocation in percentage',
-                    #ylabel='Speedup (hmean)',
-                    #legend_labels=self.accelerators,
-                    #xlim=(0, 0.5),
-                    #figdir=FIG_DIR,
-                    #ofn='%s-hmean.png'%self.id)
-
-
-
-
-
-
-
-
-
 
 
 LOGGING_LEVELS = {'critical': logging.CRITICAL,
@@ -267,6 +244,10 @@ LOGGING_LEVELS = {'critical': logging.CRITICAL,
         'warning': logging.WARNING,
         'info': logging.INFO,
         'debug': logging.DEBUG}
+
+def try_update(config, options, section, name):
+    if config.has_option(section, name):
+        setattr(options, name, config.get(section, name))
 
 
 
@@ -299,7 +280,6 @@ def option_override(options):
 
     section = 'analysis'
     if config.has_section(section):
-        try_update(config, options, section, 'sec')
         try_update(config, options, section, 'series')
         try_update(config, options, section, 'action')
         try_update(config, options, section, 'fmt')
@@ -355,7 +335,7 @@ def build_optparser():
             + ','.join(fmt_choices)
             + '), default: %default')
     anal_options.add_option('--series', help='Select series')
-    anal_options.add_option('--kids', default='3,4,5,6')
+    anal_options.add_option('--kids', default='4,5,6')
     parser.add_option_group(anal_options)
 
     llevel_choices = ('info', 'debug', 'error')
@@ -364,7 +344,8 @@ def build_optparser():
             help='Logging level of LEVEL, choose from ('
             + ','.join(llevel_choices)
             + '), default: %default')
-    parser.add_option('-f', '--config-file', default='config/%s.cfg'%ANALYSIS_NAME,
+    default_cfg = joinpath(HOME, '%s.cfg' % ANALYSIS_NAME)
+    parser.add_option('-f', '--config-file', default=default_cfg,
             metavar='FILE', help='Use configurations in FILE, default: %default')
     parser.add_option('-n', action='store_false', dest='override', default=True,
             help='DONOT override command line options with the same one in the configuration file. '
@@ -401,10 +382,7 @@ def main():
     else:
         logging.error("No action specified")
 
-    if options.sec == 'asicquad':
-        anl = ASICQuad(options,budget=budget)
-    else:
-        logging.error('unknow analysis %s' % options.sec)
+    anl = ASICTriple(options,budget=budget)
 
     if 'analysis' in actions:
         anl.analyze()
