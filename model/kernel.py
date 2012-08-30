@@ -233,7 +233,7 @@ def create_randnorm_xml(dist_params,fname='config/randnorm_kernels.xml', size=10
     miu = dist_params['mean']
     sigma = dist_params['std']
     rvs = numpy.random.normal(miu, sigma, size*2)
-    rvs_positive = [ rv for rv in rvs if rv > 0][:1000]
+    rvs_positive = [ rv for rv in rvs if rv > 0][:size]
     rvs = rvs_positive
 
     probs = scipy.stats.norm.pdf(rvs, miu, sigma)
