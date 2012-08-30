@@ -17,7 +17,6 @@ from model.kernel import UCoreParam
 import analysis
 from analysis import BaseAnalysis
 from analysis import plot_data, plot_twinx, plot_series, plot_series2
-from analysis import FIG_DIR as FIG_BASE, DATA_DIR as DATA_BASE
 
 from optparse import OptionParser, OptionGroup
 import ConfigParser
@@ -33,7 +32,10 @@ import numpy.random
 from mpl_toolkits.mplot3d import Axes3D
 from mpltools import style
 
-FIG_DIR,DATA_DIR = analysis.make_ws('dist-ucore')
+ANALYSIS_NAME = 'dist-ucore'
+HOME = joinpath(analysis.HOME, ANALYSIS_NAME)
+FIG_DIR,DATA_DIR = analysis.make_ws_dirs(ANALYSIS_NAME)
+
 
 class Hybrid(BaseAnalysis):
     """ only one accelerators per system """
@@ -116,10 +118,15 @@ class Hybrid(BaseAnalysis):
 
         self.options = options
 
-        kernel_cfg = options.kernels_cfg
+        if options.series:
+            self.FIG_DIR = analysis.mk_dir(FIG_DIR, options.series)
+            self.DATA_DIR = analysis.mk_dir(DATA_DIR, options.series)
+        else:
+            self.FIG_DIR = FIG_DIR
+            self.DATA_DIR = DATA_DIR
 
     def analyze(self):
-        dfn = joinpath(DATA_DIR, ('%s.pypkl' % self.id))
+        dfn = joinpath(self.DATA_DIR, ('%s.pypkl' % self.id))
         f = open(dfn, 'wb')
 
         asic_area_list = []
@@ -179,7 +186,7 @@ class Hybrid(BaseAnalysis):
 
     def plot(self):
         style.use('ggplot')
-        dfn = joinpath(DATA_DIR, ('%s.pypkl' % self.id))
+        dfn = joinpath(self.DATA_DIR, ('%s.pypkl' % self.id))
         with open(dfn, 'rb') as f:
             mean_lists = pickle.load(f)
             std_lists = pickle.load(f)
@@ -234,7 +241,7 @@ class Hybrid(BaseAnalysis):
             axes.set_ylabel('Speedup (mean)')
 
             ofn = '{id}_amean.{fmt}'.format(id=self.id, fmt=self.fmt)
-            ofile = joinpath(FIG_DIR, ofn)
+            ofile = joinpath(self.FIG_DIR, ofn)
             fig.savefig(ofile, bbox_inches='tight')
             #analysis.plot_data(x_lists, mean_lists,
                     #xlabel='Total U-Cores allocation',
@@ -377,7 +384,7 @@ class ASICQuad(BaseAnalysis):
 
 
     def analyze(self):
-        dfn = joinpath(DATA_DIR, ('%s.pypkl' % self.id))
+        dfn = joinpath(self.DATA_DIR, ('%s.pypkl' % self.id))
         f = open(dfn, 'wb')
 
         self.workload = workload.load_xml(self.options.workload)
@@ -442,7 +449,7 @@ class ASICQuad(BaseAnalysis):
 
     def plot(self):
         style.use('ggplot')
-        dfn = joinpath(DATA_DIR, ('%s.pypkl' % self.id))
+        dfn = joinpath(self.DATA_DIR, ('%s.pypkl' % self.id))
         with open(dfn, 'rb') as f:
             mean_lists = pickle.load(f)
             std_lists = pickle.load(f)
@@ -486,7 +493,7 @@ class ASICQuad(BaseAnalysis):
                     ylim=(127, 155),
                     figsize=(6, 4.5),
                     #xlim=(0, 0.11),
-                    figdir=FIG_DIR,
+                    figdir=self.FIG_DIR,
                     ofn='%s-%s.%s' % (self.id,
                         '-'.join([s[-1:] for s in self.kids]), self.fmt)
                     )
@@ -695,7 +702,7 @@ class ASICTriple(BaseAnalysis):
         self.workload = workload
 
     def analyze(self):
-        dfn = joinpath(DATA_DIR, ('%s.pypkl' % self.id))
+        dfn = joinpath(self.DATA_DIR, ('%s.pypkl' % self.id))
         f = open(dfn, 'wb')
 
         #self.build_workload()
@@ -761,7 +768,7 @@ class ASICTriple(BaseAnalysis):
 
     def plot(self):
         style.use('ggplot')
-        dfn = joinpath(DATA_DIR, ('%s.pypkl' % self.id))
+        dfn = joinpath(self.DATA_DIR, ('%s.pypkl' % self.id))
         with open(dfn, 'rb') as f:
             mean_lists = pickle.load(f)
             std_lists = pickle.load(f)
@@ -805,7 +812,7 @@ class ASICTriple(BaseAnalysis):
                     ylim=(127, 155),
                     figsize=(6, 4.5),
                     #xlim=(0, 0.11),
-                    figdir=FIG_DIR,
+                    figdir=self.FIG_DIR,
                     ofn='%s-%s.%s' % (self.id,
                         '-'.join([s[-1:] for s in self.kids]), self.fmt)
                     )
@@ -989,7 +996,7 @@ class ASICDual(BaseAnalysis):
         self.workload = workload
 
     def analyze(self):
-        dfn = joinpath(DATA_DIR, ('%s.pypkl' % self.id))
+        dfn = joinpath(self.DATA_DIR, ('%s.pypkl' % self.id))
         f = open(dfn, 'wb')
 
         self.build_workload()
@@ -1048,7 +1055,7 @@ class ASICDual(BaseAnalysis):
         f.close()
 
     def plot(self):
-        dfn = joinpath(DATA_DIR, ('%s.pypkl' % self.id))
+        dfn = joinpath(self.DATA_DIR, ('%s.pypkl' % self.id))
         with open(dfn, 'rb') as f:
             mean_lists = pickle.load(f)
             std_lists = pickle.load(f)
@@ -1090,7 +1097,7 @@ class ASICDual(BaseAnalysis):
                     legend_title='Acc4 area out\nof total ASIC',
                     xlim=(0, 0.5),
                     #xlim=(0, 0.11),
-                    figdir=FIG_DIR,
+                    figdir=self.FIG_DIR,
                     ofn='%s-amean.%s'%(self.id, self.fmt))
 
             #analysis.plot_data(self.asic_alloc, gmean_lists,
@@ -1268,7 +1275,7 @@ class ASICSingle(BaseAnalysis):
         self.workload = workload
 
     def analyze(self):
-        dfn = joinpath(DATA_DIR, ('%s.pypkl' % self.id))
+        dfn = joinpath(self.DATA_DIR, ('%s.pypkl' % self.id))
         f = open(dfn, 'wb')
 
         self.build_workload()
@@ -1327,7 +1334,7 @@ class ASICSingle(BaseAnalysis):
         f.close()
 
     def plot(self):
-        dfn = joinpath(DATA_DIR, ('%s.pypkl' % self.id))
+        dfn = joinpath(self.DATA_DIR, ('%s.pypkl' % self.id))
         with open(dfn, 'rb') as f:
             mean_lists = pickle.load(f)
             std_lists = pickle.load(f)
@@ -1367,7 +1374,7 @@ class ASICSingle(BaseAnalysis):
                     legend_labels=self.accelerators,
                     #xlim=(0, 0.5),
                     xlim=(0, 0.11),
-                    figdir=FIG_DIR,
+                    figdir=self.FIG_DIR,
                     ofn='%s-amean.png'%self.id)
 
             #analysis.plot_data(self.ker_alloc, gmean_lists,
@@ -1499,7 +1506,7 @@ class ASICAnalysis(BaseAnalysis):
 
 
     def analyze(self):
-        dfn = joinpath(DATA_DIR, ('%s.pypkl' % self.id))
+        dfn = joinpath(self.DATA_DIR, ('%s.pypkl' % self.id))
         f = open(dfn, 'wb')
         asic_area_list = []
         kernel_miu_list = []
@@ -1533,7 +1540,7 @@ class ASICAnalysis(BaseAnalysis):
         f.close()
 
     def plot(self):
-        dfn = joinpath(DATA_DIR, ('%s.pypkl' % self.id))
+        dfn = joinpath(self.DATA_DIR, ('%s.pypkl' % self.id))
         with open(dfn, 'rb') as f:
             asic_area_list = pickle.load(f)
             kernel_miu_list = pickle.load(f)
@@ -1554,7 +1561,7 @@ class ASICAnalysis(BaseAnalysis):
             axes.set_ylabel('Kernel coverage (%)')
             #axes.set_xlim(0.05, 0.65)
             #axes.set_ylim(0, 35)
-            ofn = joinpath(FIG_DIR, '%s.png'%self.id)
+            ofn = joinpath(self.FIG_DIR, '%s.png'%self.id)
             fig.savefig(ofn, bbox_inches='tight')
 
 
@@ -1676,7 +1683,7 @@ class FPGAAnalysis(BaseAnalysis):
         return r
 
     def analyze(self):
-        dfn = joinpath(DATA_DIR, ('%s.pypkl' % self.id))
+        dfn = joinpath(self.DATA_DIR, ('%s.pypkl' % self.id))
         #kernels = kernel.gen_kernel_gauss(80,10)
         #cov_list = scipy.stats.uniform.rvs(0.1, 0.7, size=20)
         #cov_list = scipy.stats.norm.rvs(0.4, 0.1)
@@ -1717,7 +1724,7 @@ class FPGAAnalysis(BaseAnalysis):
         f.close()
 
     def plot(self):
-        dfn = joinpath(DATA_DIR, ('%s.pypkl' % self.id))
+        dfn = joinpath(self.DATA_DIR, ('%s.pypkl' % self.id))
         with open(dfn, 'rb') as f:
             fpga_area_list = pickle.load(f)
             kernel_miu_list = pickle.load(f)
@@ -1742,7 +1749,7 @@ class FPGAAnalysis(BaseAnalysis):
             #axes.set_xlim(0.05, 0.65)
             #axes.set_ylim(0, 35)
 
-            ofn = joinpath(FIG_DIR, '%s.%s'% (self.id, self.fmt))
+            ofn = joinpath(self.FIG_DIR, '%s.%s'% (self.id, self.fmt))
             fig.savefig(ofn, bbox_inches='tight')
 
 
@@ -1889,7 +1896,7 @@ class FPGAFixedArea(BaseAnalysis):
         return r
 
     def analyze(self):
-        dfn = joinpath(DATA_DIR, ('%s.pypkl' % self.id))
+        dfn = joinpath(self.DATA_DIR, ('%s.pypkl' % self.id))
         #kernels = kernel.gen_kernel_gauss(80,10)
         #cov_list = scipy.stats.uniform.rvs(0.1, 0.7, size=20)
         #cov_list = scipy.stats.norm.rvs(0.4, 0.1)
@@ -1941,7 +1948,7 @@ class FPGAFixedArea(BaseAnalysis):
         f.close()
 
     def plot(self):
-        dfn = joinpath(DATA_DIR, ('%s.pypkl' % self.id))
+        dfn = joinpath(self.DATA_DIR, ('%s.pypkl' % self.id))
         with open(dfn, 'rb') as f:
             fpga_area_list = pickle.load(f)
             kernel_miu_list = pickle.load(f)
@@ -1979,7 +1986,7 @@ class FPGAFixedArea(BaseAnalysis):
                 axes.set_title('%d%% FPGA allocation' % area)
                 axes.set_ylim(0.75, 1)
 
-                ofn = joinpath(FIG_DIR, '%s_%d.png'%(self.id, area))
+                ofn = joinpath(self.FIG_DIR, '%s_%d.png'%(self.id, area))
                 fig.savefig(ofn, bbox_inches='tight')
 
             #axes2 = fig.add_subplot(223)
@@ -2127,7 +2134,7 @@ class FPGAFixedArea2(BaseAnalysis):
 
 
     def analyze(self):
-        dfn = joinpath(DATA_DIR, ('%s.pypkl' % self.id))
+        dfn = joinpath(self.DATA_DIR, ('%s.pypkl' % self.id))
         f = open(dfn, 'wb')
 
         self.build_workload()
@@ -2162,7 +2169,7 @@ class FPGAFixedArea2(BaseAnalysis):
         f.close()
 
     def plot(self):
-        dfn = joinpath(DATA_DIR, ('%s.pypkl' % self.id))
+        dfn = joinpath(self.DATA_DIR, ('%s.pypkl' % self.id))
         with open(dfn, 'rb') as f:
             mean_list = pickle.load(f)
             std_list = pickle.load(f)
@@ -2176,7 +2183,7 @@ class FPGAFixedArea2(BaseAnalysis):
 
             axes.errorbar(x, y, yerr=err)
 
-            ofn = joinpath(FIG_DIR, '%s.png'%self.id)
+            ofn = joinpath(self.FIG_DIR, '%s.png'%self.id)
             fig.savefig(ofn, bbox_inches='tight')
 
 LOGGING_LEVELS = {'critical': logging.CRITICAL,
@@ -2205,12 +2212,14 @@ def option_override(options):
 
     section = 'system'
     if config.has_section(section):
+        try_update(config, options, section, 'budget')
+        try_update(config, options, section, 'sys_area')
+        try_update(config, options, section, 'sys_power')
+        try_update(config, options, section, 'sys_bw')
         if config.has_option(section, 'ucore_ratio'):
             options.ucore_ratio = config.get(section, 'ucore_ratio')
         if config.has_option(section, 'ucore_type'):
             options.ucore_type = config.get(section, 'ucore_type')
-        if config.has_option(section, 'budget'):
-            options.budget = config.get(section, 'budget')
         if config.has_option(section, 'asic_config'):
             options.asic_config = config.get(section, 'asic_config')
         if config.has_option(section, 'fpga_config'):
@@ -2244,22 +2253,33 @@ def option_override(options):
     section = 'analysis'
     if config.has_section(section):
         try_update(config, options, section, 'sec')
-        try_update(config, options, section, 'mode')
+        try_update(config, options, section, 'series')
+        try_update(config, options, section, 'action')
         try_update(config, options, section, 'fmt')
         try_update(config, options, section, 'nprocs')
 
-def main():
+
+def build_optparser():
     # Init command line arguments parser
     parser = OptionParser()
 
     sys_options = OptionGroup(parser, "System Configurations")
-    sys_options.add_option('--sys-area', type='int', default=400)
-    sys_options.add_option('--sys-power', type='int', default=100)
+    budget_choices = ('large', 'medium', 'small', 'custom')
+    sys_options.add_option('--budget', default='large', choices=budget_choices,
+            help="choose the budget from pre-defined ("
+            + ",".join(budget_choices[:-1])
+            + "), or 'custom' for customized budget by specifying AREA, POWER, and BANDWIDTH")
+    sys_options.add_option('--sys-area', type='int', default=400, metavar='AREA',
+            help='Area budget in mm^2, default: %default. This option will be discarded when budget is NOT custom')
+    sys_options.add_option('--sys-power', type='int', default=100, metavar='POWER',
+            help='Power budget in Watts, default: %default. This option will be discarded when budget is NOT custom')
+    sys_options.add_option('--sys-bw', metavar='BANDWIDTH',
+            default='45:180,32:198,22:234,16:252',
+            help='Power budget in Watts, default: {%default}. This option will be discarded when budget is NOT custom')
     sys_options.add_option('--ucore-ratio', default='0.1,0.3,0.5,0.7,0.9')
     sys_options.add_option('--ucore-type', default = 'GPU,FPGA,ASIC')
     sys_options.add_option('--asic-config', default = 'MMM:0.05')
     sys_options.add_option('--fpga-config', default = '20,30')
-    sys_options.add_option('--budget', default='large')
     parser.add_option_group(sys_options)
 
     app_options = OptionGroup(parser, "Application Configurations")
@@ -2281,16 +2301,16 @@ def main():
     parser.add_option_group(app_options)
 
     anal_options = OptionGroup(parser, "Analysis options")
-    section_choices = ('fpga', 'asic')
-    anal_options.add_option('--sec', default='fpga', choices=section_choices,
+    section_choices = ('fpga', 'asic', 'hybrid')
+    anal_options.add_option('--sec', default='hybrid', choices=section_choices,
             help='choose the secitons of plotting, choose from ('
             + ','.join(section_choices)
             + '), default: %default')
-    mode_choices = ('a', 'p', 'ap')
-    anal_options.add_option('--mode', default='p', choices=mode_choices,
+    action_choices = ('analysis', 'plot')
+    anal_options.add_option('-a', '--action', choices=action_choices,
             help='choose the running mode, choose from ('
-            + ','.join(mode_choices)
-            + '), default: %default')
+            + ','.join(action_choices)
+            + '), or combine actions seperated by ",". default: N/A.')
     fmt_choices = ('png', 'pdf', 'eps')
     anal_options.add_option('--fmt', default='pdf', choices=fmt_choices,
             help='choose the format of output, choose from ('
@@ -2300,10 +2320,25 @@ def main():
     parser.add_option_group(anal_options)
 
     parser.add_option('-l', '--logging-level', default='info', help='Logging level')
-    parser.add_option('-f', '--config-file', default='config/dist-ucore.cfg',
-            help='Use configurations in the specified file')
+    default_cfg = joinpath(HOME, '%s.cfg' % ANALYSIS_NAME)
+    parser.add_option('-f', '--config-file', default=default_cfg,
+            metavar='FILE', help='Use configurations in FILE, default: %default')
+
+    return parser
 
 
+def build_workload():
+    fname = joinpath(HOME, 'kernels_asicfpgaratio10x.xml')
+    kernels = kernel.load_xml(fname)
+    w = workload.build(500, kernels, 'norm', 0.4, 0.1)
+    fname = joinpath(HOME, 'workload_norm40x10')
+    workload.dump_xml(w, fname)
+
+
+
+
+def main():
+    parser = build_optparser()
     (options, args) = parser.parse_args()
     option_override(options)
 
@@ -2316,34 +2351,43 @@ def main():
         budget = SysMedium
     elif options.budget == 'small':
         budget = SysSmall
+    elif options.budget == 'custom':
+        budget = Budget(area=float(options.sys_area),
+                power=float(options.sys_power),
+                bw=parse_bw(options.sys_bw))
     else:
         logging.error('unknwon budget')
 
 
     if options.sec == 'fpga':
         anl = FPGAAnalysis(fmt=options.fmt, pv=False, budget=budget, options=options)
-        anl.do(options.mode)
     elif options.sec == 'fpgafixedarea':
         anl = FPGAFixedArea(fmt=options.fmt, pv=False, budget=budget, options=options)
-        anl.do(options.mode)
     elif options.sec == 'fpgafixedarea2':
         anl = FPGAFixedArea2(fmt=options.fmt, pv=False, budget=budget, options=options)
-        anl.do(options.mode)
     elif options.sec == 'asic':
         anl = ASICAnalysis(options, budget=budget, pv=False)
-        anl.do(options.mode)
     elif options.sec == 'asicsingle':
         anl = ASICSingle(options,budget=budget)
-        anl.do(options.mode)
     elif options.sec == 'asicdual':
         anl = ASICDual(options,budget=budget)
-        anl.do(options.mode)
     elif options.sec == 'hybrid':
         anl = Hybrid(options,budget=budget)
-        anl.do(options.mode)
     elif options.sec == 'asictriple':
         anl = ASICTriple(options,budget=budget)
-        anl.do(options.mode)
+
+    if options.action:
+        actions = options.action.split(',')
+    else:
+        logging.error('No action specified')
+
+    if 'build' in actions:
+        build_workload()
+    if 'analysis' in actions:
+        anl.analyze()
+    if 'plot' in actions:
+        anl.plot()
+
 
 if __name__ == '__main__':
     main()
