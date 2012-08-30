@@ -1,0 +1,18 @@
+syntax: glob
+*.pyc
+*.dat
+*.gpi
+*.d
+*.log
+*.png
+*.pdf
+*.db
+*.bak
+tags
+cacti
+swig
+*.pypkl
+mcpat
+outputs
+*.txt
+*.orig
