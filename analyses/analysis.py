@@ -178,7 +178,13 @@ def plot_errbar(x_list, y_lists, err_lists, xlabel, ylabel, legend_labels=None, 
     fig.savefig(ofile, bbox_inches='tight')
 
 
-def plot_data(x_list, y_lists, xlabel, ylabel, legend_title=None, legend_labels=None, legend_loc=None, ylim=None, xlim=None, ylog=False, xgrid=True, ygrid=True, title=None, figsize=None, marker_list=None, ms_list=None, figdir=None, ofn=None, cb_func=None):
+def plot_data(x_list, y_lists, xlabel, ylabel,
+        legend_title=None, legend_labels=None,
+        legend_loc=None, legend_prop=None,
+        ylim=None, xlim=None, ylog=False,
+        xgrid=True, ygrid=True, title=None,
+        figsize=None, marker_list=None, ms_list=None,
+        figdir=None, ofn=None, cb_func=None):
     if not marker_list:
         marker_list = ['s', 'o', 'v', '*', '<', '>', '^', '+', 'x', 'D', 'd',
                        '1', '2', '3', '4', 'h', 'H', 'p', '|', '_']
@@ -207,10 +213,17 @@ def plot_data(x_list, y_lists, xlabel, ylabel, legend_title=None, legend_labels=
 
     axes.set_xlabel(xlabel)
     axes.set_ylabel(ylabel)
+
+    if not legend_loc:
+        legend_loc = 'upper left'
+
+    if not legend_prop:
+        legend_prop = dict(size='medium')
+
     if legend_labels:
         #if legend_loc:
         axes.legend(axes.lines, legend_labels, loc=legend_loc,
-                title=legend_title, prop=dict(size='medium'))
+                title=legend_title, prop=legend_prop)
         #else:
             #axes.legend(axes.lines, legend_labels, prop=dict(size='medium'))
 
