@@ -36,9 +36,6 @@ def build(app_num, kernels, cov_dist, cov_param1, cov_param2):
     probs = [ kernel.kernel_pool[kid]['occur'] for kid in kernels ]
     kernel_occ_probs = [ scipy.stats.bernoulli.rvs(p, size=app_num) for p in probs ]
 
-    for x in kernel_occ_probs:
-        print x.tolist().count(1)
-
     app_idx = 0
     for occ in zip(*kernel_occ_probs):
         if occ.count(1) > 0:
