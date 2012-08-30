@@ -4,19 +4,16 @@
 import logging
 import cPickle as pickle
 import itertools
-#import matplotlib
-#matplotlib.use('Agg')
-import matplotlib.pyplot as plt
+import matplotlib
 
 from model.system import HeteroSys
-from model.app import App
 from model import kernel, workload
 from model.budget import *
 from model.kernel import UCoreParam
 
-import analyses.analysis as analysis
-from analyses.analysis import plot_data, plot_twinx, plot_series, plot_series2
-from analyses.analysis import try_update, parse_bw
+import analysis
+from analysis import plot_data, plot_twinx, plot_series, plot_series2
+from analysis import try_update, parse_bw
 
 from optparse import OptionParser, OptionGroup
 import ConfigParser
@@ -29,7 +26,6 @@ import Queue
 import scipy.stats
 import numpy
 import numpy.random
-from mpl_toolkits.mplot3d import Axes3D
 from mpltools import style
 
 ANALYSIS_NAME = 'asicquad'
@@ -86,11 +82,11 @@ class ASICQuad(object):
             gmean = scipy.stats.gmean(perfs)
             hmean = scipy.stats.hmean(perfs)
 
-            print '{cid}, {asic}, {perf}, {config}'.format(
-                    cid=cid,
-                    asic=asic_area,
-                    perf=mean,
-                    config=config)
+            #print '{cid}, {asic}, {perf}, {config}'.format(
+                    #cid=cid,
+                    #asic=asic_area,
+                    #perf=mean,
+                    #config=config)
 
             return (cid, asic_area, mean, std, gmean, hmean)
 
@@ -212,7 +208,6 @@ class ASICQuad(object):
             pickle.dump(hmean_lists, f)
 
     def plot(self):
-        style.use('ggplot')
         dfn = joinpath(DATA_DIR, ('%s.pypkl' % self.id))
         with open(dfn, 'rb') as f:
             mean_lists = pickle.load(f)
@@ -220,46 +215,29 @@ class ASICQuad(object):
             gmean_lists = pickle.load(f)
             hmean_lists = pickle.load(f)
 
+        style.use('ggplot')
         x_lists = numpy.array(self.asic_area_list) * 0.01
+        legend_labels=['-'.join(['%d'%a for a in alloc_config]) for alloc_config in self.alloc_configs]
+        def cb_func(axes,fig):
+            matplotlib.rc('xtick', labelsize=8)
+            matplotlib.rc('ytick', labelsize=8)
+            matplotlib.rc('legend', fontsize=8)
+            axes.legend(axes.lines, legend_labels, loc='upper right',
+                    title='Acc3, 4, 5, 6 alloc', bbox_to_anchor=(0.85,0.55,0.2,0.45))
+
         analysis.plot_data(x_lists, mean_lists,
                 xlabel='Total ASIC allocation',
                 ylabel='Speedup (mean)',
-                legend_labels=['-'.join(['%d'%a for a in alloc_config]) for alloc_config in self.alloc_configs],
-                legend_loc='lower right',
-                #title=','.join([s[-1:] for s in self.kids]),
-                xlim=(0, 0.42),
-                ylim=(127, 160),
-                figsize=(6, 4.5),
+                xlim=(0, 0.5),
+                #ylim=(127, 160),
+                figsize=(4, 3),
+                ms_list=(8,),
                 #xlim=(0, 0.11),
+                cb_func=cb_func,
                 figdir=FIG_DIR,
                 ofn='%s-%s.%s' % (self.id,
                     '-'.join([s[-1:] for s in self.kids]), self.fmt)
                 )
-
-            #analysis.plot_data(self.asic_alloc, gmean_lists,
-                    #xlabel='ASIC allocation in percentage',
-                    #ylabel='Speedup (gmean)',
-                    #legend_labels=self.accelerators,
-                    #xlim=(0, 0.5),
-                    #figdir=FIG_DIR,
-                    #ofn='%s-gmean.png'%self.id)
-
-            #analysis.plot_data(self.asic_alloc, hmean_lists,
-                    #xlabel='ASIC allocation in percentage',
-                    #ylabel='Speedup (hmean)',
-                    #legend_labels=self.accelerators,
-                    #xlim=(0, 0.5),
-                    #figdir=FIG_DIR,
-                    #ofn='%s-hmean.png'%self.id)
-
-
-
-
-
-
-
-
-
 
 
 LOGGING_LEVELS = {'critical': logging.CRITICAL,
@@ -299,7 +277,6 @@ def option_override(options):
 
     section = 'analysis'
     if config.has_section(section):
-        try_update(config, options, section, 'sec')
         try_update(config, options, section, 'series')
         try_update(config, options, section, 'action')
         try_update(config, options, section, 'fmt')
@@ -337,12 +314,6 @@ def build_optparser():
     parser.add_option_group(app_options)
 
     anal_options = OptionGroup(parser, "Analysis options")
-    section_choices = ('asicinc',)
-    anal_options.add_option('--sec', default='asicinc',
-            choices=section_choices, metavar='SECTION',
-            help='choose the secitons of plotting, choose from ('
-            + ','.join(section_choices)
-            + '), default: %default')
     action_choices = ('analysis', 'plot')
     anal_options.add_option('-a', '--action', choices=action_choices,
             help='choose the running mode, choose from ('
@@ -364,7 +335,8 @@ def build_optparser():
             help='Logging level of LEVEL, choose from ('
             + ','.join(llevel_choices)
             + '), default: %default')
-    parser.add_option('-f', '--config-file', default='%s/%s.cfg'%(HOME,ANALYSIS_NAME),
+    default_cfg = joinpath(HOME, '%s.cfg' % ANALYSIS_NAME)
+    parser.add_option('-f', '--config-file', default=default_cfg,
             metavar='FILE', help='Use configurations in FILE, default: %default')
     parser.add_option('-n', action='store_false', dest='override', default=True,
             help='DONOT override command line options with the same one in the configuration file. '
@@ -401,10 +373,7 @@ def main():
     else:
         logging.error("No action specified")
 
-    if options.sec == 'asicquad':
-        anl = ASICQuad(options,budget=budget)
-    else:
-        logging.error('unknow analysis %s' % options.sec)
+    anl = ASICQuad(options,budget=budget)
 
     if 'analysis' in actions:
         anl.analyze()
