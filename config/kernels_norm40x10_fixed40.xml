@@ -1,0 +1,5007 @@
+<kernels>
+  <kernel name="fixedcov">
+    <fpga miu="40"/>
+    <asic miu="200"/>
+    <occur>1</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_000">
+    <fpga miu="3.624e+01"/>
+    <asic miu="1.812e+02"/>
+    <occur>7.434e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_001">
+    <fpga miu="4.265e+01"/>
+    <asic miu="2.132e+02"/>
+    <occur>7.704e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_002">
+    <fpga miu="4.504e+01"/>
+    <asic miu="2.252e+02"/>
+    <occur>7.026e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_003">
+    <fpga miu="2.710e+01"/>
+    <asic miu="1.355e+02"/>
+    <occur>3.470e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_004">
+    <fpga miu="4.037e+01"/>
+    <asic miu="2.018e+02"/>
+    <occur>7.974e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_005">
+    <fpga miu="5.367e+01"/>
+    <asic miu="2.683e+02"/>
+    <occur>3.134e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_006">
+    <fpga miu="2.396e+01"/>
+    <asic miu="1.198e+02"/>
+    <occur>2.205e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_007">
+    <fpga miu="4.012e+01"/>
+    <asic miu="2.006e+02"/>
+    <occur>7.978e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_008">
+    <fpga miu="3.809e+01"/>
+    <asic miu="1.905e+02"/>
+    <occur>7.835e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_009">
+    <fpga miu="4.429e+01"/>
+    <asic miu="2.214e+02"/>
+    <occur>7.278e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_010">
+    <fpga miu="4.158e+01"/>
+    <asic miu="2.079e+02"/>
+    <occur>7.880e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_011">
+    <fpga miu="3.247e+01"/>
+    <asic miu="1.624e+02"/>
+    <occur>6.010e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_012">
+    <fpga miu="4.069e+01"/>
+    <asic miu="2.034e+02"/>
+    <occur>7.960e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_013">
+    <fpga miu="3.204e+01"/>
+    <asic miu="1.602e+02"/>
+    <occur>5.810e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_014">
+    <fpga miu="4.515e+01"/>
+    <asic miu="2.258e+02"/>
+    <occur>6.987e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_015">
+    <fpga miu="3.397e+01"/>
+    <asic miu="1.699e+02"/>
+    <occur>6.653e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_016">
+    <fpga miu="3.213e+01"/>
+    <asic miu="1.606e+02"/>
+    <occur>5.854e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_017">
+    <fpga miu="2.986e+01"/>
+    <asic miu="1.493e+02"/>
+    <occur>4.771e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_018">
+    <fpga miu="3.514e+01"/>
+    <asic miu="1.757e+02"/>
+    <occur>7.090e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_019">
+    <fpga miu="3.127e+01"/>
+    <asic miu="1.564e+02"/>
+    <occur>5.452e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_020">
+    <fpga miu="4.118e+01"/>
+    <asic miu="2.059e+02"/>
+    <occur>7.924e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_021">
+    <fpga miu="4.763e+01"/>
+    <asic miu="2.382e+02"/>
+    <occur>5.964e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_022">
+    <fpga miu="5.105e+01"/>
+    <asic miu="2.552e+02"/>
+    <occur>4.335e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_023">
+    <fpga miu="4.002e+01"/>
+    <asic miu="2.001e+02"/>
+    <occur>7.979e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_024">
+    <fpga miu="4.063e+01"/>
+    <asic miu="2.032e+02"/>
+    <occur>7.963e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_025">
+    <fpga miu="4.492e+01"/>
+    <asic miu="2.246e+02"/>
+    <occur>7.068e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_026">
+    <fpga miu="5.216e+01"/>
+    <asic miu="2.608e+02"/>
+    <occur>3.810e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_027">
+    <fpga miu="3.852e+01"/>
+    <asic miu="1.926e+02"/>
+    <occur>7.892e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_028">
+    <fpga miu="5.310e+01"/>
+    <asic miu="2.655e+02"/>
+    <occur>3.381e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_029">
+    <fpga miu="3.608e+01"/>
+    <asic miu="1.804e+02"/>
+    <occur>7.390e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_030">
+    <fpga miu="6.193e+01"/>
+    <asic miu="3.097e+02"/>
+    <occur>7.197e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_031">
+    <fpga miu="4.113e+01"/>
+    <asic miu="2.057e+02"/>
+    <occur>7.928e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_032">
+    <fpga miu="4.818e+01"/>
+    <asic miu="2.409e+02"/>
+    <occur>5.712e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_033">
+    <fpga miu="3.033e+01"/>
+    <asic miu="1.517e+02"/>
+    <occur>5.001e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_034">
+    <fpga miu="3.788e+01"/>
+    <asic miu="1.894e+02"/>
+    <occur>7.801e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_035">
+    <fpga miu="4.441e+01"/>
+    <asic miu="2.220e+02"/>
+    <occur>7.240e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_036">
+    <fpga miu="3.712e+01"/>
+    <asic miu="1.856e+02"/>
+    <occur>7.654e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_037">
+    <fpga miu="4.715e+01"/>
+    <asic miu="2.358e+02"/>
+    <occur>6.179e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_038">
+    <fpga miu="3.650e+01"/>
+    <asic miu="1.825e+02"/>
+    <occur>7.505e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_039">
+    <fpga miu="3.500e+01"/>
+    <asic miu="1.750e+02"/>
+    <occur>7.040e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_040">
+    <fpga miu="4.327e+01"/>
+    <asic miu="2.163e+02"/>
+    <occur>7.564e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_041">
+    <fpga miu="4.052e+01"/>
+    <asic miu="2.026e+02"/>
+    <occur>7.968e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_042">
+    <fpga miu="4.809e+01"/>
+    <asic miu="2.404e+02"/>
+    <occur>5.753e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_043">
+    <fpga miu="3.709e+01"/>
+    <asic miu="1.854e+02"/>
+    <occur>7.648e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_044">
+    <fpga miu="2.470e+01"/>
+    <asic miu="1.235e+02"/>
+    <occur>2.477e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_045">
+    <fpga miu="2.311e+01"/>
+    <asic miu="1.156e+02"/>
+    <occur>1.918e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_046">
+    <fpga miu="4.813e+01"/>
+    <asic miu="2.406e+02"/>
+    <occur>5.734e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_047">
+    <fpga miu="4.286e+01"/>
+    <asic miu="2.143e+02"/>
+    <occur>7.660e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_048">
+    <fpga miu="2.587e+01"/>
+    <asic miu="1.294e+02"/>
+    <occur>2.942e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_049">
+    <fpga miu="4.592e+01"/>
+    <asic miu="2.296e+02"/>
+    <occur>6.697e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_050">
+    <fpga miu="3.688e+01"/>
+    <asic miu="1.844e+02"/>
+    <occur>7.600e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_051">
+    <fpga miu="4.226e+01"/>
+    <asic miu="2.113e+02"/>
+    <occur>7.777e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_052">
+    <fpga miu="4.352e+01"/>
+    <asic miu="2.176e+02"/>
+    <occur>7.499e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_053">
+    <fpga miu="5.723e+01"/>
+    <asic miu="2.861e+02"/>
+    <occur>1.810e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_054">
+    <fpga miu="4.627e+01"/>
+    <asic miu="2.314e+02"/>
+    <occur>6.553e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_055">
+    <fpga miu="4.622e+01"/>
+    <asic miu="2.311e+02"/>
+    <occur>6.574e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_056">
+    <fpga miu="5.227e+01"/>
+    <asic miu="2.613e+02"/>
+    <occur>3.760e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_057">
+    <fpga miu="5.319e+01"/>
+    <asic miu="2.660e+02"/>
+    <occur>3.342e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_058">
+    <fpga miu="4.435e+01"/>
+    <asic miu="2.217e+02"/>
+    <occur>7.260e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_059">
+    <fpga miu="3.703e+01"/>
+    <asic miu="1.852e+02"/>
+    <occur>7.636e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_060">
+    <fpga miu="3.371e+01"/>
+    <asic miu="1.685e+02"/>
+    <occur>6.545e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_061">
+    <fpga miu="2.144e+01"/>
+    <asic miu="1.072e+02"/>
+    <occur>1.425e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_062">
+    <fpga miu="4.310e+01"/>
+    <asic miu="2.155e+02"/>
+    <occur>7.604e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_063">
+    <fpga miu="3.916e+01"/>
+    <asic miu="1.958e+02"/>
+    <occur>7.951e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_064">
+    <fpga miu="5.352e+01"/>
+    <asic miu="2.676e+02"/>
+    <occur>3.198e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_065">
+    <fpga miu="3.274e+01"/>
+    <asic miu="1.637e+02"/>
+    <occur>6.130e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_066">
+    <fpga miu="4.928e+01"/>
+    <asic miu="2.464e+02"/>
+    <occur>5.189e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_067">
+    <fpga miu="4.554e+01"/>
+    <asic miu="2.277e+02"/>
+    <occur>6.845e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_068">
+    <fpga miu="3.023e+01"/>
+    <asic miu="1.512e+02"/>
+    <occur>4.951e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_069">
+    <fpga miu="4.606e+01"/>
+    <asic miu="2.303e+02"/>
+    <occur>6.640e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_070">
+    <fpga miu="4.326e+01"/>
+    <asic miu="2.163e+02"/>
+    <occur>7.566e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_071">
+    <fpga miu="5.079e+01"/>
+    <asic miu="2.540e+02"/>
+    <occur>4.456e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_072">
+    <fpga miu="4.794e+01"/>
+    <asic miu="2.397e+02"/>
+    <occur>5.819e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_073">
+    <fpga miu="4.815e+01"/>
+    <asic miu="2.408e+02"/>
+    <occur>5.723e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_074">
+    <fpga miu="4.330e+01"/>
+    <asic miu="2.165e+02"/>
+    <occur>7.555e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_075">
+    <fpga miu="5.003e+01"/>
+    <asic miu="2.501e+02"/>
+    <occur>4.825e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_076">
+    <fpga miu="3.888e+01"/>
+    <asic miu="1.944e+02"/>
+    <occur>7.929e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_077">
+    <fpga miu="4.371e+01"/>
+    <asic miu="2.186e+02"/>
+    <occur>7.447e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_078">
+    <fpga miu="4.182e+01"/>
+    <asic miu="2.091e+02"/>
+    <occur>7.848e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_079">
+    <fpga miu="3.708e+01"/>
+    <asic miu="1.854e+02"/>
+    <occur>7.647e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_080">
+    <fpga miu="3.988e+01"/>
+    <asic miu="1.994e+02"/>
+    <occur>7.978e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_081">
+    <fpga miu="3.718e+01"/>
+    <asic miu="1.859e+02"/>
+    <occur>7.667e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_082">
+    <fpga miu="3.763e+01"/>
+    <asic miu="1.882e+02"/>
+    <occur>7.758e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_083">
+    <fpga miu="2.899e+01"/>
+    <asic miu="1.450e+02"/>
+    <occur>4.353e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_084">
+    <fpga miu="3.666e+01"/>
+    <asic miu="1.833e+02"/>
+    <occur>7.547e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_085">
+    <fpga miu="2.429e+01"/>
+    <asic miu="1.214e+02"/>
+    <occur>2.321e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_086">
+    <fpga miu="3.285e+01"/>
+    <asic miu="1.643e+02"/>
+    <occur>6.179e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_087">
+    <fpga miu="2.808e+01"/>
+    <asic miu="1.404e+02"/>
+    <occur>3.923e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_088">
+    <fpga miu="2.923e+01"/>
+    <asic miu="1.462e+02"/>
+    <occur>4.468e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_089">
+    <fpga miu="3.105e+01"/>
+    <asic miu="1.552e+02"/>
+    <occur>5.343e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_090">
+    <fpga miu="4.127e+01"/>
+    <asic miu="2.063e+02"/>
+    <occur>7.915e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_091">
+    <fpga miu="3.020e+01"/>
+    <asic miu="1.510e+02"/>
+    <occur>4.934e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_092">
+    <fpga miu="2.970e+01"/>
+    <asic miu="1.485e+02"/>
+    <occur>4.693e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_093">
+    <fpga miu="4.063e+01"/>
+    <asic miu="2.032e+02"/>
+    <occur>7.963e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_094">
+    <fpga miu="2.687e+01"/>
+    <asic miu="1.343e+02"/>
+    <occur>3.368e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_095">
+    <fpga miu="3.275e+01"/>
+    <asic miu="1.638e+02"/>
+    <occur>6.136e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_096">
+    <fpga miu="2.530e+01"/>
+    <asic miu="1.265e+02"/>
+    <occur>2.708e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_097">
+    <fpga miu="5.007e+01"/>
+    <asic miu="2.504e+02"/>
+    <occur>4.804e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_098">
+    <fpga miu="4.942e+01"/>
+    <asic miu="2.471e+02"/>
+    <occur>5.120e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_099">
+    <fpga miu="4.391e+01"/>
+    <asic miu="2.195e+02"/>
+    <occur>7.393e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_100">
+    <fpga miu="3.271e+01"/>
+    <asic miu="1.636e+02"/>
+    <occur>6.118e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_101">
+    <fpga miu="4.708e+01"/>
+    <asic miu="2.354e+02"/>
+    <occur>6.209e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_102">
+    <fpga miu="2.511e+01"/>
+    <asic miu="1.255e+02"/>
+    <occur>2.633e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_103">
+    <fpga miu="2.766e+01"/>
+    <asic miu="1.383e+02"/>
+    <occur>3.726e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_104">
+    <fpga miu="5.125e+01"/>
+    <asic miu="2.562e+02"/>
+    <occur>4.239e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_105">
+    <fpga miu="4.897e+01"/>
+    <asic miu="2.448e+02"/>
+    <occur>5.337e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_106">
+    <fpga miu="4.576e+01"/>
+    <asic miu="2.288e+02"/>
+    <occur>6.759e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_107">
+    <fpga miu="5.547e+01"/>
+    <asic miu="2.773e+02"/>
+    <occur>2.412e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_108">
+    <fpga miu="4.054e+01"/>
+    <asic miu="2.027e+02"/>
+    <occur>7.967e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_109">
+    <fpga miu="2.484e+01"/>
+    <asic miu="1.242e+02"/>
+    <occur>2.528e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_110">
+    <fpga miu="3.703e+01"/>
+    <asic miu="1.851e+02"/>
+    <occur>7.634e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_111">
+    <fpga miu="3.729e+01"/>
+    <asic miu="1.865e+02"/>
+    <occur>7.692e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_112">
+    <fpga miu="3.699e+01"/>
+    <asic miu="1.849e+02"/>
+    <occur>7.625e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_113">
+    <fpga miu="4.414e+01"/>
+    <asic miu="2.207e+02"/>
+    <occur>7.323e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_114">
+    <fpga miu="4.660e+01"/>
+    <asic miu="2.330e+02"/>
+    <occur>6.418e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_115">
+    <fpga miu="4.196e+01"/>
+    <asic miu="2.098e+02"/>
+    <occur>7.828e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_116">
+    <fpga miu="4.763e+01"/>
+    <asic miu="2.381e+02"/>
+    <occur>5.964e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_117">
+    <fpga miu="4.185e+01"/>
+    <asic miu="2.093e+02"/>
+    <occur>7.843e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_118">
+    <fpga miu="4.534e+01"/>
+    <asic miu="2.267e+02"/>
+    <occur>6.919e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_119">
+    <fpga miu="2.954e+01"/>
+    <asic miu="1.477e+02"/>
+    <occur>4.619e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_120">
+    <fpga miu="3.532e+01"/>
+    <asic miu="1.766e+02"/>
+    <occur>7.153e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_121">
+    <fpga miu="5.308e+01"/>
+    <asic miu="2.654e+02"/>
+    <occur>3.392e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_122">
+    <fpga miu="3.404e+01"/>
+    <asic miu="1.702e+02"/>
+    <occur>6.682e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_123">
+    <fpga miu="5.143e+01"/>
+    <asic miu="2.572e+02"/>
+    <occur>4.150e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_124">
+    <fpga miu="7.596e+00"/>
+    <asic miu="3.798e+01"/>
+    <occur>4.186e-05</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_125">
+    <fpga miu="5.299e+01"/>
+    <asic miu="2.649e+02"/>
+    <occur>3.434e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_126">
+    <fpga miu="3.081e+01"/>
+    <asic miu="1.541e+02"/>
+    <occur>5.231e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_127">
+    <fpga miu="4.188e+01"/>
+    <asic miu="2.094e+02"/>
+    <occur>7.840e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_128">
+    <fpga miu="2.814e+01"/>
+    <asic miu="1.407e+02"/>
+    <occur>3.947e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_129">
+    <fpga miu="4.059e+01"/>
+    <asic miu="2.030e+02"/>
+    <occur>7.965e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_130">
+    <fpga miu="5.326e+01"/>
+    <asic miu="2.663e+02"/>
+    <occur>3.312e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_131">
+    <fpga miu="3.783e+01"/>
+    <asic miu="1.891e+02"/>
+    <occur>7.793e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_132">
+    <fpga miu="3.088e+01"/>
+    <asic miu="1.544e+02"/>
+    <occur>5.264e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_133">
+    <fpga miu="3.362e+01"/>
+    <asic miu="1.681e+02"/>
+    <occur>6.509e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_134">
+    <fpga miu="4.640e+01"/>
+    <asic miu="2.320e+02"/>
+    <occur>6.501e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_135">
+    <fpga miu="3.067e+01"/>
+    <asic miu="1.533e+02"/>
+    <occur>5.161e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_136">
+    <fpga miu="4.187e+01"/>
+    <asic miu="2.093e+02"/>
+    <occur>7.841e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_137">
+    <fpga miu="3.341e+01"/>
+    <asic miu="1.671e+02"/>
+    <occur>6.422e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_138">
+    <fpga miu="4.550e+01"/>
+    <asic miu="2.275e+02"/>
+    <occur>6.860e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_139">
+    <fpga miu="2.359e+01"/>
+    <asic miu="1.180e+02"/>
+    <occur>2.076e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_140">
+    <fpga miu="3.150e+01"/>
+    <asic miu="1.575e+02"/>
+    <occur>5.560e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_141">
+    <fpga miu="3.363e+01"/>
+    <asic miu="1.682e+02"/>
+    <occur>6.514e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_142">
+    <fpga miu="3.758e+01"/>
+    <asic miu="1.879e+02"/>
+    <occur>7.748e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_143">
+    <fpga miu="4.729e+01"/>
+    <asic miu="2.365e+02"/>
+    <occur>6.116e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_144">
+    <fpga miu="4.465e+01"/>
+    <asic miu="2.232e+02"/>
+    <occur>7.163e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_145">
+    <fpga miu="3.903e+01"/>
+    <asic miu="1.951e+02"/>
+    <occur>7.941e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_146">
+    <fpga miu="3.513e+01"/>
+    <asic miu="1.757e+02"/>
+    <occur>7.087e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_147">
+    <fpga miu="4.385e+01"/>
+    <asic miu="2.193e+02"/>
+    <occur>7.408e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_148">
+    <fpga miu="4.120e+01"/>
+    <asic miu="2.060e+02"/>
+    <occur>7.921e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_149">
+    <fpga miu="4.286e+01"/>
+    <asic miu="2.143e+02"/>
+    <occur>7.659e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_150">
+    <fpga miu="4.104e+01"/>
+    <asic miu="2.052e+02"/>
+    <occur>7.936e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_151">
+    <fpga miu="4.622e+01"/>
+    <asic miu="2.311e+02"/>
+    <occur>6.574e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_152">
+    <fpga miu="4.390e+01"/>
+    <asic miu="2.195e+02"/>
+    <occur>7.395e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_153">
+    <fpga miu="3.023e+01"/>
+    <asic miu="1.511e+02"/>
+    <occur>4.950e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_154">
+    <fpga miu="1.500e+01"/>
+    <asic miu="7.499e+01"/>
+    <occur>3.504e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_155">
+    <fpga miu="4.182e+01"/>
+    <asic miu="2.091e+02"/>
+    <occur>7.848e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_156">
+    <fpga miu="3.059e+01"/>
+    <asic miu="1.530e+02"/>
+    <occur>5.126e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_157">
+    <fpga miu="2.541e+01"/>
+    <asic miu="1.271e+02"/>
+    <occur>2.754e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_158">
+    <fpga miu="4.700e+01"/>
+    <asic miu="2.350e+02"/>
+    <occur>6.244e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_159">
+    <fpga miu="3.171e+01"/>
+    <asic miu="1.586e+02"/>
+    <occur>5.660e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_160">
+    <fpga miu="1.956e+01"/>
+    <asic miu="9.779e+01"/>
+    <occur>9.873e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_161">
+    <fpga miu="2.418e+01"/>
+    <asic miu="1.209e+02"/>
+    <occur>2.284e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_162">
+    <fpga miu="3.722e+01"/>
+    <asic miu="1.861e+02"/>
+    <occur>7.677e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_163">
+    <fpga miu="5.633e+01"/>
+    <asic miu="2.816e+02"/>
+    <occur>2.104e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_164">
+    <fpga miu="4.000e+01"/>
+    <asic miu="2.000e+02"/>
+    <occur>7.979e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_165">
+    <fpga miu="3.382e+01"/>
+    <asic miu="1.691e+02"/>
+    <occur>6.593e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_166">
+    <fpga miu="4.935e+01"/>
+    <asic miu="2.468e+02"/>
+    <occur>5.151e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_167">
+    <fpga miu="4.696e+01"/>
+    <asic miu="2.348e+02"/>
+    <occur>6.261e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_168">
+    <fpga miu="3.692e+01"/>
+    <asic miu="1.846e+02"/>
+    <occur>7.609e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_169">
+    <fpga miu="6.232e+01"/>
+    <asic miu="3.116e+02"/>
+    <occur>6.612e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_170">
+    <fpga miu="5.788e+01"/>
+    <asic miu="2.894e+02"/>
+    <occur>1.613e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_171">
+    <fpga miu="3.270e+01"/>
+    <asic miu="1.635e+02"/>
+    <occur>6.111e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_172">
+    <fpga miu="4.923e+01"/>
+    <asic miu="2.461e+02"/>
+    <occur>5.213e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_173">
+    <fpga miu="3.476e+01"/>
+    <asic miu="1.738e+02"/>
+    <occur>6.956e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_174">
+    <fpga miu="5.241e+01"/>
+    <asic miu="2.621e+02"/>
+    <occur>3.693e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_175">
+    <fpga miu="5.283e+01"/>
+    <asic miu="2.641e+02"/>
+    <occur>3.504e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_176">
+    <fpga miu="4.034e+01"/>
+    <asic miu="2.017e+02"/>
+    <occur>7.974e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_177">
+    <fpga miu="3.087e+01"/>
+    <asic miu="1.543e+02"/>
+    <occur>5.258e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_178">
+    <fpga miu="3.932e+01"/>
+    <asic miu="1.966e+02"/>
+    <occur>7.960e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_179">
+    <fpga miu="4.626e+01"/>
+    <asic miu="2.313e+02"/>
+    <occur>6.558e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_180">
+    <fpga miu="2.681e+01"/>
+    <asic miu="1.340e+02"/>
+    <occur>3.341e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_181">
+    <fpga miu="6.106e+01"/>
+    <asic miu="3.053e+02"/>
+    <occur>8.689e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_182">
+    <fpga miu="1.651e+01"/>
+    <asic miu="8.256e+01"/>
+    <occur>5.057e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_183">
+    <fpga miu="3.185e+01"/>
+    <asic miu="1.592e+02"/>
+    <occur>5.722e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_184">
+    <fpga miu="3.932e+01"/>
+    <asic miu="1.966e+02"/>
+    <occur>7.960e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_185">
+    <fpga miu="5.664e+01"/>
+    <asic miu="2.832e+02"/>
+    <occur>1.999e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_186">
+    <fpga miu="4.444e+01"/>
+    <asic miu="2.222e+02"/>
+    <occur>7.228e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_187">
+    <fpga miu="5.118e+01"/>
+    <asic miu="2.559e+02"/>
+    <occur>4.269e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_188">
+    <fpga miu="3.263e+01"/>
+    <asic miu="1.631e+02"/>
+    <occur>6.080e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_189">
+    <fpga miu="4.594e+01"/>
+    <asic miu="2.297e+02"/>
+    <occur>6.690e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_190">
+    <fpga miu="5.422e+01"/>
+    <asic miu="2.711e+02"/>
+    <occur>2.903e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_191">
+    <fpga miu="3.686e+01"/>
+    <asic miu="1.843e+02"/>
+    <occur>7.596e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_192">
+    <fpga miu="3.206e+01"/>
+    <asic miu="1.603e+02"/>
+    <occur>5.823e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_193">
+    <fpga miu="2.750e+01"/>
+    <asic miu="1.375e+02"/>
+    <occur>3.654e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_194">
+    <fpga miu="4.465e+01"/>
+    <asic miu="2.233e+02"/>
+    <occur>7.160e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_195">
+    <fpga miu="4.314e+01"/>
+    <asic miu="2.157e+02"/>
+    <occur>7.596e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_196">
+    <fpga miu="2.876e+01"/>
+    <asic miu="1.438e+02"/>
+    <occur>4.243e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_197">
+    <fpga miu="3.327e+01"/>
+    <asic miu="1.664e+02"/>
+    <occur>6.364e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_198">
+    <fpga miu="3.807e+01"/>
+    <asic miu="1.903e+02"/>
+    <occur>7.831e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_199">
+    <fpga miu="5.980e+01"/>
+    <asic miu="2.990e+02"/>
+    <occur>1.124e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_200">
+    <fpga miu="3.153e+01"/>
+    <asic miu="1.577e+02"/>
+    <occur>5.575e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_201">
+    <fpga miu="3.182e+01"/>
+    <asic miu="1.591e+02"/>
+    <occur>5.710e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_202">
+    <fpga miu="4.018e+01"/>
+    <asic miu="2.009e+02"/>
+    <occur>7.978e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_203">
+    <fpga miu="2.580e+01"/>
+    <asic miu="1.290e+02"/>
+    <occur>2.913e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_204">
+    <fpga miu="3.947e+01"/>
+    <asic miu="1.973e+02"/>
+    <occur>7.967e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_205">
+    <fpga miu="4.234e+01"/>
+    <asic miu="2.117e+02"/>
+    <occur>7.763e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_206">
+    <fpga miu="3.708e+01"/>
+    <asic miu="1.854e+02"/>
+    <occur>7.646e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_207">
+    <fpga miu="2.748e+01"/>
+    <asic miu="1.374e+02"/>
+    <occur>3.645e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_208">
+    <fpga miu="3.804e+01"/>
+    <asic miu="1.902e+02"/>
+    <occur>7.827e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_209">
+    <fpga miu="4.628e+01"/>
+    <asic miu="2.314e+02"/>
+    <occur>6.549e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_210">
+    <fpga miu="3.354e+01"/>
+    <asic miu="1.677e+02"/>
+    <occur>6.475e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_211">
+    <fpga miu="5.756e+01"/>
+    <asic miu="2.878e+02"/>
+    <occur>1.706e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_212">
+    <fpga miu="3.524e+01"/>
+    <asic miu="1.762e+02"/>
+    <occur>7.124e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_213">
+    <fpga miu="5.489e+01"/>
+    <asic miu="2.745e+02"/>
+    <occur>2.632e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_214">
+    <fpga miu="2.600e+01"/>
+    <asic miu="1.300e+02"/>
+    <occur>2.995e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_215">
+    <fpga miu="4.285e+01"/>
+    <asic miu="2.142e+02"/>
+    <occur>7.662e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_216">
+    <fpga miu="5.289e+01"/>
+    <asic miu="2.645e+02"/>
+    <occur>3.475e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_217">
+    <fpga miu="2.188e+01"/>
+    <asic miu="1.094e+02"/>
+    <occur>1.546e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_218">
+    <fpga miu="4.275e+01"/>
+    <asic miu="2.137e+02"/>
+    <occur>7.683e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_219">
+    <fpga miu="4.576e+01"/>
+    <asic miu="2.288e+02"/>
+    <occur>6.760e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_220">
+    <fpga miu="2.971e+01"/>
+    <asic miu="1.485e+02"/>
+    <occur>4.699e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_221">
+    <fpga miu="3.926e+01"/>
+    <asic miu="1.963e+02"/>
+    <occur>7.957e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_222">
+    <fpga miu="3.439e+01"/>
+    <asic miu="1.719e+02"/>
+    <occur>6.816e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_223">
+    <fpga miu="2.071e+01"/>
+    <asic miu="1.035e+02"/>
+    <occur>1.241e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_224">
+    <fpga miu="4.361e+01"/>
+    <asic miu="2.180e+02"/>
+    <occur>7.476e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_225">
+    <fpga miu="4.074e+01"/>
+    <asic miu="2.037e+02"/>
+    <occur>7.957e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_226">
+    <fpga miu="3.797e+01"/>
+    <asic miu="1.898e+02"/>
+    <occur>7.816e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_227">
+    <fpga miu="2.961e+01"/>
+    <asic miu="1.480e+02"/>
+    <occur>4.648e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_228">
+    <fpga miu="5.089e+01"/>
+    <asic miu="2.545e+02"/>
+    <occur>4.408e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_229">
+    <fpga miu="3.285e+01"/>
+    <asic miu="1.643e+02"/>
+    <occur>6.179e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_230">
+    <fpga miu="5.270e+01"/>
+    <asic miu="2.635e+02"/>
+    <occur>3.561e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_231">
+    <fpga miu="4.997e+01"/>
+    <asic miu="2.499e+02"/>
+    <occur>4.852e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_232">
+    <fpga miu="2.072e+01"/>
+    <asic miu="1.036e+02"/>
+    <occur>1.244e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_233">
+    <fpga miu="4.648e+01"/>
+    <asic miu="2.324e+02"/>
+    <occur>6.466e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_234">
+    <fpga miu="5.658e+01"/>
+    <asic miu="2.829e+02"/>
+    <occur>2.018e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_235">
+    <fpga miu="4.747e+01"/>
+    <asic miu="2.374e+02"/>
+    <occur>6.036e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_236">
+    <fpga miu="3.933e+01"/>
+    <asic miu="1.966e+02"/>
+    <occur>7.961e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_237">
+    <fpga miu="4.072e+01"/>
+    <asic miu="2.036e+02"/>
+    <occur>7.958e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_238">
+    <fpga miu="3.124e+01"/>
+    <asic miu="1.562e+02"/>
+    <occur>5.438e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_239">
+    <fpga miu="3.085e+01"/>
+    <asic miu="1.542e+02"/>
+    <occur>5.248e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_240">
+    <fpga miu="3.588e+01"/>
+    <asic miu="1.794e+02"/>
+    <occur>7.329e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_241">
+    <fpga miu="3.140e+01"/>
+    <asic miu="1.570e+02"/>
+    <occur>5.512e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_242">
+    <fpga miu="3.514e+01"/>
+    <asic miu="1.757e+02"/>
+    <occur>7.090e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_243">
+    <fpga miu="5.187e+01"/>
+    <asic miu="2.594e+02"/>
+    <occur>3.943e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_244">
+    <fpga miu="3.405e+01"/>
+    <asic miu="1.702e+02"/>
+    <occur>6.683e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_245">
+    <fpga miu="2.686e+01"/>
+    <asic miu="1.343e+02"/>
+    <occur>3.364e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_246">
+    <fpga miu="3.881e+01"/>
+    <asic miu="1.941e+02"/>
+    <occur>7.923e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_247">
+    <fpga miu="4.280e+01"/>
+    <asic miu="2.140e+02"/>
+    <occur>7.671e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_248">
+    <fpga miu="4.026e+01"/>
+    <asic miu="2.013e+02"/>
+    <occur>7.976e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_249">
+    <fpga miu="4.324e+01"/>
+    <asic miu="2.162e+02"/>
+    <occur>7.570e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_250">
+    <fpga miu="2.179e+01"/>
+    <asic miu="1.090e+02"/>
+    <occur>1.521e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_251">
+    <fpga miu="3.626e+01"/>
+    <asic miu="1.813e+02"/>
+    <occur>7.441e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_252">
+    <fpga miu="3.156e+01"/>
+    <asic miu="1.578e+02"/>
+    <occur>5.588e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_253">
+    <fpga miu="3.132e+01"/>
+    <asic miu="1.566e+02"/>
+    <occur>5.476e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_254">
+    <fpga miu="4.331e+01"/>
+    <asic miu="2.165e+02"/>
+    <occur>7.554e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_255">
+    <fpga miu="5.651e+01"/>
+    <asic miu="2.826e+02"/>
+    <occur>2.040e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_256">
+    <fpga miu="3.183e+01"/>
+    <asic miu="1.591e+02"/>
+    <occur>5.713e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_257">
+    <fpga miu="4.594e+01"/>
+    <asic miu="2.297e+02"/>
+    <occur>6.690e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_258">
+    <fpga miu="4.099e+01"/>
+    <asic miu="2.049e+02"/>
+    <occur>7.940e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_259">
+    <fpga miu="5.058e+01"/>
+    <asic miu="2.529e+02"/>
+    <occur>4.558e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_260">
+    <fpga miu="3.329e+01"/>
+    <asic miu="1.665e+02"/>
+    <occur>6.371e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_261">
+    <fpga miu="4.900e+01"/>
+    <asic miu="2.450e+02"/>
+    <occur>5.322e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_262">
+    <fpga miu="4.074e+01"/>
+    <asic miu="2.037e+02"/>
+    <occur>7.957e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_263">
+    <fpga miu="4.169e+01"/>
+    <asic miu="2.085e+02"/>
+    <occur>7.865e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_264">
+    <fpga miu="4.231e+01"/>
+    <asic miu="2.116e+02"/>
+    <occur>7.768e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_265">
+    <fpga miu="4.483e+01"/>
+    <asic miu="2.241e+02"/>
+    <occur>7.101e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_266">
+    <fpga miu="4.411e+01"/>
+    <asic miu="2.206e+02"/>
+    <occur>7.333e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_267">
+    <fpga miu="4.036e+01"/>
+    <asic miu="2.018e+02"/>
+    <occur>7.974e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_268">
+    <fpga miu="3.758e+01"/>
+    <asic miu="1.879e+02"/>
+    <occur>7.749e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_269">
+    <fpga miu="2.343e+01"/>
+    <asic miu="1.172e+02"/>
+    <occur>2.023e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_270">
+    <fpga miu="3.122e+01"/>
+    <asic miu="1.561e+02"/>
+    <occur>5.428e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_271">
+    <fpga miu="4.403e+01"/>
+    <asic miu="2.201e+02"/>
+    <occur>7.357e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_272">
+    <fpga miu="5.159e+01"/>
+    <asic miu="2.580e+02"/>
+    <occur>4.075e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_273">
+    <fpga miu="4.362e+01"/>
+    <asic miu="2.181e+02"/>
+    <occur>7.472e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_274">
+    <fpga miu="4.469e+01"/>
+    <asic miu="2.235e+02"/>
+    <occur>7.147e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_275">
+    <fpga miu="4.292e+01"/>
+    <asic miu="2.146e+02"/>
+    <occur>7.645e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_276">
+    <fpga miu="4.337e+01"/>
+    <asic miu="2.168e+02"/>
+    <occur>7.539e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_277">
+    <fpga miu="3.953e+01"/>
+    <asic miu="1.976e+02"/>
+    <occur>7.970e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_278">
+    <fpga miu="4.582e+01"/>
+    <asic miu="2.291e+02"/>
+    <occur>6.736e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_279">
+    <fpga miu="5.037e+01"/>
+    <asic miu="2.518e+02"/>
+    <occur>4.661e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_280">
+    <fpga miu="4.777e+01"/>
+    <asic miu="2.389e+02"/>
+    <occur>5.899e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_281">
+    <fpga miu="3.660e+01"/>
+    <asic miu="1.830e+02"/>
+    <occur>7.530e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_282">
+    <fpga miu="4.008e+01"/>
+    <asic miu="2.004e+02"/>
+    <occur>7.979e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_283">
+    <fpga miu="3.693e+01"/>
+    <asic miu="1.847e+02"/>
+    <occur>7.612e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_284">
+    <fpga miu="3.024e+01"/>
+    <asic miu="1.512e+02"/>
+    <occur>4.956e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_285">
+    <fpga miu="4.013e+01"/>
+    <asic miu="2.006e+02"/>
+    <occur>7.978e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_286">
+    <fpga miu="4.004e+01"/>
+    <asic miu="2.002e+02"/>
+    <occur>7.979e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_287">
+    <fpga miu="4.858e+01"/>
+    <asic miu="2.429e+02"/>
+    <occur>5.523e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_288">
+    <fpga miu="4.612e+01"/>
+    <asic miu="2.306e+02"/>
+    <occur>6.616e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_289">
+    <fpga miu="3.358e+01"/>
+    <asic miu="1.679e+02"/>
+    <occur>6.491e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_290">
+    <fpga miu="3.921e+01"/>
+    <asic miu="1.960e+02"/>
+    <occur>7.954e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_291">
+    <fpga miu="3.907e+01"/>
+    <asic miu="1.953e+02"/>
+    <occur>7.944e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_292">
+    <fpga miu="4.386e+01"/>
+    <asic miu="2.193e+02"/>
+    <occur>7.406e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_293">
+    <fpga miu="4.903e+01"/>
+    <asic miu="2.452e+02"/>
+    <occur>5.305e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_294">
+    <fpga miu="4.484e+01"/>
+    <asic miu="2.242e+02"/>
+    <occur>7.095e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_295">
+    <fpga miu="5.079e+01"/>
+    <asic miu="2.539e+02"/>
+    <occur>4.458e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_296">
+    <fpga miu="2.998e+01"/>
+    <asic miu="1.499e+02"/>
+    <occur>4.830e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_297">
+    <fpga miu="3.379e+01"/>
+    <asic miu="1.689e+02"/>
+    <occur>6.579e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_298">
+    <fpga miu="4.789e+01"/>
+    <asic miu="2.395e+02"/>
+    <occur>5.843e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_299">
+    <fpga miu="3.989e+01"/>
+    <asic miu="1.995e+02"/>
+    <occur>7.978e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_300">
+    <fpga miu="2.673e+01"/>
+    <asic miu="1.336e+02"/>
+    <occur>3.306e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_301">
+    <fpga miu="2.882e+01"/>
+    <asic miu="1.441e+02"/>
+    <occur>4.270e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_302">
+    <fpga miu="4.586e+01"/>
+    <asic miu="2.293e+02"/>
+    <occur>6.721e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_303">
+    <fpga miu="4.696e+01"/>
+    <asic miu="2.348e+02"/>
+    <occur>6.264e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_304">
+    <fpga miu="4.372e+01"/>
+    <asic miu="2.186e+02"/>
+    <occur>7.444e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_305">
+    <fpga miu="3.644e+01"/>
+    <asic miu="1.822e+02"/>
+    <occur>7.490e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_306">
+    <fpga miu="4.434e+01"/>
+    <asic miu="2.217e+02"/>
+    <occur>7.262e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_307">
+    <fpga miu="5.026e+01"/>
+    <asic miu="2.513e+02"/>
+    <occur>4.713e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_308">
+    <fpga miu="5.004e+01"/>
+    <asic miu="2.502e+02"/>
+    <occur>4.818e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_309">
+    <fpga miu="5.666e+01"/>
+    <asic miu="2.833e+02"/>
+    <occur>1.992e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_310">
+    <fpga miu="4.487e+01"/>
+    <asic miu="2.243e+02"/>
+    <occur>7.088e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_311">
+    <fpga miu="2.506e+01"/>
+    <asic miu="1.253e+02"/>
+    <occur>2.615e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_312">
+    <fpga miu="3.669e+01"/>
+    <asic miu="1.834e+02"/>
+    <occur>7.553e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_313">
+    <fpga miu="3.513e+01"/>
+    <asic miu="1.757e+02"/>
+    <occur>7.087e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_314">
+    <fpga miu="3.683e+01"/>
+    <asic miu="1.842e+02"/>
+    <occur>7.588e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_315">
+    <fpga miu="4.541e+01"/>
+    <asic miu="2.271e+02"/>
+    <occur>6.892e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_316">
+    <fpga miu="3.897e+01"/>
+    <asic miu="1.949e+02"/>
+    <occur>7.937e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_317">
+    <fpga miu="4.254e+01"/>
+    <asic miu="2.127e+02"/>
+    <occur>7.726e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_318">
+    <fpga miu="3.308e+01"/>
+    <asic miu="1.654e+02"/>
+    <occur>6.281e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_319">
+    <fpga miu="1.420e+01"/>
+    <asic miu="7.102e+01"/>
+    <occur>2.864e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_320">
+    <fpga miu="3.648e+01"/>
+    <asic miu="1.824e+02"/>
+    <occur>7.498e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_321">
+    <fpga miu="4.979e+01"/>
+    <asic miu="2.490e+02"/>
+    <occur>4.940e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_322">
+    <fpga miu="2.017e+01"/>
+    <asic miu="1.008e+02"/>
+    <occur>1.116e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_323">
+    <fpga miu="3.385e+01"/>
+    <asic miu="1.693e+02"/>
+    <occur>6.604e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_324">
+    <fpga miu="2.469e+01"/>
+    <asic miu="1.235e+02"/>
+    <occur>2.472e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_325">
+    <fpga miu="5.277e+01"/>
+    <asic miu="2.638e+02"/>
+    <occur>3.532e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_326">
+    <fpga miu="3.724e+01"/>
+    <asic miu="1.862e+02"/>
+    <occur>7.681e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_327">
+    <fpga miu="2.502e+01"/>
+    <asic miu="1.251e+02"/>
+    <occur>2.597e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_328">
+    <fpga miu="2.576e+01"/>
+    <asic miu="1.288e+02"/>
+    <occur>2.895e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_329">
+    <fpga miu="4.847e+01"/>
+    <asic miu="2.424e+02"/>
+    <occur>5.573e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_330">
+    <fpga miu="5.295e+01"/>
+    <asic miu="2.647e+02"/>
+    <occur>3.451e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_331">
+    <fpga miu="3.343e+01"/>
+    <asic miu="1.672e+02"/>
+    <occur>6.430e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_332">
+    <fpga miu="5.368e+01"/>
+    <asic miu="2.684e+02"/>
+    <occur>3.132e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_333">
+    <fpga miu="2.893e+01"/>
+    <asic miu="1.446e+02"/>
+    <occur>4.323e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_334">
+    <fpga miu="5.070e+01"/>
+    <asic miu="2.535e+02"/>
+    <occur>4.501e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_335">
+    <fpga miu="4.260e+01"/>
+    <asic miu="2.130e+02"/>
+    <occur>7.714e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_336">
+    <fpga miu="4.247e+01"/>
+    <asic miu="2.123e+02"/>
+    <occur>7.740e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_337">
+    <fpga miu="3.110e+01"/>
+    <asic miu="1.555e+02"/>
+    <occur>5.370e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_338">
+    <fpga miu="3.883e+01"/>
+    <asic miu="1.942e+02"/>
+    <occur>7.925e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_339">
+    <fpga miu="4.848e+01"/>
+    <asic miu="2.424e+02"/>
+    <occur>5.570e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_340">
+    <fpga miu="5.044e+01"/>
+    <asic miu="2.522e+02"/>
+    <occur>4.627e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_341">
+    <fpga miu="4.519e+01"/>
+    <asic miu="2.259e+02"/>
+    <occur>6.975e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_342">
+    <fpga miu="3.431e+01"/>
+    <asic miu="1.716e+02"/>
+    <occur>6.787e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_343">
+    <fpga miu="4.890e+01"/>
+    <asic miu="2.445e+02"/>
+    <occur>5.370e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_344">
+    <fpga miu="4.732e+01"/>
+    <asic miu="2.366e+02"/>
+    <occur>6.103e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_345">
+    <fpga miu="4.420e+01"/>
+    <asic miu="2.210e+02"/>
+    <occur>7.306e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_346">
+    <fpga miu="9.307e+00"/>
+    <asic miu="4.653e+01"/>
+    <occur>7.182e-05</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_347">
+    <fpga miu="3.256e+01"/>
+    <asic miu="1.628e+02"/>
+    <occur>6.049e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_348">
+    <fpga miu="4.700e+01"/>
+    <asic miu="2.350e+02"/>
+    <occur>6.243e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_349">
+    <fpga miu="2.959e+01"/>
+    <asic miu="1.480e+02"/>
+    <occur>4.642e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_350">
+    <fpga miu="4.666e+01"/>
+    <asic miu="2.333e+02"/>
+    <occur>6.391e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_351">
+    <fpga miu="4.439e+01"/>
+    <asic miu="2.220e+02"/>
+    <occur>7.245e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_352">
+    <fpga miu="5.419e+01"/>
+    <asic miu="2.709e+02"/>
+    <occur>2.917e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_353">
+    <fpga miu="4.724e+01"/>
+    <asic miu="2.362e+02"/>
+    <occur>6.140e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_354">
+    <fpga miu="2.499e+01"/>
+    <asic miu="1.250e+02"/>
+    <occur>2.586e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_355">
+    <fpga miu="2.387e+01"/>
+    <asic miu="1.194e+02"/>
+    <occur>2.173e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_356">
+    <fpga miu="2.845e+01"/>
+    <asic miu="1.422e+02"/>
+    <occur>4.095e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_357">
+    <fpga miu="3.796e+01"/>
+    <asic miu="1.898e+02"/>
+    <occur>7.815e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_358">
+    <fpga miu="4.860e+01"/>
+    <asic miu="2.430e+02"/>
+    <occur>5.512e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_359">
+    <fpga miu="5.301e+01"/>
+    <asic miu="2.651e+02"/>
+    <occur>3.422e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_360">
+    <fpga miu="4.197e+01"/>
+    <asic miu="2.098e+02"/>
+    <occur>7.826e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_361">
+    <fpga miu="4.998e+01"/>
+    <asic miu="2.499e+02"/>
+    <occur>4.849e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_362">
+    <fpga miu="3.249e+01"/>
+    <asic miu="1.624e+02"/>
+    <occur>6.018e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_363">
+    <fpga miu="5.219e+01"/>
+    <asic miu="2.609e+02"/>
+    <occur>3.796e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_364">
+    <fpga miu="3.590e+01"/>
+    <asic miu="1.795e+02"/>
+    <occur>7.335e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_365">
+    <fpga miu="4.094e+01"/>
+    <asic miu="2.047e+02"/>
+    <occur>7.944e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_366">
+    <fpga miu="5.013e+01"/>
+    <asic miu="2.507e+02"/>
+    <occur>4.774e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_367">
+    <fpga miu="5.367e+01"/>
+    <asic miu="2.684e+02"/>
+    <occur>3.132e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_368">
+    <fpga miu="3.212e+01"/>
+    <asic miu="1.606e+02"/>
+    <occur>5.847e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_369">
+    <fpga miu="3.014e+01"/>
+    <asic miu="1.507e+02"/>
+    <occur>4.908e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_370">
+    <fpga miu="6.139e+01"/>
+    <asic miu="3.070e+02"/>
+    <occur>8.097e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_371">
+    <fpga miu="4.618e+01"/>
+    <asic miu="2.309e+02"/>
+    <occur>6.592e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_372">
+    <fpga miu="3.203e+01"/>
+    <asic miu="1.601e+02"/>
+    <occur>5.806e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_373">
+    <fpga miu="4.369e+01"/>
+    <asic miu="2.185e+02"/>
+    <occur>7.453e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_374">
+    <fpga miu="3.599e+01"/>
+    <asic miu="1.799e+02"/>
+    <occur>7.362e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_375">
+    <fpga miu="4.313e+01"/>
+    <asic miu="2.156e+02"/>
+    <occur>7.598e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_376">
+    <fpga miu="2.255e+01"/>
+    <asic miu="1.127e+02"/>
+    <occur>1.740e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_377">
+    <fpga miu="3.591e+01"/>
+    <asic miu="1.795e+02"/>
+    <occur>7.338e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_378">
+    <fpga miu="4.401e+01"/>
+    <asic miu="2.201e+02"/>
+    <occur>7.361e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_379">
+    <fpga miu="2.861e+01"/>
+    <asic miu="1.431e+02"/>
+    <occur>4.172e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_380">
+    <fpga miu="3.181e+01"/>
+    <asic miu="1.590e+02"/>
+    <occur>5.705e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_381">
+    <fpga miu="3.255e+01"/>
+    <asic miu="1.627e+02"/>
+    <occur>6.044e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_382">
+    <fpga miu="4.900e+01"/>
+    <asic miu="2.450e+02"/>
+    <occur>5.323e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_383">
+    <fpga miu="2.696e+01"/>
+    <asic miu="1.348e+02"/>
+    <occur>3.410e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_384">
+    <fpga miu="2.763e+01"/>
+    <asic miu="1.381e+02"/>
+    <occur>3.711e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_385">
+    <fpga miu="4.093e+01"/>
+    <asic miu="2.047e+02"/>
+    <occur>7.944e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_386">
+    <fpga miu="3.788e+01"/>
+    <asic miu="1.894e+02"/>
+    <occur>7.802e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_387">
+    <fpga miu="1.689e+01"/>
+    <asic miu="8.446e+01"/>
+    <occur>5.527e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_388">
+    <fpga miu="4.606e+01"/>
+    <asic miu="2.303e+02"/>
+    <occur>6.642e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_389">
+    <fpga miu="3.293e+01"/>
+    <asic miu="1.646e+02"/>
+    <occur>6.212e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_390">
+    <fpga miu="4.598e+01"/>
+    <asic miu="2.299e+02"/>
+    <occur>6.672e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_391">
+    <fpga miu="3.544e+01"/>
+    <asic miu="1.772e+02"/>
+    <occur>7.192e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_392">
+    <fpga miu="4.776e+01"/>
+    <asic miu="2.388e+02"/>
+    <occur>5.906e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_393">
+    <fpga miu="5.765e+01"/>
+    <asic miu="2.882e+02"/>
+    <occur>1.681e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_394">
+    <fpga miu="3.644e+01"/>
+    <asic miu="1.822e+02"/>
+    <occur>7.488e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_395">
+    <fpga miu="1.932e+01"/>
+    <asic miu="9.662e+01"/>
+    <occur>9.410e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_396">
+    <fpga miu="3.697e+01"/>
+    <asic miu="1.849e+02"/>
+    <occur>7.622e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_397">
+    <fpga miu="3.339e+01"/>
+    <asic miu="1.670e+02"/>
+    <occur>6.414e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_398">
+    <fpga miu="4.320e+01"/>
+    <asic miu="2.160e+02"/>
+    <occur>7.580e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_399">
+    <fpga miu="5.324e+01"/>
+    <asic miu="2.662e+02"/>
+    <occur>3.322e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_400">
+    <fpga miu="4.643e+01"/>
+    <asic miu="2.321e+02"/>
+    <occur>6.489e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_401">
+    <fpga miu="4.540e+01"/>
+    <asic miu="2.270e+02"/>
+    <occur>6.895e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_402">
+    <fpga miu="3.152e+01"/>
+    <asic miu="1.576e+02"/>
+    <occur>5.570e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_403">
+    <fpga miu="3.690e+01"/>
+    <asic miu="1.845e+02"/>
+    <occur>7.604e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_404">
+    <fpga miu="3.974e+01"/>
+    <asic miu="1.987e+02"/>
+    <occur>7.976e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_405">
+    <fpga miu="3.294e+01"/>
+    <asic miu="1.647e+02"/>
+    <occur>6.220e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_406">
+    <fpga miu="4.090e+01"/>
+    <asic miu="2.045e+02"/>
+    <occur>7.947e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_407">
+    <fpga miu="5.140e+01"/>
+    <asic miu="2.570e+02"/>
+    <occur>4.166e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_408">
+    <fpga miu="3.948e+01"/>
+    <asic miu="1.974e+02"/>
+    <occur>7.968e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_409">
+    <fpga miu="5.369e+01"/>
+    <asic miu="2.685e+02"/>
+    <occur>3.125e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_410">
+    <fpga miu="3.897e+01"/>
+    <asic miu="1.949e+02"/>
+    <occur>7.937e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_411">
+    <fpga miu="4.974e+01"/>
+    <asic miu="2.487e+02"/>
+    <occur>4.965e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_412">
+    <fpga miu="3.833e+01"/>
+    <asic miu="1.917e+02"/>
+    <occur>7.869e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_413">
+    <fpga miu="4.686e+01"/>
+    <asic miu="2.343e+02"/>
+    <occur>6.308e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_414">
+    <fpga miu="3.707e+01"/>
+    <asic miu="1.854e+02"/>
+    <occur>7.644e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_415">
+    <fpga miu="3.934e+01"/>
+    <asic miu="1.967e+02"/>
+    <occur>7.962e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_416">
+    <fpga miu="3.682e+01"/>
+    <asic miu="1.841e+02"/>
+    <occur>7.585e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_417">
+    <fpga miu="4.721e+01"/>
+    <asic miu="2.361e+02"/>
+    <occur>6.151e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_418">
+    <fpga miu="2.600e+01"/>
+    <asic miu="1.300e+02"/>
+    <occur>2.997e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_419">
+    <fpga miu="3.245e+01"/>
+    <asic miu="1.622e+02"/>
+    <occur>5.999e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_420">
+    <fpga miu="3.558e+01"/>
+    <asic miu="1.779e+02"/>
+    <occur>7.238e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_421">
+    <fpga miu="5.684e+01"/>
+    <asic miu="2.842e+02"/>
+    <occur>1.932e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_422">
+    <fpga miu="2.614e+01"/>
+    <asic miu="1.307e+02"/>
+    <occur>3.054e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_423">
+    <fpga miu="2.926e+01"/>
+    <asic miu="1.463e+02"/>
+    <occur>4.483e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_424">
+    <fpga miu="3.169e+01"/>
+    <asic miu="1.584e+02"/>
+    <occur>5.648e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_425">
+    <fpga miu="3.858e+01"/>
+    <asic miu="1.929e+02"/>
+    <occur>7.899e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_426">
+    <fpga miu="3.731e+01"/>
+    <asic miu="1.866e+02"/>
+    <occur>7.696e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_427">
+    <fpga miu="3.824e+01"/>
+    <asic miu="1.912e+02"/>
+    <occur>7.856e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_428">
+    <fpga miu="3.616e+01"/>
+    <asic miu="1.808e+02"/>
+    <occur>7.411e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_429">
+    <fpga miu="5.884e+01"/>
+    <asic miu="2.942e+02"/>
+    <occur>1.352e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_430">
+    <fpga miu="2.404e+01"/>
+    <asic miu="1.202e+02"/>
+    <occur>2.232e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_431">
+    <fpga miu="4.687e+01"/>
+    <asic miu="2.343e+02"/>
+    <occur>6.302e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_432">
+    <fpga miu="4.849e+01"/>
+    <asic miu="2.424e+02"/>
+    <occur>5.567e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_433">
+    <fpga miu="3.136e+01"/>
+    <asic miu="1.568e+02"/>
+    <occur>5.495e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_434">
+    <fpga miu="4.638e+01"/>
+    <asic miu="2.319e+02"/>
+    <occur>6.509e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_435">
+    <fpga miu="4.664e+01"/>
+    <asic miu="2.332e+02"/>
+    <occur>6.401e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_436">
+    <fpga miu="2.708e+01"/>
+    <asic miu="1.354e+02"/>
+    <occur>3.462e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_437">
+    <fpga miu="3.844e+01"/>
+    <asic miu="1.922e+02"/>
+    <occur>7.882e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_438">
+    <fpga miu="4.424e+01"/>
+    <asic miu="2.212e+02"/>
+    <occur>7.294e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_439">
+    <fpga miu="3.276e+01"/>
+    <asic miu="1.638e+02"/>
+    <occur>6.140e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_440">
+    <fpga miu="3.968e+01"/>
+    <asic miu="1.984e+02"/>
+    <occur>7.975e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_441">
+    <fpga miu="5.230e+01"/>
+    <asic miu="2.615e+02"/>
+    <occur>3.745e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_442">
+    <fpga miu="4.937e+01"/>
+    <asic miu="2.468e+02"/>
+    <occur>5.145e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_443">
+    <fpga miu="3.586e+01"/>
+    <asic miu="1.793e+02"/>
+    <occur>7.324e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_444">
+    <fpga miu="4.007e+01"/>
+    <asic miu="2.004e+02"/>
+    <occur>7.979e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_445">
+    <fpga miu="4.877e+01"/>
+    <asic miu="2.438e+02"/>
+    <occur>5.432e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_446">
+    <fpga miu="4.152e+01"/>
+    <asic miu="2.076e+02"/>
+    <occur>7.887e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_447">
+    <fpga miu="4.978e+01"/>
+    <asic miu="2.489e+02"/>
+    <occur>4.945e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_448">
+    <fpga miu="3.822e+01"/>
+    <asic miu="1.911e+02"/>
+    <occur>7.854e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_449">
+    <fpga miu="3.549e+01"/>
+    <asic miu="1.775e+02"/>
+    <occur>7.209e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_450">
+    <fpga miu="4.266e+01"/>
+    <asic miu="2.133e+02"/>
+    <occur>7.702e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_451">
+    <fpga miu="4.026e+01"/>
+    <asic miu="2.013e+02"/>
+    <occur>7.976e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_452">
+    <fpga miu="3.551e+01"/>
+    <asic miu="1.775e+02"/>
+    <occur>7.213e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_453">
+    <fpga miu="6.267e+01"/>
+    <asic miu="3.134e+02"/>
+    <occur>6.103e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_454">
+    <fpga miu="3.162e+01"/>
+    <asic miu="1.581e+02"/>
+    <occur>5.618e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_455">
+    <fpga miu="4.577e+01"/>
+    <asic miu="2.288e+02"/>
+    <occur>6.756e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_456">
+    <fpga miu="3.943e+01"/>
+    <asic miu="1.971e+02"/>
+    <occur>7.966e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_457">
+    <fpga miu="5.245e+01"/>
+    <asic miu="2.622e+02"/>
+    <occur>3.677e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_458">
+    <fpga miu="5.154e+01"/>
+    <asic miu="2.577e+02"/>
+    <occur>4.102e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_459">
+    <fpga miu="5.718e+01"/>
+    <asic miu="2.859e+02"/>
+    <occur>1.823e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_460">
+    <fpga miu="3.922e+01"/>
+    <asic miu="1.961e+02"/>
+    <occur>7.954e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_461">
+    <fpga miu="3.750e+01"/>
+    <asic miu="1.875e+02"/>
+    <occur>7.734e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_462">
+    <fpga miu="3.245e+01"/>
+    <asic miu="1.623e+02"/>
+    <occur>6.002e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_463">
+    <fpga miu="5.222e+01"/>
+    <asic miu="2.611e+02"/>
+    <occur>3.783e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_464">
+    <fpga miu="4.509e+01"/>
+    <asic miu="2.255e+02"/>
+    <occur>7.009e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_465">
+    <fpga miu="3.253e+01"/>
+    <asic miu="1.626e+02"/>
+    <occur>6.035e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_466">
+    <fpga miu="4.738e+01"/>
+    <asic miu="2.369e+02"/>
+    <occur>6.077e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_467">
+    <fpga miu="3.080e+01"/>
+    <asic miu="1.540e+02"/>
+    <occur>5.224e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_468">
+    <fpga miu="4.266e+01"/>
+    <asic miu="2.133e+02"/>
+    <occur>7.701e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_469">
+    <fpga miu="2.949e+01"/>
+    <asic miu="1.475e+02"/>
+    <occur>4.594e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_470">
+    <fpga miu="4.657e+01"/>
+    <asic miu="2.328e+02"/>
+    <occur>6.432e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_471">
+    <fpga miu="4.068e+01"/>
+    <asic miu="2.034e+02"/>
+    <occur>7.961e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_472">
+    <fpga miu="2.084e+01"/>
+    <asic miu="1.042e+02"/>
+    <occur>1.272e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_473">
+    <fpga miu="3.988e+01"/>
+    <asic miu="1.994e+02"/>
+    <occur>7.978e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_474">
+    <fpga miu="5.498e+01"/>
+    <asic miu="2.749e+02"/>
+    <occur>2.597e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_475">
+    <fpga miu="4.319e+01"/>
+    <asic miu="2.159e+02"/>
+    <occur>7.583e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_476">
+    <fpga miu="4.253e+01"/>
+    <asic miu="2.127e+02"/>
+    <occur>7.727e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_477">
+    <fpga miu="4.351e+01"/>
+    <asic miu="2.175e+02"/>
+    <occur>7.503e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_478">
+    <fpga miu="4.697e+01"/>
+    <asic miu="2.348e+02"/>
+    <occur>6.259e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_479">
+    <fpga miu="2.270e+01"/>
+    <asic miu="1.135e+02"/>
+    <occur>1.788e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_480">
+    <fpga miu="4.606e+01"/>
+    <asic miu="2.303e+02"/>
+    <occur>6.641e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_481">
+    <fpga miu="4.147e+01"/>
+    <asic miu="2.073e+02"/>
+    <occur>7.893e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_482">
+    <fpga miu="3.774e+01"/>
+    <asic miu="1.887e+02"/>
+    <occur>7.777e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_483">
+    <fpga miu="4.590e+01"/>
+    <asic miu="2.295e+02"/>
+    <occur>6.703e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_484">
+    <fpga miu="2.752e+01"/>
+    <asic miu="1.376e+02"/>
+    <occur>3.663e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_485">
+    <fpga miu="3.763e+01"/>
+    <asic miu="1.881e+02"/>
+    <occur>7.758e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_486">
+    <fpga miu="3.419e+01"/>
+    <asic miu="1.710e+02"/>
+    <occur>6.740e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_487">
+    <fpga miu="2.978e+01"/>
+    <asic miu="1.489e+02"/>
+    <occur>4.731e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_488">
+    <fpga miu="4.713e+01"/>
+    <asic miu="2.356e+02"/>
+    <occur>6.189e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_489">
+    <fpga miu="3.640e+01"/>
+    <asic miu="1.820e+02"/>
+    <occur>7.478e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_490">
+    <fpga miu="2.690e+01"/>
+    <asic miu="1.345e+02"/>
+    <occur>3.382e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_491">
+    <fpga miu="4.792e+01"/>
+    <asic miu="2.396e+02"/>
+    <occur>5.830e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_492">
+    <fpga miu="5.300e+01"/>
+    <asic miu="2.650e+02"/>
+    <occur>3.426e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_493">
+    <fpga miu="2.584e+01"/>
+    <asic miu="1.292e+02"/>
+    <occur>2.929e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_494">
+    <fpga miu="3.317e+01"/>
+    <asic miu="1.658e+02"/>
+    <occur>6.317e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_495">
+    <fpga miu="4.633e+01"/>
+    <asic miu="2.317e+02"/>
+    <occur>6.530e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_496">
+    <fpga miu="4.391e+01"/>
+    <asic miu="2.195e+02"/>
+    <occur>7.393e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_497">
+    <fpga miu="3.384e+01"/>
+    <asic miu="1.692e+02"/>
+    <occur>6.601e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_498">
+    <fpga miu="4.262e+01"/>
+    <asic miu="2.131e+02"/>
+    <occur>7.709e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_499">
+    <fpga miu="3.022e+01"/>
+    <asic miu="1.511e+02"/>
+    <occur>4.947e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_500">
+    <fpga miu="1.975e+01"/>
+    <asic miu="9.877e+01"/>
+    <occur>1.028e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_501">
+    <fpga miu="2.973e+01"/>
+    <asic miu="1.487e+02"/>
+    <occur>4.710e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_502">
+    <fpga miu="4.981e+01"/>
+    <asic miu="2.490e+02"/>
+    <occur>4.933e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_503">
+    <fpga miu="4.961e+01"/>
+    <asic miu="2.481e+02"/>
+    <occur>5.028e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_504">
+    <fpga miu="5.828e+01"/>
+    <asic miu="2.914e+02"/>
+    <occur>1.500e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_505">
+    <fpga miu="2.602e+01"/>
+    <asic miu="1.301e+02"/>
+    <occur>3.002e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_506">
+    <fpga miu="3.407e+01"/>
+    <asic miu="1.703e+02"/>
+    <occur>6.691e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_507">
+    <fpga miu="4.101e+01"/>
+    <asic miu="2.051e+02"/>
+    <occur>7.938e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_508">
+    <fpga miu="3.595e+01"/>
+    <asic miu="1.797e+02"/>
+    <occur>7.349e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_509">
+    <fpga miu="5.084e+01"/>
+    <asic miu="2.542e+02"/>
+    <occur>4.433e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_510">
+    <fpga miu="4.103e+01"/>
+    <asic miu="2.052e+02"/>
+    <occur>7.936e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_511">
+    <fpga miu="3.984e+01"/>
+    <asic miu="1.992e+02"/>
+    <occur>7.978e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_512">
+    <fpga miu="3.639e+01"/>
+    <asic miu="1.820e+02"/>
+    <occur>7.476e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_513">
+    <fpga miu="4.027e+01"/>
+    <asic miu="2.013e+02"/>
+    <occur>7.976e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_514">
+    <fpga miu="3.114e+01"/>
+    <asic miu="1.557e+02"/>
+    <occur>5.388e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_515">
+    <fpga miu="4.713e+01"/>
+    <asic miu="2.356e+02"/>
+    <occur>6.190e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_516">
+    <fpga miu="5.724e+01"/>
+    <asic miu="2.862e+02"/>
+    <occur>1.807e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_517">
+    <fpga miu="3.976e+01"/>
+    <asic miu="1.988e+02"/>
+    <occur>7.977e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_518">
+    <fpga miu="5.356e+01"/>
+    <asic miu="2.678e+02"/>
+    <occur>3.184e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_519">
+    <fpga miu="2.271e+01"/>
+    <asic miu="1.135e+02"/>
+    <occur>1.789e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_520">
+    <fpga miu="3.584e+01"/>
+    <asic miu="1.792e+02"/>
+    <occur>7.319e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_521">
+    <fpga miu="2.893e+01"/>
+    <asic miu="1.447e+02"/>
+    <occur>4.325e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_522">
+    <fpga miu="6.013e+01"/>
+    <asic miu="3.006e+02"/>
+    <occur>1.053e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_523">
+    <fpga miu="6.477e+01"/>
+    <asic miu="3.239e+02"/>
+    <occur>3.711e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_524">
+    <fpga miu="4.220e+01"/>
+    <asic miu="2.110e+02"/>
+    <occur>7.788e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_525">
+    <fpga miu="3.574e+01"/>
+    <asic miu="1.787e+02"/>
+    <occur>7.286e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_526">
+    <fpga miu="3.089e+01"/>
+    <asic miu="1.544e+02"/>
+    <occur>5.268e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_527">
+    <fpga miu="3.795e+01"/>
+    <asic miu="1.897e+02"/>
+    <occur>7.812e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_528">
+    <fpga miu="5.564e+01"/>
+    <asic miu="2.782e+02"/>
+    <occur>2.350e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_529">
+    <fpga miu="3.602e+01"/>
+    <asic miu="1.801e+02"/>
+    <occur>7.372e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_530">
+    <fpga miu="5.021e+01"/>
+    <asic miu="2.510e+02"/>
+    <occur>4.739e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_531">
+    <fpga miu="4.237e+01"/>
+    <asic miu="2.119e+02"/>
+    <occur>7.757e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_532">
+    <fpga miu="4.327e+01"/>
+    <asic miu="2.164e+02"/>
+    <occur>7.563e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_533">
+    <fpga miu="2.411e+01"/>
+    <asic miu="1.205e+02"/>
+    <occur>2.256e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_534">
+    <fpga miu="3.861e+01"/>
+    <asic miu="1.931e+02"/>
+    <occur>7.903e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_535">
+    <fpga miu="2.350e+01"/>
+    <asic miu="1.175e+02"/>
+    <occur>2.044e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_536">
+    <fpga miu="4.325e+01"/>
+    <asic miu="2.162e+02"/>
+    <occur>7.568e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_537">
+    <fpga miu="2.932e+01"/>
+    <asic miu="1.466e+02"/>
+    <occur>4.509e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_538">
+    <fpga miu="4.893e+01"/>
+    <asic miu="2.447e+02"/>
+    <occur>5.355e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_539">
+    <fpga miu="5.193e+01"/>
+    <asic miu="2.597e+02"/>
+    <occur>3.914e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_540">
+    <fpga miu="6.115e+01"/>
+    <asic miu="3.057e+02"/>
+    <occur>8.524e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_541">
+    <fpga miu="4.588e+01"/>
+    <asic miu="2.294e+02"/>
+    <occur>6.713e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_542">
+    <fpga miu="5.133e+01"/>
+    <asic miu="2.566e+02"/>
+    <occur>4.199e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_543">
+    <fpga miu="2.604e+01"/>
+    <asic miu="1.302e+02"/>
+    <occur>3.012e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_544">
+    <fpga miu="4.557e+01"/>
+    <asic miu="2.279e+02"/>
+    <occur>6.831e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_545">
+    <fpga miu="3.265e+01"/>
+    <asic miu="1.633e+02"/>
+    <occur>6.090e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_546">
+    <fpga miu="4.071e+01"/>
+    <asic miu="2.036e+02"/>
+    <occur>7.959e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_547">
+    <fpga miu="4.220e+01"/>
+    <asic miu="2.110e+02"/>
+    <occur>7.788e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_548">
+    <fpga miu="3.566e+01"/>
+    <asic miu="1.783e+02"/>
+    <occur>7.262e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_549">
+    <fpga miu="4.792e+01"/>
+    <asic miu="2.396e+02"/>
+    <occur>5.832e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_550">
+    <fpga miu="4.216e+01"/>
+    <asic miu="2.108e+02"/>
+    <occur>7.795e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_551">
+    <fpga miu="3.988e+01"/>
+    <asic miu="1.994e+02"/>
+    <occur>7.978e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_552">
+    <fpga miu="4.944e+01"/>
+    <asic miu="2.472e+02"/>
+    <occur>5.110e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_553">
+    <fpga miu="3.862e+01"/>
+    <asic miu="1.931e+02"/>
+    <occur>7.903e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_554">
+    <fpga miu="4.426e+01"/>
+    <asic miu="2.213e+02"/>
+    <occur>7.286e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_555">
+    <fpga miu="4.109e+01"/>
+    <asic miu="2.054e+02"/>
+    <occur>7.932e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_556">
+    <fpga miu="2.663e+01"/>
+    <asic miu="1.331e+02"/>
+    <occur>3.263e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_557">
+    <fpga miu="4.395e+01"/>
+    <asic miu="2.198e+02"/>
+    <occur>7.379e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_558">
+    <fpga miu="3.536e+01"/>
+    <asic miu="1.768e+02"/>
+    <occur>7.165e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_559">
+    <fpga miu="3.069e+01"/>
+    <asic miu="1.534e+02"/>
+    <occur>5.173e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_560">
+    <fpga miu="3.779e+01"/>
+    <asic miu="1.889e+02"/>
+    <occur>7.786e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_561">
+    <fpga miu="5.418e+01"/>
+    <asic miu="2.709e+02"/>
+    <occur>2.921e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_562">
+    <fpga miu="4.309e+01"/>
+    <asic miu="2.155e+02"/>
+    <occur>7.606e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_563">
+    <fpga miu="4.591e+01"/>
+    <asic miu="2.295e+02"/>
+    <occur>6.701e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_564">
+    <fpga miu="3.610e+01"/>
+    <asic miu="1.805e+02"/>
+    <occur>7.395e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_565">
+    <fpga miu="4.543e+01"/>
+    <asic miu="2.271e+02"/>
+    <occur>6.886e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_566">
+    <fpga miu="2.597e+01"/>
+    <asic miu="1.299e+02"/>
+    <occur>2.983e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_567">
+    <fpga miu="3.292e+01"/>
+    <asic miu="1.646e+02"/>
+    <occur>6.209e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_568">
+    <fpga miu="3.107e+01"/>
+    <asic miu="1.553e+02"/>
+    <occur>5.354e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_569">
+    <fpga miu="4.531e+01"/>
+    <asic miu="2.265e+02"/>
+    <occur>6.931e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_570">
+    <fpga miu="5.226e+01"/>
+    <asic miu="2.613e+02"/>
+    <occur>3.762e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_571">
+    <fpga miu="3.826e+01"/>
+    <asic miu="1.913e+02"/>
+    <occur>7.859e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_572">
+    <fpga miu="5.753e+01"/>
+    <asic miu="2.877e+02"/>
+    <occur>1.716e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_573">
+    <fpga miu="3.785e+01"/>
+    <asic miu="1.892e+02"/>
+    <occur>7.796e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_574">
+    <fpga miu="3.146e+01"/>
+    <asic miu="1.573e+02"/>
+    <occur>5.542e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_575">
+    <fpga miu="4.095e+01"/>
+    <asic miu="2.047e+02"/>
+    <occur>7.943e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_576">
+    <fpga miu="5.162e+01"/>
+    <asic miu="2.581e+02"/>
+    <occur>4.062e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_577">
+    <fpga miu="6.078e+01"/>
+    <asic miu="3.039e+02"/>
+    <occur>9.203e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_578">
+    <fpga miu="3.521e+01"/>
+    <asic miu="1.760e+02"/>
+    <occur>7.113e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_579">
+    <fpga miu="4.693e+01"/>
+    <asic miu="2.347e+02"/>
+    <occur>6.274e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_580">
+    <fpga miu="3.154e+01"/>
+    <asic miu="1.577e+02"/>
+    <occur>5.579e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_581">
+    <fpga miu="3.515e+01"/>
+    <asic miu="1.757e+02"/>
+    <occur>7.093e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_582">
+    <fpga miu="4.232e+01"/>
+    <asic miu="2.116e+02"/>
+    <occur>7.767e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_583">
+    <fpga miu="3.141e+01"/>
+    <asic miu="1.570e+02"/>
+    <occur>5.516e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_584">
+    <fpga miu="4.475e+01"/>
+    <asic miu="2.238e+02"/>
+    <occur>7.127e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_585">
+    <fpga miu="2.957e+01"/>
+    <asic miu="1.478e+02"/>
+    <occur>4.630e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_586">
+    <fpga miu="3.293e+01"/>
+    <asic miu="1.647e+02"/>
+    <occur>6.216e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_587">
+    <fpga miu="3.424e+01"/>
+    <asic miu="1.712e+02"/>
+    <occur>6.761e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_588">
+    <fpga miu="2.782e+01"/>
+    <asic miu="1.391e+02"/>
+    <occur>3.802e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_589">
+    <fpga miu="3.124e+01"/>
+    <asic miu="1.562e+02"/>
+    <occur>5.436e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_590">
+    <fpga miu="4.053e+01"/>
+    <asic miu="2.026e+02"/>
+    <occur>7.968e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_591">
+    <fpga miu="3.876e+01"/>
+    <asic miu="1.938e+02"/>
+    <occur>7.918e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_592">
+    <fpga miu="3.273e+01"/>
+    <asic miu="1.636e+02"/>
+    <occur>6.126e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_593">
+    <fpga miu="4.007e+01"/>
+    <asic miu="2.004e+02"/>
+    <occur>7.979e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_594">
+    <fpga miu="3.421e+01"/>
+    <asic miu="1.710e+02"/>
+    <occur>6.747e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_595">
+    <fpga miu="5.285e+01"/>
+    <asic miu="2.643e+02"/>
+    <occur>3.493e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_596">
+    <fpga miu="4.117e+01"/>
+    <asic miu="2.058e+02"/>
+    <occur>7.925e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_597">
+    <fpga miu="4.134e+01"/>
+    <asic miu="2.067e+02"/>
+    <occur>7.908e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_598">
+    <fpga miu="3.700e+01"/>
+    <asic miu="1.850e+02"/>
+    <occur>7.627e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_599">
+    <fpga miu="5.469e+01"/>
+    <asic miu="2.735e+02"/>
+    <occur>2.711e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_600">
+    <fpga miu="3.370e+01"/>
+    <asic miu="1.685e+02"/>
+    <occur>6.541e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_601">
+    <fpga miu="3.888e+01"/>
+    <asic miu="1.944e+02"/>
+    <occur>7.929e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_602">
+    <fpga miu="2.889e+01"/>
+    <asic miu="1.445e+02"/>
+    <occur>4.305e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_603">
+    <fpga miu="2.171e+01"/>
+    <asic miu="1.085e+02"/>
+    <occur>1.497e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_604">
+    <fpga miu="4.391e+01"/>
+    <asic miu="2.195e+02"/>
+    <occur>7.393e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_605">
+    <fpga miu="3.820e+01"/>
+    <asic miu="1.910e+02"/>
+    <occur>7.851e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_606">
+    <fpga miu="4.172e+01"/>
+    <asic miu="2.086e+02"/>
+    <occur>7.862e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_607">
+    <fpga miu="5.236e+01"/>
+    <asic miu="2.618e+02"/>
+    <occur>3.717e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_608">
+    <fpga miu="3.202e+01"/>
+    <asic miu="1.601e+02"/>
+    <occur>5.801e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_609">
+    <fpga miu="5.117e+01"/>
+    <asic miu="2.559e+02"/>
+    <occur>4.274e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_610">
+    <fpga miu="6.094e+01"/>
+    <asic miu="3.047e+02"/>
+    <occur>8.906e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_611">
+    <fpga miu="2.844e+01"/>
+    <asic miu="1.422e+02"/>
+    <occur>4.089e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_612">
+    <fpga miu="3.568e+01"/>
+    <asic miu="1.784e+02"/>
+    <occur>7.267e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_613">
+    <fpga miu="4.605e+01"/>
+    <asic miu="2.302e+02"/>
+    <occur>6.645e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_614">
+    <fpga miu="2.798e+01"/>
+    <asic miu="1.399e+02"/>
+    <occur>3.876e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_615">
+    <fpga miu="3.824e+01"/>
+    <asic miu="1.912e+02"/>
+    <occur>7.856e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_616">
+    <fpga miu="5.864e+01"/>
+    <asic miu="2.932e+02"/>
+    <occur>1.405e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_617">
+    <fpga miu="5.013e+01"/>
+    <asic miu="2.507e+02"/>
+    <occur>4.775e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_618">
+    <fpga miu="2.580e+01"/>
+    <asic miu="1.290e+02"/>
+    <occur>2.913e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_619">
+    <fpga miu="5.396e+01"/>
+    <asic miu="2.698e+02"/>
+    <occur>3.013e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_620">
+    <fpga miu="6.829e+01"/>
+    <asic miu="3.415e+02"/>
+    <occur>1.457e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_621">
+    <fpga miu="4.426e+01"/>
+    <asic miu="2.213e+02"/>
+    <occur>7.286e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_622">
+    <fpga miu="4.275e+01"/>
+    <asic miu="2.138e+02"/>
+    <occur>7.682e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_623">
+    <fpga miu="2.732e+01"/>
+    <asic miu="1.366e+02"/>
+    <occur>3.571e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_624">
+    <fpga miu="5.963e+01"/>
+    <asic miu="2.982e+02"/>
+    <occur>1.161e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_625">
+    <fpga miu="3.877e+01"/>
+    <asic miu="1.939e+02"/>
+    <occur>7.919e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_626">
+    <fpga miu="3.506e+01"/>
+    <asic miu="1.753e+02"/>
+    <occur>7.062e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_627">
+    <fpga miu="4.907e+01"/>
+    <asic miu="2.454e+02"/>
+    <occur>5.287e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_628">
+    <fpga miu="2.887e+01"/>
+    <asic miu="1.443e+02"/>
+    <occur>4.295e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_629">
+    <fpga miu="5.562e+01"/>
+    <asic miu="2.781e+02"/>
+    <occur>2.355e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_630">
+    <fpga miu="4.551e+01"/>
+    <asic miu="2.275e+02"/>
+    <occur>6.855e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_631">
+    <fpga miu="7.479e+01"/>
+    <asic miu="3.739e+02"/>
+    <occur>1.881e-05</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_632">
+    <fpga miu="3.927e+01"/>
+    <asic miu="1.963e+02"/>
+    <occur>7.958e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_633">
+    <fpga miu="4.087e+01"/>
+    <asic miu="2.044e+02"/>
+    <occur>7.948e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_634">
+    <fpga miu="5.112e+01"/>
+    <asic miu="2.556e+02"/>
+    <occur>4.298e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_635">
+    <fpga miu="5.675e+01"/>
+    <asic miu="2.838e+02"/>
+    <occur>1.961e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_636">
+    <fpga miu="2.861e+01"/>
+    <asic miu="1.431e+02"/>
+    <occur>4.171e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_637">
+    <fpga miu="3.551e+01"/>
+    <asic miu="1.776e+02"/>
+    <occur>7.214e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_638">
+    <fpga miu="4.591e+01"/>
+    <asic miu="2.295e+02"/>
+    <occur>6.702e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_639">
+    <fpga miu="3.009e+01"/>
+    <asic miu="1.505e+02"/>
+    <occur>4.885e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_640">
+    <fpga miu="4.130e+01"/>
+    <asic miu="2.065e+02"/>
+    <occur>7.911e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_641">
+    <fpga miu="4.594e+01"/>
+    <asic miu="2.297e+02"/>
+    <occur>6.689e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_642">
+    <fpga miu="5.213e+01"/>
+    <asic miu="2.606e+02"/>
+    <occur>3.825e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_643">
+    <fpga miu="3.553e+01"/>
+    <asic miu="1.776e+02"/>
+    <occur>7.219e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_644">
+    <fpga miu="1.868e+01"/>
+    <asic miu="9.338e+01"/>
+    <occur>8.213e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_645">
+    <fpga miu="4.171e+01"/>
+    <asic miu="2.085e+02"/>
+    <occur>7.863e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_646">
+    <fpga miu="4.724e+01"/>
+    <asic miu="2.362e+02"/>
+    <occur>6.139e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_647">
+    <fpga miu="6.192e+01"/>
+    <asic miu="3.096e+02"/>
+    <occur>7.221e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_648">
+    <fpga miu="4.638e+01"/>
+    <asic miu="2.319e+02"/>
+    <occur>6.510e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_649">
+    <fpga miu="3.754e+01"/>
+    <asic miu="1.877e+02"/>
+    <occur>7.740e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_650">
+    <fpga miu="4.447e+01"/>
+    <asic miu="2.223e+02"/>
+    <occur>7.222e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_651">
+    <fpga miu="5.765e+01"/>
+    <asic miu="2.883e+02"/>
+    <occur>1.681e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_652">
+    <fpga miu="3.088e+01"/>
+    <asic miu="1.544e+02"/>
+    <occur>5.265e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_653">
+    <fpga miu="4.036e+01"/>
+    <asic miu="2.018e+02"/>
+    <occur>7.974e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_654">
+    <fpga miu="4.634e+01"/>
+    <asic miu="2.317e+02"/>
+    <occur>6.525e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_655">
+    <fpga miu="3.161e+01"/>
+    <asic miu="1.580e+02"/>
+    <occur>5.611e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_656">
+    <fpga miu="2.515e+01"/>
+    <asic miu="1.258e+02"/>
+    <occur>2.650e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_657">
+    <fpga miu="4.841e+01"/>
+    <asic miu="2.421e+02"/>
+    <occur>5.600e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_658">
+    <fpga miu="3.387e+01"/>
+    <asic miu="1.693e+02"/>
+    <occur>6.612e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_659">
+    <fpga miu="4.598e+01"/>
+    <asic miu="2.299e+02"/>
+    <occur>6.673e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_660">
+    <fpga miu="3.814e+01"/>
+    <asic miu="1.907e+02"/>
+    <occur>7.842e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_661">
+    <fpga miu="4.464e+01"/>
+    <asic miu="2.232e+02"/>
+    <occur>7.165e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_662">
+    <fpga miu="5.300e+01"/>
+    <asic miu="2.650e+02"/>
+    <occur>3.426e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_663">
+    <fpga miu="3.212e+01"/>
+    <asic miu="1.606e+02"/>
+    <occur>5.847e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_664">
+    <fpga miu="3.043e+01"/>
+    <asic miu="1.522e+02"/>
+    <occur>5.049e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_665">
+    <fpga miu="2.394e+01"/>
+    <asic miu="1.197e+02"/>
+    <occur>2.197e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_666">
+    <fpga miu="6.364e+01"/>
+    <asic miu="3.182e+02"/>
+    <occur>4.880e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_667">
+    <fpga miu="3.906e+01"/>
+    <asic miu="1.953e+02"/>
+    <occur>7.944e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_668">
+    <fpga miu="3.298e+01"/>
+    <asic miu="1.649e+02"/>
+    <occur>6.238e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_669">
+    <fpga miu="5.008e+01"/>
+    <asic miu="2.504e+02"/>
+    <occur>4.800e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_670">
+    <fpga miu="3.881e+01"/>
+    <asic miu="1.941e+02"/>
+    <occur>7.923e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_671">
+    <fpga miu="2.706e+01"/>
+    <asic miu="1.353e+02"/>
+    <occur>3.454e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_672">
+    <fpga miu="4.252e+01"/>
+    <asic miu="2.126e+02"/>
+    <occur>7.730e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_673">
+    <fpga miu="3.871e+01"/>
+    <asic miu="1.936e+02"/>
+    <occur>7.913e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_674">
+    <fpga miu="4.678e+01"/>
+    <asic miu="2.339e+02"/>
+    <occur>6.342e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_675">
+    <fpga miu="4.197e+01"/>
+    <asic miu="2.099e+02"/>
+    <occur>7.825e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_676">
+    <fpga miu="2.592e+01"/>
+    <asic miu="1.296e+02"/>
+    <occur>2.963e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_677">
+    <fpga miu="4.778e+01"/>
+    <asic miu="2.389e+02"/>
+    <occur>5.896e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_678">
+    <fpga miu="3.458e+01"/>
+    <asic miu="1.729e+02"/>
+    <occur>6.889e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_679">
+    <fpga miu="2.855e+01"/>
+    <asic miu="1.427e+02"/>
+    <occur>4.141e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_680">
+    <fpga miu="4.465e+01"/>
+    <asic miu="2.233e+02"/>
+    <occur>7.160e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_681">
+    <fpga miu="3.893e+01"/>
+    <asic miu="1.946e+02"/>
+    <occur>7.933e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_682">
+    <fpga miu="5.157e+01"/>
+    <asic miu="2.578e+02"/>
+    <occur>4.088e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_683">
+    <fpga miu="3.908e+01"/>
+    <asic miu="1.954e+02"/>
+    <occur>7.945e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_684">
+    <fpga miu="4.944e+01"/>
+    <asic miu="2.472e+02"/>
+    <occur>5.108e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_685">
+    <fpga miu="5.029e+01"/>
+    <asic miu="2.514e+02"/>
+    <occur>4.699e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_686">
+    <fpga miu="4.472e+01"/>
+    <asic miu="2.236e+02"/>
+    <occur>7.137e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_687">
+    <fpga miu="4.673e+01"/>
+    <asic miu="2.337e+02"/>
+    <occur>6.362e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_688">
+    <fpga miu="4.271e+01"/>
+    <asic miu="2.135e+02"/>
+    <occur>7.692e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_689">
+    <fpga miu="3.689e+01"/>
+    <asic miu="1.844e+02"/>
+    <occur>7.601e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_690">
+    <fpga miu="4.876e+01"/>
+    <asic miu="2.438e+02"/>
+    <occur>5.434e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_691">
+    <fpga miu="3.190e+01"/>
+    <asic miu="1.595e+02"/>
+    <occur>5.746e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_692">
+    <fpga miu="5.019e+01"/>
+    <asic miu="2.510e+02"/>
+    <occur>4.746e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_693">
+    <fpga miu="2.744e+01"/>
+    <asic miu="1.372e+02"/>
+    <occur>3.625e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_694">
+    <fpga miu="3.307e+01"/>
+    <asic miu="1.654e+02"/>
+    <occur>6.277e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_695">
+    <fpga miu="2.606e+01"/>
+    <asic miu="1.303e+02"/>
+    <occur>3.019e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_696">
+    <fpga miu="4.734e+01"/>
+    <asic miu="2.367e+02"/>
+    <occur>6.094e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_697">
+    <fpga miu="5.183e+01"/>
+    <asic miu="2.591e+02"/>
+    <occur>3.963e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_698">
+    <fpga miu="4.364e+01"/>
+    <asic miu="2.182e+02"/>
+    <occur>7.469e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_699">
+    <fpga miu="3.617e+01"/>
+    <asic miu="1.808e+02"/>
+    <occur>7.414e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_700">
+    <fpga miu="4.506e+01"/>
+    <asic miu="2.253e+02"/>
+    <occur>7.021e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_701">
+    <fpga miu="2.814e+01"/>
+    <asic miu="1.407e+02"/>
+    <occur>3.951e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_702">
+    <fpga miu="4.751e+01"/>
+    <asic miu="2.376e+02"/>
+    <occur>6.016e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_703">
+    <fpga miu="6.650e+01"/>
+    <asic miu="3.325e+02"/>
+    <occur>2.383e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_704">
+    <fpga miu="4.628e+01"/>
+    <asic miu="2.314e+02"/>
+    <occur>6.552e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_705">
+    <fpga miu="4.848e+01"/>
+    <asic miu="2.424e+02"/>
+    <occur>5.569e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_706">
+    <fpga miu="2.898e+01"/>
+    <asic miu="1.449e+02"/>
+    <occur>4.347e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_707">
+    <fpga miu="4.132e+01"/>
+    <asic miu="2.066e+02"/>
+    <occur>7.910e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_708">
+    <fpga miu="4.063e+01"/>
+    <asic miu="2.031e+02"/>
+    <occur>7.963e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_709">
+    <fpga miu="2.344e+01"/>
+    <asic miu="1.172e+02"/>
+    <occur>2.026e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_710">
+    <fpga miu="4.305e+01"/>
+    <asic miu="2.153e+02"/>
+    <occur>7.616e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_711">
+    <fpga miu="5.331e+01"/>
+    <asic miu="2.666e+02"/>
+    <occur>3.289e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_712">
+    <fpga miu="2.769e+01"/>
+    <asic miu="1.385e+02"/>
+    <occur>3.741e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_713">
+    <fpga miu="4.972e+01"/>
+    <asic miu="2.486e+02"/>
+    <occur>4.974e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_714">
+    <fpga miu="3.235e+01"/>
+    <asic miu="1.618e+02"/>
+    <occur>5.957e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_715">
+    <fpga miu="3.902e+01"/>
+    <asic miu="1.951e+02"/>
+    <occur>7.941e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_716">
+    <fpga miu="3.242e+01"/>
+    <asic miu="1.621e+02"/>
+    <occur>5.987e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_717">
+    <fpga miu="4.239e+01"/>
+    <asic miu="2.119e+02"/>
+    <occur>7.755e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_718">
+    <fpga miu="3.261e+01"/>
+    <asic miu="1.630e+02"/>
+    <occur>6.072e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_719">
+    <fpga miu="4.672e+01"/>
+    <asic miu="2.336e+02"/>
+    <occur>6.365e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_720">
+    <fpga miu="4.594e+01"/>
+    <asic miu="2.297e+02"/>
+    <occur>6.690e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_721">
+    <fpga miu="4.650e+01"/>
+    <asic miu="2.325e+02"/>
+    <occur>6.458e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_722">
+    <fpga miu="2.493e+01"/>
+    <asic miu="1.246e+02"/>
+    <occur>2.561e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_723">
+    <fpga miu="3.775e+01"/>
+    <asic miu="1.887e+02"/>
+    <occur>7.779e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_724">
+    <fpga miu="3.317e+01"/>
+    <asic miu="1.658e+02"/>
+    <occur>6.318e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_725">
+    <fpga miu="4.145e+01"/>
+    <asic miu="2.072e+02"/>
+    <occur>7.896e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_726">
+    <fpga miu="3.912e+01"/>
+    <asic miu="1.956e+02"/>
+    <occur>7.948e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_727">
+    <fpga miu="4.136e+01"/>
+    <asic miu="2.068e+02"/>
+    <occur>7.905e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_728">
+    <fpga miu="4.045e+01"/>
+    <asic miu="2.022e+02"/>
+    <occur>7.971e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_729">
+    <fpga miu="3.334e+01"/>
+    <asic miu="1.667e+02"/>
+    <occur>6.392e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_730">
+    <fpga miu="4.505e+01"/>
+    <asic miu="2.253e+02"/>
+    <occur>7.022e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_731">
+    <fpga miu="4.207e+01"/>
+    <asic miu="2.104e+02"/>
+    <occur>7.809e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_732">
+    <fpga miu="3.970e+01"/>
+    <asic miu="1.985e+02"/>
+    <occur>7.975e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_733">
+    <fpga miu="3.442e+01"/>
+    <asic miu="1.721e+02"/>
+    <occur>6.830e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_734">
+    <fpga miu="5.070e+01"/>
+    <asic miu="2.535e+02"/>
+    <occur>4.503e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_735">
+    <fpga miu="3.935e+01"/>
+    <asic miu="1.968e+02"/>
+    <occur>7.962e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_736">
+    <fpga miu="3.886e+01"/>
+    <asic miu="1.943e+02"/>
+    <occur>7.927e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_737">
+    <fpga miu="5.339e+01"/>
+    <asic miu="2.669e+02"/>
+    <occur>3.257e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_738">
+    <fpga miu="4.328e+01"/>
+    <asic miu="2.164e+02"/>
+    <occur>7.562e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_739">
+    <fpga miu="5.559e+01"/>
+    <asic miu="2.779e+02"/>
+    <occur>2.368e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_740">
+    <fpga miu="2.780e+01"/>
+    <asic miu="1.390e+02"/>
+    <occur>3.792e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_741">
+    <fpga miu="3.390e+01"/>
+    <asic miu="1.695e+02"/>
+    <occur>6.626e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_742">
+    <fpga miu="4.045e+01"/>
+    <asic miu="2.023e+02"/>
+    <occur>7.971e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_743">
+    <fpga miu="5.285e+01"/>
+    <asic miu="2.643e+02"/>
+    <occur>3.494e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_744">
+    <fpga miu="3.749e+01"/>
+    <asic miu="1.875e+02"/>
+    <occur>7.732e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_745">
+    <fpga miu="4.147e+01"/>
+    <asic miu="2.074e+02"/>
+    <occur>7.893e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_746">
+    <fpga miu="3.191e+01"/>
+    <asic miu="1.595e+02"/>
+    <occur>5.750e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_747">
+    <fpga miu="3.846e+01"/>
+    <asic miu="1.923e+02"/>
+    <occur>7.885e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_748">
+    <fpga miu="3.623e+01"/>
+    <asic miu="1.811e+02"/>
+    <occur>7.431e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_749">
+    <fpga miu="7.845e+01"/>
+    <asic miu="3.923e+02"/>
+    <occur>4.911e-06</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_750">
+    <fpga miu="4.468e+01"/>
+    <asic miu="2.234e+02"/>
+    <occur>7.152e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_751">
+    <fpga miu="3.255e+01"/>
+    <asic miu="1.627e+02"/>
+    <occur>6.044e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_752">
+    <fpga miu="2.990e+01"/>
+    <asic miu="1.495e+02"/>
+    <occur>4.790e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_753">
+    <fpga miu="5.062e+01"/>
+    <asic miu="2.531e+02"/>
+    <occur>4.542e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_754">
+    <fpga miu="3.905e+01"/>
+    <asic miu="1.953e+02"/>
+    <occur>7.943e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_755">
+    <fpga miu="4.151e+01"/>
+    <asic miu="2.076e+02"/>
+    <occur>7.888e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_756">
+    <fpga miu="4.358e+01"/>
+    <asic miu="2.179e+02"/>
+    <occur>7.483e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_757">
+    <fpga miu="4.612e+01"/>
+    <asic miu="2.306e+02"/>
+    <occur>6.618e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_758">
+    <fpga miu="4.059e+01"/>
+    <asic miu="2.029e+02"/>
+    <occur>7.965e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_759">
+    <fpga miu="5.499e+01"/>
+    <asic miu="2.749e+02"/>
+    <occur>2.595e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_760">
+    <fpga miu="3.778e+01"/>
+    <asic miu="1.889e+02"/>
+    <occur>7.785e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_761">
+    <fpga miu="5.308e+01"/>
+    <asic miu="2.654e+02"/>
+    <occur>3.391e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_762">
+    <fpga miu="3.802e+01"/>
+    <asic miu="1.901e+02"/>
+    <occur>7.824e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_763">
+    <fpga miu="4.578e+01"/>
+    <asic miu="2.289e+02"/>
+    <occur>6.751e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_764">
+    <fpga miu="2.995e+01"/>
+    <asic miu="1.498e+02"/>
+    <occur>4.816e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_765">
+    <fpga miu="5.310e+01"/>
+    <asic miu="2.655e+02"/>
+    <occur>3.385e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_766">
+    <fpga miu="4.814e+01"/>
+    <asic miu="2.407e+02"/>
+    <occur>5.728e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_767">
+    <fpga miu="4.740e+01"/>
+    <asic miu="2.370e+02"/>
+    <occur>6.069e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_768">
+    <fpga miu="3.880e+01"/>
+    <asic miu="1.940e+02"/>
+    <occur>7.922e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_769">
+    <fpga miu="3.043e+01"/>
+    <asic miu="1.521e+02"/>
+    <occur>5.046e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_770">
+    <fpga miu="2.199e+01"/>
+    <asic miu="1.099e+02"/>
+    <occur>1.575e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_771">
+    <fpga miu="4.346e+01"/>
+    <asic miu="2.173e+02"/>
+    <occur>7.515e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_772">
+    <fpga miu="3.821e+01"/>
+    <asic miu="1.910e+02"/>
+    <occur>7.852e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_773">
+    <fpga miu="3.422e+01"/>
+    <asic miu="1.711e+02"/>
+    <occur>6.750e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_774">
+    <fpga miu="3.649e+01"/>
+    <asic miu="1.825e+02"/>
+    <occur>7.502e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_775">
+    <fpga miu="5.151e+01"/>
+    <asic miu="2.575e+02"/>
+    <occur>4.116e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_776">
+    <fpga miu="3.284e+01"/>
+    <asic miu="1.642e+02"/>
+    <occur>6.173e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_777">
+    <fpga miu="3.040e+01"/>
+    <asic miu="1.520e+02"/>
+    <occur>5.034e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_778">
+    <fpga miu="3.148e+01"/>
+    <asic miu="1.574e+02"/>
+    <occur>5.552e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_779">
+    <fpga miu="6.714e+01"/>
+    <asic miu="3.357e+02"/>
+    <occur>2.005e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_780">
+    <fpga miu="3.819e+01"/>
+    <asic miu="1.909e+02"/>
+    <occur>7.849e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_781">
+    <fpga miu="4.384e+01"/>
+    <asic miu="2.192e+02"/>
+    <occur>7.412e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_782">
+    <fpga miu="3.940e+01"/>
+    <asic miu="1.970e+02"/>
+    <occur>7.964e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_783">
+    <fpga miu="4.837e+01"/>
+    <asic miu="2.419e+02"/>
+    <occur>5.620e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_784">
+    <fpga miu="1.660e+01"/>
+    <asic miu="8.302e+01"/>
+    <occur>5.167e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_785">
+    <fpga miu="4.533e+01"/>
+    <asic miu="2.266e+02"/>
+    <occur>6.923e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_786">
+    <fpga miu="2.684e+01"/>
+    <asic miu="1.342e+02"/>
+    <occur>3.359e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_787">
+    <fpga miu="3.309e+01"/>
+    <asic miu="1.654e+02"/>
+    <occur>6.283e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_788">
+    <fpga miu="3.033e+01"/>
+    <asic miu="1.517e+02"/>
+    <occur>5.001e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_789">
+    <fpga miu="4.807e+01"/>
+    <asic miu="2.404e+02"/>
+    <occur>5.759e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_790">
+    <fpga miu="3.373e+01"/>
+    <asic miu="1.687e+02"/>
+    <occur>6.556e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_791">
+    <fpga miu="3.303e+01"/>
+    <asic miu="1.652e+02"/>
+    <occur>6.260e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_792">
+    <fpga miu="2.953e+01"/>
+    <asic miu="1.477e+02"/>
+    <occur>4.613e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_793">
+    <fpga miu="2.981e+01"/>
+    <asic miu="1.490e+02"/>
+    <occur>4.745e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_794">
+    <fpga miu="4.802e+01"/>
+    <asic miu="2.401e+02"/>
+    <occur>5.782e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_795">
+    <fpga miu="2.780e+01"/>
+    <asic miu="1.390e+02"/>
+    <occur>3.791e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_796">
+    <fpga miu="4.178e+01"/>
+    <asic miu="2.089e+02"/>
+    <occur>7.854e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_797">
+    <fpga miu="3.478e+01"/>
+    <asic miu="1.739e+02"/>
+    <occur>6.962e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_798">
+    <fpga miu="4.682e+01"/>
+    <asic miu="2.341e+02"/>
+    <occur>6.323e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_799">
+    <fpga miu="1.994e+01"/>
+    <asic miu="9.971e+01"/>
+    <occur>1.067e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_800">
+    <fpga miu="2.979e+01"/>
+    <asic miu="1.489e+02"/>
+    <occur>4.736e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_801">
+    <fpga miu="3.926e+01"/>
+    <asic miu="1.963e+02"/>
+    <occur>7.957e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_802">
+    <fpga miu="3.768e+01"/>
+    <asic miu="1.884e+02"/>
+    <occur>7.768e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_803">
+    <fpga miu="4.983e+01"/>
+    <asic miu="2.491e+02"/>
+    <occur>4.924e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_804">
+    <fpga miu="3.679e+01"/>
+    <asic miu="1.840e+02"/>
+    <occur>7.579e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_805">
+    <fpga miu="4.391e+01"/>
+    <asic miu="2.196e+02"/>
+    <occur>7.391e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_806">
+    <fpga miu="3.726e+01"/>
+    <asic miu="1.863e+02"/>
+    <occur>7.685e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_807">
+    <fpga miu="2.177e+01"/>
+    <asic miu="1.089e+02"/>
+    <occur>1.515e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_808">
+    <fpga miu="5.759e+01"/>
+    <asic miu="2.880e+02"/>
+    <occur>1.697e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_809">
+    <fpga miu="4.637e+01"/>
+    <asic miu="2.319e+02"/>
+    <occur>6.512e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_810">
+    <fpga miu="2.756e+01"/>
+    <asic miu="1.378e+02"/>
+    <occur>3.681e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_811">
+    <fpga miu="4.893e+01"/>
+    <asic miu="2.447e+02"/>
+    <occur>5.354e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_812">
+    <fpga miu="5.255e+01"/>
+    <asic miu="2.627e+02"/>
+    <occur>3.631e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_813">
+    <fpga miu="5.022e+01"/>
+    <asic miu="2.511e+02"/>
+    <occur>4.732e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_814">
+    <fpga miu="3.884e+01"/>
+    <asic miu="1.942e+02"/>
+    <occur>7.925e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_815">
+    <fpga miu="4.534e+01"/>
+    <asic miu="2.267e+02"/>
+    <occur>6.919e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_816">
+    <fpga miu="4.252e+01"/>
+    <asic miu="2.126e+02"/>
+    <occur>7.730e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_817">
+    <fpga miu="3.682e+01"/>
+    <asic miu="1.841e+02"/>
+    <occur>7.584e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_818">
+    <fpga miu="4.171e+01"/>
+    <asic miu="2.085e+02"/>
+    <occur>7.863e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_819">
+    <fpga miu="4.353e+01"/>
+    <asic miu="2.177e+02"/>
+    <occur>7.496e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_820">
+    <fpga miu="4.665e+01"/>
+    <asic miu="2.332e+02"/>
+    <occur>6.397e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_821">
+    <fpga miu="3.892e+01"/>
+    <asic miu="1.946e+02"/>
+    <occur>7.933e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_822">
+    <fpga miu="3.162e+01"/>
+    <asic miu="1.581e+02"/>
+    <occur>5.614e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_823">
+    <fpga miu="4.209e+01"/>
+    <asic miu="2.104e+02"/>
+    <occur>7.807e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_824">
+    <fpga miu="3.562e+01"/>
+    <asic miu="1.781e+02"/>
+    <occur>7.250e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_825">
+    <fpga miu="3.377e+01"/>
+    <asic miu="1.689e+02"/>
+    <occur>6.573e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_826">
+    <fpga miu="3.649e+01"/>
+    <asic miu="1.824e+02"/>
+    <occur>7.501e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_827">
+    <fpga miu="2.216e+01"/>
+    <asic miu="1.108e+02"/>
+    <occur>1.625e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_828">
+    <fpga miu="2.099e+01"/>
+    <asic miu="1.050e+02"/>
+    <occur>1.311e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_829">
+    <fpga miu="4.681e+01"/>
+    <asic miu="2.341e+02"/>
+    <occur>6.326e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_830">
+    <fpga miu="3.771e+01"/>
+    <asic miu="1.885e+02"/>
+    <occur>7.772e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_831">
+    <fpga miu="2.798e+01"/>
+    <asic miu="1.399e+02"/>
+    <occur>3.873e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_832">
+    <fpga miu="5.936e+01"/>
+    <asic miu="2.968e+02"/>
+    <occur>1.224e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_833">
+    <fpga miu="2.176e+01"/>
+    <asic miu="1.088e+02"/>
+    <occur>1.511e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_834">
+    <fpga miu="2.892e+01"/>
+    <asic miu="1.446e+02"/>
+    <occur>4.317e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_835">
+    <fpga miu="4.725e+01"/>
+    <asic miu="2.362e+02"/>
+    <occur>6.137e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_836">
+    <fpga miu="3.792e+01"/>
+    <asic miu="1.896e+02"/>
+    <occur>7.807e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_837">
+    <fpga miu="2.976e+01"/>
+    <asic miu="1.488e+02"/>
+    <occur>4.724e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_838">
+    <fpga miu="5.490e+01"/>
+    <asic miu="2.745e+02"/>
+    <occur>2.631e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_839">
+    <fpga miu="4.361e+01"/>
+    <asic miu="2.180e+02"/>
+    <occur>7.476e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_840">
+    <fpga miu="3.728e+01"/>
+    <asic miu="1.864e+02"/>
+    <occur>7.689e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_841">
+    <fpga miu="4.106e+01"/>
+    <asic miu="2.053e+02"/>
+    <occur>7.934e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_842">
+    <fpga miu="3.655e+01"/>
+    <asic miu="1.827e+02"/>
+    <occur>7.517e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_843">
+    <fpga miu="4.748e+01"/>
+    <asic miu="2.374e+02"/>
+    <occur>6.031e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_844">
+    <fpga miu="5.174e+01"/>
+    <asic miu="2.587e+02"/>
+    <occur>4.005e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_845">
+    <fpga miu="4.604e+01"/>
+    <asic miu="2.302e+02"/>
+    <occur>6.649e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_846">
+    <fpga miu="3.548e+01"/>
+    <asic miu="1.774e+02"/>
+    <occur>7.203e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_847">
+    <fpga miu="4.654e+01"/>
+    <asic miu="2.327e+02"/>
+    <occur>6.443e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_848">
+    <fpga miu="3.548e+01"/>
+    <asic miu="1.774e+02"/>
+    <occur>7.205e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_849">
+    <fpga miu="4.059e+01"/>
+    <asic miu="2.029e+02"/>
+    <occur>7.965e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_850">
+    <fpga miu="5.000e+01"/>
+    <asic miu="2.500e+02"/>
+    <occur>4.840e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_851">
+    <fpga miu="3.721e+01"/>
+    <asic miu="1.861e+02"/>
+    <occur>7.674e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_852">
+    <fpga miu="4.441e+01"/>
+    <asic miu="2.221e+02"/>
+    <occur>7.238e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_853">
+    <fpga miu="2.156e+01"/>
+    <asic miu="1.078e+02"/>
+    <occur>1.457e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_854">
+    <fpga miu="2.819e+01"/>
+    <asic miu="1.409e+02"/>
+    <occur>3.971e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_855">
+    <fpga miu="5.568e+01"/>
+    <asic miu="2.784e+02"/>
+    <occur>2.333e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_856">
+    <fpga miu="3.540e+01"/>
+    <asic miu="1.770e+02"/>
+    <occur>7.179e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_857">
+    <fpga miu="3.000e+01"/>
+    <asic miu="1.500e+02"/>
+    <occur>4.840e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_858">
+    <fpga miu="5.377e+01"/>
+    <asic miu="2.689e+02"/>
+    <occur>3.090e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_859">
+    <fpga miu="4.210e+01"/>
+    <asic miu="2.105e+02"/>
+    <occur>7.804e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_860">
+    <fpga miu="5.256e+01"/>
+    <asic miu="2.628e+02"/>
+    <occur>3.625e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_861">
+    <fpga miu="3.411e+01"/>
+    <asic miu="1.705e+02"/>
+    <occur>6.707e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_862">
+    <fpga miu="5.854e+01"/>
+    <asic miu="2.927e+02"/>
+    <occur>1.430e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_863">
+    <fpga miu="4.044e+01"/>
+    <asic miu="2.022e+02"/>
+    <occur>7.971e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_864">
+    <fpga miu="4.700e+01"/>
+    <asic miu="2.350e+02"/>
+    <occur>6.246e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_865">
+    <fpga miu="3.634e+01"/>
+    <asic miu="1.817e+02"/>
+    <occur>7.461e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_866">
+    <fpga miu="2.203e+01"/>
+    <asic miu="1.102e+02"/>
+    <occur>1.589e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_867">
+    <fpga miu="5.129e+01"/>
+    <asic miu="2.564e+02"/>
+    <occur>4.220e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_868">
+    <fpga miu="4.287e+01"/>
+    <asic miu="2.143e+02"/>
+    <occur>7.658e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_869">
+    <fpga miu="3.616e+01"/>
+    <asic miu="1.808e+02"/>
+    <occur>7.411e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_870">
+    <fpga miu="3.854e+01"/>
+    <asic miu="1.927e+02"/>
+    <occur>7.894e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_871">
+    <fpga miu="2.323e+01"/>
+    <asic miu="1.161e+02"/>
+    <occur>1.954e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_872">
+    <fpga miu="4.406e+01"/>
+    <asic miu="2.203e+02"/>
+    <occur>7.347e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_873">
+    <fpga miu="3.609e+01"/>
+    <asic miu="1.804e+02"/>
+    <occur>7.391e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_874">
+    <fpga miu="4.453e+01"/>
+    <asic miu="2.226e+02"/>
+    <occur>7.202e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_875">
+    <fpga miu="3.741e+01"/>
+    <asic miu="1.870e+02"/>
+    <occur>7.715e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_876">
+    <fpga miu="4.050e+01"/>
+    <asic miu="2.025e+02"/>
+    <occur>7.969e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_877">
+    <fpga miu="4.343e+01"/>
+    <asic miu="2.172e+02"/>
+    <occur>7.522e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_878">
+    <fpga miu="5.198e+01"/>
+    <asic miu="2.599e+02"/>
+    <occur>3.895e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_879">
+    <fpga miu="4.584e+01"/>
+    <asic miu="2.292e+02"/>
+    <occur>6.726e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_880">
+    <fpga miu="4.032e+01"/>
+    <asic miu="2.016e+02"/>
+    <occur>7.975e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_881">
+    <fpga miu="3.426e+01"/>
+    <asic miu="1.713e+02"/>
+    <occur>6.765e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_882">
+    <fpga miu="5.669e+01"/>
+    <asic miu="2.835e+02"/>
+    <occur>1.981e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_883">
+    <fpga miu="5.022e+01"/>
+    <asic miu="2.511e+02"/>
+    <occur>4.731e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_884">
+    <fpga miu="2.884e+01"/>
+    <asic miu="1.442e+02"/>
+    <occur>4.280e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_885">
+    <fpga miu="6.510e+01"/>
+    <asic miu="3.255e+02"/>
+    <occur>3.420e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_886">
+    <fpga miu="3.826e+01"/>
+    <asic miu="1.913e+02"/>
+    <occur>7.858e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_887">
+    <fpga miu="3.612e+01"/>
+    <asic miu="1.806e+02"/>
+    <occur>7.399e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_888">
+    <fpga miu="5.001e+01"/>
+    <asic miu="2.500e+02"/>
+    <occur>4.835e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_889">
+    <fpga miu="4.983e+01"/>
+    <asic miu="2.492e+02"/>
+    <occur>4.920e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_890">
+    <fpga miu="3.419e+01"/>
+    <asic miu="1.709e+02"/>
+    <occur>6.739e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_891">
+    <fpga miu="3.724e+01"/>
+    <asic miu="1.862e+02"/>
+    <occur>7.681e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_892">
+    <fpga miu="3.685e+01"/>
+    <asic miu="1.842e+02"/>
+    <occur>7.592e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_893">
+    <fpga miu="3.571e+01"/>
+    <asic miu="1.785e+02"/>
+    <occur>7.277e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_894">
+    <fpga miu="4.892e+01"/>
+    <asic miu="2.446e+02"/>
+    <occur>5.360e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_895">
+    <fpga miu="3.698e+01"/>
+    <asic miu="1.849e+02"/>
+    <occur>7.623e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_896">
+    <fpga miu="5.792e+01"/>
+    <asic miu="2.896e+02"/>
+    <occur>1.602e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_897">
+    <fpga miu="3.129e+01"/>
+    <asic miu="1.564e+02"/>
+    <occur>5.459e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_898">
+    <fpga miu="4.463e+01"/>
+    <asic miu="2.231e+02"/>
+    <occur>7.168e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_899">
+    <fpga miu="3.887e+01"/>
+    <asic miu="1.943e+02"/>
+    <occur>7.928e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_900">
+    <fpga miu="6.589e+01"/>
+    <asic miu="3.295e+02"/>
+    <occur>2.793e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_901">
+    <fpga miu="5.403e+01"/>
+    <asic miu="2.701e+02"/>
+    <occur>2.983e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_902">
+    <fpga miu="3.483e+01"/>
+    <asic miu="1.741e+02"/>
+    <occur>6.979e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_903">
+    <fpga miu="2.962e+01"/>
+    <asic miu="1.481e+02"/>
+    <occur>4.655e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_904">
+    <fpga miu="2.577e+01"/>
+    <asic miu="1.288e+02"/>
+    <occur>2.898e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_905">
+    <fpga miu="2.885e+01"/>
+    <asic miu="1.442e+02"/>
+    <occur>4.284e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_906">
+    <fpga miu="3.695e+01"/>
+    <asic miu="1.847e+02"/>
+    <occur>7.616e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_907">
+    <fpga miu="5.282e+01"/>
+    <asic miu="2.641e+02"/>
+    <occur>3.507e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_908">
+    <fpga miu="2.898e+01"/>
+    <asic miu="1.449e+02"/>
+    <occur>4.346e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_909">
+    <fpga miu="4.810e+01"/>
+    <asic miu="2.405e+02"/>
+    <occur>5.748e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_910">
+    <fpga miu="4.085e+01"/>
+    <asic miu="2.043e+02"/>
+    <occur>7.950e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_911">
+    <fpga miu="3.639e+01"/>
+    <asic miu="1.820e+02"/>
+    <occur>7.477e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_912">
+    <fpga miu="4.650e+01"/>
+    <asic miu="2.325e+02"/>
+    <occur>6.461e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_913">
+    <fpga miu="3.691e+01"/>
+    <asic miu="1.845e+02"/>
+    <occur>7.607e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_914">
+    <fpga miu="4.478e+01"/>
+    <asic miu="2.239e+02"/>
+    <occur>7.117e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_915">
+    <fpga miu="6.099e+01"/>
+    <asic miu="3.050e+02"/>
+    <occur>8.810e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_916">
+    <fpga miu="3.654e+01"/>
+    <asic miu="1.827e+02"/>
+    <occur>7.515e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_917">
+    <fpga miu="3.181e+01"/>
+    <asic miu="1.590e+02"/>
+    <occur>5.704e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_918">
+    <fpga miu="3.345e+01"/>
+    <asic miu="1.672e+02"/>
+    <occur>6.437e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_919">
+    <fpga miu="3.750e+01"/>
+    <asic miu="1.875e+02"/>
+    <occur>7.734e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_920">
+    <fpga miu="3.940e+01"/>
+    <asic miu="1.970e+02"/>
+    <occur>7.964e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_921">
+    <fpga miu="2.881e+01"/>
+    <asic miu="1.440e+02"/>
+    <occur>4.264e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_922">
+    <fpga miu="2.640e+01"/>
+    <asic miu="1.320e+02"/>
+    <occur>3.166e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_923">
+    <fpga miu="3.386e+01"/>
+    <asic miu="1.693e+02"/>
+    <occur>6.609e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_924">
+    <fpga miu="2.963e+01"/>
+    <asic miu="1.481e+02"/>
+    <occur>4.659e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_925">
+    <fpga miu="4.491e+01"/>
+    <asic miu="2.246e+02"/>
+    <occur>7.071e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_926">
+    <fpga miu="4.450e+01"/>
+    <asic miu="2.225e+02"/>
+    <occur>7.211e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_927">
+    <fpga miu="3.962e+01"/>
+    <asic miu="1.981e+02"/>
+    <occur>7.973e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_928">
+    <fpga miu="4.996e+01"/>
+    <asic miu="2.498e+02"/>
+    <occur>4.860e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_929">
+    <fpga miu="3.623e+01"/>
+    <asic miu="1.811e+02"/>
+    <occur>7.431e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_930">
+    <fpga miu="4.767e+01"/>
+    <asic miu="2.384e+02"/>
+    <occur>5.945e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_931">
+    <fpga miu="2.390e+01"/>
+    <asic miu="1.195e+02"/>
+    <occur>2.183e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_932">
+    <fpga miu="4.453e+01"/>
+    <asic miu="2.226e+02"/>
+    <occur>7.202e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_933">
+    <fpga miu="5.083e+01"/>
+    <asic miu="2.542e+02"/>
+    <occur>4.438e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_934">
+    <fpga miu="4.678e+01"/>
+    <asic miu="2.339e+02"/>
+    <occur>6.342e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_935">
+    <fpga miu="2.270e+01"/>
+    <asic miu="1.135e+02"/>
+    <occur>1.786e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_936">
+    <fpga miu="4.221e+01"/>
+    <asic miu="2.110e+02"/>
+    <occur>7.787e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_937">
+    <fpga miu="3.578e+01"/>
+    <asic miu="1.789e+02"/>
+    <occur>7.299e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_938">
+    <fpga miu="3.123e+01"/>
+    <asic miu="1.561e+02"/>
+    <occur>5.430e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_939">
+    <fpga miu="4.263e+01"/>
+    <asic miu="2.132e+02"/>
+    <occur>7.707e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_940">
+    <fpga miu="4.850e+01"/>
+    <asic miu="2.425e+02"/>
+    <occur>5.558e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_941">
+    <fpga miu="4.306e+01"/>
+    <asic miu="2.153e+02"/>
+    <occur>7.615e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_942">
+    <fpga miu="3.258e+01"/>
+    <asic miu="1.629e+02"/>
+    <occur>6.057e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_943">
+    <fpga miu="6.144e+01"/>
+    <asic miu="3.072e+02"/>
+    <occur>8.016e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_944">
+    <fpga miu="3.598e+01"/>
+    <asic miu="1.799e+02"/>
+    <occur>7.361e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_945">
+    <fpga miu="2.745e+01"/>
+    <asic miu="1.372e+02"/>
+    <occur>3.629e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_946">
+    <fpga miu="5.678e+01"/>
+    <asic miu="2.839e+02"/>
+    <occur>1.953e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_947">
+    <fpga miu="4.047e+01"/>
+    <asic miu="2.023e+02"/>
+    <occur>7.970e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_948">
+    <fpga miu="2.250e+01"/>
+    <asic miu="1.125e+02"/>
+    <occur>1.726e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_949">
+    <fpga miu="2.775e+01"/>
+    <asic miu="1.387e+02"/>
+    <occur>3.765e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_950">
+    <fpga miu="3.507e+01"/>
+    <asic miu="1.753e+02"/>
+    <occur>7.066e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_951">
+    <fpga miu="3.094e+01"/>
+    <asic miu="1.547e+02"/>
+    <occur>5.295e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_952">
+    <fpga miu="3.302e+01"/>
+    <asic miu="1.651e+02"/>
+    <occur>6.252e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_953">
+    <fpga miu="4.659e+01"/>
+    <asic miu="2.330e+02"/>
+    <occur>6.421e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_954">
+    <fpga miu="4.774e+01"/>
+    <asic miu="2.387e+02"/>
+    <occur>5.914e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_955">
+    <fpga miu="2.630e+01"/>
+    <asic miu="1.315e+02"/>
+    <occur>3.121e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_956">
+    <fpga miu="3.795e+01"/>
+    <asic miu="1.898e+02"/>
+    <occur>7.814e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_957">
+    <fpga miu="3.122e+01"/>
+    <asic miu="1.561e+02"/>
+    <occur>5.426e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_958">
+    <fpga miu="4.002e+01"/>
+    <asic miu="2.001e+02"/>
+    <occur>7.979e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_959">
+    <fpga miu="4.322e+01"/>
+    <asic miu="2.161e+02"/>
+    <occur>7.576e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_960">
+    <fpga miu="1.452e+01"/>
+    <asic miu="7.260e+01"/>
+    <occur>3.105e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_961">
+    <fpga miu="3.621e+01"/>
+    <asic miu="1.810e+02"/>
+    <occur>7.425e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_962">
+    <fpga miu="4.540e+01"/>
+    <asic miu="2.270e+02"/>
+    <occur>6.898e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_963">
+    <fpga miu="4.033e+01"/>
+    <asic miu="2.016e+02"/>
+    <occur>7.975e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_964">
+    <fpga miu="3.039e+01"/>
+    <asic miu="1.520e+02"/>
+    <occur>5.030e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_965">
+    <fpga miu="4.307e+01"/>
+    <asic miu="2.154e+02"/>
+    <occur>7.611e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_966">
+    <fpga miu="5.867e+01"/>
+    <asic miu="2.934e+02"/>
+    <occur>1.395e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_967">
+    <fpga miu="3.858e+01"/>
+    <asic miu="1.929e+02"/>
+    <occur>7.899e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_968">
+    <fpga miu="4.127e+01"/>
+    <asic miu="2.064e+02"/>
+    <occur>7.914e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_969">
+    <fpga miu="5.971e+01"/>
+    <asic miu="2.986e+02"/>
+    <occur>1.143e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_970">
+    <fpga miu="4.654e+01"/>
+    <asic miu="2.327e+02"/>
+    <occur>6.441e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_971">
+    <fpga miu="4.921e+01"/>
+    <asic miu="2.460e+02"/>
+    <occur>5.221e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_972">
+    <fpga miu="4.048e+01"/>
+    <asic miu="2.024e+02"/>
+    <occur>7.970e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_973">
+    <fpga miu="3.237e+01"/>
+    <asic miu="1.618e+02"/>
+    <occur>5.963e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_974">
+    <fpga miu="3.515e+01"/>
+    <asic miu="1.757e+02"/>
+    <occur>7.092e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_975">
+    <fpga miu="3.733e+01"/>
+    <asic miu="1.866e+02"/>
+    <occur>7.698e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_976">
+    <fpga miu="2.012e+01"/>
+    <asic miu="1.006e+02"/>
+    <occur>1.106e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_977">
+    <fpga miu="3.050e+01"/>
+    <asic miu="1.525e+02"/>
+    <occur>5.082e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_978">
+    <fpga miu="3.869e+01"/>
+    <asic miu="1.935e+02"/>
+    <occur>7.911e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_979">
+    <fpga miu="4.365e+01"/>
+    <asic miu="2.182e+02"/>
+    <occur>7.466e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_980">
+    <fpga miu="5.019e+01"/>
+    <asic miu="2.510e+02"/>
+    <occur>4.747e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_981">
+    <fpga miu="5.402e+01"/>
+    <asic miu="2.701e+02"/>
+    <occur>2.987e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_982">
+    <fpga miu="4.431e+01"/>
+    <asic miu="2.216e+02"/>
+    <occur>7.270e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_983">
+    <fpga miu="3.562e+01"/>
+    <asic miu="1.781e+02"/>
+    <occur>7.250e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_984">
+    <fpga miu="3.321e+01"/>
+    <asic miu="1.661e+02"/>
+    <occur>6.337e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_985">
+    <fpga miu="4.370e+01"/>
+    <asic miu="2.185e+02"/>
+    <occur>7.451e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_986">
+    <fpga miu="4.346e+01"/>
+    <asic miu="2.173e+02"/>
+    <occur>7.515e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_987">
+    <fpga miu="3.701e+01"/>
+    <asic miu="1.850e+02"/>
+    <occur>7.630e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_988">
+    <fpga miu="5.749e+01"/>
+    <asic miu="2.874e+02"/>
+    <occur>1.730e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_989">
+    <fpga miu="4.586e+01"/>
+    <asic miu="2.293e+02"/>
+    <occur>6.719e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_990">
+    <fpga miu="3.769e+01"/>
+    <asic miu="1.884e+02"/>
+    <occur>7.768e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_991">
+    <fpga miu="1.977e+01"/>
+    <asic miu="9.884e+01"/>
+    <occur>1.031e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_992">
+    <fpga miu="1.608e+01"/>
+    <asic miu="8.041e+01"/>
+    <occur>4.567e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_993">
+    <fpga miu="4.053e+01"/>
+    <asic miu="2.026e+02"/>
+    <occur>7.968e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_994">
+    <fpga miu="3.488e+01"/>
+    <asic miu="1.744e+02"/>
+    <occur>6.997e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_995">
+    <fpga miu="5.596e+01"/>
+    <asic miu="2.798e+02"/>
+    <occur>2.234e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_996">
+    <fpga miu="5.061e+01"/>
+    <asic miu="2.531e+02"/>
+    <occur>4.543e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_997">
+    <fpga miu="3.164e+01"/>
+    <asic miu="1.582e+02"/>
+    <occur>5.627e-03</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_998">
+    <fpga miu="6.285e+01"/>
+    <asic miu="3.142e+02"/>
+    <occur>5.864e-04</occur>
+  </kernel>
+  <kernel name="_gen_randnorm_999">
+    <fpga miu="3.897e+01"/>
+    <asic miu="1.948e+02"/>
+    <occur>7.936e-03</occur>
+  </kernel>
+</kernels>
