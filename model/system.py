@@ -3,7 +3,7 @@
 import logging
 from core import IOCore, O3Core, PERF_BASE
 from ucore import UCore, ASIC, FPGA
-from app import App
+from application import App
 
 VMIN = 0.3
 VMAX = 1.1
