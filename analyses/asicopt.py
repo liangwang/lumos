@@ -3,6 +3,7 @@
 
 import logging
 import cPickle as pickle
+import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
 
@@ -24,6 +25,7 @@ import scipy.stats
 import numpy
 from mpltools import style
 import itertools
+import operator
 
 ANALYSIS_NAME = 'asicopt'
 HOME = joinpath(analysis.HOME, ANALYSIS_NAME)
@@ -95,7 +97,7 @@ class ASICOpt(object):
 
         self.options = options
 
-        self.ucore_alloc_list = (10, 15, 20, 25, 30, 35, 40)
+        self.ucore_alloc_list = (5, 10, 15, 20, 25, 30, 35, 40)
         self.asic_alloc_list = (0, 10, 30, 50, 70, 90)
 
         kernels = kernel.load_xml(options.kernels)
@@ -147,6 +149,8 @@ class ASICOpt(object):
         dfn = joinpath(self.DATA_DIR, ('%s.pypkl' % (self.id)))
         with open(dfn, 'wb') as f:
             pickle.dump(mean_lists, f)
+            pickle.dump(self.ucore_alloc_list, f)
+            pickle.dump(self.asic_alloc_list, f)
 
     def plot(self):
         self.plot_speedup()
@@ -162,7 +166,11 @@ class ASICOpt(object):
         legend_labels[0] = '0 (FPGA only)'
         x_list = numpy.array(self.ucore_alloc_list) * 0.01
 
-        fig = plt.figure(figsize=(6, 4.5))
+        matplotlib.rc('xtick', labelsize=8)
+        matplotlib.rc('ytick', labelsize=8)
+        matplotlib.rc('legend', fontsize=8)
+
+        fig = plt.figure(figsize=(4, 3))
         axes = fig.add_subplot(111)
 
         for y, marker in itertools.izip(mean_lists, itertools.cycle(analysis.marker_cycle)):
@@ -170,9 +178,7 @@ class ASICOpt(object):
 
         axes.legend(axes.lines, legend_labels, loc='lower right',
                 title='Total ASIC out of total U-cores',
-                ncol=2,
-                prop=dict(size='medium')
-                )
+                ncol=2)
         axes.set_xlabel('Total U-cores allocation')
         axes.set_ylabel('Speedup (mean)')
 
@@ -182,6 +188,188 @@ class ASICOpt(object):
         ofile = joinpath(self.FIG_DIR, ofn)
         fig.savefig(ofile, bbox_inches='tight')
 
+    def _plot_alt_find_max(self, mean_lists, asic_alloc_list, ucore_alloc_list):
+        """
+        mean_list is a two-dimentional array as mean_list[asic_alloc][ucore_alloc]
+        """
+        idx_list = []
+        val_list = []
+        for i, asic_alloc in enumerate(asic_alloc_list):
+            idx, val = max(enumerate(mean_lists[i]), key=operator.itemgetter(1))
+            idx_list.append(idx)
+            val_list.append(val)
+
+        idx, val = max(enumerate(val_list), key=operator.itemgetter(1))
+        return (asic_alloc_list[idx], ucore_alloc_list[idx_list[idx]], val)
+
+    def plot_alt_twinx(self):
+        style.use('ggplot')
+
+        a2f_ratio_list = (5, 10, 50)
+        fixed_cov_list = (10, 20 ,30 ,40)
+        other_cov_list = (10, 20 ,30 ,40)
+
+        fixed_cov = 20
+        y_lists_asic = []
+        y_lists_ucore = []
+        for a2f_ratio in a2f_ratio_list:
+            y_list_asic = []
+            y_list_ucore = []
+            for other_cov in other_cov_list:
+                dfn = joinpath(DATA_DIR,
+                        'asicfpgaratio_%dx' % a2f_ratio,
+                        'fixed%d_norm40x10_cov%d' % (fixed_cov, other_cov),
+                        '%s.pypkl' % self.id)
+                with open(dfn, 'rb') as f:
+                    mean_lists = pickle.load(f)
+                    ucore_alloc_list = pickle.load(f)
+                    asic_alloc_list = pickle.load(f)
+
+                asic_alloc, ucore_alloc, val = self._plot_alt_find_max(mean_lists,
+                        asic_alloc_list, ucore_alloc_list)
+                y_list_asic.append(asic_alloc)
+                y_list_ucore.append(ucore_alloc)
+            y_lists_asic.append(y_list_asic)
+            y_lists_ucore.append(y_list_ucore)
+
+        def cb_func(axes1, axes2, figure):
+            axes1.legend(axes1.lines, a2f_ratio_list)
+
+        analysis.plot_twinx(other_cov_list, y_lists_asic, y_lists_ucore,
+                xlabel='Total coverage of all kernels except the fixed one',
+                y1label='ASIC allocation out of U-cores (%)',
+                y2label='U-cores allocation (%)',
+                xlim=(other_cov_list[0]-5,other_cov_list[-1]+5),
+                #figsize=(4,3),
+                y1lim=(-5, 35),
+                y2lim=(5,25),
+                figdir=self.FIG_DIR,
+                ofn='twinx_fixedcov_{cov}.{fmt}'.format(cov=fixed_cov, fmt=self.fmt),
+                cb_func=cb_func)
+
+        other_cov = 20
+        y_lists_asic = []
+        y_lists_ucore = []
+        for a2f_ratio in a2f_ratio_list:
+            y_list_asic = []
+            y_list_ucore = []
+            for fixed_cov in fixed_cov_list:
+                dfn = joinpath(DATA_DIR,
+                        'asicfpgaratio_%dx' % a2f_ratio,
+                        'fixed%d_norm40x10_cov%d' % (fixed_cov, other_cov),
+                        '%s.pypkl' % self.id)
+                with open(dfn, 'rb') as f:
+                    mean_lists = pickle.load(f)
+                    ucore_alloc_list = pickle.load(f)
+                    asic_alloc_list = pickle.load(f)
+
+                asic_alloc, ucore_alloc, val = self._plot_alt_find_max(mean_lists,
+                        asic_alloc_list, ucore_alloc_list)
+                y_list_asic.append(asic_alloc)
+                y_list_ucore.append(ucore_alloc)
+            y_lists_asic.append(y_list_asic)
+            y_lists_ucore.append(y_list_ucore)
+
+        def cb_func(axes1, axes2, figure):
+            axes1.legend(axes1.lines, a2f_ratio_list)
+
+        analysis.plot_twinx(other_cov_list, y_lists_asic, y_lists_ucore,
+                xlabel='Total coverage of the fixed kernel',
+                y1label='ASIC allocation out of U-cores (%)',
+                y2label='U-cores allocation (%)',
+                xlim=(fixed_cov_list[0]-5,fixed_cov_list[-1]+5),
+                #figsize=(4,3),
+                y1lim=(-5, 55),
+                y2lim=(5,25),
+                figdir=self.FIG_DIR,
+                ofn='twinx_other_{cov}.{fmt}'.format(cov=other_cov, fmt=self.fmt),
+                cb_func=cb_func)
+
+    def plot_alt_asic(self):
+        style.use('ggplot')
+
+        a2f_ratio_list = (5, 10, 50)
+        fixed_cov_list = (10, 20 ,30 ,40)
+        other_cov_list = (10, 20 ,30 ,40)
+
+        fixed_cov = 20
+        y_lists_asic = []
+        y_lists_ucore = []
+        for a2f_ratio in a2f_ratio_list:
+            y_list_asic = []
+            y_list_ucore = []
+            for other_cov in other_cov_list:
+                dfn = joinpath(DATA_DIR,
+                        'asicfpgaratio_%dx' % a2f_ratio,
+                        'fixed%d_norm40x10_cov%d' % (fixed_cov, other_cov),
+                        '%s.pypkl' % self.id)
+                with open(dfn, 'rb') as f:
+                    mean_lists = pickle.load(f)
+                    ucore_alloc_list = pickle.load(f)
+                    asic_alloc_list = pickle.load(f)
+
+                asic_alloc, ucore_alloc, val = self._plot_alt_find_max(mean_lists,
+                        asic_alloc_list, ucore_alloc_list)
+                y_list_asic.append(asic_alloc)
+                y_list_ucore.append(ucore_alloc)
+            y_lists_asic.append(y_list_asic)
+            y_lists_ucore.append(y_list_ucore)
+
+        #matplotlib.rc('xtick', labelsize=8)
+        #matplotlib.rc('ytick', labelsize=8)
+        matplotlib.rc('legend', fontsize=10)
+        matplotlib.rc('axes', labelsize=10)
+
+        def cb_func(axes1, figure):
+            legend_labels = [ '%dx' % ratio for ratio in a2f_ratio_list ]
+            axes1.legend(axes1.lines, legend_labels)
+
+        analysis.plot_series(other_cov_list, y_lists_asic,
+                xlabel='Total coverage of all other kernels',
+                ylabel='ASIC alloc. out of U-cores (%)',
+                figsize=(4,3),
+                ylim=(-2, 32),
+                ms_list=(8,),
+                figdir=self.FIG_DIR,
+                ofn='asic_fixedcov_{cov}.{fmt}'.format(cov=fixed_cov, fmt=self.fmt),
+                cb_func=cb_func)
+
+        other_cov = 20
+        y_lists_asic = []
+        y_lists_ucore = []
+        for a2f_ratio in a2f_ratio_list:
+            y_list_asic = []
+            y_list_ucore = []
+            for fixed_cov in fixed_cov_list:
+                dfn = joinpath(DATA_DIR,
+                        'asicfpgaratio_%dx' % a2f_ratio,
+                        'fixed%d_norm40x10_cov%d' % (fixed_cov, other_cov),
+                        '%s.pypkl' % self.id)
+                with open(dfn, 'rb') as f:
+                    mean_lists = pickle.load(f)
+                    ucore_alloc_list = pickle.load(f)
+                    asic_alloc_list = pickle.load(f)
+
+                asic_alloc, ucore_alloc, val = self._plot_alt_find_max(mean_lists,
+                        asic_alloc_list, ucore_alloc_list)
+                y_list_asic.append(asic_alloc)
+                y_list_ucore.append(ucore_alloc)
+            y_lists_asic.append(y_list_asic)
+            y_lists_ucore.append(y_list_ucore)
+
+        def cb_func(axes1, figure):
+            legend_labels = [ '%dx' % ratio for ratio in a2f_ratio_list ]
+            axes1.legend(axes1.lines, legend_labels, loc='upper left')
+
+        analysis.plot_series(other_cov_list, y_lists_asic,
+                xlabel='Total coverage of the fixed kernel',
+                ylabel='ASIC alloc. out of U-cores (%)',
+                figsize=(4,3),
+                ms_list=(8,),
+                ylim=(-5, 55),
+                figdir=self.FIG_DIR,
+                ofn='asic_other_{cov}.{fmt}'.format(cov=other_cov, fmt=self.fmt),
+                cb_func=cb_func)
 
 
 class FixedArea(object):
@@ -730,10 +918,13 @@ def main():
     if options.sec == 'asicopt':
         anl = ASICOpt(options,budget=budget)
 
-    if 'analysis' in actions:
-        anl.analyze()
-    if 'plot' in actions:
-        anl.plot()
+    for a in actions:
+        try:
+            do_func = getattr(anl, a)
+            do_func()
+        except AttributeError as ae:
+            logging.warning("No action %s supported in this analysis" % a)
+
 
 
 if __name__ == '__main__':
