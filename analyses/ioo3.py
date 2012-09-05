@@ -3,6 +3,7 @@
 
 import logging
 import cPickle as pickle
+import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
 
@@ -65,18 +66,27 @@ class IOO3(object):
                            tech=tech,
                            serial_core=O3Core(mech='HKMGS',tech=tech))
 
+        sel_core = O3Core(mech='HKMGS', tech=tech)
+        area = sel_core.base_area * 2
+        perf = sel_core.base_perf * 1.1
+        sel_core.set_base(area=area, perf=perf)
+        sys_sel = HeteroSys(self.budget, mech='HKMGS', tech=tech,
+                serial_core=sel_core)
+
         sys_io = HeteroSys(self.budget, mech='HKMGS', tech=tech)
 
         apps = [ App(f=f) for f in self.appf_list ]
 
         sys_o3_perfs = [ sys_o3.get_perf(app)['perf'] for app in apps ]
         sys_io_perfs = [ sys_io.get_perf(app)['perf'] for app in apps ]
+        sys_sel_perfs = [sys_sel.get_perf(app)['perf'] for app in apps ]
 
         dfn = joinpath(self.DATA_DIR, ('%s_%d.pypkl' % (self.id, self.tech)))
         with open(dfn, 'wb') as f:
             pickle.dump(sys_o3_perfs, f)
             pickle.dump(sys_io_perfs, f)
             pickle.dump(self.appf_list, f)
+            pickle.dump(sys_sel_perfs, f)
 
 
     def plot(self):
@@ -90,10 +100,11 @@ class IOO3(object):
             sys_o3_perfs = pickle.load(f)
             sys_io_perfs = pickle.load(f)
             appf_list = pickle.load(f)
+            sys_sel_perfs = pickle.load(f)
 
         style.use('ggplot')
 
-        y_lists = [sys_o3_perfs, sys_io_perfs]
+        y_lists = [sys_o3_perfs, sys_sel_perfs, sys_io_perfs]
 
         ofn = joinpath(self.FIG_DIR,
                        '{id}_{tech}.{fmt}'.format(id=self.id, fmt=self.fmt,tech=self.tech))
@@ -102,7 +113,7 @@ class IOO3(object):
                 xlabel='Parallel fraction',
                 ylabel='Normalized performance',
                 figsize=(6,4.5),
-                legend_labels=['O3', 'IO'],
+                legend_labels=['O3', 'Sel', 'IO'],
                 legend_loc='lower right',
                 ofn = ofn)
 
@@ -119,15 +130,60 @@ class IOO3(object):
             relative_perfs = [ o3_perf/io_perf for (o3_perf,io_perf) in zip(sys_o3_perfs, sys_io_perfs) ]
             y_lists.append(relative_perfs)
 
-        style.use('ggplot')
         ofn = joinpath(self.FIG_DIR,
                 '{id}_relative.{fmt}'.format(id=self.id, fmt=self.fmt))
+
+        style.use('ggplot')
+        matplotlib.rc('legend', fontsize=10)
+        matplotlib.rc('axes', labelsize=10)
+
+        print zip(*y_lists)
+
+        def cb_func(axes, figure):
+            axes.legend(axes.lines, appf_list, loc='upper center', ncol=3,
+                    title='Parallel ratio',
+                    bbox_to_anchor=(0.4, 0.97, 0.2, 0.1))
+
         analysis.plot_series(tech_list, zip(*y_lists),
                 xlabel='Technology node',
                 ylabel='Normalized performance',
-                legend_labels=appf_list,
+                ylim=(0,5),
+                cb_func=cb_func,
+                figsize=(4,3),
+                ms_list=(6,),
                 ofn=ofn)
 
+
+    def plot_o3_sel(self):
+        dfn = joinpath(self.DATA_DIR, ('{id}_{tech}.pypkl'.format(id=self.id, tech=self.tech)))
+        with open(dfn, 'rb') as f:
+            sys_o3_perfs = pickle.load(f)
+            sys_io_perfs = pickle.load(f)
+            appf_list = pickle.load(f)
+            sys_sel_perfs = pickle.load(f)
+
+        rel_o3 = [ o3_perf/io_perf for (o3_perf,io_perf) in zip(sys_o3_perfs, sys_io_perfs) ]
+        rel_sel = [ sel_perf/io_perf for (sel_perf,io_perf) in zip(sys_sel_perfs, sys_io_perfs) ]
+        y_lists = [rel_o3, rel_sel]
+
+
+        style.use('ggplot')
+        matplotlib.rc('legend', fontsize=10)
+        matplotlib.rc('axes', labelsize=10)
+
+
+        ofn = joinpath(self.FIG_DIR,
+                       '{id}_o3sel_{tech}.{fmt}'.format(id=self.id, fmt=self.fmt,tech=self.tech))
+
+        analysis.plot_series(appf_list, y_lists,
+                xlabel='Technology node',
+                ylabel='Normalized performance',
+                #ylim=(0,5),
+                legend_labels=['O3','Sel'],
+                legend_loc='upper right',
+                figsize=(4,3),
+                ms_list=(6,),
+                ofn=ofn)
 
 LOGGING_LEVELS = {'critical': logging.CRITICAL,
         'error': logging.ERROR,
@@ -268,10 +324,12 @@ def main():
     else:
         anl = FPGASensitivity(options, budget=budget)
 
-    if 'analysis' in actions:
-        anl.analyze()
-    if 'plot' in actions:
-        anl.plot()
+    for a in actions:
+        try:
+            do_func = getattr(anl, a)
+            do_func()
+        except AttributeError as ae:
+            logging.warning("No action %s supported in this analysis" % a)
 
 
 if __name__ == '__main__':
