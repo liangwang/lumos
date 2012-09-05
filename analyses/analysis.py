@@ -69,7 +69,7 @@ def parse_bw(bw_cfg):
 def plot_twinx(x_list, y1_lists, y2_lists,
                xlabel, y1label, y2label,
                legend_labels=None, legend_loc=None, title=None,
-               xlim=None, y1lim=None, y2lim=None,
+               xlim=None, y1lim=None, y2lim=None,set_grid=False,
                figsize=None, marker_list=None, ms_list=None,
                figdir=None, ofn=None, cb_func=None):
 
@@ -95,20 +95,22 @@ def plot_twinx(x_list, y1_lists, y2_lists,
             ax1.plot(x_list, y1, marker=marker, ms=10)
 
         for y2, marker in itertools.izip(y2_lists, itertools.cycle(marker_list)):
-            ax2.plot(x_list, y2, marker=marker, ms=10)
+            ax2.plot(x_list, y2, marker=marker, ms=10, ls='-.')
     else:
         for y1, marker, ms in itertools.izip(y1_lists, itertools.cycle(marker_list), itertools.cycle(ms_list)):
             ax1.plot(x_list, y1, marker=marker, ms=ms)
 
         for y2, marker, ms in itertools.izip(y2_lists, itertools.cycle(marker_list), itertools.cycle(ms_list)):
-            ax2.plot(x_list, y2, marker=marker, ms=ms)
+            ax2.plot(x_list, y2, marker=marker, ms=ms, ls='-.')
 
     if legend_labels and legend_loc:
         ax1.legend(ax1.lines, legend_labels, loc=legend_loc,  prop=dict(size='medium'))
 
     ax1.set_xlabel(xlabel)
     ax1.set_ylabel(y1label)
+    ax1.grid(set_grid)
     ax2.set_ylabel(y2label)
+    ax2.grid(set_grid)
 
     if xlim:
         ax1.set_xlim(xlim[0], xlim[1])
@@ -128,6 +130,7 @@ def plot_twinx(x_list, y1_lists, y2_lists,
         ofile = joinpath(figdir, ofn)
 
     fig.savefig(ofile, bbox_inches='tight')
+
 
 def plot_errbar(x_list, y_lists, err_lists, xlabel, ylabel, legend_labels=None, legend_loc=None, ylim=None, xlim=None, ylog=False, xgrid=True, ygrid=True, title=None, figsize=None, marker_list=None, ms_list=None, figdir=None, ofn=None, cb_func=None):
     if not marker_list:
@@ -290,7 +293,12 @@ def plot_data_nomarker(x_list, y_lists, xlabel, ylabel, legend_title=None, legen
 
     fig.savefig(ofile, bbox_inches='tight')
 
-def plot_series(x_list, y_lists, xlabel, ylabel, legend_labels=None, legend_loc=None, ylim=None, set_grid=True, title=None, figsize=None, marker_list=None, ms_list=None, figdir=None, ofn=None, cb_func=None):
+
+def plot_series(x_list, y_lists, xlabel, ylabel,
+        legend_labels=None, legend_loc=None,
+        ylim=None, set_grid=True, title=None,
+        figsize=None, marker_list=None, ms_list=None,
+        figdir=None, ofn=None, cb_func=None):
     if not marker_list:
         marker_list = ['s', 'o', 'v', 'd', 'D', '>', '^', '<', 'x', '+', '*',
                        '1', '2', '3', '4', 'h', 'H', 'p', '|', '_']
@@ -332,7 +340,6 @@ def plot_series(x_list, y_lists, xlabel, ylabel, legend_labels=None, legend_loc=
         ofile = joinpath(figdir, ofn)
 
     fig.savefig(ofile, bbox_inches='tight')
-    #fig.savefig(ofile)
 
 
 def plot_series2(x_list, y_lists, xlabel, ylabel, legend_labels, legend_loc, ylim=None, set_grid=True, title=None, figsize=None, marker_list=None, ms_list=None, figdir=None, ofn=None):
