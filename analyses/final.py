@@ -7,17 +7,17 @@ import cPickle as pickle
 #import numpy as np
 #import math
 import matplotlib
-matplotlib.use('Agg')
+from mpltools import style
 #import matplotlib.pyplot as plt
 #import matplotlib.lines as mlines
 #from matplotlib.ticker import MultipleLocator
 from os.path import join as joinpath
 from optparse import OptionParser
 import os
-from model.app import App
+from model.application import App
 #import model.system
 from model.system import SymSys
-from model.core import Core
+from model.core import IOCore
 from model.tech import PTMScale as ptmtech
 from data import reader
 from analysis import BaseAnalysis
@@ -95,7 +95,7 @@ class Dasi2012Analysis(BaseAnalysis):
     def analyze(self):
         sys = SymSys()
         sys.set_sys_prop(area=self.sys_area, power=self.sys_power)
-        sys.set_sys_prop(core=Core(ctype='IO', mech=self.mech))
+        sys.set_sys_prop(core=IOCore(mech=self.mech))
         speed_lists = []
 
         # no variation
@@ -184,7 +184,7 @@ class PenaltyAdjustAnalysis(BaseAnalysis):
     def analyze(self):
         sys = SymSys()
         sys.set_sys_prop(area=self.sys_area, power=self.sys_power)
-        sys.set_sys_prop(core=Core(ctype='IO', mech='HKMGS'))
+        sys.set_sys_prop(core=IOCore(mech='HKMGS'))
         speed_lists = []
         for adjust in self.adjust_list:
             speed_list = []
@@ -356,7 +356,7 @@ class ParallelismAnalysis(BaseAnalysis):
     def analyze_darkdim(self):
         sys = SymSys()
         sys.set_sys_prop(area=self.sys_area, power=self.sys_power)
-        sys.set_sys_prop(core=Core(ctype='IO', mech='HKMGS'))
+        sys.set_sys_prop(core=IOCore(mech='HKMGS'))
         speed_lists = []
         util_lists = []
         vdd_lists = []
@@ -416,7 +416,7 @@ class ParallelismAnalysis(BaseAnalysis):
 
     def analyze_hplp(self):
         sys = SymSys()
-        sys.set_sys_prop(core=Core(ctype='IO'))
+        sys.set_sys_prop(core=IOCore())
         sys.set_sys_prop(area=self.sys_area, power=self.sys_power)
 
         speed_lists = []
@@ -580,7 +580,7 @@ class MainAnalyzer(object):
         self.fmt = 'pdf'
 
     def analyze_var_penalty(self):
-        core = Core(mech='HKMGS', ctype='IO', pv=True)
+        core = IOCore(mech='HKMGS', pv=True)
         for tech in (45, 32, 22, 16):
             core.config(tech=tech)
             print core.var_penalty
@@ -604,7 +604,7 @@ class MainAnalyzer(object):
             props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
             axes.text(0.75, 0.95, textstr, transform=axes.transAxes, fontsize=18, verticalalignment='top', bbox=props)
 
-        sys.set_sys_prop(core=Core(tech=45, ctype='IO', mech='HKMGS'))
+        sys.set_sys_prop(core=IOCore(tech=45, mech='HKMGS'))
 
         y_lists = []
         sys.set_sys_prop(area=SYS_SMALL['area'], power=SYS_SMALL['power'])
@@ -630,7 +630,7 @@ class MainAnalyzer(object):
                     ofn=ofn)
 
         # 45nm with variation
-        sys.set_sys_prop(core=Core(tech=45, ctype='IO', mech='HKMGS', pv=True))
+        sys.set_sys_prop(core=IOCore(tech=45, mech='HKMGS', pv=True))
 
         y_lists = []
         sys.set_sys_prop(area=SYS_SMALL['area'], power=SYS_SMALL['power'])
@@ -661,7 +661,7 @@ class MainAnalyzer(object):
             props = dict(boxstyle='round', facecolor='wheat', alpha=0.5)
             axes.text(0.05, 0.95, textstr, transform=axes.transAxes, fontsize=18, verticalalignment='top', bbox=props)
 
-        sys.set_sys_prop(core=Core(tech=16, ctype='IO', mech='HKMGS'))
+        sys.set_sys_prop(core=IOCore(tech=16, mech='HKMGS'))
         y_lists = []
         sys.set_sys_prop(area=SYS_SMALL['area'], power=SYS_SMALL['power'])
         y_lists.append(speedup_by_vper(per_list, sys))
@@ -686,7 +686,7 @@ class MainAnalyzer(object):
                     ofn=ofn)
 
         # 16nm with variation
-        sys.set_sys_prop(core=Core(tech=16, ctype='IO', mech='HKMGS', pv=True))
+        sys.set_sys_prop(core=IOCore(tech=16, mech='HKMGS', pv=True))
         y_lists = []
         sys.set_sys_prop(area=SYS_SMALL['area'], power=SYS_SMALL['power'])
         y_lists.append(speedup_by_vper(per_list, sys))
@@ -718,7 +718,7 @@ class MainAnalyzer(object):
 
         sys = SymSys()
 
-        sys.set_sys_prop(core=Core(ctype='IO', mech='HKMGS'))
+        sys.set_sys_prop(core=IOCore(mech='HKMGS'))
 
         #sys.set_sys_prop(area=800, power=140)
         sys.set_sys_prop(area=SYS_LARGE['area'], power=SYS_LARGE['power'])
@@ -817,7 +817,6 @@ class MainAnalyzer(object):
 
     def plot_darkdim(self, sys):
 
-        figsize = (6, 3.5)
 
         tech_list = (45, 32, 22, 16)
         #tech_list = (22, 16)
@@ -883,14 +882,26 @@ class MainAnalyzer(object):
         util_lists.append(util_list_dim)
         vdd_lists.append(vdd_list_dim)
 
+        style.use('ggplot')
+        figsize = (4, 2.5)
+        matplotlib.rc('xtick', labelsize=11)
+        matplotlib.rc('ytick', labelsize=11)
+        matplotlib.rc('legend', fontsize=9)
+        matplotlib.rc('axes', labelsize=11)
         #plot speedup
         ofn = 'darkdim_speedup_%dw_%dmm.%s' % (sys.power, sys.area, self.fmt,)
 
+        def speedup_style(axes, figure):
+            legend_labels=['Dark Si.', 'Dim Si.', 'Dark Si.(var)', 'Dim Si.(var)']
+            legend_loc='upper left'
+            axes.legend(axes.lines, legend_labels, loc=legend_loc)
         plot_series(tech_list, speed_lists,
                 xlabel='Technology Nodes',
                 ylabel='Speedup (normalized)',
-                legend_labels=['Dark Si.', 'Dim Si.', 'Dark Si.(var)', 'Dim Si.(var)'],
-                legend_loc='upper left',
+                #legend_labels=['Dark Si.', 'Dim Si.', 'Dark Si.(var)', 'Dim Si.(var)'],
+                #legend_loc='upper left',
+                ms_list=(6,),
+                cb_func=speedup_style,
                 figsize=figsize,
                 figdir=FIG_DIR,
                 ofn=ofn)
@@ -908,12 +919,18 @@ class MainAnalyzer(object):
                         #ylim=(0, 105),
                         #ofn=ofn)
         #elif sys.power == SYS_LARGE['power']:
+        def util_style(axes, figure):
+            legend_labels=['Dark Si.', 'Dim Si.', 'Dark Si.(var)', 'Dim Si.(var)']
+            legend_loc='center left'
+            axes.legend(axes.lines, legend_labels, loc=legend_loc)
         plot_series(tech_list, util_lists,
                 xlabel='Technology Nodes',
                 ylabel=r'System Utilization ($\%$)',
-                legend_labels=['Dark Si.', 'Dim Si.', 'Dark Si.(var)', 'Dim Si.(var)'],
-                legend_loc='center left',
+                #legend_labels=['Dark Si.', 'Dim Si.', 'Dark Si.(var)', 'Dim Si.(var)'],
+                #legend_loc='center left',
+                cb_func=util_style,
                 figsize=figsize,
+                ms_list=(6,),
                 ylim=(0, 105),
                 figdir=FIG_DIR,
                 ofn=ofn)
@@ -933,20 +950,27 @@ class MainAnalyzer(object):
                         #figsize=figsize,
                         #ofn=ofn)
         #elif sys.power == SYS_LARGE['power']:
-        plot_series2(tech_list, vdd_lists,
+        def volt_style(axes, figure):
+            legend_labels=['Dark Si.', 'Dim Si.', 'Dark Si.(var)', 'Dim Si.(var)', r'$V_t$']
+            legend_loc='lower left'
+            axes.legend(axes.lines, legend_labels, loc=legend_loc, ncol=3)
+
+        plot_series(tech_list, vdd_lists,
                 xlabel='Technology Nodes',
                 ylabel='Optimal supply voltage',
-                legend_labels=['Dark Si.', 'Dim Si.', 'Dark Si.(var)', 'Dim Si.(var)', r'$V_t$'],
-                legend_loc='lower left',
+                #legend_labels=['Dark Si.', 'Dim Si.', 'Dark Si.(var)', 'Dim Si.(var)', r'$V_t$'],
+                #legend_loc='lower left',
+                cb_func=volt_style,
                 ylim=(0.1, 1.45),
                 figsize=figsize,
+                ms_list=(6,),
                 figdir=FIG_DIR,
                 ofn=ofn)
 
     def do_darkdim(self):
 
         sys = SymSys()
-        sys.set_sys_prop(core=Core(ctype='IO', mech='HKMGS'))
+        sys.set_sys_prop(core=IOCore(mech='HKMGS'))
 
         sys.set_sys_prop(area=SYS_LARGE['area'], power=SYS_LARGE['power'])
         self.plot_darkdim(sys)
@@ -1047,7 +1071,7 @@ class MainAnalyzer(object):
     def do_hplp(self):
 
         sys = SymSys()
-        sys.set_sys_prop(core=Core(ctype='IO'))
+        sys.set_sys_prop(core=IOCore())
 
         sys.set_sys_prop(area=SYS_SMALL['area'], power=SYS_SMALL['power'])
         self.plot_hplp(sys)
@@ -1170,7 +1194,7 @@ class MainAnalyzer(object):
         sys = SymSys()
         sys_area = 100
 
-        sys.set_sys_prop(core=Core(ctype='IO', mech='HKMGS'), area=sys_area)
+        sys.set_sys_prop(core=IOCore(mech='HKMGS'), area=sys_area)
 
         #sys.set_core_prop(tech = 32)
         #self.plot_sysconf(sys)
@@ -1189,7 +1213,7 @@ def main():
     # Init command line arguments parser
     parser = OptionParser()
     section_choices = ('variation', 'ntc', 'hplp', 'darkdim', 'sysconf', 'vpen', 'penadj', 'para', 'dasi')
-    parser.add_option('--sec', default='dasi', choices=section_choices,
+    parser.add_option('--sec', default='darkdim', choices=section_choices,
                       help='choose the secitons of plotting, choose from ('
                       + ','.join(section_choices)
                       + '), default: %default]')
