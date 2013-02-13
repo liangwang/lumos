@@ -16,3 +16,9 @@ mcpat
 outputs
 *.txt
 *.orig
+.old-plots
+obsolete
+.pyhistory
+.rope*
+_*
+apidoc

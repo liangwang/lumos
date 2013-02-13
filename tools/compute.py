@@ -1,21 +1,22 @@
 #!/usr/bin/python
 
 import csv
-import paramiko
 from optparse import OptionParser
 import os
-
+import paramiko
 
 DATAF_PREFIX='outputPTMBengroup'
 REMOTE_WDIR='/var/home/lw2aw/simulation/ece6332'
-LOCAL_WDIR='/home/lw2aw/projects/qual/model/data'
+
 HOST='ivycreek.ece.virginia.edu'
 PRIV_KEY_FILE=os.path.expanduser(os.path.join(
     '~', '.ssh', 'id_rsa'))
 HOST_KEY=os.path.expanduser(os.path.join(
     '~', '.ssh', 'known_hosts'))
-import conf.misc
-USE_REMOTE=conf.misc.use_remote
+
+import lumos.env
+
+LOCAL_WDIR=os.path.join(lumos.env.LUMOS_HOME, 'data')
 
 parser = OptionParser()
 parser.add_option('-f', '--file', dest='file', default='LP_nom2.txt')
@@ -94,15 +95,15 @@ def printHP2LP():
 
     print 'Freq'
     for tech in techList:
-        print '%d: %g' % (tech, 
+        print '%d: %g' % (tech,
                           lpdata['freq'][tech]/hpdata['freq'][tech])
     print 'dp'
     for tech in techList:
-        print '%d: %g' % (tech, 
+        print '%d: %g' % (tech,
                           lpdata['dp'][tech]/hpdata['dp'][tech])
     print 'sp'
     for tech in techList:
-        print '%d: %g' % (tech, 
+        print '%d: %g' % (tech,
                           lpdata['sp'][tech]/hpdata['sp'][tech])
 
 if options.tech:

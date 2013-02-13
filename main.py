@@ -1,4 +1,8 @@
 #!/usr/bin/env python
+'''
+@TODO: a fully functional CLI interface
+'''
+
 
 import os
 import atexit
@@ -6,15 +10,33 @@ import rlcompleter
 import readline
 from cmd2 import Cmd
 
+try:
+    LUMOS_HOME=os.environ['LUMOS_HOME']
+except KeyError:
+    LUMOS_HOME=os.getcwd()
+
+historyPath = os.path.expanduser(
+    os.path.join(LUMOS_HOME, ".pyhistory"))
+if os.path.exists(historyPath):
+    readline.read_history_file(historyPath)
+
+def save_history(historyPath=historyPath):
+    readline.write_history_file(historyPath)
+
+atexit.register(save_history)
+
+
 class CLIApp(Cmd):
-    prompt = 'DimSi>'
+    prompt = 'Lumos>'
     intro = '''
-    DimSi analysis
+    Lumos: A heterogeneous design space exploration framework.
     '''
+    caseInsensitive = False
 
     def __init__(self):
         Cmd.__init__(self)
         self._cwd = os.getcwd()
+        self._home = LUMOS_HOME
 
     def default(self, arg):
         self.do_shell(arg)
@@ -35,14 +57,12 @@ class CLIApp(Cmd):
         os.chdir(args)
         self._cwd = os.getcwd()
 
-historyPath = os.path.expanduser("./.pyhistory")
-if os.path.exists(historyPath):
-    readline.read_history_file(historyPath)
+    def do_caseinsensitivecmd(self, args):
+        print("this is case insensitive")
 
-def save_history(historyPath=historyPath):
-    readline.write_history_file(historyPath)
+    def do_CaseInsensitiveCmd(self, args):
+        print("hello")
 
-atexit.register(save_history)
 
 app = CLIApp()
 app.cmdloop()
