@@ -30,10 +30,10 @@ How to Get it
 =============
 
 Lumos is at its v0.1, which can be downloaded from `tar.gz
-<https://github.com/liangwang/lumos/archive/v0.1.tar.gz>` or `zip
-<https://github.com/liangwang/lumos/archive/v0.1.zip>`, or just check it
-immediately at `here <https://github.com/liangwang/lumos/tree/v0.1>`. You can
-always get the latest code of Lumos at `github <https://github.com/liangwang/lumos>`.
+<https://github.com/liangwang/lumos/archive/v0.1.tar.gz>`_ or `zip
+<https://github.com/liangwang/lumos/archive/v0.1.zip>`_, or just check it
+immediately at `here <https://github.com/liangwang/lumos/tree/v0.1>`_. You can
+always get the latest code of Lumos at `github <https://github.com/liangwang/lumos>`_.
 
 Quick Start
 ===========
@@ -79,7 +79,7 @@ transparent to users). Just follow these steps:
 
 1. Get the tarball, and unpack the package::
 
-   >tar zxvf Lumos-0.1.tar.gz
+   >tar zxvf Lumos-0.1.tar.
 
 2. Set environment variable ``LUMOS_HOME`` to root directory of the
    package::
