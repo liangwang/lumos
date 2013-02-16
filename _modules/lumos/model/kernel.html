@@ -1,0 +1,517 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>lumos.model.kernel &mdash; Lumos 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/lumos.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Lumos 0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
+          rel='stylesheet' type='text/css'>
+ 
+    <style type="text/css">
+      table.right { float: right; margin-left: 20px; }
+      table.right td { border: 1px solid #ccc; }
+      
+    </style>
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+  </head>
+  <body>
+<div class="pageheader">
+  <div>
+    <a href="../../../index.html">
+      <img src="../../../_static/lumos.png" alt="LUMOS" />
+    </a>
+  </div>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">Lumos home</a>&nbsp;|</li>
+        <li><a href="../../../contents.html">Documentation</a> &raquo;</li>
+
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for lumos.model.kernel</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+<span class="c"># encoding: utf-8</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">ConfigParser</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+
+<span class="n">ASIC_PERF_RATIO</span> <span class="o">=</span> <span class="mi">5</span>
+
+<div class="viewcode-block" id="UCoreParam"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.kernel.UCoreParam">[docs]</a><span class="k">class</span> <span class="nc">UCoreParam</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">miu</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">0.001</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">miu</span> <span class="o">=</span> <span class="n">miu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">phi</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bw</span> <span class="o">=</span> <span class="n">bw</span>
+</div>
+<div class="viewcode-block" id="Kernel"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.kernel.Kernel">[docs]</a><span class="k">class</span> <span class="nc">Kernel</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kid</span><span class="p">,</span> <span class="n">app_occ_prob</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="nb">dict</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s">&#39;app_occ_prob&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">app_occ_prob</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kid</span> <span class="o">=</span> <span class="n">kid</span>
+</div>
+<span class="n">kernel_pool</span> <span class="o">=</span> <span class="p">{</span>
+<span class="s">&#39;MMM&#39;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s">&#39;GPU&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mf">3.41</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mf">0.74</span><span class="p">,</span><span class="n">bw</span><span class="o">=</span><span class="mf">0.725</span><span class="p">),</span>
+    <span class="s">&#39;FPGA&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mf">0.31</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">0.325</span><span class="p">),</span>
+    <span class="s">&#39;ASIC&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mf">27.4</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mf">0.79</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">3.62</span><span class="p">),</span>
+    <span class="s">&#39;O3CPU&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">0.216</span><span class="p">),</span>
+    <span class="s">&#39;IO&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">0.16</span><span class="p">),</span>
+    <span class="p">},</span>
+<span class="s">&#39;BS&#39;</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s">&#39;GPU&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mf">17.0</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mf">0.57</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">5.85</span><span class="p">),</span>
+    <span class="s">&#39;FPGA&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mf">5.68</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mf">0.26</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">3.975</span><span class="p">),</span>
+    <span class="s">&#39;ASIC&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mi">482</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mf">4.75</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">66.249</span><span class="p">),</span>
+    <span class="s">&#39;O3CPU&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">0.35</span><span class="p">),</span>
+    <span class="s">&#39;IO&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">0.26</span><span class="p">),</span>
+    <span class="p">},</span>
+<span class="s">&#39;FFT&#39;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s">&#39;GPU&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mf">2.42</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mf">0.59</span><span class="p">,</span> <span class="n">bw</span> <span class="o">=</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="s">&#39;FPGA&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mf">2.81</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mf">0.29</span><span class="p">,</span> <span class="n">bw</span> <span class="o">=</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="s">&#39;ASIC&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mi">733</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mf">5.34</span><span class="p">,</span> <span class="n">bw</span> <span class="o">=</span> <span class="mi">1</span><span class="p">),</span>
+    <span class="s">&#39;O3CPU&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+    <span class="s">&#39;IO&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+    <span class="p">},</span>
+<span class="s">&#39;fpgaeff1&#39;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s">&#39;GPU&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mf">3.41</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mf">0.74</span><span class="p">,</span><span class="n">bw</span><span class="o">=</span><span class="mf">0.725</span><span class="p">),</span>
+    <span class="s">&#39;FPGA&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
+    <span class="s">&#39;ASIC&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mf">27.4</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mf">0.79</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">3.62</span><span class="p">),</span>
+    <span class="s">&#39;O3CPU&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">0.216</span><span class="p">),</span>
+    <span class="s">&#39;IO&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">0.16</span><span class="p">),</span>
+    <span class="p">},</span>
+<span class="s">&#39;fpgaeff2&#39;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s">&#39;GPU&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mf">3.41</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mf">0.74</span><span class="p">,</span><span class="n">bw</span><span class="o">=</span><span class="mf">0.725</span><span class="p">),</span>
+    <span class="s">&#39;FPGA&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mi">20</span><span class="p">),</span>
+    <span class="s">&#39;ASIC&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mf">87.4</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mf">2.79</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">30.62</span><span class="p">),</span>
+    <span class="s">&#39;O3CPU&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">0.216</span><span class="p">),</span>
+    <span class="s">&#39;IO&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">0.16</span><span class="p">),</span>
+    <span class="p">},</span>
+<span class="s">&#39;asiceff1&#39;</span> <span class="p">:</span> <span class="p">{</span>
+    <span class="s">&#39;GPU&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mf">17.0</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mf">0.57</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">5.85</span><span class="p">),</span>
+    <span class="s">&#39;FPGA&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mi">8</span><span class="p">),</span>
+    <span class="s">&#39;ASIC&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mi">482</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mf">4.75</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">66.249</span><span class="p">),</span>
+    <span class="s">&#39;O3CPU&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">0.35</span><span class="p">),</span>
+    <span class="s">&#39;IO&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">0.26</span><span class="p">),</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+
+<div class="viewcode-block" id="get_kernel"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.kernel.get_kernel">[docs]</a><span class="k">def</span> <span class="nf">get_kernel</span><span class="p">(</span><span class="n">kid</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;get kernel by kid</span>
+
+<span class="sd">    :kid: @todo</span>
+<span class="sd">    :returns: kernel dict if kid existed in kernel_pool,</span>
+<span class="sd">              None, if kid is not find</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">kid</span> <span class="ow">in</span> <span class="n">kernel_pool</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">kernel_pool</span><span class="p">[</span><span class="n">kid</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">None</span>
+
+</div>
+<div class="viewcode-block" id="gen_kernel_gauss"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.kernel.gen_kernel_gauss">[docs]</a><span class="k">def</span> <span class="nf">gen_kernel_gauss</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="n">ken_gauss</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">num</span><span class="p">:</span>
+        <span class="n">rvs</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">num</span><span class="p">)</span>
+        <span class="n">probs</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">rvs</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">)</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">rv</span><span class="p">,</span><span class="n">prob</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">rvs</span><span class="p">,</span> <span class="n">probs</span><span class="p">):</span>
+            <span class="n">ken_gauss</span><span class="p">[</span><span class="s">&#39;gauss</span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="nb">id</span> <span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;FPGA&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="n">rv</span><span class="p">),</span>
+                                        <span class="s">&#39;prob&#39;</span><span class="p">:</span> <span class="n">prob</span><span class="p">}</span>
+            <span class="nb">id</span> <span class="o">=</span> <span class="nb">id</span> <span class="o">+</span> <span class="mi">1</span>
+
+        <span class="c">#for id in xrange(num):</span>
+            <span class="c">#uc_miu = random.gauss(mean,std)</span>
+            <span class="c">#while not uc_miu &gt; 0:</span>
+                <span class="c">#uc_miu = random.gauss(mean, std)</span>
+            <span class="c">#prob = gauss_pdf(uc_miu, mean, std)</span>
+            <span class="c">#ken_gauss[&#39;gauss%d&#39; % id ] = {&#39;FPGA&#39;: UCoreParam(miu=uc_miu),</span>
+                                        <span class="c">#&#39;prob&#39;: prob}</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">rv</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">)</span>
+        <span class="n">prob</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">rv</span><span class="p">,</span> <span class="n">mean</span><span class="p">,</span> <span class="n">std</span><span class="p">)</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">kernel_pool</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+        <span class="n">ken_gauss</span><span class="p">[</span><span class="s">&#39;gauss</span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="nb">id</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;FPGA&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="n">rv</span><span class="p">),</span>
+                                                     <span class="s">&#39;prob&#39;</span><span class="p">:</span> <span class="n">prob</span><span class="p">}</span>
+
+    <span class="n">kernel_pool</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">ken_gauss</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ken_gauss</span>
+</div>
+<div class="viewcode-block" id="create_fixednorm"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.kernel.create_fixednorm">[docs]</a><span class="k">def</span> <span class="nf">create_fixednorm</span><span class="p">(</span><span class="n">dist_params</span><span class="p">,</span> <span class="n">fname</span><span class="o">=</span><span class="s">&#39;fixednorm.cfg&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">kid_prefix</span><span class="o">=</span><span class="s">&#39;fixednorm&#39;</span><span class="p">,</span>
+        <span class="n">occur</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">perf_range</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create kernels with relative U-core performance following a normal distribution,</span>
+<span class="sd">    but fixed kernel sample points</span>
+
+<span class="sd">    :dist_params: distribution parameters, including mean, std, etc.</span>
+<span class="sd">    :fname: file to store kernels</span>
+<span class="sd">    :size: number of kernels to create</span>
+<span class="sd">    :kid_prefix: prefix string for kernel id</span>
+<span class="sd">    :perf_range: (min,max) of performance range, if not set, default to 0.5*mean, and 1.5*mean</span>
+<span class="sd">    :returns: N/A</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">kernels</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;_gen_</span><span class="si">%s</span><span class="s">_</span><span class="si">%03d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">kid_prefix</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">size</span><span class="p">)]</span>
+    <span class="n">perf_mean</span> <span class="o">=</span> <span class="n">dist_params</span><span class="p">[</span><span class="s">&#39;mean&#39;</span><span class="p">]</span>
+    <span class="n">perf_std</span> <span class="o">=</span> <span class="n">dist_params</span><span class="p">[</span><span class="s">&#39;std&#39;</span><span class="p">]</span>
+    <span class="n">rvs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">perf_mean</span><span class="p">,</span> <span class="mf">1.5</span><span class="o">*</span><span class="n">perf_mean</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">occur</span><span class="p">:</span>
+        <span class="n">probs</span> <span class="o">=</span> <span class="n">occur</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">rvs2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="n">perf_mean</span><span class="p">,</span> <span class="mf">1.5</span><span class="o">*</span><span class="n">perf_mean</span><span class="p">,</span> <span class="n">size</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">cdfs</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">rvs2</span><span class="p">,</span> <span class="n">perf_mean</span><span class="p">,</span> <span class="n">perf_std</span><span class="p">)</span>
+        <span class="n">probs1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">cdfs</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">probs2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cdfs</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">probs</span> <span class="o">=</span> <span class="p">(</span><span class="n">probs2</span><span class="o">-</span><span class="n">probs1</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.5</span> <span class="c"># 1.5 is kernel_count_per_app (average)</span>
+
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">ConfigParser</span><span class="o">.</span><span class="n">RawConfigParser</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">kernel</span><span class="p">,</span><span class="n">perf</span><span class="p">,</span><span class="n">prob</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">kernels</span><span class="p">,</span> <span class="n">rvs</span><span class="p">,</span> <span class="n">probs</span><span class="p">):</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">add_section</span><span class="p">(</span><span class="n">kernel</span><span class="p">)</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span> <span class="s">&#39;fpga_miu&#39;</span><span class="p">,</span> <span class="n">perf</span><span class="o">/</span><span class="n">ASIC_PERF_RATIO</span><span class="p">)</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span> <span class="s">&#39;asic_miu&#39;</span><span class="p">,</span> <span class="n">perf</span><span class="p">)</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span> <span class="s">&#39;occur&#39;</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="create_randnorm"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.kernel.create_randnorm">[docs]</a><span class="k">def</span> <span class="nf">create_randnorm</span><span class="p">(</span><span class="n">dist_params</span><span class="p">,</span><span class="n">fname</span><span class="o">=</span><span class="s">&#39;norm.cfg&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">kid_prefix</span><span class="o">=</span><span class="s">&#39;randnorm&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create kernels with performance in normal distribution,</span>
+<span class="sd">    and randomly choose kernel sample points</span>
+
+<span class="sd">    :dist_params: distribution parameters, including mean, std, etc.</span>
+<span class="sd">    :fname: file to store kernels</span>
+<span class="sd">    :size: number of kernels to create</span>
+<span class="sd">    :kid_prefix: prefix string for kernel id</span>
+<span class="sd">    :returns: N/A</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">miu</span> <span class="o">=</span> <span class="n">dist_params</span><span class="p">[</span><span class="s">&#39;mean&#39;</span><span class="p">]</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">dist_params</span><span class="p">[</span><span class="s">&#39;std&#39;</span><span class="p">]</span>
+    <span class="n">rvs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">miu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+    <span class="n">probs</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">rvs</span><span class="p">,</span> <span class="n">miu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+    <span class="n">ids</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">ConfigParser</span><span class="o">.</span><span class="n">RawConfigParser</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">rv</span><span class="p">,</span> <span class="n">prob</span><span class="p">,</span><span class="n">kid</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">rvs</span><span class="p">,</span> <span class="n">probs</span><span class="p">,</span> <span class="n">ids</span><span class="p">):</span>
+        <span class="n">kname</span> <span class="o">=</span> <span class="s">&#39;norm</span><span class="si">%03d</span><span class="s">&#39;</span><span class="o">%</span> <span class="n">kid</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">add_section</span><span class="p">(</span><span class="n">kname</span><span class="p">)</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">kname</span><span class="p">,</span> <span class="s">&#39;fpga_miu&#39;</span><span class="p">,</span> <span class="n">rv</span><span class="p">)</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">kname</span><span class="p">,</span> <span class="s">&#39;asic_miu&#39;</span><span class="p">,</span> <span class="n">rv</span><span class="o">*</span><span class="n">ASIC_PERF_RATIO</span><span class="p">)</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">kname</span><span class="p">,</span> <span class="s">&#39;occur&#39;</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="create_fixednorm_xml"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.kernel.create_fixednorm_xml">[docs]</a><span class="k">def</span> <span class="nf">create_fixednorm_xml</span><span class="p">(</span><span class="n">dist_params</span><span class="p">,</span> <span class="n">fname</span><span class="o">=</span><span class="s">&#39;fixednorm.xml&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                         <span class="n">kid_prefix</span><span class="o">=</span><span class="s">&#39;fixednorm&#39;</span><span class="p">,</span> <span class="n">perf_range</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create kernels with relative U-core performance following a normal</span>
+<span class="sd">    distribution. The actual sampled kernels have the relative performance</span>
+<span class="sd">    uniformly drawn from the range of 0.5*mean to 1.5*mean, if not specified.</span>
+<span class="sd">    The probability of presence in an application for a kernel is the CDF of its</span>
+<span class="sd">    relative performance in the normal distribution.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">       dist_params (dict):</span>
+<span class="sd">          Distribution parameters, such as mean, standard deviation.</span>
+<span class="sd">       fname (str):</span>
+<span class="sd">          file to save the generated kernels, default to ``fixednorm.xml``</span>
+<span class="sd">       size (int):</span>
+<span class="sd">          number of kernels to create, default to 100.</span>
+<span class="sd">       kid_prefix (str):</span>
+<span class="sd">          prefix string for kernel id</span>
+<span class="sd">       perf_range (pair):</span>
+<span class="sd">          A pair of (min,max) specifying the performance range, if not set,</span>
+<span class="sd">          default to 0.5*mean as min, and 1.5*mean as max.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">       N/A</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">kernels</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;_gen_</span><span class="si">%s</span><span class="s">_</span><span class="si">%03d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">kid_prefix</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">size</span><span class="p">)]</span>
+    <span class="n">perf_mean</span> <span class="o">=</span> <span class="n">dist_params</span><span class="p">[</span><span class="s">&#39;mean&#39;</span><span class="p">]</span>
+    <span class="n">perf_std</span> <span class="o">=</span> <span class="n">dist_params</span><span class="p">[</span><span class="s">&#39;std&#39;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">perf_range</span><span class="p">:</span>
+        <span class="n">perf_min</span><span class="p">,</span><span class="n">perf_max</span> <span class="o">=</span> <span class="n">perf_range</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">perf_min</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">perf_mean</span>
+        <span class="n">perf_max</span> <span class="o">=</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">perf_mean</span>
+
+    <span class="n">rvs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">perf_min</span><span class="p">,</span> <span class="n">perf_max</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+    <span class="n">rvs2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">perf_min</span><span class="p">,</span> <span class="n">perf_max</span><span class="p">,</span> <span class="n">size</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">cdfs</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">cdf</span><span class="p">(</span><span class="n">rvs2</span><span class="p">,</span> <span class="n">perf_mean</span><span class="p">,</span> <span class="n">perf_std</span><span class="p">)</span>
+    <span class="n">probs1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">cdfs</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">probs2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cdfs</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">probs</span> <span class="o">=</span> <span class="p">(</span><span class="n">probs2</span><span class="o">-</span><span class="n">probs1</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.5</span> <span class="c"># 1.5 is kernel_count_per_app (average)</span>
+
+    <span class="n">root</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s">&#39;kernels&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">kernel</span><span class="p">,</span><span class="n">perf</span><span class="p">,</span><span class="n">prob</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">kernels</span><span class="p">,</span> <span class="n">rvs</span><span class="p">,</span> <span class="n">probs</span><span class="p">):</span>
+        <span class="n">k_root</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s">&#39;kernel&#39;</span><span class="p">)</span>
+        <span class="n">k_root</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="n">kernel</span><span class="p">)</span>
+
+        <span class="n">fpga_root</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">k_root</span><span class="p">,</span> <span class="s">&#39;fpga&#39;</span><span class="p">)</span>
+        <span class="n">fpga_root</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&#39;miu&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%.3e</span><span class="s">&#39;</span><span class="o">%</span> <span class="p">(</span><span class="n">perf</span><span class="o">/</span><span class="n">ASIC_PERF_RATIO</span><span class="p">))</span>
+
+        <span class="n">asic_root</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">k_root</span><span class="p">,</span> <span class="s">&#39;asic&#39;</span><span class="p">)</span>
+        <span class="n">asic_root</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&#39;miu&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%.3e</span><span class="s">&#39;</span><span class="o">%</span><span class="n">perf</span><span class="p">)</span>
+
+        <span class="n">ele</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">k_root</span><span class="p">,</span> <span class="s">&#39;occur&#39;</span><span class="p">)</span>
+        <span class="n">ele</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%.3e</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">prob</span>
+
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">ElementTree</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+    <span class="n">tree</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">pretty_print</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+
+</div>
+<div class="viewcode-block" id="create_randnorm_xml"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.kernel.create_randnorm_xml">[docs]</a><span class="k">def</span> <span class="nf">create_randnorm_xml</span><span class="p">(</span><span class="n">dist_params</span><span class="p">,</span><span class="n">fname</span><span class="o">=</span><span class="s">&#39;randnorm.xml&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+                        <span class="n">kid_prefix</span><span class="o">=</span><span class="s">&#39;randnorm&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create kernels with relative U-core performance following a normal</span>
+<span class="sd">    distribution. The actual sampled kernels have the relative performance</span>
+<span class="sd">    randomly drawn from the normal distribution. The probability of presence in</span>
+<span class="sd">    an application for a kernel is the CDF of its relative performance in the</span>
+<span class="sd">    normal distribution.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">       dist_params (dict):</span>
+<span class="sd">          Distribution parameters, such as mean, standard deviation.</span>
+<span class="sd">       fname (str):</span>
+<span class="sd">          file to save the generated kernels, default to ``randnorm.xml``</span>
+<span class="sd">       size (int):</span>
+<span class="sd">          number of kernels to create, default to 100.</span>
+<span class="sd">       kid_prefix (str):</span>
+<span class="sd">          prefix string for kernel id</span>
+
+
+<span class="sd">    Returns:</span>
+<span class="sd">       N/A</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">miu</span> <span class="o">=</span> <span class="n">dist_params</span><span class="p">[</span><span class="s">&#39;mean&#39;</span><span class="p">]</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="n">dist_params</span><span class="p">[</span><span class="s">&#39;std&#39;</span><span class="p">]</span>
+    <span class="n">rvs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">miu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">size</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">rvs_positive</span> <span class="o">=</span> <span class="p">[</span> <span class="n">rv</span> <span class="k">for</span> <span class="n">rv</span> <span class="ow">in</span> <span class="n">rvs</span> <span class="k">if</span> <span class="n">rv</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">][:</span><span class="n">size</span><span class="p">]</span>
+    <span class="n">rvs</span> <span class="o">=</span> <span class="n">rvs_positive</span>
+
+    <span class="n">probs</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">rvs</span><span class="p">,</span> <span class="n">miu</span><span class="p">,</span> <span class="n">sigma</span><span class="p">)</span>
+    <span class="n">ids</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">kernels</span> <span class="o">=</span> <span class="p">[</span><span class="s">&#39;_gen_</span><span class="si">%s</span><span class="s">_</span><span class="si">%03d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">kid_prefix</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">size</span><span class="p">)]</span>
+
+    <span class="n">root</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s">&#39;kernels&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">kernel</span><span class="p">,</span><span class="n">perf</span><span class="p">,</span><span class="n">prob</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">kernels</span><span class="p">,</span> <span class="n">rvs</span><span class="p">,</span> <span class="n">probs</span><span class="p">):</span>
+        <span class="n">k_root</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s">&#39;kernel&#39;</span><span class="p">)</span>
+        <span class="n">k_root</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="n">kernel</span><span class="p">)</span>
+
+        <span class="n">fpga_root</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">k_root</span><span class="p">,</span> <span class="s">&#39;fpga&#39;</span><span class="p">)</span>
+        <span class="n">fpga_root</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&#39;miu&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%.3e</span><span class="s">&#39;</span><span class="o">%</span> <span class="p">(</span><span class="n">perf</span><span class="o">/</span><span class="n">ASIC_PERF_RATIO</span><span class="p">))</span>
+
+        <span class="n">asic_root</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">k_root</span><span class="p">,</span> <span class="s">&#39;asic&#39;</span><span class="p">)</span>
+        <span class="n">asic_root</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&#39;miu&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%.3e</span><span class="s">&#39;</span><span class="o">%</span> <span class="p">(</span><span class="n">perf</span><span class="p">))</span>
+
+        <span class="n">ele</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">k_root</span><span class="p">,</span> <span class="s">&#39;occur&#39;</span><span class="p">)</span>
+        <span class="n">ele</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%.3e</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">prob</span>
+
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">ElementTree</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+    <span class="n">tree</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">pretty_print</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="load"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.kernel.load">[docs]</a><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">fname</span><span class="o">=</span><span class="s">&#39;norm.cfg&#39;</span><span class="p">):</span>
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">ConfigParser</span><span class="o">.</span><span class="n">RawConfigParser</span><span class="p">()</span>
+    <span class="n">cfg</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">sec</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">sections</span><span class="p">():</span>
+        <span class="n">fpga_miu</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sec</span><span class="p">,</span> <span class="s">&#39;fpga_miu&#39;</span><span class="p">))</span>
+        <span class="n">asic_miu</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sec</span><span class="p">,</span> <span class="s">&#39;asic_miu&#39;</span><span class="p">))</span>
+        <span class="n">prob</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sec</span><span class="p">,</span> <span class="s">&#39;occur&#39;</span><span class="p">))</span>
+        <span class="n">kernel_pool</span><span class="p">[</span><span class="n">sec</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s">&#39;FPGA&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="n">fpga_miu</span><span class="p">),</span>
+                <span class="s">&#39;ASIC&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="n">asic_miu</span><span class="p">),</span>
+                <span class="s">&#39;occur&#39;</span><span class="p">:</span> <span class="n">prob</span>
+                <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">sections</span><span class="p">())</span>
+</div>
+<div class="viewcode-block" id="load_xml"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.kernel.load_xml">[docs]</a><span class="k">def</span> <span class="nf">load_xml</span><span class="p">(</span><span class="n">fname</span><span class="o">=</span><span class="s">&#39;norm.xml&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load kernels from an XML file. Also update the global kernel pool</span>
+<span class="sd">    (kernel_pool). If a kernel with the same name has already been loaded into</span>
+<span class="sd">    the global kernel pool, it will be overide with the new one.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">       fname (str):</span>
+<span class="sd">          The file to be loaded</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">       kernels (list):</span>
+<span class="sd">          A sorted (by name) list of kernels that have been loaded.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+    <span class="n">kernels</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">k_root</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s">&#39;kernel&#39;</span><span class="p">):</span>
+        <span class="n">k_name</span> <span class="o">=</span> <span class="n">k_root</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span>
+        <span class="n">kernels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">k_name</span><span class="p">)</span>
+
+        <span class="n">ele</span> <span class="o">=</span> <span class="n">k_root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;fpga&#39;</span><span class="p">)</span>
+        <span class="n">fpga_miu</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ele</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;miu&#39;</span><span class="p">))</span>
+        <span class="n">ele</span> <span class="o">=</span> <span class="n">k_root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;asic&#39;</span><span class="p">)</span>
+        <span class="n">asic_miu</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ele</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;miu&#39;</span><span class="p">))</span>
+        <span class="n">ele</span> <span class="o">=</span> <span class="n">k_root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;occur&#39;</span><span class="p">)</span>
+        <span class="n">prob</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ele</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+
+        <span class="n">kernel_pool</span><span class="p">[</span><span class="n">k_name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s">&#39;FPGA&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="n">fpga_miu</span><span class="p">),</span>
+                <span class="s">&#39;ASIC&#39;</span><span class="p">:</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="n">asic_miu</span><span class="p">),</span>
+                <span class="s">&#39;occur&#39;</span><span class="p">:</span> <span class="n">prob</span>
+                <span class="p">}</span>
+
+    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">kernels</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="do_test"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.kernel.do_test">[docs]</a><span class="k">def</span> <span class="nf">do_test</span><span class="p">():</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;mean&#39;</span><span class="p">:</span> <span class="mi">80</span><span class="p">,</span>
+            <span class="s">&#39;std&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}</span>
+    <span class="c">#create_fixednorm_xml(params, fname=&#39;ker_test.xml&#39;, size=20)</span>
+    <span class="c">#create_randnorm(params, fname=&#39;ker_test.cfg&#39;, size=10)</span>
+    <span class="c">#kernels = load_xml(&#39;ker_test.xml&#39;)</span>
+    <span class="n">kernels</span> <span class="o">=</span> <span class="n">load_xml</span><span class="p">(</span><span class="s">&#39;kernels_asic_inc.xml&#39;</span><span class="p">)</span>
+    <span class="k">print</span> <span class="n">kernels</span>
+    <span class="k">print</span> <span class="n">kernel_pool</span>
+    <span class="c">#for i in xrange(20):</span>
+        <span class="c">#print random.gauss(6,2)</span>
+    <span class="c">#rvs = scipy.stats.norm.rvs(80,20,size=20)</span>
+    <span class="c">#probs = scipy.stats.norm.pdf(rvs, 80,20)</span>
+    <span class="c">#print rvs</span>
+    <span class="c">#print probs</span>
+</div>
+<div class="viewcode-block" id="do_generate"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.kernel.do_generate">[docs]</a><span class="k">def</span> <span class="nf">do_generate</span><span class="p">():</span>
+    <span class="c">#params = {&#39;mean&#39;: 200,</span>
+            <span class="c">#&#39;std&#39;: 35}</span>
+    <span class="c">#occur = numpy.linspace(0.9, 0.1, 10)</span>
+    <span class="c">#create_fixednorm_xml(params, fname=&#39;fixednorm_10.xml&#39;, size=10)</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;mean&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+            <span class="s">&#39;std&#39;</span><span class="p">:</span> <span class="mi">25</span><span class="p">}</span>
+    <span class="c">#create_fixednorm_xml(params, fname=&#39;fixednorm_fpga80x.xml&#39;, size=10)</span>
+    <span class="n">create_randnorm_xml</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">fname</span><span class="o">=</span><span class="s">&#39;config/kernels_norm20x5.xml&#39;</span><span class="p">)</span>
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="c">#do_test()</span>
+    <span class="n">do_generate</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">Lumos home</a>&nbsp;|</li>
+        <li><a href="../../../contents.html">Documentation</a> &raquo;</li>
+
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Liang Wang.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

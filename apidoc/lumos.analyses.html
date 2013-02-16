@@ -1,0 +1,1927 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>analyses Package &mdash; Lumos 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/lumos.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Lumos 0.1 documentation" href="../index.html" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
+          rel='stylesheet' type='text/css'>
+ 
+    <style type="text/css">
+      table.right { float: right; margin-left: 20px; }
+      table.right td { border: 1px solid #ccc; }
+      
+    </style>
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+  </head>
+  <body>
+<div class="pageheader">
+  <div>
+    <a href="../index.html">
+      <img src="../_static/lumos.png" alt="LUMOS" />
+    </a>
+  </div>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">Lumos home</a>&nbsp;|</li>
+        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+ 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">analyses Package</a><ul>
+<li><a class="reference internal" href="#module-lumos.analyses.analysis"><tt class="docutils literal"><span class="pre">analysis</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-lumos.analyses.asicdual_mt"><tt class="docutils literal"><span class="pre">asicdual_mt</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-lumos.analyses.asicinc_mt"><tt class="docutils literal"><span class="pre">asicinc_mt</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-lumos.analyses.asicopt_mt"><tt class="docutils literal"><span class="pre">asicopt_mt</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-lumos.analyses.asicquad_mt"><tt class="docutils literal"><span class="pre">asicquad_mt</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-lumos.analyses.asictriple_mt"><tt class="docutils literal"><span class="pre">asictriple_mt</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-lumos.analyses.core"><tt class="docutils literal"><span class="pre">core</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-lumos.analyses.diminc_mt"><tt class="docutils literal"><span class="pre">diminc_mt</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-lumos.analyses.dimsi_deriv"><tt class="docutils literal"><span class="pre">dimsi_deriv</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-lumos.analyses.dimsi_fpga_mt"><tt class="docutils literal"><span class="pre">dimsi_fpga_mt</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-lumos.analyses.dist_ucore_mt"><tt class="docutils literal"><span class="pre">dist_ucore_mt</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-lumos.analyses.final"><tt class="docutils literal"><span class="pre">final</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-lumos.analyses.fpgainc_mt"><tt class="docutils literal"><span class="pre">fpgainc_mt</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-lumos.analyses.heterosys_example"><tt class="docutils literal"><span class="pre">heterosys_example</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-lumos.analyses.homosys_example"><tt class="docutils literal"><span class="pre">homosys_example</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-lumos.analyses.ioo3"><tt class="docutils literal"><span class="pre">ioo3</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-lumos.analyses.o3sel"><tt class="docutils literal"><span class="pre">o3sel</span></tt> Module</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/apidoc/lumos.analyses.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="analyses-package">
+<h1>analyses Package<a class="headerlink" href="#analyses-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-lumos.analyses.analysis">
+<span id="analysis-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">analysis</span></tt> Module<a class="headerlink" href="#module-lumos.analyses.analysis" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="lumos.analyses.analysis.BaseAnalysis">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.analysis.</tt><tt class="descname">BaseAnalysis</tt><big>(</big><em>fmt</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/analysis.html#BaseAnalysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.analysis.BaseAnalysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dl class="method">
+<dt id="lumos.analyses.analysis.BaseAnalysis.do">
+<tt class="descname">do</tt><big>(</big><em>mode</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/analysis.html#BaseAnalysis.do"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.analysis.BaseAnalysis.do" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.analysis.make_ws_dirs">
+<tt class="descclassname">lumos.analyses.analysis.</tt><tt class="descname">make_ws_dirs</tt><big>(</big><em>anl_name</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/analysis.html#make_ws_dirs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.analysis.make_ws_dirs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create directories for an analysis.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>anl_name</strong> &#8211; the name of an analysis</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">a directory pair for figures (<em>fdir</em>) and data (<em>ddir</em>), respectively.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.analysis.mk_dir">
+<tt class="descclassname">lumos.analyses.analysis.</tt><tt class="descname">mk_dir</tt><big>(</big><em>parent</em>, <em>dname</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/analysis.html#mk_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.analysis.mk_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create directory if not exist.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> &#8211; The full path to the parent diretory</li>
+<li><strong>dname</strong> &#8211; The directory name to be created</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">The full path to the newly created directory</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.analysis.parse_bw">
+<tt class="descclassname">lumos.analyses.analysis.</tt><tt class="descname">parse_bw</tt><big>(</big><em>bw_cfg</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/analysis.html#parse_bw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.analysis.parse_bw" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.analysis.plot_data">
+<tt class="descclassname">lumos.analyses.analysis.</tt><tt class="descname">plot_data</tt><big>(</big><em>x_list</em>, <em>y_lists</em>, <em>xlabel</em>, <em>ylabel</em>, <em>legend_title=None</em>, <em>legend_labels=None</em>, <em>legend_loc=None</em>, <em>legend_prop=None</em>, <em>ylim=None</em>, <em>xlim=None</em>, <em>ylog=False</em>, <em>xgrid=True</em>, <em>ygrid=True</em>, <em>title=None</em>, <em>figsize=None</em>, <em>marker_list=None</em>, <em>ms_list=None</em>, <em>figdir=None</em>, <em>ofn=None</em>, <em>cb_func=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/analysis.html#plot_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.analysis.plot_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.analysis.plot_data_nomarker">
+<tt class="descclassname">lumos.analyses.analysis.</tt><tt class="descname">plot_data_nomarker</tt><big>(</big><em>x_list</em>, <em>y_lists</em>, <em>xlabel</em>, <em>ylabel</em>, <em>legend_title=None</em>, <em>legend_labels=None</em>, <em>legend_loc=None</em>, <em>ylim=None</em>, <em>xlim=None</em>, <em>ylog=False</em>, <em>xgrid=True</em>, <em>ygrid=True</em>, <em>title=None</em>, <em>figsize=None</em>, <em>marker_list=None</em>, <em>ms_list=None</em>, <em>figdir=None</em>, <em>ofn=None</em>, <em>cb_func=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/analysis.html#plot_data_nomarker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.analysis.plot_data_nomarker" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.analysis.plot_errbar">
+<tt class="descclassname">lumos.analyses.analysis.</tt><tt class="descname">plot_errbar</tt><big>(</big><em>x_list</em>, <em>y_lists</em>, <em>err_lists</em>, <em>xlabel</em>, <em>ylabel</em>, <em>legend_labels=None</em>, <em>legend_loc=None</em>, <em>ylim=None</em>, <em>xlim=None</em>, <em>ylog=False</em>, <em>xgrid=True</em>, <em>ygrid=True</em>, <em>title=None</em>, <em>figsize=None</em>, <em>marker_list=None</em>, <em>ms_list=None</em>, <em>figdir=None</em>, <em>ofn=None</em>, <em>cb_func=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/analysis.html#plot_errbar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.analysis.plot_errbar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.analysis.plot_series">
+<tt class="descclassname">lumos.analyses.analysis.</tt><tt class="descname">plot_series</tt><big>(</big><em>x_list</em>, <em>y_lists</em>, <em>xlabel</em>, <em>ylabel</em>, <em>legend_labels=None</em>, <em>legend_loc=None</em>, <em>ylim=None</em>, <em>set_grid=True</em>, <em>title=None</em>, <em>figsize=None</em>, <em>marker_list=None</em>, <em>ms_list=None</em>, <em>figdir=None</em>, <em>ofn=None</em>, <em>cb_func=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/analysis.html#plot_series"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.analysis.plot_series" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.analysis.plot_series2">
+<tt class="descclassname">lumos.analyses.analysis.</tt><tt class="descname">plot_series2</tt><big>(</big><em>x_list</em>, <em>y_lists</em>, <em>xlabel</em>, <em>ylabel</em>, <em>legend_labels</em>, <em>legend_loc</em>, <em>ylim=None</em>, <em>set_grid=True</em>, <em>title=None</em>, <em>figsize=None</em>, <em>marker_list=None</em>, <em>ms_list=None</em>, <em>figdir=None</em>, <em>ofn=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/analysis.html#plot_series2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.analysis.plot_series2" title="Permalink to this definition">¶</a></dt>
+<dd><p>For darkdim&#8217;s voltage plots only due to special legend layout</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.analysis.plot_twinx">
+<tt class="descclassname">lumos.analyses.analysis.</tt><tt class="descname">plot_twinx</tt><big>(</big><em>x_list</em>, <em>y1_lists</em>, <em>y2_lists</em>, <em>xlabel</em>, <em>y1label</em>, <em>y2label</em>, <em>legend_labels=None</em>, <em>legend_loc=None</em>, <em>title=None</em>, <em>xlim=None</em>, <em>y1lim=None</em>, <em>y2lim=None</em>, <em>set_grid=False</em>, <em>figsize=None</em>, <em>marker_list=None</em>, <em>ms_list=None</em>, <em>figdir=None</em>, <em>ofn=None</em>, <em>cb_func=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/analysis.html#plot_twinx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.analysis.plot_twinx" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.analysis.try_update">
+<tt class="descclassname">lumos.analyses.analysis.</tt><tt class="descname">try_update</tt><big>(</big><em>config</em>, <em>options</em>, <em>section</em>, <em>name</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/analysis.html#try_update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.analysis.try_update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-lumos.analyses.asicdual_mt">
+<span id="asicdual-mt-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">asicdual_mt</span></tt> Module<a class="headerlink" href="#module-lumos.analyses.asicdual_mt" title="Permalink to this headline">¶</a></h2>
+<p>An analysis on heterogeneous system composed by dim cores and
+<strong>two</strong> dedicated ASIC accelerators. This analysis also takes
+advantage of multi-threading to reduce the running time of analysis.</p>
+<dl class="class">
+<dt id="lumos.analyses.asicdual_mt.ASICDual">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.asicdual_mt.</tt><tt class="descname">ASICDual</tt><big>(</big><em>options</em>, <em>budget</em>, <em>pv=False</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicdual_mt.html#ASICDual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicdual_mt.ASICDual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lumos.analyses.analysis.BaseAnalysis" title="lumos.analyses.analysis.BaseAnalysis"><tt class="xref py py-class docutils literal"><span class="pre">lumos.analyses.analysis.BaseAnalysis</span></tt></a></p>
+<p>only one accelerators per system</p>
+<dl class="class">
+<dt id="lumos.analyses.asicdual_mt.ASICDual.Worker">
+<em class="property">class </em><tt class="descname">Worker</tt><big>(</big><em>work_queue</em>, <em>result_queue</em>, <em>budget</em>, <em>workload</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicdual_mt.html#ASICDual.Worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicdual_mt.ASICDual.Worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">multiprocessing.process.Process</span></tt></p>
+<dl class="method">
+<dt id="lumos.analyses.asicdual_mt.ASICDual.Worker.process">
+<tt class="descname">process</tt><big>(</big><em>job</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicdual_mt.html#ASICDual.Worker.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicdual_mt.ASICDual.Worker.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asicdual_mt.ASICDual.Worker.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicdual_mt.html#ASICDual.Worker.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicdual_mt.ASICDual.Worker.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asicdual_mt.ASICDual.analyze">
+<tt class="descclassname">ASICDual.</tt><tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicdual_mt.html#ASICDual.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicdual_mt.ASICDual.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asicdual_mt.ASICDual.plot">
+<tt class="descclassname">ASICDual.</tt><tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicdual_mt.html#ASICDual.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicdual_mt.ASICDual.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.asicdual_mt.build_optparser">
+<tt class="descclassname">lumos.analyses.asicdual_mt.</tt><tt class="descname">build_optparser</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicdual_mt.html#build_optparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicdual_mt.build_optparser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.asicdual_mt.main">
+<tt class="descclassname">lumos.analyses.asicdual_mt.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicdual_mt.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicdual_mt.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.asicdual_mt.option_override">
+<tt class="descclassname">lumos.analyses.asicdual_mt.</tt><tt class="descname">option_override</tt><big>(</big><em>options</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicdual_mt.html#option_override"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicdual_mt.option_override" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override cmd options by using values from configconfiguration file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Options :</th><td class="field-body">option parser (already parsed from cmd line) to be overrided</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">&#64;todo</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.asicdual_mt.try_update">
+<tt class="descclassname">lumos.analyses.asicdual_mt.</tt><tt class="descname">try_update</tt><big>(</big><em>config</em>, <em>options</em>, <em>section</em>, <em>name</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicdual_mt.html#try_update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicdual_mt.try_update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-lumos.analyses.asicinc_mt">
+<span id="asicinc-mt-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">asicinc_mt</span></tt> Module<a class="headerlink" href="#module-lumos.analyses.asicinc_mt" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="lumos.analyses.asicinc_mt.ASICInc">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.asicinc_mt.</tt><tt class="descname">ASICInc</tt><big>(</big><em>options</em>, <em>budget</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicinc_mt.html#ASICInc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicinc_mt.ASICInc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Single ASIC accelerator with incremental area allocation</p>
+<dl class="class">
+<dt id="lumos.analyses.asicinc_mt.ASICInc.Worker">
+<em class="property">class </em><tt class="descname">Worker</tt><big>(</big><em>work_queue</em>, <em>result_queue</em>, <em>budget</em>, <em>workload</em>, <em>asic_ratio</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicinc_mt.html#ASICInc.Worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicinc_mt.ASICInc.Worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">multiprocessing.process.Process</span></tt></p>
+<dl class="method">
+<dt id="lumos.analyses.asicinc_mt.ASICInc.Worker.process">
+<tt class="descname">process</tt><big>(</big><em>job</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicinc_mt.html#ASICInc.Worker.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicinc_mt.ASICInc.Worker.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asicinc_mt.ASICInc.Worker.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicinc_mt.html#ASICInc.Worker.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicinc_mt.ASICInc.Worker.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asicinc_mt.ASICInc.analyze">
+<tt class="descclassname">ASICInc.</tt><tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicinc_mt.html#ASICInc.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicinc_mt.ASICInc.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asicinc_mt.ASICInc.plot">
+<tt class="descclassname">ASICInc.</tt><tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicinc_mt.html#ASICInc.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicinc_mt.ASICInc.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asicinc_mt.ASICInc.plot_derivative">
+<tt class="descclassname">ASICInc.</tt><tt class="descname">plot_derivative</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicinc_mt.html#ASICInc.plot_derivative"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicinc_mt.ASICInc.plot_derivative" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asicinc_mt.ASICInc.plot_speedup">
+<tt class="descclassname">ASICInc.</tt><tt class="descname">plot_speedup</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicinc_mt.html#ASICInc.plot_speedup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicinc_mt.ASICInc.plot_speedup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.asicinc_mt.build_optparser">
+<tt class="descclassname">lumos.analyses.asicinc_mt.</tt><tt class="descname">build_optparser</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicinc_mt.html#build_optparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicinc_mt.build_optparser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.asicinc_mt.main">
+<tt class="descclassname">lumos.analyses.asicinc_mt.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicinc_mt.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicinc_mt.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.asicinc_mt.option_override">
+<tt class="descclassname">lumos.analyses.asicinc_mt.</tt><tt class="descname">option_override</tt><big>(</big><em>options</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicinc_mt.html#option_override"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicinc_mt.option_override" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override cmd options by using values from configconfiguration file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Options :</th><td class="field-body">option parser (already parsed from cmd line) to be overrided</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">N/A</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-lumos.analyses.asicopt_mt">
+<span id="asicopt-mt-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">asicopt_mt</span></tt> Module<a class="headerlink" href="#module-lumos.analyses.asicopt_mt" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="lumos.analyses.asicopt_mt.ASICOpt">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.asicopt_mt.</tt><tt class="descname">ASICOpt</tt><big>(</big><em>options</em>, <em>budget</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicopt_mt.html#ASICOpt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicopt_mt.ASICOpt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Single ASIC accelerator with incremental area allocation</p>
+<dl class="class">
+<dt id="lumos.analyses.asicopt_mt.ASICOpt.Worker">
+<em class="property">class </em><tt class="descname">Worker</tt><big>(</big><em>work_queue</em>, <em>result_queue</em>, <em>budget</em>, <em>workload</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicopt_mt.html#ASICOpt.Worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicopt_mt.ASICOpt.Worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">multiprocessing.process.Process</span></tt></p>
+<dl class="method">
+<dt id="lumos.analyses.asicopt_mt.ASICOpt.Worker.process">
+<tt class="descname">process</tt><big>(</big><em>job</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicopt_mt.html#ASICOpt.Worker.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicopt_mt.ASICOpt.Worker.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asicopt_mt.ASICOpt.Worker.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicopt_mt.html#ASICOpt.Worker.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicopt_mt.ASICOpt.Worker.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asicopt_mt.ASICOpt.analyze">
+<tt class="descclassname">ASICOpt.</tt><tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicopt_mt.html#ASICOpt.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicopt_mt.ASICOpt.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asicopt_mt.ASICOpt.plot">
+<tt class="descclassname">ASICOpt.</tt><tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicopt_mt.html#ASICOpt.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicopt_mt.ASICOpt.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asicopt_mt.ASICOpt.plot_alt_asic">
+<tt class="descclassname">ASICOpt.</tt><tt class="descname">plot_alt_asic</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicopt_mt.html#ASICOpt.plot_alt_asic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicopt_mt.ASICOpt.plot_alt_asic" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asicopt_mt.ASICOpt.plot_alt_twinx">
+<tt class="descclassname">ASICOpt.</tt><tt class="descname">plot_alt_twinx</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicopt_mt.html#ASICOpt.plot_alt_twinx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicopt_mt.ASICOpt.plot_alt_twinx" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asicopt_mt.ASICOpt.plot_speedup">
+<tt class="descclassname">ASICOpt.</tt><tt class="descname">plot_speedup</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicopt_mt.html#ASICOpt.plot_speedup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicopt_mt.ASICOpt.plot_speedup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="lumos.analyses.asicopt_mt.FPGASensitivity">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.asicopt_mt.</tt><tt class="descname">FPGASensitivity</tt><big>(</big><em>options</em>, <em>budget</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicopt_mt.html#FPGASensitivity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicopt_mt.FPGASensitivity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Single ASIC accelerator with incremental area allocation</p>
+<dl class="class">
+<dt id="lumos.analyses.asicopt_mt.FPGASensitivity.Worker">
+<em class="property">class </em><tt class="descname">Worker</tt><big>(</big><em>work_queue</em>, <em>result_queue</em>, <em>budget</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicopt_mt.html#FPGASensitivity.Worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicopt_mt.FPGASensitivity.Worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">multiprocessing.process.Process</span></tt></p>
+<dl class="method">
+<dt id="lumos.analyses.asicopt_mt.FPGASensitivity.Worker.process">
+<tt class="descname">process</tt><big>(</big><em>job</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicopt_mt.html#FPGASensitivity.Worker.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicopt_mt.FPGASensitivity.Worker.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asicopt_mt.FPGASensitivity.Worker.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicopt_mt.html#FPGASensitivity.Worker.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicopt_mt.FPGASensitivity.Worker.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asicopt_mt.FPGASensitivity.analyze">
+<tt class="descclassname">FPGASensitivity.</tt><tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicopt_mt.html#FPGASensitivity.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicopt_mt.FPGASensitivity.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asicopt_mt.FPGASensitivity.plot">
+<tt class="descclassname">FPGASensitivity.</tt><tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicopt_mt.html#FPGASensitivity.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicopt_mt.FPGASensitivity.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asicopt_mt.FPGASensitivity.plot_scatter_and_pie">
+<tt class="descclassname">FPGASensitivity.</tt><tt class="descname">plot_scatter_and_pie</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicopt_mt.html#FPGASensitivity.plot_scatter_and_pie"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicopt_mt.FPGASensitivity.plot_scatter_and_pie" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asicopt_mt.FPGASensitivity.plot_stack">
+<tt class="descclassname">FPGASensitivity.</tt><tt class="descname">plot_stack</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicopt_mt.html#FPGASensitivity.plot_stack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicopt_mt.FPGASensitivity.plot_stack" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="lumos.analyses.asicopt_mt.FixedArea">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.asicopt_mt.</tt><tt class="descname">FixedArea</tt><big>(</big><em>options</em>, <em>budget</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicopt_mt.html#FixedArea"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicopt_mt.FixedArea" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dl class="attribute">
+<dt id="lumos.analyses.asicopt_mt.FixedArea.OPT_FPGA_AREA_MAX">
+<tt class="descname">OPT_FPGA_AREA_MAX</tt><em class="property"> = 50</em><a class="headerlink" href="#lumos.analyses.asicopt_mt.FixedArea.OPT_FPGA_AREA_MAX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="lumos.analyses.asicopt_mt.FixedArea.OPT_FPGA_AREA_MIN">
+<tt class="descname">OPT_FPGA_AREA_MIN</tt><em class="property"> = 5</em><a class="headerlink" href="#lumos.analyses.asicopt_mt.FixedArea.OPT_FPGA_AREA_MIN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="lumos.analyses.asicopt_mt.FixedArea.Worker">
+<em class="property">class </em><tt class="descname">Worker</tt><big>(</big><em>work_queue</em>, <em>result_queue</em>, <em>budget</em>, <em>fixed_area</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicopt_mt.html#FixedArea.Worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicopt_mt.FixedArea.Worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">multiprocessing.process.Process</span></tt></p>
+<dl class="method">
+<dt id="lumos.analyses.asicopt_mt.FixedArea.Worker.process">
+<tt class="descname">process</tt><big>(</big><em>job</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicopt_mt.html#FixedArea.Worker.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicopt_mt.FixedArea.Worker.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asicopt_mt.FixedArea.Worker.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicopt_mt.html#FixedArea.Worker.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicopt_mt.FixedArea.Worker.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asicopt_mt.FixedArea.analyze">
+<tt class="descclassname">FixedArea.</tt><tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicopt_mt.html#FixedArea.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicopt_mt.FixedArea.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asicopt_mt.FixedArea.plot">
+<tt class="descclassname">FixedArea.</tt><tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicopt_mt.html#FixedArea.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicopt_mt.FixedArea.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asicopt_mt.FixedArea.plot_scatter">
+<tt class="descclassname">FixedArea.</tt><tt class="descname">plot_scatter</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicopt_mt.html#FixedArea.plot_scatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicopt_mt.FixedArea.plot_scatter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.asicopt_mt.build_optparser">
+<tt class="descclassname">lumos.analyses.asicopt_mt.</tt><tt class="descname">build_optparser</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicopt_mt.html#build_optparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicopt_mt.build_optparser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.asicopt_mt.main">
+<tt class="descclassname">lumos.analyses.asicopt_mt.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicopt_mt.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicopt_mt.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.asicopt_mt.option_override">
+<tt class="descclassname">lumos.analyses.asicopt_mt.</tt><tt class="descname">option_override</tt><big>(</big><em>options</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicopt_mt.html#option_override"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicopt_mt.option_override" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override cmd options by using values from configconfiguration file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Options :</th><td class="field-body">option parser (already parsed from cmd line) to be overrided</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">N/A</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-lumos.analyses.asicquad_mt">
+<span id="asicquad-mt-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">asicquad_mt</span></tt> Module<a class="headerlink" href="#module-lumos.analyses.asicquad_mt" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="lumos.analyses.asicquad_mt.ASICQuad">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.asicquad_mt.</tt><tt class="descname">ASICQuad</tt><big>(</big><em>options</em>, <em>budget</em>, <em>pv=False</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicquad_mt.html#ASICQuad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicquad_mt.ASICQuad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>only one accelerators per system</p>
+<dl class="class">
+<dt id="lumos.analyses.asicquad_mt.ASICQuad.Worker">
+<em class="property">class </em><tt class="descname">Worker</tt><big>(</big><em>work_queue</em>, <em>result_queue</em>, <em>budget</em>, <em>workload</em>, <em>kids</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicquad_mt.html#ASICQuad.Worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicquad_mt.ASICQuad.Worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">multiprocessing.process.Process</span></tt></p>
+<dl class="method">
+<dt id="lumos.analyses.asicquad_mt.ASICQuad.Worker.process">
+<tt class="descname">process</tt><big>(</big><em>job</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicquad_mt.html#ASICQuad.Worker.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicquad_mt.ASICQuad.Worker.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asicquad_mt.ASICQuad.Worker.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicquad_mt.html#ASICQuad.Worker.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicquad_mt.ASICQuad.Worker.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asicquad_mt.ASICQuad.analyze">
+<tt class="descclassname">ASICQuad.</tt><tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicquad_mt.html#ASICQuad.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicquad_mt.ASICQuad.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asicquad_mt.ASICQuad.plot">
+<tt class="descclassname">ASICQuad.</tt><tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicquad_mt.html#ASICQuad.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicquad_mt.ASICQuad.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.asicquad_mt.build_optparser">
+<tt class="descclassname">lumos.analyses.asicquad_mt.</tt><tt class="descname">build_optparser</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicquad_mt.html#build_optparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicquad_mt.build_optparser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.asicquad_mt.main">
+<tt class="descclassname">lumos.analyses.asicquad_mt.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicquad_mt.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicquad_mt.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.asicquad_mt.option_override">
+<tt class="descclassname">lumos.analyses.asicquad_mt.</tt><tt class="descname">option_override</tt><big>(</big><em>options</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asicquad_mt.html#option_override"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asicquad_mt.option_override" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override cmd options by using values from configconfiguration file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Options :</th><td class="field-body">option parser (already parsed from cmd line) to be overrided</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">&#64;todo</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-lumos.analyses.asictriple_mt">
+<span id="asictriple-mt-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">asictriple_mt</span></tt> Module<a class="headerlink" href="#module-lumos.analyses.asictriple_mt" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="lumos.analyses.asictriple_mt.ASICTriple">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.asictriple_mt.</tt><tt class="descname">ASICTriple</tt><big>(</big><em>options</em>, <em>budget</em>, <em>pv=False</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asictriple_mt.html#ASICTriple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asictriple_mt.ASICTriple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>only one accelerators per system</p>
+<dl class="class">
+<dt id="lumos.analyses.asictriple_mt.ASICTriple.Worker">
+<em class="property">class </em><tt class="descname">Worker</tt><big>(</big><em>work_queue</em>, <em>result_queue</em>, <em>budget</em>, <em>workload</em>, <em>kids</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asictriple_mt.html#ASICTriple.Worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asictriple_mt.ASICTriple.Worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">multiprocessing.process.Process</span></tt></p>
+<dl class="method">
+<dt id="lumos.analyses.asictriple_mt.ASICTriple.Worker.process">
+<tt class="descname">process</tt><big>(</big><em>job</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asictriple_mt.html#ASICTriple.Worker.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asictriple_mt.ASICTriple.Worker.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asictriple_mt.ASICTriple.Worker.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asictriple_mt.html#ASICTriple.Worker.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asictriple_mt.ASICTriple.Worker.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asictriple_mt.ASICTriple.analyze">
+<tt class="descclassname">ASICTriple.</tt><tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asictriple_mt.html#ASICTriple.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asictriple_mt.ASICTriple.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.asictriple_mt.ASICTriple.plot">
+<tt class="descclassname">ASICTriple.</tt><tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asictriple_mt.html#ASICTriple.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asictriple_mt.ASICTriple.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.asictriple_mt.build_optparser">
+<tt class="descclassname">lumos.analyses.asictriple_mt.</tt><tt class="descname">build_optparser</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asictriple_mt.html#build_optparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asictriple_mt.build_optparser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.asictriple_mt.main">
+<tt class="descclassname">lumos.analyses.asictriple_mt.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asictriple_mt.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asictriple_mt.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.asictriple_mt.option_override">
+<tt class="descclassname">lumos.analyses.asictriple_mt.</tt><tt class="descname">option_override</tt><big>(</big><em>options</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asictriple_mt.html#option_override"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asictriple_mt.option_override" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override cmd options by using values from configconfiguration file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Options :</th><td class="field-body">option parser (already parsed from cmd line) to be overrided</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">&#64;todo</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.asictriple_mt.try_update">
+<tt class="descclassname">lumos.analyses.asictriple_mt.</tt><tt class="descname">try_update</tt><big>(</big><em>config</em>, <em>options</em>, <em>section</em>, <em>name</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/asictriple_mt.html#try_update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.asictriple_mt.try_update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-lumos.analyses.core">
+<span id="core-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">core</span></tt> Module<a class="headerlink" href="#module-lumos.analyses.core" title="Permalink to this headline">¶</a></h2>
+<p>A simple analysis on voltage-frequency scaling. This analysis also
+plots power (dynamic and static) scaled to the supply voltage.</p>
+<dl class="function">
+<dt id="lumos.analyses.core.analyze">
+<tt class="descclassname">lumos.analyses.core.</tt><tt class="descname">analyze</tt><big>(</big><em>ctype</em>, <em>mech</em>, <em>tech</em>, <em>variation</em>, <em>ofile=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/core.html#analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.core.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.core.plot_freq">
+<tt class="descclassname">lumos.analyses.core.</tt><tt class="descname">plot_freq</tt><big>(</big><em>ifile=None</em>, <em>ofile=None</em>, <em>has_title=False</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/core.html#plot_freq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.core.plot_freq" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.core.plot_power">
+<tt class="descclassname">lumos.analyses.core.</tt><tt class="descname">plot_power</tt><big>(</big><em>ifile=None</em>, <em>ofile=None</em>, <em>has_title=False</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/core.html#plot_power"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.core.plot_power" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-lumos.analyses.diminc_mt">
+<span id="diminc-mt-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">diminc_mt</span></tt> Module<a class="headerlink" href="#module-lumos.analyses.diminc_mt" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="lumos.analyses.diminc_mt.DimInc">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.diminc_mt.</tt><tt class="descname">DimInc</tt><big>(</big><em>options</em>, <em>budget</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/diminc_mt.html#DimInc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.diminc_mt.DimInc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Single ASIC accelerator with incremental area allocation</p>
+<dl class="class">
+<dt id="lumos.analyses.diminc_mt.DimInc.Worker">
+<em class="property">class </em><tt class="descname">Worker</tt><big>(</big><em>work_queue</em>, <em>result_queue</em>, <em>budget</em>, <em>workload</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/diminc_mt.html#DimInc.Worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.diminc_mt.DimInc.Worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">multiprocessing.process.Process</span></tt></p>
+<dl class="method">
+<dt id="lumos.analyses.diminc_mt.DimInc.Worker.process">
+<tt class="descname">process</tt><big>(</big><em>job</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/diminc_mt.html#DimInc.Worker.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.diminc_mt.DimInc.Worker.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.diminc_mt.DimInc.Worker.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/diminc_mt.html#DimInc.Worker.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.diminc_mt.DimInc.Worker.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.diminc_mt.DimInc.analyze">
+<tt class="descclassname">DimInc.</tt><tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/diminc_mt.html#DimInc.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.diminc_mt.DimInc.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.diminc_mt.DimInc.plot">
+<tt class="descclassname">DimInc.</tt><tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/diminc_mt.html#DimInc.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.diminc_mt.DimInc.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.diminc_mt.DimInc.plot_derivative">
+<tt class="descclassname">DimInc.</tt><tt class="descname">plot_derivative</tt><big>(</big><em>step=1</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/diminc_mt.html#DimInc.plot_derivative"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.diminc_mt.DimInc.plot_derivative" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.diminc_mt.DimInc.plot_speedup">
+<tt class="descclassname">DimInc.</tt><tt class="descname">plot_speedup</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/diminc_mt.html#DimInc.plot_speedup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.diminc_mt.DimInc.plot_speedup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.diminc_mt.build_optparser">
+<tt class="descclassname">lumos.analyses.diminc_mt.</tt><tt class="descname">build_optparser</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/diminc_mt.html#build_optparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.diminc_mt.build_optparser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.diminc_mt.main">
+<tt class="descclassname">lumos.analyses.diminc_mt.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/diminc_mt.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.diminc_mt.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.diminc_mt.option_override">
+<tt class="descclassname">lumos.analyses.diminc_mt.</tt><tt class="descname">option_override</tt><big>(</big><em>options</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/diminc_mt.html#option_override"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.diminc_mt.option_override" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override cmd options by using values from configconfiguration file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Options :</th><td class="field-body">option parser (already parsed from cmd line) to be overrided</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">N/A</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-lumos.analyses.dimsi_deriv">
+<span id="dimsi-deriv-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">dimsi_deriv</span></tt> Module<a class="headerlink" href="#module-lumos.analyses.dimsi_deriv" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="lumos.analyses.dimsi_deriv.anal">
+<tt class="descclassname">lumos.analyses.dimsi_deriv.</tt><tt class="descname">anal</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_deriv.html#anal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_deriv.anal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.dimsi_deriv.plot">
+<tt class="descclassname">lumos.analyses.dimsi_deriv.</tt><tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_deriv.html#plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_deriv.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-lumos.analyses.dimsi_fpga_mt">
+<span id="dimsi-fpga-mt-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">dimsi_fpga_mt</span></tt> Module<a class="headerlink" href="#module-lumos.analyses.dimsi_fpga_mt" title="Permalink to this headline">¶</a></h2>
+<p>An analysis of dim cores and one single FPGA.</p>
+<dl class="class">
+<dt id="lumos.analyses.dimsi_fpga_mt.DimsiFPGA">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.dimsi_fpga_mt.</tt><tt class="descname">DimsiFPGA</tt><big>(</big><em>options</em>, <em>budget</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_fpga_mt.html#DimsiFPGA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.DimsiFPGA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Single ASIC accelerator with incremental area allocation</p>
+<dl class="class">
+<dt id="lumos.analyses.dimsi_fpga_mt.DimsiFPGA.Worker">
+<em class="property">class </em><tt class="descname">Worker</tt><big>(</big><em>work_queue</em>, <em>result_queue</em>, <em>budget</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_fpga_mt.html#DimsiFPGA.Worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.DimsiFPGA.Worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">multiprocessing.process.Process</span></tt></p>
+<dl class="method">
+<dt id="lumos.analyses.dimsi_fpga_mt.DimsiFPGA.Worker.process">
+<tt class="descname">process</tt><big>(</big><em>job</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_fpga_mt.html#DimsiFPGA.Worker.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.DimsiFPGA.Worker.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dimsi_fpga_mt.DimsiFPGA.Worker.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_fpga_mt.html#DimsiFPGA.Worker.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.DimsiFPGA.Worker.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dimsi_fpga_mt.DimsiFPGA.analyze">
+<tt class="descclassname">DimsiFPGA.</tt><tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_fpga_mt.html#DimsiFPGA.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.DimsiFPGA.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dimsi_fpga_mt.DimsiFPGA.plot">
+<tt class="descclassname">DimsiFPGA.</tt><tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_fpga_mt.html#DimsiFPGA.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.DimsiFPGA.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dimsi_fpga_mt.DimsiFPGA.plot_derivative">
+<tt class="descclassname">DimsiFPGA.</tt><tt class="descname">plot_derivative</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_fpga_mt.html#DimsiFPGA.plot_derivative"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.DimsiFPGA.plot_derivative" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dimsi_fpga_mt.DimsiFPGA.plot_scatter_and_pie">
+<tt class="descclassname">DimsiFPGA.</tt><tt class="descname">plot_scatter_and_pie</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_fpga_mt.html#DimsiFPGA.plot_scatter_and_pie"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.DimsiFPGA.plot_scatter_and_pie" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dimsi_fpga_mt.DimsiFPGA.plot_speedup">
+<tt class="descclassname">DimsiFPGA.</tt><tt class="descname">plot_speedup</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_fpga_mt.html#DimsiFPGA.plot_speedup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.DimsiFPGA.plot_speedup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="lumos.analyses.dimsi_fpga_mt.FPGASensitivity">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.dimsi_fpga_mt.</tt><tt class="descname">FPGASensitivity</tt><big>(</big><em>options</em>, <em>budget</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_fpga_mt.html#FPGASensitivity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.FPGASensitivity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Single ASIC accelerator with incremental area allocation</p>
+<dl class="class">
+<dt id="lumos.analyses.dimsi_fpga_mt.FPGASensitivity.Worker">
+<em class="property">class </em><tt class="descname">Worker</tt><big>(</big><em>work_queue</em>, <em>result_queue</em>, <em>budget</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_fpga_mt.html#FPGASensitivity.Worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.FPGASensitivity.Worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">multiprocessing.process.Process</span></tt></p>
+<dl class="method">
+<dt id="lumos.analyses.dimsi_fpga_mt.FPGASensitivity.Worker.process">
+<tt class="descname">process</tt><big>(</big><em>job</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_fpga_mt.html#FPGASensitivity.Worker.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.FPGASensitivity.Worker.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dimsi_fpga_mt.FPGASensitivity.Worker.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_fpga_mt.html#FPGASensitivity.Worker.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.FPGASensitivity.Worker.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dimsi_fpga_mt.FPGASensitivity.analyze">
+<tt class="descclassname">FPGASensitivity.</tt><tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_fpga_mt.html#FPGASensitivity.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.FPGASensitivity.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dimsi_fpga_mt.FPGASensitivity.plot">
+<tt class="descclassname">FPGASensitivity.</tt><tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_fpga_mt.html#FPGASensitivity.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.FPGASensitivity.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dimsi_fpga_mt.FPGASensitivity.plot_scatter_and_pie">
+<tt class="descclassname">FPGASensitivity.</tt><tt class="descname">plot_scatter_and_pie</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_fpga_mt.html#FPGASensitivity.plot_scatter_and_pie"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.FPGASensitivity.plot_scatter_and_pie" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dimsi_fpga_mt.FPGASensitivity.plot_stack">
+<tt class="descclassname">FPGASensitivity.</tt><tt class="descname">plot_stack</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_fpga_mt.html#FPGASensitivity.plot_stack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.FPGASensitivity.plot_stack" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="lumos.analyses.dimsi_fpga_mt.FixedArea">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.dimsi_fpga_mt.</tt><tt class="descname">FixedArea</tt><big>(</big><em>options</em>, <em>budget</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_fpga_mt.html#FixedArea"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.FixedArea" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dl class="attribute">
+<dt id="lumos.analyses.dimsi_fpga_mt.FixedArea.OPT_FPGA_AREA_MAX">
+<tt class="descname">OPT_FPGA_AREA_MAX</tt><em class="property"> = 50</em><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.FixedArea.OPT_FPGA_AREA_MAX" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="lumos.analyses.dimsi_fpga_mt.FixedArea.OPT_FPGA_AREA_MIN">
+<tt class="descname">OPT_FPGA_AREA_MIN</tt><em class="property"> = 5</em><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.FixedArea.OPT_FPGA_AREA_MIN" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="class">
+<dt id="lumos.analyses.dimsi_fpga_mt.FixedArea.Worker">
+<em class="property">class </em><tt class="descname">Worker</tt><big>(</big><em>work_queue</em>, <em>result_queue</em>, <em>budget</em>, <em>fixed_area</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_fpga_mt.html#FixedArea.Worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.FixedArea.Worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">multiprocessing.process.Process</span></tt></p>
+<dl class="method">
+<dt id="lumos.analyses.dimsi_fpga_mt.FixedArea.Worker.process">
+<tt class="descname">process</tt><big>(</big><em>job</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_fpga_mt.html#FixedArea.Worker.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.FixedArea.Worker.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dimsi_fpga_mt.FixedArea.Worker.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_fpga_mt.html#FixedArea.Worker.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.FixedArea.Worker.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dimsi_fpga_mt.FixedArea.analyze">
+<tt class="descclassname">FixedArea.</tt><tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_fpga_mt.html#FixedArea.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.FixedArea.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dimsi_fpga_mt.FixedArea.plot">
+<tt class="descclassname">FixedArea.</tt><tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_fpga_mt.html#FixedArea.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.FixedArea.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dimsi_fpga_mt.FixedArea.plot_scatter">
+<tt class="descclassname">FixedArea.</tt><tt class="descname">plot_scatter</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_fpga_mt.html#FixedArea.plot_scatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.FixedArea.plot_scatter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.dimsi_fpga_mt.build_optparser">
+<tt class="descclassname">lumos.analyses.dimsi_fpga_mt.</tt><tt class="descname">build_optparser</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_fpga_mt.html#build_optparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.build_optparser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.dimsi_fpga_mt.main">
+<tt class="descclassname">lumos.analyses.dimsi_fpga_mt.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_fpga_mt.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.dimsi_fpga_mt.option_override">
+<tt class="descclassname">lumos.analyses.dimsi_fpga_mt.</tt><tt class="descname">option_override</tt><big>(</big><em>options</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dimsi_fpga_mt.html#option_override"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dimsi_fpga_mt.option_override" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override cmd options by using values from configconfiguration file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Options :</th><td class="field-body">option parser (already parsed from cmd line) to be overrided</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">N/A</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-lumos.analyses.dist_ucore_mt">
+<span id="dist-ucore-mt-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">dist_ucore_mt</span></tt> Module<a class="headerlink" href="#module-lumos.analyses.dist_ucore_mt" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="lumos.analyses.dist_ucore_mt.ASICAnalysis">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.dist_ucore_mt.</tt><tt class="descname">ASICAnalysis</tt><big>(</big><em>options</em>, <em>budget</em>, <em>pv=False</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICAnalysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICAnalysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lumos.analyses.analysis.BaseAnalysis" title="lumos.analyses.analysis.BaseAnalysis"><tt class="xref py py-class docutils literal"><span class="pre">lumos.analyses.analysis.BaseAnalysis</span></tt></a></p>
+<dl class="class">
+<dt id="lumos.analyses.dist_ucore_mt.ASICAnalysis.Worker">
+<em class="property">class </em><tt class="descname">Worker</tt><big>(</big><em>work_queue</em>, <em>result_queue</em>, <em>budget</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICAnalysis.Worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICAnalysis.Worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">multiprocessing.process.Process</span></tt></p>
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICAnalysis.Worker.process">
+<tt class="descname">process</tt><big>(</big><em>job</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICAnalysis.Worker.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICAnalysis.Worker.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICAnalysis.Worker.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICAnalysis.Worker.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICAnalysis.Worker.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICAnalysis.analyze">
+<tt class="descclassname">ASICAnalysis.</tt><tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICAnalysis.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICAnalysis.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICAnalysis.plot">
+<tt class="descclassname">ASICAnalysis.</tt><tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICAnalysis.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICAnalysis.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICAnalysis.random_uc_cov">
+<tt class="descclassname">ASICAnalysis.</tt><tt class="descname">random_uc_cov</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICAnalysis.random_uc_cov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICAnalysis.random_uc_cov" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICAnalysis.random_uc_perf">
+<tt class="descclassname">ASICAnalysis.</tt><tt class="descname">random_uc_perf</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICAnalysis.random_uc_perf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICAnalysis.random_uc_perf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="lumos.analyses.dist_ucore_mt.ASICDual">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.dist_ucore_mt.</tt><tt class="descname">ASICDual</tt><big>(</big><em>options</em>, <em>budget</em>, <em>pv=False</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICDual"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICDual" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lumos.analyses.analysis.BaseAnalysis" title="lumos.analyses.analysis.BaseAnalysis"><tt class="xref py py-class docutils literal"><span class="pre">lumos.analyses.analysis.BaseAnalysis</span></tt></a></p>
+<p>only one accelerators per system</p>
+<dl class="class">
+<dt id="lumos.analyses.dist_ucore_mt.ASICDual.Worker">
+<em class="property">class </em><tt class="descname">Worker</tt><big>(</big><em>work_queue</em>, <em>result_queue</em>, <em>budget</em>, <em>workload</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICDual.Worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICDual.Worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">multiprocessing.process.Process</span></tt></p>
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICDual.Worker.process">
+<tt class="descname">process</tt><big>(</big><em>job</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICDual.Worker.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICDual.Worker.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICDual.Worker.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICDual.Worker.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICDual.Worker.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICDual.analyze">
+<tt class="descclassname">ASICDual.</tt><tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICDual.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICDual.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICDual.build_app">
+<tt class="descclassname">ASICDual.</tt><tt class="descname">build_app</tt><big>(</big><em>cov</em>, <em>occ</em>, <em>probs</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICDual.build_app"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICDual.build_app" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICDual.build_workload">
+<tt class="descclassname">ASICDual.</tt><tt class="descname">build_workload</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICDual.build_workload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICDual.build_workload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build workload composed by apps</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Size :</th><td class="field-body">&#64;todo</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">&#64;todo</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICDual.plot">
+<tt class="descclassname">ASICDual.</tt><tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICDual.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICDual.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICDual.random_uc_cov">
+<tt class="descclassname">ASICDual.</tt><tt class="descname">random_uc_cov</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICDual.random_uc_cov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICDual.random_uc_cov" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="lumos.analyses.dist_ucore_mt.ASICQuad">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.dist_ucore_mt.</tt><tt class="descname">ASICQuad</tt><big>(</big><em>options</em>, <em>budget</em>, <em>pv=False</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICQuad"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICQuad" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lumos.analyses.analysis.BaseAnalysis" title="lumos.analyses.analysis.BaseAnalysis"><tt class="xref py py-class docutils literal"><span class="pre">lumos.analyses.analysis.BaseAnalysis</span></tt></a></p>
+<p>only one accelerators per system</p>
+<dl class="class">
+<dt id="lumos.analyses.dist_ucore_mt.ASICQuad.Worker">
+<em class="property">class </em><tt class="descname">Worker</tt><big>(</big><em>work_queue</em>, <em>result_queue</em>, <em>budget</em>, <em>workload</em>, <em>kids</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICQuad.Worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICQuad.Worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">multiprocessing.process.Process</span></tt></p>
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICQuad.Worker.process">
+<tt class="descname">process</tt><big>(</big><em>job</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICQuad.Worker.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICQuad.Worker.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICQuad.Worker.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICQuad.Worker.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICQuad.Worker.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICQuad.analyze">
+<tt class="descclassname">ASICQuad.</tt><tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICQuad.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICQuad.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICQuad.plot">
+<tt class="descclassname">ASICQuad.</tt><tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICQuad.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICQuad.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="lumos.analyses.dist_ucore_mt.ASICSingle">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.dist_ucore_mt.</tt><tt class="descname">ASICSingle</tt><big>(</big><em>options</em>, <em>budget</em>, <em>pv=False</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICSingle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICSingle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lumos.analyses.analysis.BaseAnalysis" title="lumos.analyses.analysis.BaseAnalysis"><tt class="xref py py-class docutils literal"><span class="pre">lumos.analyses.analysis.BaseAnalysis</span></tt></a></p>
+<p>only one accelerators per system</p>
+<dl class="class">
+<dt id="lumos.analyses.dist_ucore_mt.ASICSingle.Worker">
+<em class="property">class </em><tt class="descname">Worker</tt><big>(</big><em>work_queue</em>, <em>result_queue</em>, <em>budget</em>, <em>workload</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICSingle.Worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICSingle.Worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">multiprocessing.process.Process</span></tt></p>
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICSingle.Worker.process">
+<tt class="descname">process</tt><big>(</big><em>job</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICSingle.Worker.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICSingle.Worker.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICSingle.Worker.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICSingle.Worker.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICSingle.Worker.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICSingle.analyze">
+<tt class="descclassname">ASICSingle.</tt><tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICSingle.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICSingle.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICSingle.build_app">
+<tt class="descclassname">ASICSingle.</tt><tt class="descname">build_app</tt><big>(</big><em>cov</em>, <em>occ</em>, <em>probs</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICSingle.build_app"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICSingle.build_app" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICSingle.build_workload">
+<tt class="descclassname">ASICSingle.</tt><tt class="descname">build_workload</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICSingle.build_workload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICSingle.build_workload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build workload composed by apps</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Size :</th><td class="field-body">&#64;todo</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">&#64;todo</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICSingle.plot">
+<tt class="descclassname">ASICSingle.</tt><tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICSingle.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICSingle.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICSingle.random_uc_cov">
+<tt class="descclassname">ASICSingle.</tt><tt class="descname">random_uc_cov</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICSingle.random_uc_cov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICSingle.random_uc_cov" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="lumos.analyses.dist_ucore_mt.ASICTriple">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.dist_ucore_mt.</tt><tt class="descname">ASICTriple</tt><big>(</big><em>options</em>, <em>budget</em>, <em>pv=False</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICTriple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICTriple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lumos.analyses.analysis.BaseAnalysis" title="lumos.analyses.analysis.BaseAnalysis"><tt class="xref py py-class docutils literal"><span class="pre">lumos.analyses.analysis.BaseAnalysis</span></tt></a></p>
+<p>only one accelerators per system</p>
+<dl class="class">
+<dt id="lumos.analyses.dist_ucore_mt.ASICTriple.Worker">
+<em class="property">class </em><tt class="descname">Worker</tt><big>(</big><em>work_queue</em>, <em>result_queue</em>, <em>budget</em>, <em>workload</em>, <em>kids</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICTriple.Worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICTriple.Worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">multiprocessing.process.Process</span></tt></p>
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICTriple.Worker.process">
+<tt class="descname">process</tt><big>(</big><em>job</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICTriple.Worker.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICTriple.Worker.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICTriple.Worker.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICTriple.Worker.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICTriple.Worker.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICTriple.analyze">
+<tt class="descclassname">ASICTriple.</tt><tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICTriple.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICTriple.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICTriple.build_app">
+<tt class="descclassname">ASICTriple.</tt><tt class="descname">build_app</tt><big>(</big><em>cov</em>, <em>occ</em>, <em>probs</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICTriple.build_app"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICTriple.build_app" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICTriple.build_workload">
+<tt class="descclassname">ASICTriple.</tt><tt class="descname">build_workload</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICTriple.build_workload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICTriple.build_workload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build workload composed by apps</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Size :</th><td class="field-body">&#64;todo</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">&#64;todo</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICTriple.plot">
+<tt class="descclassname">ASICTriple.</tt><tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICTriple.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICTriple.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.ASICTriple.random_uc_cov">
+<tt class="descclassname">ASICTriple.</tt><tt class="descname">random_uc_cov</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#ASICTriple.random_uc_cov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.ASICTriple.random_uc_cov" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="lumos.analyses.dist_ucore_mt.FPGAAnalysis">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.dist_ucore_mt.</tt><tt class="descname">FPGAAnalysis</tt><big>(</big><em>fmt</em>, <em>budget</em>, <em>options</em>, <em>pv=False</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#FPGAAnalysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.FPGAAnalysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lumos.analyses.analysis.BaseAnalysis" title="lumos.analyses.analysis.BaseAnalysis"><tt class="xref py py-class docutils literal"><span class="pre">lumos.analyses.analysis.BaseAnalysis</span></tt></a></p>
+<dl class="class">
+<dt id="lumos.analyses.dist_ucore_mt.FPGAAnalysis.Worker">
+<em class="property">class </em><tt class="descname">Worker</tt><big>(</big><em>work_queue</em>, <em>result_queue</em>, <em>budget</em>, <em>fixed_area=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#FPGAAnalysis.Worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.FPGAAnalysis.Worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">multiprocessing.process.Process</span></tt></p>
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.FPGAAnalysis.Worker.process">
+<tt class="descname">process</tt><big>(</big><em>job</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#FPGAAnalysis.Worker.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.FPGAAnalysis.Worker.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.FPGAAnalysis.Worker.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#FPGAAnalysis.Worker.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.FPGAAnalysis.Worker.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.FPGAAnalysis.analyze">
+<tt class="descclassname">FPGAAnalysis.</tt><tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#FPGAAnalysis.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.FPGAAnalysis.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.FPGAAnalysis.plot">
+<tt class="descclassname">FPGAAnalysis.</tt><tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#FPGAAnalysis.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.FPGAAnalysis.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.FPGAAnalysis.random_uc_cov">
+<tt class="descclassname">FPGAAnalysis.</tt><tt class="descname">random_uc_cov</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#FPGAAnalysis.random_uc_cov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.FPGAAnalysis.random_uc_cov" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.FPGAAnalysis.random_uc_perf">
+<tt class="descclassname">FPGAAnalysis.</tt><tt class="descname">random_uc_perf</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#FPGAAnalysis.random_uc_perf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.FPGAAnalysis.random_uc_perf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="lumos.analyses.dist_ucore_mt.FPGAFixedArea">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.dist_ucore_mt.</tt><tt class="descname">FPGAFixedArea</tt><big>(</big><em>fmt</em>, <em>budget</em>, <em>options</em>, <em>pv=False</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#FPGAFixedArea"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.FPGAFixedArea" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lumos.analyses.analysis.BaseAnalysis" title="lumos.analyses.analysis.BaseAnalysis"><tt class="xref py py-class docutils literal"><span class="pre">lumos.analyses.analysis.BaseAnalysis</span></tt></a></p>
+<dl class="class">
+<dt id="lumos.analyses.dist_ucore_mt.FPGAFixedArea.Worker">
+<em class="property">class </em><tt class="descname">Worker</tt><big>(</big><em>work_queue</em>, <em>result_queue</em>, <em>budget</em>, <em>fixed_area=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#FPGAFixedArea.Worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.FPGAFixedArea.Worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">multiprocessing.process.Process</span></tt></p>
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.FPGAFixedArea.Worker.process">
+<tt class="descname">process</tt><big>(</big><em>job</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#FPGAFixedArea.Worker.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.FPGAFixedArea.Worker.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.FPGAFixedArea.Worker.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#FPGAFixedArea.Worker.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.FPGAFixedArea.Worker.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.FPGAFixedArea.analyze">
+<tt class="descclassname">FPGAFixedArea.</tt><tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#FPGAFixedArea.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.FPGAFixedArea.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.FPGAFixedArea.plot">
+<tt class="descclassname">FPGAFixedArea.</tt><tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#FPGAFixedArea.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.FPGAFixedArea.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.FPGAFixedArea.random_uc_cov">
+<tt class="descclassname">FPGAFixedArea.</tt><tt class="descname">random_uc_cov</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#FPGAFixedArea.random_uc_cov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.FPGAFixedArea.random_uc_cov" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.FPGAFixedArea.random_uc_perf">
+<tt class="descclassname">FPGAFixedArea.</tt><tt class="descname">random_uc_perf</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#FPGAFixedArea.random_uc_perf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.FPGAFixedArea.random_uc_perf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="lumos.analyses.dist_ucore_mt.FPGAFixedArea2">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.dist_ucore_mt.</tt><tt class="descname">FPGAFixedArea2</tt><big>(</big><em>fmt</em>, <em>budget</em>, <em>options</em>, <em>pv=False</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#FPGAFixedArea2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.FPGAFixedArea2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lumos.analyses.analysis.BaseAnalysis" title="lumos.analyses.analysis.BaseAnalysis"><tt class="xref py py-class docutils literal"><span class="pre">lumos.analyses.analysis.BaseAnalysis</span></tt></a></p>
+<dl class="class">
+<dt id="lumos.analyses.dist_ucore_mt.FPGAFixedArea2.Worker">
+<em class="property">class </em><tt class="descname">Worker</tt><big>(</big><em>work_queue</em>, <em>result_queue</em>, <em>budget</em>, <em>workload</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#FPGAFixedArea2.Worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.FPGAFixedArea2.Worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">multiprocessing.process.Process</span></tt></p>
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.FPGAFixedArea2.Worker.process">
+<tt class="descname">process</tt><big>(</big><em>job</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#FPGAFixedArea2.Worker.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.FPGAFixedArea2.Worker.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.FPGAFixedArea2.Worker.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#FPGAFixedArea2.Worker.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.FPGAFixedArea2.Worker.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.FPGAFixedArea2.analyze">
+<tt class="descclassname">FPGAFixedArea2.</tt><tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#FPGAFixedArea2.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.FPGAFixedArea2.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.FPGAFixedArea2.build_workload">
+<tt class="descclassname">FPGAFixedArea2.</tt><tt class="descname">build_workload</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#FPGAFixedArea2.build_workload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.FPGAFixedArea2.build_workload" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.FPGAFixedArea2.plot">
+<tt class="descclassname">FPGAFixedArea2.</tt><tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#FPGAFixedArea2.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.FPGAFixedArea2.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.FPGAFixedArea2.random_uc_cov">
+<tt class="descclassname">FPGAFixedArea2.</tt><tt class="descname">random_uc_cov</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#FPGAFixedArea2.random_uc_cov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.FPGAFixedArea2.random_uc_cov" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.FPGAFixedArea2.random_uc_perf">
+<tt class="descclassname">FPGAFixedArea2.</tt><tt class="descname">random_uc_perf</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#FPGAFixedArea2.random_uc_perf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.FPGAFixedArea2.random_uc_perf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="lumos.analyses.dist_ucore_mt.Hybrid">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.dist_ucore_mt.</tt><tt class="descname">Hybrid</tt><big>(</big><em>options</em>, <em>budget</em>, <em>pv=False</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#Hybrid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.Hybrid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lumos.analyses.analysis.BaseAnalysis" title="lumos.analyses.analysis.BaseAnalysis"><tt class="xref py py-class docutils literal"><span class="pre">lumos.analyses.analysis.BaseAnalysis</span></tt></a></p>
+<p>only one accelerators per system</p>
+<dl class="class">
+<dt id="lumos.analyses.dist_ucore_mt.Hybrid.Worker">
+<em class="property">class </em><tt class="descname">Worker</tt><big>(</big><em>work_queue</em>, <em>result_queue</em>, <em>budget</em>, <em>workload</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#Hybrid.Worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.Hybrid.Worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">multiprocessing.process.Process</span></tt></p>
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.Hybrid.Worker.process">
+<tt class="descname">process</tt><big>(</big><em>job</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#Hybrid.Worker.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.Hybrid.Worker.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.Hybrid.Worker.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#Hybrid.Worker.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.Hybrid.Worker.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.Hybrid.analyze">
+<tt class="descclassname">Hybrid.</tt><tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#Hybrid.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.Hybrid.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.dist_ucore_mt.Hybrid.plot">
+<tt class="descclassname">Hybrid.</tt><tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#Hybrid.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.Hybrid.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.dist_ucore_mt.build_optparser">
+<tt class="descclassname">lumos.analyses.dist_ucore_mt.</tt><tt class="descname">build_optparser</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#build_optparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.build_optparser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.dist_ucore_mt.build_workload">
+<tt class="descclassname">lumos.analyses.dist_ucore_mt.</tt><tt class="descname">build_workload</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#build_workload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.build_workload" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.dist_ucore_mt.main">
+<tt class="descclassname">lumos.analyses.dist_ucore_mt.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.dist_ucore_mt.option_override">
+<tt class="descclassname">lumos.analyses.dist_ucore_mt.</tt><tt class="descname">option_override</tt><big>(</big><em>options</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#option_override"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.option_override" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override cmd options by using values from configconfiguration file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Options :</th><td class="field-body">option parser (already parsed from cmd line) to be overrided</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">&#64;todo</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.dist_ucore_mt.try_update">
+<tt class="descclassname">lumos.analyses.dist_ucore_mt.</tt><tt class="descname">try_update</tt><big>(</big><em>config</em>, <em>options</em>, <em>section</em>, <em>name</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/dist_ucore_mt.html#try_update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.dist_ucore_mt.try_update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-lumos.analyses.final">
+<span id="final-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">final</span></tt> Module<a class="headerlink" href="#module-lumos.analyses.final" title="Permalink to this headline">¶</a></h2>
+<p>A set of analyses shown in the final report of dark vs. dim report.
+These analyses deal with comparisons between dark silicon and dim
+silicon, with/without variation penalties to the frequency.</p>
+<dl class="class">
+<dt id="lumos.analyses.final.Dasi2012Analysis">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.final.</tt><tt class="descname">Dasi2012Analysis</tt><big>(</big><em>fmt</em>, <em>sys_area=None</em>, <em>sys_power=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#Dasi2012Analysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.Dasi2012Analysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lumos.analyses.analysis.BaseAnalysis" title="lumos.analyses.analysis.BaseAnalysis"><tt class="xref py py-class docutils literal"><span class="pre">lumos.analyses.analysis.BaseAnalysis</span></tt></a></p>
+<dl class="method">
+<dt id="lumos.analyses.final.Dasi2012Analysis.analyze">
+<tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#Dasi2012Analysis.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.Dasi2012Analysis.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.final.Dasi2012Analysis.plot">
+<tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#Dasi2012Analysis.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.Dasi2012Analysis.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.final.Dasi2012Analysis.set_sys">
+<tt class="descname">set_sys</tt><big>(</big><em>area</em>, <em>power</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#Dasi2012Analysis.set_sys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.Dasi2012Analysis.set_sys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="lumos.analyses.final.MainAnalyzer">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.final.</tt><tt class="descname">MainAnalyzer</tt><a class="reference internal" href="../_modules/lumos/analyses/final.html#MainAnalyzer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.MainAnalyzer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dl class="method">
+<dt id="lumos.analyses.final.MainAnalyzer.analyze_var_penalty">
+<tt class="descname">analyze_var_penalty</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#MainAnalyzer.analyze_var_penalty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.MainAnalyzer.analyze_var_penalty" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.final.MainAnalyzer.do_darkdim">
+<tt class="descname">do_darkdim</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#MainAnalyzer.do_darkdim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.MainAnalyzer.do_darkdim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.final.MainAnalyzer.do_hplp">
+<tt class="descname">do_hplp</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#MainAnalyzer.do_hplp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.MainAnalyzer.do_hplp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.final.MainAnalyzer.do_ntc">
+<tt class="descname">do_ntc</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#MainAnalyzer.do_ntc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.MainAnalyzer.do_ntc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.final.MainAnalyzer.do_sysconf">
+<tt class="descname">do_sysconf</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#MainAnalyzer.do_sysconf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.MainAnalyzer.do_sysconf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.final.MainAnalyzer.ntc_speedup">
+<tt class="descname">ntc_speedup</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#MainAnalyzer.ntc_speedup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.MainAnalyzer.ntc_speedup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.final.MainAnalyzer.ntc_vmin">
+<tt class="descname">ntc_vmin</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#MainAnalyzer.ntc_vmin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.MainAnalyzer.ntc_vmin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.final.MainAnalyzer.plot_darkdim">
+<tt class="descname">plot_darkdim</tt><big>(</big><em>sys</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#MainAnalyzer.plot_darkdim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.MainAnalyzer.plot_darkdim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.final.MainAnalyzer.plot_hplp">
+<tt class="descname">plot_hplp</tt><big>(</big><em>sys</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#MainAnalyzer.plot_hplp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.MainAnalyzer.plot_hplp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.final.MainAnalyzer.plot_sysconf">
+<tt class="descname">plot_sysconf</tt><big>(</big><em>sys</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#MainAnalyzer.plot_sysconf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.MainAnalyzer.plot_sysconf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="lumos.analyses.final.ParallelismAnalysis">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.final.</tt><tt class="descname">ParallelismAnalysis</tt><big>(</big><em>fmt</em>, <em>sys_area=None</em>, <em>sys_power=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#ParallelismAnalysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.ParallelismAnalysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lumos.analyses.analysis.BaseAnalysis" title="lumos.analyses.analysis.BaseAnalysis"><tt class="xref py py-class docutils literal"><span class="pre">lumos.analyses.analysis.BaseAnalysis</span></tt></a></p>
+<dl class="method">
+<dt id="lumos.analyses.final.ParallelismAnalysis.analyze">
+<tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#ParallelismAnalysis.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.ParallelismAnalysis.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.final.ParallelismAnalysis.analyze_darkdim">
+<tt class="descname">analyze_darkdim</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#ParallelismAnalysis.analyze_darkdim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.ParallelismAnalysis.analyze_darkdim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.final.ParallelismAnalysis.analyze_hplp">
+<tt class="descname">analyze_hplp</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#ParallelismAnalysis.analyze_hplp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.ParallelismAnalysis.analyze_hplp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.final.ParallelismAnalysis.plot">
+<tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#ParallelismAnalysis.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.ParallelismAnalysis.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.final.ParallelismAnalysis.plot_darkdim">
+<tt class="descname">plot_darkdim</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#ParallelismAnalysis.plot_darkdim"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.ParallelismAnalysis.plot_darkdim" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.final.ParallelismAnalysis.plot_hplp">
+<tt class="descname">plot_hplp</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#ParallelismAnalysis.plot_hplp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.ParallelismAnalysis.plot_hplp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.final.ParallelismAnalysis.set_sys">
+<tt class="descname">set_sys</tt><big>(</big><em>area</em>, <em>power</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#ParallelismAnalysis.set_sys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.ParallelismAnalysis.set_sys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="lumos.analyses.final.PenaltyAdjustAnalysis">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.final.</tt><tt class="descname">PenaltyAdjustAnalysis</tt><big>(</big><em>fmt</em>, <em>sys_area=None</em>, <em>sys_power=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#PenaltyAdjustAnalysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.PenaltyAdjustAnalysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lumos.analyses.analysis.BaseAnalysis" title="lumos.analyses.analysis.BaseAnalysis"><tt class="xref py py-class docutils literal"><span class="pre">lumos.analyses.analysis.BaseAnalysis</span></tt></a></p>
+<dl class="method">
+<dt id="lumos.analyses.final.PenaltyAdjustAnalysis.analyze">
+<tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#PenaltyAdjustAnalysis.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.PenaltyAdjustAnalysis.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.final.PenaltyAdjustAnalysis.plot">
+<tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#PenaltyAdjustAnalysis.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.PenaltyAdjustAnalysis.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.final.PenaltyAdjustAnalysis.set_sys">
+<tt class="descname">set_sys</tt><big>(</big><em>area</em>, <em>power</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#PenaltyAdjustAnalysis.set_sys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.PenaltyAdjustAnalysis.set_sys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="lumos.analyses.final.VariationImpactAnalysis">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.final.</tt><tt class="descname">VariationImpactAnalysis</tt><big>(</big><em>fmt</em>, <em>tech=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#VariationImpactAnalysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.VariationImpactAnalysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lumos.analyses.analysis.BaseAnalysis" title="lumos.analyses.analysis.BaseAnalysis"><tt class="xref py py-class docutils literal"><span class="pre">lumos.analyses.analysis.BaseAnalysis</span></tt></a></p>
+<dl class="method">
+<dt id="lumos.analyses.final.VariationImpactAnalysis.analyze">
+<tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#VariationImpactAnalysis.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.VariationImpactAnalysis.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.final.VariationImpactAnalysis.plot">
+<tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#VariationImpactAnalysis.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.VariationImpactAnalysis.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.final.VariationImpactAnalysis.set_tech">
+<tt class="descname">set_tech</tt><big>(</big><em>tech</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#VariationImpactAnalysis.set_tech"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.VariationImpactAnalysis.set_tech" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.final.main">
+<tt class="descclassname">lumos.analyses.final.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.main" title="Permalink to this definition">¶</a></dt>
+<dd><p>main interface
+:returns: &#64;todo</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.final.speedup_by_vmin">
+<tt class="descclassname">lumos.analyses.final.</tt><tt class="descname">speedup_by_vmin</tt><big>(</big><em>sys</em>, <em>var=False</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#speedup_by_vmin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.speedup_by_vmin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.final.speedup_by_vper">
+<tt class="descclassname">lumos.analyses.final.</tt><tt class="descname">speedup_by_vper</tt><big>(</big><em>per_list</em>, <em>sys</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/final.html#speedup_by_vper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.final.speedup_by_vper" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-lumos.analyses.fpgainc_mt">
+<span id="fpgainc-mt-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">fpgainc_mt</span></tt> Module<a class="headerlink" href="#module-lumos.analyses.fpgainc_mt" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="lumos.analyses.fpgainc_mt.FPGAInc">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.fpgainc_mt.</tt><tt class="descname">FPGAInc</tt><big>(</big><em>options</em>, <em>budget</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/fpgainc_mt.html#FPGAInc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.fpgainc_mt.FPGAInc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Single FPGA accelerator with incremental area allocation</p>
+<dl class="class">
+<dt id="lumos.analyses.fpgainc_mt.FPGAInc.Worker">
+<em class="property">class </em><tt class="descname">Worker</tt><big>(</big><em>work_queue</em>, <em>result_queue</em>, <em>budget</em>, <em>workload</em>, <em>ucore_ratio</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/fpgainc_mt.html#FPGAInc.Worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.fpgainc_mt.FPGAInc.Worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">multiprocessing.process.Process</span></tt></p>
+<dl class="method">
+<dt id="lumos.analyses.fpgainc_mt.FPGAInc.Worker.process">
+<tt class="descname">process</tt><big>(</big><em>job</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/fpgainc_mt.html#FPGAInc.Worker.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.fpgainc_mt.FPGAInc.Worker.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.fpgainc_mt.FPGAInc.Worker.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/fpgainc_mt.html#FPGAInc.Worker.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.fpgainc_mt.FPGAInc.Worker.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.fpgainc_mt.FPGAInc.analyze">
+<tt class="descclassname">FPGAInc.</tt><tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/fpgainc_mt.html#FPGAInc.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.fpgainc_mt.FPGAInc.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.fpgainc_mt.FPGAInc.plot">
+<tt class="descclassname">FPGAInc.</tt><tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/fpgainc_mt.html#FPGAInc.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.fpgainc_mt.FPGAInc.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.fpgainc_mt.FPGAInc.plot_derivative">
+<tt class="descclassname">FPGAInc.</tt><tt class="descname">plot_derivative</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/fpgainc_mt.html#FPGAInc.plot_derivative"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.fpgainc_mt.FPGAInc.plot_derivative" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.fpgainc_mt.FPGAInc.plot_speedup">
+<tt class="descclassname">FPGAInc.</tt><tt class="descname">plot_speedup</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/fpgainc_mt.html#FPGAInc.plot_speedup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.fpgainc_mt.FPGAInc.plot_speedup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="lumos.analyses.fpgainc_mt.FPGAOpt">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.fpgainc_mt.</tt><tt class="descname">FPGAOpt</tt><big>(</big><em>options</em>, <em>budget</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/fpgainc_mt.html#FPGAOpt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.fpgainc_mt.FPGAOpt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Single ASIC accelerator with incremental area allocation</p>
+<dl class="class">
+<dt id="lumos.analyses.fpgainc_mt.FPGAOpt.Worker">
+<em class="property">class </em><tt class="descname">Worker</tt><big>(</big><em>work_queue</em>, <em>result_queue</em>, <em>budget</em>, <em>workload</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/fpgainc_mt.html#FPGAOpt.Worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.fpgainc_mt.FPGAOpt.Worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">multiprocessing.process.Process</span></tt></p>
+<dl class="method">
+<dt id="lumos.analyses.fpgainc_mt.FPGAOpt.Worker.process">
+<tt class="descname">process</tt><big>(</big><em>job</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/fpgainc_mt.html#FPGAOpt.Worker.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.fpgainc_mt.FPGAOpt.Worker.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.fpgainc_mt.FPGAOpt.Worker.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/fpgainc_mt.html#FPGAOpt.Worker.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.fpgainc_mt.FPGAOpt.Worker.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.fpgainc_mt.FPGAOpt.analyze">
+<tt class="descclassname">FPGAOpt.</tt><tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/fpgainc_mt.html#FPGAOpt.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.fpgainc_mt.FPGAOpt.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.fpgainc_mt.FPGAOpt.plot">
+<tt class="descclassname">FPGAOpt.</tt><tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/fpgainc_mt.html#FPGAOpt.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.fpgainc_mt.FPGAOpt.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.fpgainc_mt.FPGAOpt.plot_derivative">
+<tt class="descclassname">FPGAOpt.</tt><tt class="descname">plot_derivative</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/fpgainc_mt.html#FPGAOpt.plot_derivative"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.fpgainc_mt.FPGAOpt.plot_derivative" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.fpgainc_mt.FPGAOpt.plot_speedup">
+<tt class="descclassname">FPGAOpt.</tt><tt class="descname">plot_speedup</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/fpgainc_mt.html#FPGAOpt.plot_speedup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.fpgainc_mt.FPGAOpt.plot_speedup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.fpgainc_mt.build_optparser">
+<tt class="descclassname">lumos.analyses.fpgainc_mt.</tt><tt class="descname">build_optparser</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/fpgainc_mt.html#build_optparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.fpgainc_mt.build_optparser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.fpgainc_mt.main">
+<tt class="descclassname">lumos.analyses.fpgainc_mt.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/fpgainc_mt.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.fpgainc_mt.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.fpgainc_mt.option_override">
+<tt class="descclassname">lumos.analyses.fpgainc_mt.</tt><tt class="descname">option_override</tt><big>(</big><em>options</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/fpgainc_mt.html#option_override"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.fpgainc_mt.option_override" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override cmd options by using values from configconfiguration file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Options :</th><td class="field-body">option parser (already parsed from cmd line) to be overrided</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">N/A</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-lumos.analyses.heterosys_example">
+<span id="heterosys-example-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">heterosys_example</span></tt> Module<a class="headerlink" href="#module-lumos.analyses.heterosys_example" title="Permalink to this headline">¶</a></h2>
+<p>An exmaple on using <a class="reference internal" href="lumos.model.html#lumos.model.system.HeteroSys" title="lumos.model.system.HeteroSys"><tt class="xref py py-class docutils literal"><span class="pre">HeteroSys</span></tt></a>.</p>
+<dl class="class">
+<dt id="lumos.analyses.heterosys_example.HeterosysExample">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.heterosys_example.</tt><tt class="descname">HeterosysExample</tt><big>(</big><em>options</em>, <em>budget</em>, <em>pv=False</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/heterosys_example.html#HeterosysExample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.heterosys_example.HeterosysExample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lumos.analyses.analysis.BaseAnalysis" title="lumos.analyses.analysis.BaseAnalysis"><tt class="xref py py-class docutils literal"><span class="pre">lumos.analyses.analysis.BaseAnalysis</span></tt></a></p>
+<p>A heterogeneous many-core system with in-order cores, reconfigurable logic, and dedicated ASICs.</p>
+<dl class="class">
+<dt id="lumos.analyses.heterosys_example.HeterosysExample.Worker">
+<em class="property">class </em><tt class="descname">Worker</tt><big>(</big><em>work_queue</em>, <em>result_queue</em>, <em>budget</em>, <em>workload</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/heterosys_example.html#HeterosysExample.Worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.heterosys_example.HeterosysExample.Worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">multiprocessing.process.Process</span></tt></p>
+<dl class="method">
+<dt id="lumos.analyses.heterosys_example.HeterosysExample.Worker.process">
+<tt class="descname">process</tt><big>(</big><em>job</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/heterosys_example.html#HeterosysExample.Worker.process"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.heterosys_example.HeterosysExample.Worker.process" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.heterosys_example.HeterosysExample.Worker.run">
+<tt class="descname">run</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/heterosys_example.html#HeterosysExample.Worker.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.heterosys_example.HeterosysExample.Worker.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.heterosys_example.HeterosysExample.analyze">
+<tt class="descclassname">HeterosysExample.</tt><tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/heterosys_example.html#HeterosysExample.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.heterosys_example.HeterosysExample.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.heterosys_example.HeterosysExample.plot">
+<tt class="descclassname">HeterosysExample.</tt><tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/heterosys_example.html#HeterosysExample.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.heterosys_example.HeterosysExample.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.heterosys_example.build_optparser">
+<tt class="descclassname">lumos.analyses.heterosys_example.</tt><tt class="descname">build_optparser</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/heterosys_example.html#build_optparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.heterosys_example.build_optparser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.heterosys_example.option_override">
+<tt class="descclassname">lumos.analyses.heterosys_example.</tt><tt class="descname">option_override</tt><big>(</big><em>options</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/heterosys_example.html#option_override"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.heterosys_example.option_override" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override cmd options by using values from configconfiguration file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Options :</th><td class="field-body">option parser (already parsed from cmd line) to be overrided</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">&#64;todo</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.heterosys_example.try_update">
+<tt class="descclassname">lumos.analyses.heterosys_example.</tt><tt class="descname">try_update</tt><big>(</big><em>config</em>, <em>options</em>, <em>section</em>, <em>name</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/heterosys_example.html#try_update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.heterosys_example.try_update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-lumos.analyses.homosys_example">
+<span id="homosys-example-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">homosys_example</span></tt> Module<a class="headerlink" href="#module-lumos.analyses.homosys_example" title="Permalink to this headline">¶</a></h2>
+<p>An exmple on using <a class="reference internal" href="lumos.model.html#lumos.model.system.HomoSys" title="lumos.model.system.HomoSys"><tt class="xref py py-class docutils literal"><span class="pre">HomoSys</span></tt></a>.</p>
+<dl class="class">
+<dt id="lumos.analyses.homosys_example.HomosysExample">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.homosys_example.</tt><tt class="descname">HomosysExample</tt><big>(</big><em>fmt</em>, <em>sys_area=None</em>, <em>sys_power=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/homosys_example.html#HomosysExample"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.homosys_example.HomosysExample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lumos.analyses.analysis.BaseAnalysis" title="lumos.analyses.analysis.BaseAnalysis"><tt class="xref py py-class docutils literal"><span class="pre">lumos.analyses.analysis.BaseAnalysis</span></tt></a></p>
+<dl class="method">
+<dt id="lumos.analyses.homosys_example.HomosysExample.analyze">
+<tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/homosys_example.html#HomosysExample.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.homosys_example.HomosysExample.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.homosys_example.HomosysExample.plot">
+<tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/homosys_example.html#HomosysExample.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.homosys_example.HomosysExample.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.homosys_example.HomosysExample.set_sys">
+<tt class="descname">set_sys</tt><big>(</big><em>area</em>, <em>power</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/homosys_example.html#HomosysExample.set_sys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.homosys_example.HomosysExample.set_sys" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-lumos.analyses.ioo3">
+<span id="ioo3-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">ioo3</span></tt> Module<a class="headerlink" href="#module-lumos.analyses.ioo3" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="lumos.analyses.ioo3.IOO3">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.ioo3.</tt><tt class="descname">IOO3</tt><big>(</big><em>options</em>, <em>budget</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/ioo3.html#IOO3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.ioo3.IOO3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Single ASIC accelerator with incremental area allocation</p>
+<dl class="method">
+<dt id="lumos.analyses.ioo3.IOO3.analyze">
+<tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/ioo3.html#IOO3.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.ioo3.IOO3.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.ioo3.IOO3.plot">
+<tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/ioo3.html#IOO3.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.ioo3.IOO3.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.ioo3.IOO3.plot_o3_sel">
+<tt class="descname">plot_o3_sel</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/ioo3.html#IOO3.plot_o3_sel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.ioo3.IOO3.plot_o3_sel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.ioo3.IOO3.plot_relative">
+<tt class="descname">plot_relative</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/ioo3.html#IOO3.plot_relative"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.ioo3.IOO3.plot_relative" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.ioo3.IOO3.plot_series">
+<tt class="descname">plot_series</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/ioo3.html#IOO3.plot_series"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.ioo3.IOO3.plot_series" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.ioo3.build_optparser">
+<tt class="descclassname">lumos.analyses.ioo3.</tt><tt class="descname">build_optparser</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/ioo3.html#build_optparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.ioo3.build_optparser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.ioo3.main">
+<tt class="descclassname">lumos.analyses.ioo3.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/ioo3.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.ioo3.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.ioo3.option_override">
+<tt class="descclassname">lumos.analyses.ioo3.</tt><tt class="descname">option_override</tt><big>(</big><em>options</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/ioo3.html#option_override"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.ioo3.option_override" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override cmd options by using values from configconfiguration file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Options :</th><td class="field-body">option parser (already parsed from cmd line) to be overrided</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">N/A</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-lumos.analyses.o3sel">
+<span id="o3sel-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">o3sel</span></tt> Module<a class="headerlink" href="#module-lumos.analyses.o3sel" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="lumos.analyses.o3sel.IOO3">
+<em class="property">class </em><tt class="descclassname">lumos.analyses.o3sel.</tt><tt class="descname">IOO3</tt><big>(</big><em>options</em>, <em>budget</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/o3sel.html#IOO3"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.o3sel.IOO3" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Single ASIC accelerator with incremental area allocation</p>
+<dl class="method">
+<dt id="lumos.analyses.o3sel.IOO3.analyze">
+<tt class="descname">analyze</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/o3sel.html#IOO3.analyze"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.o3sel.IOO3.analyze" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.o3sel.IOO3.plot">
+<tt class="descname">plot</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/o3sel.html#IOO3.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.o3sel.IOO3.plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.analyses.o3sel.IOO3.plot_o3_sel">
+<tt class="descname">plot_o3_sel</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/o3sel.html#IOO3.plot_o3_sel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.o3sel.IOO3.plot_o3_sel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.o3sel.build_optparser">
+<tt class="descclassname">lumos.analyses.o3sel.</tt><tt class="descname">build_optparser</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/o3sel.html#build_optparser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.o3sel.build_optparser" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.o3sel.main">
+<tt class="descclassname">lumos.analyses.o3sel.</tt><tt class="descname">main</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/o3sel.html#main"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.o3sel.main" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.analyses.o3sel.option_override">
+<tt class="descclassname">lumos.analyses.o3sel.</tt><tt class="descname">option_override</tt><big>(</big><em>options</em><big>)</big><a class="reference internal" href="../_modules/lumos/analyses/o3sel.html#option_override"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.analyses.o3sel.option_override" title="Permalink to this definition">¶</a></dt>
+<dd><p>Override cmd options by using values from configconfiguration file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Options :</th><td class="field-body">option parser (already parsed from cmd line) to be overrided</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">N/A</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../index.html">Lumos home</a>&nbsp;|</li>
+        <li><a href="../contents.html">Documentation</a> &raquo;</li>
+ 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Liang Wang.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

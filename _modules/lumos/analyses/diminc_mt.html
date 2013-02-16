@@ -1,0 +1,443 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>lumos.analyses.diminc_mt &mdash; Lumos 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/lumos.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Lumos 0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
+          rel='stylesheet' type='text/css'>
+ 
+    <style type="text/css">
+      table.right { float: right; margin-left: 20px; }
+      table.right td { border: 1px solid #ccc; }
+      
+    </style>
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+  </head>
+  <body>
+<div class="pageheader">
+  <div>
+    <a href="../../../index.html">
+      <img src="../../../_static/lumos.png" alt="LUMOS" />
+    </a>
+  </div>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">Lumos home</a>&nbsp;|</li>
+        <li><a href="../../../contents.html">Documentation</a> &raquo;</li>
+
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for lumos.analyses.diminc_mt</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+<span class="c"># encoding: utf-8</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">cPickle</span> <span class="kn">as</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">lumos.model.system</span> <span class="kn">import</span> <span class="n">HeteroSys</span>
+<span class="kn">from</span> <span class="nn">lumos.model.application</span> <span class="kn">import</span> <span class="n">App</span>
+<span class="kn">from</span> <span class="nn">lumos.model</span> <span class="kn">import</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">workload</span>
+<span class="kn">from</span> <span class="nn">lumos.model.budget</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="kn">import</span> <span class="nn">analysis</span> <span class="kn">as</span> <span class="nn">analysis</span>
+<span class="kn">from</span> <span class="nn">analysis</span> <span class="kn">import</span> <span class="n">plot_data</span><span class="p">,</span> <span class="n">plot_twinx</span><span class="p">,</span> <span class="n">plot_series</span><span class="p">,</span> <span class="n">plot_series2</span>
+<span class="kn">from</span> <span class="nn">analysis</span> <span class="kn">import</span> <span class="n">try_update</span><span class="p">,</span> <span class="n">parse_bw</span>
+
+<span class="kn">from</span> <span class="nn">optparse</span> <span class="kn">import</span> <span class="n">OptionParser</span><span class="p">,</span> <span class="n">OptionGroup</span>
+<span class="kn">import</span> <span class="nn">ConfigParser</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="kn">import</span> <span class="n">join</span> <span class="k">as</span> <span class="n">joinpath</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">string</span>
+
+<span class="kn">import</span> <span class="nn">multiprocessing</span>
+<span class="kn">import</span> <span class="nn">Queue</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="n">ANALYSIS_NAME</span> <span class="o">=</span> <span class="s">&#39;diminc&#39;</span>
+<span class="n">HOME</span> <span class="o">=</span> <span class="n">joinpath</span><span class="p">(</span><span class="n">analysis</span><span class="o">.</span><span class="n">HOME</span><span class="p">,</span> <span class="n">ANALYSIS_NAME</span><span class="p">)</span>
+<span class="n">FIG_DIR</span><span class="p">,</span><span class="n">DATA_DIR</span> <span class="o">=</span> <span class="n">analysis</span><span class="o">.</span><span class="n">make_ws_dirs</span><span class="p">(</span><span class="n">ANALYSIS_NAME</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="DimInc"><a class="viewcode-back" href="../../../apidoc/lumos.analyses.html#lumos.analyses.diminc_mt.DimInc">[docs]</a><span class="k">class</span> <span class="nc">DimInc</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Single ASIC accelerator with incremental area allocation &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="DimInc.Worker"><a class="viewcode-back" href="../../../apidoc/lumos.analyses.html#lumos.analyses.diminc_mt.DimInc.Worker">[docs]</a>    <span class="k">class</span> <span class="nc">Worker</span><span class="p">(</span><span class="n">multiprocessing</span><span class="o">.</span><span class="n">Process</span><span class="p">):</span>
+
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">work_queue</span><span class="p">,</span> <span class="n">result_queue</span><span class="p">,</span>
+                <span class="n">budget</span><span class="p">,</span> <span class="n">workload</span><span class="p">):</span>
+
+            <span class="n">multiprocessing</span><span class="o">.</span><span class="n">Process</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">work_queue</span> <span class="o">=</span> <span class="n">work_queue</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">result_queue</span> <span class="o">=</span> <span class="n">result_queue</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">kill_received</span> <span class="o">=</span> <span class="bp">False</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">budget</span> <span class="o">=</span> <span class="n">budget</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">workload</span> <span class="o">=</span> <span class="n">workload</span>
+
+<div class="viewcode-block" id="DimInc.Worker.run"><a class="viewcode-back" href="../../../apidoc/lumos.analyses.html#lumos.analyses.diminc_mt.DimInc.Worker.run">[docs]</a>        <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">kill_received</span><span class="p">:</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">job</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">work_queue</span><span class="o">.</span><span class="n">get_nowait</span><span class="p">()</span>
+                <span class="k">except</span> <span class="n">Queue</span><span class="o">.</span><span class="n">Empty</span><span class="p">:</span>
+                    <span class="k">break</span>
+
+                <span class="c"># the actual processing</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process</span><span class="p">(</span><span class="n">job</span><span class="p">)</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">result_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DimInc.Worker.process"><a class="viewcode-back" href="../../../apidoc/lumos.analyses.html#lumos.analyses.diminc_mt.DimInc.Worker.process">[docs]</a>        <span class="k">def</span> <span class="nf">process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">job</span><span class="p">):</span>
+            <span class="n">dim_ratio</span> <span class="o">=</span> <span class="n">job</span>
+
+            <span class="n">dummy_alloc</span> <span class="o">=</span> <span class="p">(</span><span class="mi">100</span><span class="o">-</span><span class="n">dim_ratio</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.01</span>
+
+            <span class="n">sys</span> <span class="o">=</span> <span class="n">HeteroSys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">budget</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">set_mech</span><span class="p">(</span><span class="s">&#39;HKMGS&#39;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">set_tech</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">set_asic</span><span class="p">(</span><span class="s">&#39;dummy&#39;</span><span class="p">,</span> <span class="n">dummy_alloc</span><span class="p">)</span>
+            <span class="c">#sys.use_gpacc = True</span>
+
+            <span class="n">perfs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="n">sys</span><span class="o">.</span><span class="n">get_perf</span><span class="p">(</span><span class="n">app</span><span class="p">)[</span><span class="s">&#39;perf&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">app</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">workload</span> <span class="p">])</span>
+            <span class="n">mean</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">get_perf</span><span class="p">(</span><span class="n">app</span><span class="p">)[</span><span class="s">&#39;perf&#39;</span><span class="p">]</span>
+
+            <span class="k">return</span> <span class="p">(</span><span class="n">dim_ratio</span><span class="p">,</span> <span class="n">mean</span><span class="p">)</span>
+
+</div></div>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">budget</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span> <span class="o">=</span> <span class="n">ANALYSIS_NAME</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fmt</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">fmt</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">budget</span> <span class="o">=</span> <span class="n">budget</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prefix</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">nprocs</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">nprocs</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="n">options</span>
+
+        <span class="n">kernels</span> <span class="o">=</span> <span class="n">kernel</span><span class="o">.</span><span class="n">load_xml</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">kernels</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">workload</span> <span class="o">=</span> <span class="n">workload</span><span class="o">.</span><span class="n">load_xml</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">workload</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dim_ratio</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">dim_ratio</span><span class="p">)</span>
+
+<div class="viewcode-block" id="DimInc.analyze"><a class="viewcode-back" href="../../../apidoc/lumos.analyses.html#lumos.analyses.diminc_mt.DimInc.analyze">[docs]</a>    <span class="k">def</span> <span class="nf">analyze</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dfn</span> <span class="o">=</span> <span class="n">joinpath</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">-</span><span class="si">%d</span><span class="s">.pypkl&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim_ratio</span><span class="p">)))</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">dfn</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span>
+
+        <span class="n">work_queue</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">Queue</span><span class="p">()</span>
+        <span class="n">work_count</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">dim_ratio</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim_ratio</span><span class="p">,</span> <span class="mi">101</span><span class="p">):</span>
+            <span class="n">work_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span>  <span class="n">dim_ratio</span> <span class="p">)</span>
+            <span class="n">work_count</span> <span class="o">=</span> <span class="n">work_count</span> <span class="o">+</span> <span class="mi">1</span>
+
+
+        <span class="n">result_queue</span> <span class="o">=</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">Queue</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nprocs</span><span class="p">):</span>
+            <span class="n">worker</span> <span class="o">=</span> <span class="n">DimInc</span><span class="o">.</span><span class="n">Worker</span><span class="p">(</span><span class="n">work_queue</span><span class="p">,</span> <span class="n">result_queue</span><span class="p">,</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">budget</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">workload</span><span class="p">)</span>
+            <span class="n">worker</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+        <span class="c"># Collect all results</span>
+        <span class="n">mean_list</span> <span class="o">=</span> <span class="p">[</span> <span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">101</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">work_count</span><span class="p">):</span>
+            <span class="n">dim_alloc</span><span class="p">,</span> <span class="n">mean</span> <span class="o">=</span> <span class="n">result_queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="n">mean_list</span><span class="p">[</span><span class="n">dim_alloc</span><span class="p">]</span> <span class="o">=</span> <span class="n">mean</span>
+
+        <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">mean_list</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="DimInc.plot"><a class="viewcode-back" href="../../../apidoc/lumos.analyses.html#lumos.analyses.diminc_mt.DimInc.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c">#self.plot_speedup()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plot_derivative</span><span class="p">(</span><span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="DimInc.plot_speedup"><a class="viewcode-back" href="../../../apidoc/lumos.analyses.html#lumos.analyses.diminc_mt.DimInc.plot_speedup">[docs]</a>    <span class="k">def</span> <span class="nf">plot_speedup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">dfn</span> <span class="o">=</span> <span class="n">joinpath</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">-</span><span class="si">%d</span><span class="s">.pypkl&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim_ratio</span><span class="p">)))</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dfn</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">mean_list</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+            <span class="n">x_lists</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim_ratio</span><span class="p">,</span> <span class="mi">101</span><span class="p">)]</span>
+            <span class="n">analysis</span><span class="o">.</span><span class="n">plot_data</span><span class="p">(</span><span class="n">x_lists</span><span class="p">,</span> <span class="p">[</span><span class="n">mean_list</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">dim_ratio</span><span class="p">:],],</span>
+                    <span class="n">xlabel</span><span class="o">=</span><span class="s">&#39;Total ASIC allocation&#39;</span><span class="p">,</span>
+                    <span class="n">ylabel</span><span class="o">=</span><span class="s">&#39;Speedup (mean)&#39;</span><span class="p">,</span>
+                    <span class="n">title</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%d%%</span><span class="s"> ASIC allocation&#39;</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">dim_ratio</span><span class="p">,</span>
+                    <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim_ratio</span><span class="p">,</span> <span class="mi">101</span><span class="p">),</span>
+                    <span class="n">figdir</span><span class="o">=</span><span class="n">FIG_DIR</span><span class="p">,</span>
+                    <span class="n">ofn</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">-</span><span class="si">%d</span><span class="s">.</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim_ratio</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fmt</span><span class="p">)</span>
+                    <span class="p">)</span>
+</div>
+<div class="viewcode-block" id="DimInc.plot_derivative"><a class="viewcode-back" href="../../../apidoc/lumos.analyses.html#lumos.analyses.diminc_mt.DimInc.plot_derivative">[docs]</a>    <span class="k">def</span> <span class="nf">plot_derivative</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">dfn</span> <span class="o">=</span> <span class="n">joinpath</span><span class="p">(</span><span class="n">DATA_DIR</span><span class="p">,</span> <span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">-</span><span class="si">%d</span><span class="s">.pypkl&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim_ratio</span><span class="p">)))</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">dfn</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">mean_list</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+            <span class="n">mean_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mean_list</span><span class="p">)</span>
+            <span class="n">deriv_list</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="n">mean_list</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="n">step</span><span class="p">]</span><span class="o">-</span><span class="n">mean_list</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim_ratio</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">step</span><span class="p">)</span> <span class="p">]</span>
+
+            <span class="n">x_lists</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim_ratio</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">step</span><span class="p">)]</span>
+            <span class="n">analysis</span><span class="o">.</span><span class="n">plot_data</span><span class="p">(</span><span class="n">x_lists</span><span class="p">,</span> <span class="p">[</span><span class="n">deriv_list</span><span class="p">,],</span>
+                    <span class="n">xlabel</span><span class="o">=</span><span class="s">&#39;Total ASIC allocation&#39;</span><span class="p">,</span>
+                    <span class="n">ylabel</span><span class="o">=</span><span class="s">&#39;Speedup (derivative)&#39;</span><span class="p">,</span>
+                    <span class="n">title</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%d%%</span><span class="s"> ASIC allocation&#39;</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">dim_ratio</span><span class="p">,</span>
+                    <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim_ratio</span><span class="p">,</span> <span class="mi">101</span><span class="p">),</span>
+                    <span class="n">figdir</span><span class="o">=</span><span class="n">FIG_DIR</span><span class="p">,</span>
+                    <span class="n">ofn</span><span class="o">=</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">-deriv-</span><span class="si">%d</span><span class="s">.</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim_ratio</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fmt</span><span class="p">)</span>
+                    <span class="p">)</span>
+</div></div>
+<span class="n">LOGGING_LEVELS</span> <span class="o">=</span> <span class="p">{</span><span class="s">&#39;critical&#39;</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">CRITICAL</span><span class="p">,</span>
+        <span class="s">&#39;error&#39;</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span>
+        <span class="s">&#39;warning&#39;</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">,</span>
+        <span class="s">&#39;info&#39;</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
+        <span class="s">&#39;debug&#39;</span><span class="p">:</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">}</span>
+
+<div class="viewcode-block" id="option_override"><a class="viewcode-back" href="../../../apidoc/lumos.analyses.html#lumos.analyses.diminc_mt.option_override">[docs]</a><span class="k">def</span> <span class="nf">option_override</span><span class="p">(</span><span class="n">options</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Override cmd options by using values from configconfiguration file</span>
+
+<span class="sd">    :options: option parser (already parsed from cmd line) to be overrided</span>
+<span class="sd">    :returns: N/A</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">config_file</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="n">config</span> <span class="o">=</span> <span class="n">ConfigParser</span><span class="o">.</span><span class="n">RawConfigParser</span><span class="p">()</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">config_file</span><span class="p">)</span>
+
+    <span class="n">section</span> <span class="o">=</span> <span class="s">&#39;system&#39;</span>
+    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">has_section</span><span class="p">(</span><span class="n">section</span><span class="p">):</span>
+        <span class="n">try_update</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="s">&#39;budget&#39;</span><span class="p">)</span>
+        <span class="n">try_update</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="s">&#39;sys_area&#39;</span><span class="p">)</span>
+        <span class="n">try_update</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="s">&#39;sys_power&#39;</span><span class="p">)</span>
+        <span class="n">try_update</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="s">&#39;sys_bw&#39;</span><span class="p">)</span>
+        <span class="n">try_update</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="s">&#39;dim_ratio&#39;</span><span class="p">)</span>
+
+    <span class="n">section</span> <span class="o">=</span> <span class="s">&#39;app&#39;</span>
+    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">has_section</span><span class="p">(</span><span class="n">section</span><span class="p">):</span>
+        <span class="n">try_update</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="s">&#39;workload&#39;</span><span class="p">)</span>
+        <span class="n">try_update</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="s">&#39;kernels&#39;</span><span class="p">)</span>
+
+    <span class="n">section</span> <span class="o">=</span> <span class="s">&#39;analysis&#39;</span>
+    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">has_section</span><span class="p">(</span><span class="n">section</span><span class="p">):</span>
+        <span class="n">try_update</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="s">&#39;sec&#39;</span><span class="p">)</span>
+        <span class="n">try_update</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="s">&#39;action&#39;</span><span class="p">)</span>
+        <span class="n">try_update</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="s">&#39;fmt&#39;</span><span class="p">)</span>
+        <span class="n">try_update</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">options</span><span class="p">,</span> <span class="n">section</span><span class="p">,</span> <span class="s">&#39;nprocs&#39;</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="build_optparser"><a class="viewcode-back" href="../../../apidoc/lumos.analyses.html#lumos.analyses.diminc_mt.build_optparser">[docs]</a><span class="k">def</span> <span class="nf">build_optparser</span><span class="p">():</span>
+    <span class="c"># Init command line arguments parser</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">OptionParser</span><span class="p">()</span>
+
+    <span class="n">sys_options</span> <span class="o">=</span> <span class="n">OptionGroup</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="s">&quot;System Configurations&quot;</span><span class="p">)</span>
+    <span class="n">budget_choices</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;large&#39;</span><span class="p">,</span> <span class="s">&#39;medium&#39;</span><span class="p">,</span> <span class="s">&#39;small&#39;</span><span class="p">,</span> <span class="s">&#39;custom&#39;</span><span class="p">)</span>
+    <span class="n">sys_options</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&#39;--budget&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;large&#39;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">budget_choices</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&quot;choose the budget from pre-defined (&quot;</span>
+            <span class="o">+</span> <span class="s">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">budget_choices</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="o">+</span> <span class="s">&quot;), or &#39;custom&#39; for customized budget by specifying AREA, POWER, and BANDWIDTH&quot;</span><span class="p">)</span>
+    <span class="n">sys_options</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&#39;--sys-area&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&#39;int&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;AREA&#39;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;Area budget in mm^2, default: </span><span class="si">%d</span><span class="s">efault. This option will be discarded when budget is NOT custom&#39;</span><span class="p">)</span>
+    <span class="n">sys_options</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&#39;--sys-power&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&#39;int&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;POWER&#39;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;Power budget in Watts, default: </span><span class="si">%d</span><span class="s">efault. This option will be discarded when budget is NOT custom&#39;</span><span class="p">)</span>
+    <span class="n">sys_options</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&#39;--sys-bw&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;BANDWIDTH&#39;</span><span class="p">,</span>
+            <span class="n">default</span><span class="o">=</span><span class="s">&#39;45:180,32:198,22:234,16:252&#39;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;Power budget in Watts, default: {</span><span class="si">%d</span><span class="s">efault}. This option will be discarded when budget is NOT custom&#39;</span><span class="p">)</span>
+    <span class="n">sys_options</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&#39;--dim-ratio&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s">&#39;int&#39;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;The percentage value of die area allocated to Dim Silicon. For example, --dim-raito=50 means 50</span><span class="si">% o</span><span class="s">f total area budget is allocated to dim silicon&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option_group</span><span class="p">(</span><span class="n">sys_options</span><span class="p">)</span>
+
+    <span class="n">app_options</span> <span class="o">=</span> <span class="n">OptionGroup</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="s">&quot;Application Configurations&quot;</span><span class="p">)</span>
+    <span class="n">app_options</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&#39;--workload&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;FILE&#39;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;workload configuration file, e.g. workload.xml&#39;</span><span class="p">)</span>
+    <span class="n">app_options</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&#39;--kernels&#39;</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;FILE&#39;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;kernels configuration file, e.g. kernels.xml&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option_group</span><span class="p">(</span><span class="n">app_options</span><span class="p">)</span>
+
+    <span class="n">anal_options</span> <span class="o">=</span> <span class="n">OptionGroup</span><span class="p">(</span><span class="n">parser</span><span class="p">,</span> <span class="s">&quot;Analysis options&quot;</span><span class="p">)</span>
+    <span class="n">section_choices</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;fpga&#39;</span><span class="p">,</span> <span class="s">&#39;asic&#39;</span><span class="p">)</span>
+    <span class="n">anal_options</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&#39;--sec&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;fpga&#39;</span><span class="p">,</span>
+            <span class="n">choices</span><span class="o">=</span><span class="n">section_choices</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;SECTION&#39;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;choose the secitons of plotting, choose from (&#39;</span>
+            <span class="o">+</span> <span class="s">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">section_choices</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s">&#39;), default: </span><span class="si">%d</span><span class="s">efault&#39;</span><span class="p">)</span>
+    <span class="n">action_choices</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;analysis&#39;</span><span class="p">,</span> <span class="s">&#39;plot&#39;</span><span class="p">)</span>
+    <span class="n">anal_options</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&#39;-a&#39;</span><span class="p">,</span> <span class="s">&#39;--action&#39;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="n">action_choices</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;choose the running mode, choose from (&#39;</span>
+            <span class="o">+</span> <span class="s">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">action_choices</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s">&#39;), or combine actions seperated by &quot;,&quot;. default: N/A.&#39;</span><span class="p">)</span>
+    <span class="n">fmt_choices</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;png&#39;</span><span class="p">,</span> <span class="s">&#39;pdf&#39;</span><span class="p">,</span> <span class="s">&#39;eps&#39;</span><span class="p">)</span>
+    <span class="n">anal_options</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&#39;--fmt&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;pdf&#39;</span><span class="p">,</span>
+            <span class="n">choices</span><span class="o">=</span><span class="n">fmt_choices</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;FORMAT&#39;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;choose the format of output, choose from (&#39;</span>
+            <span class="o">+</span> <span class="s">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">fmt_choices</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s">&#39;), default: </span><span class="si">%d</span><span class="s">efault&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option_group</span><span class="p">(</span><span class="n">anal_options</span><span class="p">)</span>
+
+    <span class="n">llevel_choices</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;info&#39;</span><span class="p">,</span> <span class="s">&#39;debug&#39;</span><span class="p">,</span> <span class="s">&#39;error&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&#39;-l&#39;</span><span class="p">,</span> <span class="s">&#39;--logging-level&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s">&#39;info&#39;</span><span class="p">,</span>
+            <span class="n">choices</span><span class="o">=</span><span class="n">llevel_choices</span><span class="p">,</span> <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;LEVEL&#39;</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;Logging level of LEVEL, choose from (&#39;</span>
+            <span class="o">+</span> <span class="s">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">llevel_choices</span><span class="p">)</span>
+            <span class="o">+</span> <span class="s">&#39;), default: </span><span class="si">%d</span><span class="s">efault&#39;</span><span class="p">)</span>
+    <span class="n">default_cfg</span> <span class="o">=</span> <span class="n">joinpath</span><span class="p">(</span><span class="n">HOME</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">.cfg&#39;</span> <span class="o">%</span> <span class="n">ANALYSIS_NAME</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&#39;-f&#39;</span><span class="p">,</span> <span class="s">&#39;--config-file&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">default_cfg</span><span class="p">,</span>
+            <span class="n">metavar</span><span class="o">=</span><span class="s">&#39;FILE&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&#39;Use configurations in FILE, default: </span><span class="si">%d</span><span class="s">efault&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s">&#39;-n&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_false&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&#39;override&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;DONOT override command line options with the same one in the configuration file. &#39;</span>
+            <span class="o">+</span> <span class="s">&#39;By default, this option is NOT set, so the configuration file will override command line options.&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">parser</span>
+
+</div>
+<div class="viewcode-block" id="main"><a class="viewcode-back" href="../../../apidoc/lumos.analyses.html#lumos.analyses.diminc_mt.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">build_optparser</span><span class="p">()</span>
+    <span class="p">(</span><span class="n">options</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">option_override</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+
+    <span class="n">logging_level</span> <span class="o">=</span> <span class="n">LOGGING_LEVELS</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">logging_level</span><span class="p">,</span> <span class="n">logging</span><span class="o">.</span><span class="n">NOTSET</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging_level</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">budget</span> <span class="o">==</span> <span class="s">&#39;large&#39;</span><span class="p">:</span>
+        <span class="n">budget</span> <span class="o">=</span> <span class="n">SysLarge</span>
+    <span class="k">elif</span> <span class="n">options</span><span class="o">.</span><span class="n">budget</span> <span class="o">==</span> <span class="s">&#39;medium&#39;</span><span class="p">:</span>
+        <span class="n">budget</span> <span class="o">=</span> <span class="n">SysMedium</span>
+    <span class="k">elif</span> <span class="n">options</span><span class="o">.</span><span class="n">budget</span> <span class="o">==</span> <span class="s">&#39;small&#39;</span><span class="p">:</span>
+        <span class="n">budget</span> <span class="o">=</span> <span class="n">SysSmall</span>
+    <span class="k">elif</span> <span class="n">options</span><span class="o">.</span><span class="n">budget</span> <span class="o">==</span> <span class="s">&#39;custom&#39;</span><span class="p">:</span>
+        <span class="n">budget</span> <span class="o">=</span> <span class="n">Budget</span><span class="p">(</span><span class="n">area</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">sys_area</span><span class="p">),</span>
+                <span class="n">power</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">sys_power</span><span class="p">),</span>
+                <span class="n">bw</span><span class="o">=</span><span class="n">parse_bw</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">sys_bw</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;unknwon budget&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">action</span><span class="p">:</span>
+        <span class="n">actions</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">action</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;No action specified&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">sec</span> <span class="o">==</span> <span class="s">&#39;diminc&#39;</span><span class="p">:</span>
+        <span class="n">anl</span> <span class="o">=</span> <span class="n">DimInc</span><span class="p">(</span><span class="n">options</span><span class="p">,</span><span class="n">budget</span><span class="o">=</span><span class="n">budget</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s">&#39;analysis&#39;</span> <span class="ow">in</span> <span class="n">actions</span><span class="p">:</span>
+            <span class="n">anl</span><span class="o">.</span><span class="n">analyze</span><span class="p">()</span>
+        <span class="k">if</span> <span class="s">&#39;plot&#39;</span> <span class="ow">in</span> <span class="n">actions</span><span class="p">:</span>
+            <span class="n">anl</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">Lumos home</a>&nbsp;|</li>
+        <li><a href="../../../contents.html">Documentation</a> &raquo;</li>
+
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Liang Wang.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

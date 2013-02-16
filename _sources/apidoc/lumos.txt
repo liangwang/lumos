@@ -1,0 +1,19 @@
+lumos Package
+=============
+
+:mod:`settings` Module
+----------------------
+
+.. automodule:: lumos.settings
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+Subpackages
+-----------
+
+.. toctree::
+
+    lumos.analyses
+    lumos.model
+

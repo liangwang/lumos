@@ -1,0 +1,91 @@
+model Package
+=============
+
+:mod:`model` Package
+--------------------
+
+.. automodule:: lumos.model
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`application` Module
+-------------------------
+
+.. automodule:: lumos.model.application
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`budget` Module
+--------------------
+
+.. automodule:: lumos.model.budget
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`core` Module
+------------------
+
+.. automodule:: lumos.model.core
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`fedcore` Module
+---------------------
+
+.. automodule:: lumos.model.fedcore
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`freq` Module
+------------------
+
+.. automodule:: lumos.model.freq
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`kernel` Module
+--------------------
+
+.. automodule:: lumos.model.kernel
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`system` Module
+--------------------
+
+.. automodule:: lumos.model.system
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`tech` Module
+------------------
+
+.. automodule:: lumos.model.tech
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`ucore` Module
+-------------------
+
+.. automodule:: lumos.model.ucore
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+:mod:`workload` Module
+----------------------
+
+.. automodule:: lumos.model.workload
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

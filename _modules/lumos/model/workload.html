@@ -1,0 +1,375 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>lumos.model.workload &mdash; Lumos 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/lumos.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="Lumos 0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" />
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
+          rel='stylesheet' type='text/css'>
+ 
+    <style type="text/css">
+      table.right { float: right; margin-left: 20px; }
+      table.right td { border: 1px solid #ccc; }
+      
+    </style>
+    <script type="text/javascript">
+      // intelligent scrolling of the sidebar content
+      $(window).scroll(function() {
+        var sb = $('.sphinxsidebarwrapper');
+        var win = $(window);
+        var sbh = sb.height();
+        var offset = $('.sphinxsidebar').position()['top'];
+        var wintop = win.scrollTop();
+        var winbot = wintop + win.innerHeight();
+        var curtop = sb.position()['top'];
+        var curbot = curtop + sbh;
+        // does sidebar fit in window?
+        if (sbh < win.innerHeight()) {
+          // yes: easy case -- always keep at the top
+          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
+                                $(document).height() - sbh - 200]));
+        } else {
+          // no: only scroll if top/bottom edge of sidebar is at
+          // top/bottom edge of window
+          if (curtop > wintop && curbot > winbot) {
+            sb.css('top', $u.max([wintop - offset - 10, 0]));
+          } else if (curtop < wintop && curbot < winbot) {
+            sb.css('top', $u.min([winbot - sbh - offset - 20,
+                                  $(document).height() - sbh - 200]));
+          }
+        }
+      });
+    </script>
+
+  </head>
+  <body>
+<div class="pageheader">
+  <div>
+    <a href="../../../index.html">
+      <img src="../../../_static/lumos.png" alt="LUMOS" />
+    </a>
+  </div>
+</div>
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">Lumos home</a>&nbsp;|</li>
+        <li><a href="../../../contents.html">Documentation</a> &raquo;</li>
+
+          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <h1>Source code for lumos.model.workload</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">application</span>
+<span class="kn">from</span> <span class="nn">application</span> <span class="kn">import</span> <span class="n">App</span>
+<span class="kn">import</span> <span class="nn">kernel</span>
+<span class="kn">import</span> <span class="nn">scipy.stats</span>
+<span class="kn">import</span> <span class="nn">ConfigParser</span>
+<span class="c">#import xml.etree.ElementTree as ET</span>
+<span class="kn">from</span> <span class="nn">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
+
+
+<div class="viewcode-block" id="build_with_single_kernel"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.workload.build_with_single_kernel">[docs]</a><span class="k">def</span> <span class="nf">build_with_single_kernel</span><span class="p">(</span><span class="n">kernels</span><span class="p">,</span> <span class="n">cov_params</span><span class="p">):</span>
+    <span class="n">workload</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">app_num</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">kernels</span><span class="p">)</span>
+    <span class="n">name_idx_len</span> <span class="o">=</span> <span class="n">app_num</span> <span class="o">%</span> <span class="mi">10</span>
+    <span class="k">for</span> <span class="n">kernel</span><span class="p">,</span><span class="n">app_idx</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">kernels</span><span class="p">,</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">app_num</span><span class="p">)):</span>
+        <span class="n">cov</span> <span class="o">=</span> <span class="n">application</span><span class="o">.</span><span class="n">random_kernel_cov</span><span class="p">(</span><span class="n">cov_params</span><span class="p">)</span>
+        <span class="n">app_name</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%0*d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name_idx_len</span><span class="p">,</span> <span class="n">app_idx</span><span class="p">)</span>
+        <span class="n">app</span> <span class="o">=</span> <span class="n">application</span><span class="o">.</span><span class="n">build_single</span><span class="p">(</span><span class="n">cov</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">app_name</span><span class="p">)</span>
+        <span class="n">workload</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">workload</span>
+
+</div>
+<div class="viewcode-block" id="build"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.workload.build">[docs]</a><span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="n">app_num</span><span class="p">,</span> <span class="n">kernels</span><span class="p">,</span> <span class="n">cov_dist</span><span class="p">,</span> <span class="n">cov_param1</span><span class="p">,</span> <span class="n">cov_param2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Build a workload composed of applications with the specified</span>
+<span class="sd">    kernels coverage following a specified distribution.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">       app_num (int):</span>
+<span class="sd">          The number of applications in a workload.</span>
+<span class="sd">       kernels (list):</span>
+<span class="sd">          The list of kernel IDs.</span>
+<span class="sd">       cov_dist (str):</span>
+<span class="sd">          The distribution type of coverage, currently supports *normal*,</span>
+<span class="sd">          *lognormal*, *uniform*.</span>
+<span class="sd">       cov_param1,cov_param2 (number):</span>
+<span class="sd">          The statistical parameters for the distribution. Their real meanings</span>
+<span class="sd">          depend on the specific distribution. For *normal* and *lognormal*,</span>
+<span class="sd">          param1 is the mean, and param2 is the standard deviation. For *uniform*,</span>
+<span class="sd">          param1 is the minimum range, and param2 is the maximum range.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">       workload (list):</span>
+<span class="sd">          A list of successfully built applications.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">workload</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">probs</span> <span class="o">=</span> <span class="p">[</span> <span class="n">kernel</span><span class="o">.</span><span class="n">kernel_pool</span><span class="p">[</span><span class="n">kid</span><span class="p">][</span><span class="s">&#39;occur&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">kid</span> <span class="ow">in</span> <span class="n">kernels</span> <span class="p">]</span>
+    <span class="n">kernel_occ_probs</span> <span class="o">=</span> <span class="p">[</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">bernoulli</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">app_num</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">probs</span> <span class="p">]</span>
+
+    <span class="n">app_idx</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">occ</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">kernel_occ_probs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">occ</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">cov</span> <span class="o">=</span> <span class="n">application</span><span class="o">.</span><span class="n">random_uc_cov</span><span class="p">(</span><span class="n">cov_dist</span><span class="p">,</span> <span class="n">cov_param1</span><span class="p">,</span> <span class="n">cov_param2</span><span class="p">)</span>
+            <span class="n">app_name</span> <span class="o">=</span> <span class="s">&#39;app</span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">app_idx</span>
+            <span class="n">app_idx</span> <span class="o">=</span> <span class="n">app_idx</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">app</span> <span class="o">=</span> <span class="n">application</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">cov</span><span class="p">,</span> <span class="n">occ</span><span class="p">,</span> <span class="n">probs</span><span class="p">,</span> <span class="n">kernels</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">app_name</span><span class="p">)</span>
+            <span class="n">workload</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">workload</span>
+
+</div>
+<div class="viewcode-block" id="build_fixedcov"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.workload.build_fixedcov">[docs]</a><span class="k">def</span> <span class="nf">build_fixedcov</span><span class="p">(</span><span class="n">app_num</span><span class="p">,</span> <span class="n">kernels</span><span class="p">,</span> <span class="n">cov</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Build a workload composed of applications each of which includes a</span>
+<span class="sd">    kernel with the given coverage. The selection of a kernel for an</span>
+<span class="sd">    application follows the occur probability of that kernel.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">       app_num (int):</span>
+<span class="sd">          The number of applications in a workload.</span>
+<span class="sd">       kernels (list):</span>
+<span class="sd">          The list of kernel IDs.</span>
+<span class="sd">       cov (num):</span>
+<span class="sd">          The fixed coverage for each kernel once it presents in an</span>
+<span class="sd">          application, e.g. 0.4</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">       workload (list):</span>
+<span class="sd">          A list of successfully built applications.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">workload</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">probs</span> <span class="o">=</span> <span class="p">[</span> <span class="n">kernel</span><span class="o">.</span><span class="n">kernel_pool</span><span class="p">[</span><span class="n">kid</span><span class="p">][</span><span class="s">&#39;occur&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">kid</span> <span class="ow">in</span> <span class="n">kernels</span> <span class="p">]</span>
+    <span class="n">kernel_occ_probs</span> <span class="o">=</span> <span class="p">[</span> <span class="n">scipy</span><span class="o">.</span><span class="n">stats</span><span class="o">.</span><span class="n">bernoulli</span><span class="o">.</span><span class="n">rvs</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">app_num</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">probs</span> <span class="p">]</span>
+
+    <span class="n">app_idx</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">occ</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">kernel_occ_probs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">occ</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">app_name</span> <span class="o">=</span> <span class="s">&#39;app</span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">app_idx</span>
+            <span class="n">app_idx</span> <span class="o">=</span> <span class="n">app_idx</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">app</span> <span class="o">=</span> <span class="n">application</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">cov</span><span class="p">,</span> <span class="n">occ</span><span class="p">,</span> <span class="n">probs</span><span class="p">,</span> <span class="n">kernels</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">app_name</span><span class="p">)</span>
+            <span class="n">workload</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">workload</span>
+
+</div>
+<div class="viewcode-block" id="dump"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.workload.dump">[docs]</a><span class="k">def</span> <span class="nf">dump</span><span class="p">(</span><span class="n">workload</span><span class="p">,</span> <span class="n">fname</span><span class="o">=</span><span class="s">&#39;workload.cfg&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Dump workload into a file</span>
+
+<span class="sd">    :workload: @todo</span>
+<span class="sd">    :fname: @todo</span>
+<span class="sd">    :returns: @todo</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">ConfigParser</span><span class="o">.</span><span class="n">RawConfigParser</span><span class="p">()</span>
+    <span class="n">app_num</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">workload</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">app_num</span><span class="p">):</span>
+        <span class="n">app</span> <span class="o">=</span> <span class="n">workload</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">add_section</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">kernels</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">kernels</span>
+        <span class="n">kernel_config</span> <span class="o">=</span> <span class="s">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span> <span class="p">[</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">:</span><span class="si">%.3e</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">kid</span><span class="p">,</span> <span class="n">kernels</span><span class="p">[</span><span class="n">kid</span><span class="p">])</span> <span class="k">for</span> <span class="n">kid</span> <span class="ow">in</span> <span class="n">kernels</span><span class="p">]</span> <span class="p">)</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&#39;f_parallel&#39;</span><span class="p">,</span> <span class="n">app</span><span class="o">.</span><span class="n">f</span><span class="p">)</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&#39;kernel_config&#39;</span><span class="p">,</span> <span class="n">kernel_config</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">cfg</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="dump_xml"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.workload.dump_xml">[docs]</a><span class="k">def</span> <span class="nf">dump_xml</span><span class="p">(</span><span class="n">workload</span><span class="p">,</span> <span class="n">fname</span><span class="o">=</span><span class="s">&#39;workload.xml&#39;</span><span class="p">):</span>
+    <span class="n">root</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="s">&#39;workload&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">app</span> <span class="ow">in</span> <span class="n">workload</span><span class="p">:</span>
+        <span class="n">app_root</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="s">&#39;app&#39;</span><span class="p">)</span>
+        <span class="n">app_root</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="n">app</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="n">ele_fparallel</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">app_root</span><span class="p">,</span> <span class="s">&#39;f_parallel&#39;</span><span class="p">)</span>
+        <span class="n">ele_fparallel</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%.3e</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">app</span><span class="o">.</span><span class="n">f</span>
+
+        <span class="n">ele_kcfg</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">app_root</span><span class="p">,</span> <span class="s">&#39;kernel_config&#39;</span><span class="p">)</span>
+        <span class="n">kernels</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">kernels</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">kernels</span><span class="p">:</span>
+            <span class="n">ele_k</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">SubElement</span><span class="p">(</span><span class="n">ele_kcfg</span><span class="p">,</span> <span class="s">&#39;kernel&#39;</span><span class="p">)</span>
+            <span class="n">ele_k</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+            <span class="n">ele_k</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s">&#39;cov&#39;</span><span class="p">,</span> <span class="s">&#39;</span><span class="si">%.3e</span><span class="s">&#39;</span><span class="o">%</span><span class="n">kernels</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+
+
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">ElementTree</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+    <span class="n">tree</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">pretty_print</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="load"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.workload.load">[docs]</a><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">fname</span><span class="o">=</span><span class="s">&#39;workload.cfg&#39;</span><span class="p">):</span>
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">ConfigParser</span><span class="o">.</span><span class="n">RawConfigParser</span><span class="p">()</span>
+    <span class="n">cfg</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+    <span class="n">worklord</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">sec</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">sections</span><span class="p">():</span>
+        <span class="n">app_name</span> <span class="o">=</span> <span class="n">sec</span>
+        <span class="n">app_f</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sec</span><span class="p">,</span> <span class="s">&#39;f_parallel&#39;</span><span class="p">))</span>
+        <span class="n">app</span> <span class="o">=</span> <span class="n">App</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="n">app_f</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">app_name</span><span class="p">)</span>
+        <span class="n">kernel_config</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sec</span><span class="p">,</span> <span class="s">&#39;kernel_config&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">kcfg</span> <span class="ow">in</span> <span class="n">kernel_config</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">):</span>
+            <span class="n">kcfg_tmp</span> <span class="o">=</span> <span class="n">kcfg</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;:&#39;</span><span class="p">)</span>
+            <span class="n">kid</span> <span class="o">=</span> <span class="n">kcfg_tmp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">cov</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">kcfg_tmp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">app</span><span class="o">.</span><span class="n">reg_kernel</span><span class="p">(</span><span class="n">kid</span><span class="p">,</span> <span class="n">cov</span><span class="p">)</span>
+            <span class="n">workload</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">workload</span>
+
+
+</div>
+<div class="viewcode-block" id="load_xml"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.workload.load_xml">[docs]</a><span class="k">def</span> <span class="nf">load_xml</span><span class="p">(</span><span class="n">fname</span><span class="o">=</span><span class="s">&#39;workload.xml&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Load a workload from an XML file</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">       fname (str):</span>
+<span class="sd">          The XML file to be loaded</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">       workload (list):</span>
+<span class="sd">          A list of applications this workload contains.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">workload</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">app_root</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s">&#39;app&#39;</span><span class="p">):</span>
+        <span class="n">app_name</span> <span class="o">=</span> <span class="n">app_root</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span>
+
+        <span class="n">ele</span> <span class="o">=</span> <span class="n">app_root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;f_parallel&#39;</span><span class="p">)</span>
+        <span class="n">f_parallel</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ele</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">app</span> <span class="o">=</span> <span class="n">App</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="n">f_parallel</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">app_name</span><span class="p">)</span>
+
+        <span class="n">kcfg_root</span> <span class="o">=</span> <span class="n">app_root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;kernel_config&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k_ele</span> <span class="ow">in</span> <span class="n">kcfg_root</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s">&#39;kernel&#39;</span><span class="p">):</span>
+            <span class="n">kid</span> <span class="o">=</span> <span class="n">k_ele</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span>
+            <span class="n">cov</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">k_ele</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;cov&#39;</span><span class="p">))</span>
+            <span class="n">app</span><span class="o">.</span><span class="n">reg_kernel</span><span class="p">(</span><span class="n">kid</span><span class="p">,</span> <span class="n">cov</span><span class="p">)</span>
+
+        <span class="n">workload</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">workload</span>
+</div>
+<div class="viewcode-block" id="add_fixedcov"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.workload.add_fixedcov">[docs]</a><span class="k">def</span> <span class="nf">add_fixedcov</span><span class="p">(</span><span class="n">workload_from</span><span class="p">,</span> <span class="n">kernels</span><span class="p">,</span> <span class="n">fixedcov</span><span class="p">,</span> <span class="n">workload_to</span><span class="p">):</span>
+    <span class="k">if</span> <span class="s">&#39;fixedcov&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kernels</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;can not find the kernel to have fixed coverage&quot;</span><span class="p">)</span>
+
+    <span class="n">workload</span> <span class="o">=</span> <span class="n">load_xml</span><span class="p">(</span><span class="n">workload_from</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">app</span> <span class="ow">in</span> <span class="n">workload</span><span class="p">:</span>
+        <span class="n">app</span><span class="o">.</span><span class="n">reg_kernel</span><span class="p">(</span><span class="s">&#39;fixedcov&#39;</span><span class="p">,</span> <span class="n">fixedcov</span><span class="o">*</span><span class="mf">0.01</span><span class="p">)</span>
+
+    <span class="n">dump_xml</span><span class="p">(</span><span class="n">workload</span><span class="p">,</span> <span class="n">workload_to</span><span class="p">)</span>
+
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="kn">import</span> <span class="nn">kernel</span>
+    <span class="c">#kernels = kernel.load_xml(&#39;config/fixednorm_10.xml&#39;)</span>
+    <span class="c">#workload = build(10, kernels, &#39;norm&#39;, 0.4, 0.1)</span>
+    <span class="c">#dump_xml(workload, fname=&#39;workload_test.xml&#39;)</span>
+
+    <span class="n">kernels</span> <span class="o">=</span> <span class="n">kernel</span><span class="o">.</span><span class="n">load_xml</span><span class="p">(</span><span class="s">&#39;analyses/asicopt/kernels_norm40x10_fixed40.xml&#39;</span><span class="p">)</span>
+    <span class="n">add_fixedcov</span><span class="p">(</span><span class="n">workload_from</span><span class="o">=</span><span class="s">&#39;workload_fpga40x_cov40.xml&#39;</span><span class="p">,</span> <span class="n">kernels</span><span class="o">=</span><span class="n">kernels</span><span class="p">,</span>
+            <span class="n">fixedcov</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">workload_to</span><span class="o">=</span><span class="s">&#39;analyses/asicopt/workload_fixed40_norm40x10_cov40.xml&#39;</span><span class="p">)</span>
+    <span class="c">#cov_dist_params = {&#39;dist&#39;: &#39;norm&#39;,</span>
+            <span class="c">#&#39;mean&#39;: 0.4, &#39;std&#39;: 0.1}</span>
+    <span class="c">#workload = build_with_single_kernel(kernels, cov_dist_params)</span>
+    <span class="c">#dump_xml(workload, fname=&#39;config/workload_norm80x20_cov40x10.xml&#39;)</span>
+    <span class="c">#kernels = kernel.load_xml(&#39;analyses/asicopt/kernels_norm40x10.xml&#39;)</span>
+    <span class="c">#workload = build_fixedcov(500, kernels, 0.5)</span>
+    <span class="c">#dump_xml(workload, fname=&#39;workload_fpga40x_cov50.xml&#39;)</span>
+    <span class="c">#workload = build_fixedcov(500, kernels, 0.7)</span>
+    <span class="c">#dump_xml(workload, fname=&#39;workload_fpga40x_cov70.xml&#39;)</span>
+    <span class="c">#workload = build_fixedcov(500, kernels, 0.3)</span>
+    <span class="c">#dump_xml(workload, fname=&#39;workload_fpga40x_cov30.xml&#39;)</span>
+    <span class="c">#workload = build_fixedcov(500, kernels, 0.4)</span>
+    <span class="c">#dump_xml(workload, fname=&#39;workload_fpga40x_cov40.xml&#39;)</span>
+    <span class="c">#workload = load_xml()</span>
+    <span class="c">#dump_xml(workload, fname=&#39;workload2.xml&#39;)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li><a href="../../../index.html">Lumos home</a>&nbsp;|</li>
+        <li><a href="../../../contents.html">Documentation</a> &raquo;</li>
+
+          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Liang Wang.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
