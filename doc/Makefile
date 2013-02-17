@@ -40,7 +40,8 @@ help:
 	@echo "  apidoc     to make apidoc"
 
 clean:
-	-rm -rf $(BUILDDIR)/*
+	@echo " There is a git repository in $(BUILDDIR)/html, quit delete the directory"
+#@echo "-rm -rf $(BUILDDIR)/*"
 
 publish: html
 	@echo

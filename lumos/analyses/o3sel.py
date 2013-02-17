@@ -25,7 +25,13 @@ import multiprocessing
 import Queue
 import scipy.stats
 import numpy
-from mpltools import style
+
+try:
+    from mpltools import style
+    use_mpl_style = True
+except ImportError:
+    use_mpl_style = False
+
 import itertools
 
 ANALYSIS_NAME = 'o3sel'
@@ -129,8 +135,9 @@ class IOO3(object):
         #y_lists = [rel_o3, rel_sel, rel_sel2, rel_sel3]
         y_lists = [rel_o3, rel_sel, rel_sel2]
 
+        if use_mpl_style:
+            style.use('ggplot')
 
-        style.use('ggplot')
         matplotlib.rc('legend', fontsize=10)
         matplotlib.rc('axes', labelsize=10)
 
@@ -294,4 +301,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

@@ -32,7 +32,12 @@ import Queue
 import scipy.stats
 import numpy
 import numpy.random
-from mpltools import style
+
+try:
+    from mpltools import style
+    use_mpl_style = True
+except ImportError:
+    use_mpl_style = False
 
 ANALYSIS_NAME = 'asicdual'
 HOME = joinpath(analysis.HOME, ANALYSIS_NAME)
@@ -192,7 +197,9 @@ class ASICDual(BaseAnalysis):
             gmean_lists = pickle.load(f)
             hmean_lists = pickle.load(f)
 
-        style.use('ggplot')
+        if use_mpl_style:
+            style.use('ggplot')
+
         x_lists = numpy.array(self.asic_alloc) * 0.01
         legend_labels=['%d%%' % alloc for alloc in self.kfirst_alloc]
         def cb_func(axes,fig):

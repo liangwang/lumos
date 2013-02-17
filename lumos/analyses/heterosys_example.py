@@ -30,7 +30,12 @@ import Queue
 import scipy.stats
 import numpy
 import numpy.random
-from mpltools import style
+
+try:
+    from mpltools import style
+    use_mpl_style = True
+except ImportError:
+    use_mpl_style = False
 
 ANALYSIS_NAME = 'heterosys_example'
 HOME = joinpath(analysis.HOME, ANALYSIS_NAME)
@@ -185,7 +190,9 @@ class HeterosysExample(BaseAnalysis):
         f.close()
 
     def plot(self):
-        style.use('ggplot')
+        if use_mpl_style:
+            style.use('ggplot')
+
         dfn = joinpath(self.DATA_DIR, ('%s.pypkl' % self.id))
         with open(dfn, 'rb') as f:
             mean_lists = pickle.load(f)
@@ -387,4 +394,3 @@ if __name__ == '__main__':
             do_func()
         except AttributeError as ae:
             logging.warning("No action %s supported by this analysis" % a)
-

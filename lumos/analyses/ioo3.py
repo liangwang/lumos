@@ -25,8 +25,14 @@ import multiprocessing
 import Queue
 import scipy.stats
 import numpy
-from mpltools import style
+
 import itertools
+
+try:
+    from mpltools import style
+    use_mpl_style = True
+except ImportError:
+    use_mpl_style = False
 
 ANALYSIS_NAME = 'ioo3'
 HOME = joinpath(analysis.HOME, ANALYSIS_NAME)
@@ -120,7 +126,8 @@ class IOO3(object):
             appf_list = pickle.load(f)
             sys_sel_perfs = pickle.load(f)
 
-        style.use('ggplot')
+        if use_mpl_style:
+            style.use('ggplot')
 
         y_lists = [sys_o3_perfs, sys_sel_perfs, sys_io_perfs]
 
@@ -151,7 +158,9 @@ class IOO3(object):
         ofn = joinpath(self.FIG_DIR,
                 '{id}_relative.{fmt}'.format(id=self.id, fmt=self.fmt))
 
-        style.use('ggplot')
+        if use_mpl_style:
+            style.use('ggplot')
+
         matplotlib.rc('legend', fontsize=10)
         matplotlib.rc('axes', labelsize=10)
 
@@ -186,8 +195,9 @@ class IOO3(object):
         rel_sel3 = [ sel_perf/io_perf for (sel_perf,io_perf) in zip(sys_sel3_perfs, sys_io_perfs) ]
         y_lists = [rel_o3, rel_sel, rel_sel2, rel_sel3]
 
+        if use_mpl_style:
+            style.use('ggplot')
 
-        style.use('ggplot')
         matplotlib.rc('legend', fontsize=10)
         matplotlib.rc('axes', labelsize=10)
 
@@ -354,4 +364,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

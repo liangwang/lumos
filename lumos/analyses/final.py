@@ -8,7 +8,7 @@
 """
 import cPickle as pickle
 import matplotlib
-from mpltools import style
+
 from os.path import join as joinpath
 from optparse import OptionParser
 import os
@@ -20,6 +20,11 @@ from lumos.model.freq import readNormData, readMCData
 from analysis import BaseAnalysis, make_ws_dirs
 from analysis import plot_data, plot_series, plot_series2
 
+try:
+    from mpltools import style
+    use_mpl_style = True
+except ImportError:
+    use_mpl_style = False
 
 FIG_DIR,DATA_DIR=make_ws_dirs('final-report')
 
@@ -865,7 +870,9 @@ class MainAnalyzer(object):
         util_lists.append(util_list_dim)
         vdd_lists.append(vdd_list_dim)
 
-        style.use('ggplot')
+        if use_mpl_style:
+            style.use('ggplot')
+
         figsize = (4, 2.5)
         matplotlib.rc('xtick', labelsize=11)
         matplotlib.rc('ytick', labelsize=11)
@@ -1262,4 +1269,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-

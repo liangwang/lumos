@@ -25,8 +25,14 @@ import multiprocessing
 import Queue
 import scipy.stats
 import numpy
-from mpltools import style
+
 import itertools
+
+try:
+    from mpltools import style
+    use_mpl_style = True
+except ImportError:
+    use_mpl_style = False
 
 ANALYSIS_NAME = 'dimsi_fpga'
 HOME = joinpath(analysis.HOME, ANALYSIS_NAME)
@@ -164,7 +170,8 @@ class DimsiFPGA(object):
         y = numpy.array(cov_list)
         z = numpy.array(fpga_area_opt_list)
 
-        style.use('ggplot')
+        if use_mpl_style:
+            style.use('ggplot')
 
         fig = plt.figure(figsize=(6, 4.5))
         axes_scatter = fig.add_subplot(111)
@@ -553,7 +560,9 @@ class FPGASensitivity(object):
 
 
     def plot_stack(self):
-        style.use('ggplot')
+        if use_mpl_style:
+            style.use('ggplot')
+
         ktag_list = ('norm80x20', 'norm40x10', 'norm20x5')
         ctag_list = ('cov40x10', 'cov20x5')
         series = [ '{k_tag}_{c_tag}'.format(k_tag=k_tag,c_tag=c_tag) for k_tag in ktag_list for c_tag in ctag_list ]
@@ -621,7 +630,8 @@ class FPGASensitivity(object):
 
 
     def plot_scatter_and_pie(self):
-        style.use('ggplot')
+        if use_mpl_style:
+            style.use('ggplot')
 
         for k_tag in ('norm80x20', 'norm40x10', 'norm20x5'):
             for c_tag in ('cov40x10', 'cov20x5'):

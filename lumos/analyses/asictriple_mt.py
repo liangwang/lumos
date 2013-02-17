@@ -25,7 +25,12 @@ import Queue
 import scipy.stats
 import numpy
 import numpy.random
-from mpltools import style
+
+try:
+    from mpltools import style
+    use_mpl_style = True
+except ImportError:
+    use_mpl_style = False
 
 ANALYSIS_NAME = 'asictriple'
 HOME = joinpath(analysis.HOME, ANALYSIS_NAME)
@@ -100,7 +105,7 @@ class ASICTriple(object):
 
         #self.fpga_area_list = (5, 10, 15, 20, 25, 30, 35, 40, 45, 50,
                 #55, 60, 65, 70, 75, 80, 85, 90, 95)
-        #self.fpga_area_list = range(5, 91) 
+        #self.fpga_area_list = range(5, 91)
         #self.cov_list = (0.1, 0.2, 0.3, 0.4, 0.5, 0.6)
 
 
@@ -214,7 +219,9 @@ class ASICTriple(object):
             gmean_lists = pickle.load(f)
             hmean_lists = pickle.load(f)
 
-        style.use('ggplot')
+        if use_mpl_style:
+            style.use('ggplot')
+
         x_lists = numpy.array(self.asic_area_list) * 0.01
         legend_labels=['-'.join(['%d'%a for a in alloc_config]) for alloc_config in self.alloc_configs]
         def cb_func(axes,fig):

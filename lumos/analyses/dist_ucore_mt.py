@@ -30,7 +30,12 @@ import scipy.stats
 import numpy
 import numpy.random
 from mpl_toolkits.mplot3d import Axes3D
-from mpltools import style
+
+try:
+    from mpltools import style
+    use_mpl_style = True
+except ImportError:
+    use_mpl_style = False
 
 ANALYSIS_NAME = 'dist_ucore'
 HOME = joinpath(analysis.HOME, ANALYSIS_NAME)
@@ -50,7 +55,7 @@ class Hybrid(BaseAnalysis):
             self.result_queue = result_queue
             self.kill_received = False
 
-            self.asic_area_list = range(5, 91, 2) 
+            self.asic_area_list = range(5, 91, 2)
             self.budget = budget
             self.workload = workload
 
@@ -101,7 +106,7 @@ class Hybrid(BaseAnalysis):
 
         #self.fpga_area_list = (5, 10, 15, 20, 25, 30, 35, 40, 45, 50,
                 #55, 60, 65, 70, 75, 80, 85, 90, 95)
-        #self.fpga_area_list = range(5, 91) 
+        #self.fpga_area_list = range(5, 91)
         #self.cov_list = (0.1, 0.2, 0.3, 0.4, 0.5, 0.6)
 
         kernels = kernel.load_xml(options.kernels)
@@ -185,7 +190,9 @@ class Hybrid(BaseAnalysis):
         f.close()
 
     def plot(self):
-        style.use('ggplot')
+        if use_mpl_style:
+            style.use('ggplot')
+
         dfn = joinpath(self.DATA_DIR, ('%s.pypkl' % self.id))
         with open(dfn, 'rb') as f:
             mean_lists = pickle.load(f)
@@ -338,7 +345,7 @@ class ASICQuad(BaseAnalysis):
 
         #self.fpga_area_list = (5, 10, 15, 20, 25, 30, 35, 40, 45, 50,
                 #55, 60, 65, 70, 75, 80, 85, 90, 95)
-        #self.fpga_area_list = range(5, 91) 
+        #self.fpga_area_list = range(5, 91)
         #self.cov_list = (0.1, 0.2, 0.3, 0.4, 0.5, 0.6)
 
         self.app_f = float(options.app_f)
@@ -448,7 +455,9 @@ class ASICQuad(BaseAnalysis):
         f.close()
 
     def plot(self):
-        style.use('ggplot')
+        if use_mpl_style:
+            style.use('ggplot')
+
         dfn = joinpath(self.DATA_DIR, ('%s.pypkl' % self.id))
         with open(dfn, 'rb') as f:
             mean_lists = pickle.load(f)
@@ -583,7 +592,7 @@ class ASICTriple(BaseAnalysis):
 
         #self.fpga_area_list = (5, 10, 15, 20, 25, 30, 35, 40, 45, 50,
                 #55, 60, 65, 70, 75, 80, 85, 90, 95)
-        #self.fpga_area_list = range(5, 91) 
+        #self.fpga_area_list = range(5, 91)
         #self.cov_list = (0.1, 0.2, 0.3, 0.4, 0.5, 0.6)
 
         self.app_f = float(options.app_f)
@@ -767,7 +776,9 @@ class ASICTriple(BaseAnalysis):
         f.close()
 
     def plot(self):
-        style.use('ggplot')
+        if use_mpl_style:
+            style.use('ggplot')
+
         dfn = joinpath(self.DATA_DIR, ('%s.pypkl' % self.id))
         with open(dfn, 'rb') as f:
             mean_lists = pickle.load(f)
@@ -849,7 +860,7 @@ class ASICDual(BaseAnalysis):
             self.result_queue = result_queue
             self.kill_received = False
 
-            self.asic_area_list = range(5, 91, 2) 
+            self.asic_area_list = range(5, 91, 2)
             self.budget = budget
             self.workload = workload
 
@@ -897,7 +908,7 @@ class ASICDual(BaseAnalysis):
 
         #self.fpga_area_list = (5, 10, 15, 20, 25, 30, 35, 40, 45, 50,
                 #55, 60, 65, 70, 75, 80, 85, 90, 95)
-        #self.fpga_area_list = range(5, 91) 
+        #self.fpga_area_list = range(5, 91)
         #self.cov_list = (0.1, 0.2, 0.3, 0.4, 0.5, 0.6)
 
         self.app_f = float(options.app_f)
@@ -1131,7 +1142,7 @@ class ASICSingle(BaseAnalysis):
             self.result_queue = result_queue
             self.kill_received = False
 
-            self.asic_area_list = range(5, 91, 2) 
+            self.asic_area_list = range(5, 91, 2)
             self.budget = budget
             self.workload = workload
 
@@ -1177,7 +1188,7 @@ class ASICSingle(BaseAnalysis):
 
         #self.fpga_area_list = (5, 10, 15, 20, 25, 30, 35, 40, 45, 50,
                 #55, 60, 65, 70, 75, 80, 85, 90, 95)
-        #self.fpga_area_list = range(5, 91) 
+        #self.fpga_area_list = range(5, 91)
         #self.cov_list = (0.1, 0.2, 0.3, 0.4, 0.5, 0.6)
 
         self.app_f = float(options.app_f)
@@ -1407,7 +1418,7 @@ class ASICAnalysis(BaseAnalysis):
             self.result_queue = result_queue
             self.kill_received = False
 
-            self.asic_area_list = range(5, 91, 2) 
+            self.asic_area_list = range(5, 91, 2)
             self.budget = budget
 
         def run(self):
@@ -1577,7 +1588,7 @@ class FPGAAnalysis(BaseAnalysis):
             self.result_queue = result_queue
             self.kill_received = False
 
-            self.fpga_area_list = range(5, 91, 2) 
+            self.fpga_area_list = range(5, 91, 2)
             self.budget = budget
 
             if fixed_area:
@@ -1630,7 +1641,7 @@ class FPGAAnalysis(BaseAnalysis):
 
         #self.fpga_area_list = (5, 10, 15, 20, 25, 30, 35, 40, 45, 50,
                 #55, 60, 65, 70, 75, 80, 85, 90, 95)
-        #self.fpga_area_list = range(5, 91) 
+        #self.fpga_area_list = range(5, 91)
         #self.cov_list = (0.1, 0.2, 0.3, 0.4, 0.5, 0.6)
 
         self.app_f = float(options.app_f)
@@ -1765,7 +1776,7 @@ class FPGAFixedArea(BaseAnalysis):
             self.result_queue = result_queue
             self.kill_received = False
 
-            self.fpga_area_list = range(5, 91, 2) 
+            self.fpga_area_list = range(5, 91, 2)
             self.budget = budget
 
             if fixed_area:
@@ -1841,7 +1852,7 @@ class FPGAFixedArea(BaseAnalysis):
 
         #self.fpga_area_list = (5, 10, 15, 20, 25, 30, 35, 40, 45, 50,
                 #55, 60, 65, 70, 75, 80, 85, 90, 95)
-        #self.fpga_area_list = range(5, 91) 
+        #self.fpga_area_list = range(5, 91)
         #self.cov_list = (0.1, 0.2, 0.3, 0.4, 0.5, 0.6)
 
         self.app_f = float(options.app_f)
@@ -2015,7 +2026,7 @@ class FPGAFixedArea2(BaseAnalysis):
             self.result_queue = result_queue
             self.kill_received = False
 
-            self.fpga_area_list = range(5, 91, 2) 
+            self.fpga_area_list = range(5, 91, 2)
             self.budget = budget
 
             self.workload = workload
@@ -2062,7 +2073,7 @@ class FPGAFixedArea2(BaseAnalysis):
 
         #self.fpga_area_list = (5, 10, 15, 20, 25, 30, 35, 40, 45, 50,
                 #55, 60, 65, 70, 75, 80, 85, 90, 95)
-        #self.fpga_area_list = range(5, 91) 
+        #self.fpga_area_list = range(5, 91)
         #self.cov_list = (0.1, 0.2, 0.3, 0.4, 0.5, 0.6)
 
         self.app_f = float(options.app_f)

@@ -23,9 +23,15 @@ import multiprocessing
 import Queue
 import scipy.stats
 import numpy
-from mpltools import style
+
 import itertools
 import operator
+
+try:
+    from mpltools import style
+    use_mpl_style = True
+except ImportError:
+    use_mpl_style = False
 
 ANALYSIS_NAME = 'asicopt'
 HOME = joinpath(analysis.HOME, ANALYSIS_NAME)
