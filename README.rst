@@ -6,7 +6,7 @@ About
 =====
 
 An analytical model written in Python, to study the performance of dim silicon.
-Check out the `document <http://liangwang.github.com/lumox>`_ for more details.
+Check out the `document <http://liangwang.github.com/lumos>`_ for more details.
 
 Directory Hierarchy
 ===================
