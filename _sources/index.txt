@@ -79,7 +79,7 @@ transparent to users). Just follow these steps:
 
 1. Get the tarball, and unpack the package::
 
-   >tar zxvf Lumos-0.1.tar.
+   >tar zxvf Lumos-0.1.tar.gz
 
 2. Set environment variable ``LUMOS_HOME`` to root directory of the
    package::
@@ -89,7 +89,7 @@ transparent to users). Just follow these steps:
 
 3. Run the sample analysis::
 
-   >python lumos/analyses/core.py
+   >python lumos/analyses/homosys_example.py
 
 4. Done!
 
