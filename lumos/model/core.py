@@ -30,7 +30,10 @@ O3_PERF_BASE = 28.48
 class AbstractCore(object):
     """
     Abstract Core module. Need to be extended to real cores with a
-    couple of base line characteristics at nominal voltage.
+    couple of base line characteristics at nominal voltage and 45nm,
+    such as area (``base_area``), frequency (``base_freq``), relative
+    performance (``base_perf``), dynamic power (``base_dp``), and static power
+    (``base_sp``).
 
     Attributes:
        tech (num):
