@@ -380,7 +380,7 @@ if __name__ == '__main__':
         logging.error('unknwon budget')
 
 
-    anl = Hybrid(options,budget=budget)
+    anl = HeterosysExample(options,budget=budget)
 
 
     if options.action:
