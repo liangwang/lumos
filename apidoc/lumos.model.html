@@ -326,7 +326,10 @@ in-order core and an out-of-order core respectively.</p>
 <em class="property">class </em><tt class="descclassname">lumos.model.core.</tt><tt class="descname">AbstractCore</tt><big>(</big><em>mech=None</em>, <em>tech=None</em>, <em>pv=False</em>, <em>pen_adjust=None</em>, <em>sigma_level=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/core.html#AbstractCore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.AbstractCore" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>Abstract Core module. Need to be extended to real cores with a
-couple of base line characteristics at nominal voltage.</p>
+couple of base line characteristics at nominal voltage and 45nm,
+such as area (<tt class="docutils literal"><span class="pre">base_area</span></tt>), frequency (<tt class="docutils literal"><span class="pre">base_freq</span></tt>), relative
+performance (<tt class="docutils literal"><span class="pre">base_perf</span></tt>), dynamic power (<tt class="docutils literal"><span class="pre">base_dp</span></tt>), and static power
+(<tt class="docutils literal"><span class="pre">base_sp</span></tt>).</p>
 <dl class="docutils">
 <dt>Attributes:</dt>
 <dd><dl class="first last docutils">
