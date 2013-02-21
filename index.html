@@ -105,6 +105,7 @@
 <li><a class="reference internal" href="#example-analyses">Example Analyses</a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#license">License</a></li>
 <li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
 </ul>
 </li>
@@ -165,9 +166,9 @@ always get the latest code of Lumos at <a class="reference external" href="https
 </div>
 <div class="section" id="quick-start">
 <h2>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this headline">¶</a></h2>
-<p>Lumos is written in Python, so you definitely need a <a class="reference external" href="http://www.python.org">python</a> installation to run it. Before starting to use the Lumos
-framework, make sure you have meet the requirement for extra python
-packages:</p>
+<p>Lumos is written in Python, so you need a <a class="reference external" href="http://www.python.org">python</a>
+installation to run it. Before starting to use the Lumos framework, make sure
+you have met the requirement for extra python packages:</p>
 <ul>
 <li><p class="first">numpy and scipy</p>
 <p>This is usually included in a typical installation of python. In
@@ -219,20 +220,19 @@ package:</p>
 </div>
 <div class="section" id="analysis">
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
-<p>A typical analysis in the Lumos framework involves with three steps:
-define the worload, define the system, do analysis.</p>
+<p>A typical analysis in the Lumos framework involves three steps: define the
+worload, define the system, do analysis.</p>
 <div class="section" id="define-workload">
 <h3>Define Workload<a class="headerlink" href="#define-workload" title="Permalink to this headline">¶</a></h3>
-<p>The workload in the Lumos framework is defined as a pool of
-applications. Each single application is divided into serial and
-parallel parts, and the ratio is specified as <tt class="docutils literal"><span class="pre">f_parallel</span></tt>. Part
-of an application can be also partitioned into several computing
-kernels. These kernels can be accelerated by various computing
-units, such as multicore, possibly dim CPU cores, RL, and
-customized ASIC. We model the speedup and the power consumption of
-RL and customized ASIC for a given kernel by u-core parameters.</p>
-<p>A workload is defined by enumerate all applications in the format
-of XML, such as:</p>
+<p>The workload in the Lumos framework is defined as a pool of applications. Each
+single application is divided into serial and parallel parts, and the ratio is
+specified as <tt class="docutils literal"><span class="pre">f_parallel</span></tt>. Part of an application can be also partitioned into
+several computing kernels. These kernels can be accelerated by various computing
+units, such as multicore, possibly dim CPU cores, RL, and customized ASIC. We
+model the speedup and the power consumption of RL and customized ASIC for a
+given kernel by u-core parameters.</p>
+<p>A workload is defined by enumerating all applications in the format of XML, such
+as:</p>
 <div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;workload&gt;</span>
    <span class="nt">&lt;app</span> <span class="na">name=</span><span class="s">&quot;app0&quot;</span><span class="nt">&gt;</span>
      <span class="nt">&lt;f_parallel&gt;</span>1<span class="nt">&lt;/f_parallel&gt;</span>
@@ -244,9 +244,12 @@ of XML, such as:</p>
 <span class="nt">&lt;/workload&gt;</span>
 </pre></div>
 </div>
-<p>where <tt class="docutils literal"><span class="pre">f_parallel</span></tt> is the parallel ratio. Within
-<tt class="docutils literal"><span class="pre">kernel_config</span></tt>, the <tt class="docutils literal"><span class="pre">name</span></tt> is the name of the kernel, and
-<tt class="docutils literal"><span class="pre">cov</span></tt> is the coverage in percentage of the corresponding kernel.</p>
+<p>where <tt class="docutils literal"><span class="pre">f_parallel</span></tt> is the parallel ratio. Within <tt class="docutils literal"><span class="pre">kernel_config</span></tt>, the
+<tt class="docutils literal"><span class="pre">name</span></tt> is the name of the kernel, and <tt class="docutils literal"><span class="pre">cov</span></tt> is the kernel&#8217;s execution time
+in percentage to the application running with a single baseline core (e.g. an
+in-order core at the nominal supply voltage and 45nm). Coverages of kernels are
+not necessarily summed to 100%. Lumos will assume the rest of application can
+not be accelerated and only be executed on conventional cores.</p>
 <p>A set of kernels is enumerated in the format of XML as well, such
 as:</p>
 <div class="highlight-xml"><div class="highlight"><pre><span class="nt">&lt;kernels&gt;</span>
@@ -262,27 +265,26 @@ as:</p>
 <p>Where <tt class="docutils literal"><span class="pre">miu</span></tt> is the relative performance for FPGA and ASIC,
 respectively. <tt class="docutils literal"><span class="pre">occur</span></tt> is the probability of this kernel to be
 presented in an application.</p>
-<p>There are a couple of helper functions to assist you generating
-kernels, applications following certain statistical distributions. See
+<p>There are a couple of helper functions to assist you in generating kernels and
+applications following certain statistical distributions. See
 <a class="reference internal" href="apidoc/lumos.model.html#lumos.model.kernel.create_fixednorm_xml" title="lumos.model.kernel.create_fixednorm_xml"><tt class="xref py py-func docutils literal"><span class="pre">create_fixednorm_xml()</span></tt></a>,
 <a class="reference internal" href="apidoc/lumos.model.html#lumos.model.kernel.create_randnorm_xml" title="lumos.model.kernel.create_randnorm_xml"><tt class="xref py py-func docutils literal"><span class="pre">create_randnorm_xml()</span></tt></a>,
 <a class="reference internal" href="apidoc/lumos.model.html#lumos.model.workload.build" title="lumos.model.workload.build"><tt class="xref py py-func docutils literal"><span class="pre">build()</span></tt></a>,
-<a class="reference internal" href="apidoc/lumos.model.html#lumos.model.workload.build_fixedcov" title="lumos.model.workload.build_fixedcov"><tt class="xref py py-func docutils literal"><span class="pre">build_fixedcov()</span></tt></a> for more details.
-Moreover, existing XML descriptions for kernels and workload can be
-loaded by <a class="reference internal" href="apidoc/lumos.model.html#lumos.model.kernel.load_xml" title="lumos.model.kernel.load_xml"><tt class="xref py py-func docutils literal"><span class="pre">load_xml()</span></tt></a> and
-<a class="reference internal" href="apidoc/lumos.model.html#lumos.model.workload.load_xml" title="lumos.model.workload.load_xml"><tt class="xref py py-func docutils literal"><span class="pre">load_xml()</span></tt></a>, respectively.</p>
+<a class="reference internal" href="apidoc/lumos.model.html#lumos.model.workload.build_fixedcov" title="lumos.model.workload.build_fixedcov"><tt class="xref py py-func docutils literal"><span class="pre">build_fixedcov()</span></tt></a> for more details. Moreover,
+existing XML descriptions can be loaded by <a class="reference internal" href="apidoc/lumos.model.html#lumos.model.kernel.load_xml" title="lumos.model.kernel.load_xml"><tt class="xref py py-func docutils literal"><span class="pre">load_xml()</span></tt></a>
+for kernels and <a class="reference internal" href="apidoc/lumos.model.html#lumos.model.workload.load_xml" title="lumos.model.workload.load_xml"><tt class="xref py py-func docutils literal"><span class="pre">load_xml()</span></tt></a> for workloads.</p>
 </div>
 <div class="section" id="define-system">
 <h3>Define System<a class="headerlink" href="#define-system" title="Permalink to this headline">¶</a></h3>
 <p>Lumos supports conventional cores such as a Niagara2-like in-order core and an
 out-or-order core (<a class="reference internal" href="apidoc/lumos.model.html#lumos.model.core.IOCore" title="lumos.model.core.IOCore"><tt class="xref py py-class docutils literal"><span class="pre">IOCore</span></tt></a> and
 <a class="reference internal" href="apidoc/lumos.model.html#lumos.model.core.O3Core" title="lumos.model.core.O3Core"><tt class="xref py py-class docutils literal"><span class="pre">O3Core</span></tt></a>), as well as un-conventional cores, such as
-accelerators (<a class="reference internal" href="apidoc/lumos.model.html#lumos.model.ucore.UCore" title="lumos.model.ucore.UCore"><tt class="xref py py-class docutils literal"><span class="pre">UCore</span></tt></a>), federated cores
+accelerators (<a class="reference internal" href="apidoc/lumos.model.html#lumos.model.ucore.UCore" title="lumos.model.ucore.UCore"><tt class="xref py py-class docutils literal"><span class="pre">UCore</span></tt></a>), and federated cores
 (<a class="reference internal" href="apidoc/lumos.model.html#lumos.model.fedcore.FedCore" title="lumos.model.fedcore.FedCore"><tt class="xref py py-class docutils literal"><span class="pre">FedCore</span></tt></a>).</p>
 <p>On top of these cores, Lumos supports two kinds of systems: a homogeneous
-multi-core system (<a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HomoSys" title="lumos.model.system.HomoSys"><tt class="xref py py-class docutils literal"><span class="pre">HomoSys</span></tt></a>), and a heterogeneous
+multi-core system (<tt class="xref py py-class docutils literal"><span class="pre">HomogSys</span></tt>), and a heterogeneous
 multi-core system with a serial core and certain amount of throughput cores, as
-well as accelerators (<a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HeteroSys" title="lumos.model.system.HeteroSys"><tt class="xref py py-class docutils literal"><span class="pre">HeteroSys</span></tt></a>). The usage of
+well as accelerators (<tt class="xref py py-class docutils literal"><span class="pre">HeterogSys</span></tt>). The usage of
 these two systems are demonstrated later in Example Analysis section.</p>
 </div>
 <div class="section" id="do-analysis">
@@ -290,37 +292,37 @@ these two systems are demonstrated later in Example Analysis section.</p>
 <p><a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HeteroSys" title="lumos.model.system.HeteroSys"><tt class="xref py py-class docutils literal"><span class="pre">HeteroSys</span></tt></a> provides a method
 <a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HeteroSys.get_perf" title="lumos.model.system.HeteroSys.get_perf"><tt class="xref py py-func docutils literal"><span class="pre">get_perf()</span></tt></a> to get the relative
 performance of the system for a given application.</p>
-<p><a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HomoSys" title="lumos.model.system.HomoSys"><tt class="xref py py-class docutils literal"><span class="pre">HomoSys</span></tt></a> provides a couple of methods to retrieve
+<p><tt class="xref py py-class docutils literal"><span class="pre">HomogSys</span></tt> provides a couple of methods to retrieve
 relative performance of system for a given application:</p>
 <ul>
-<li><p class="first">Explicit constrain on the supply voltage.</p>
+<li><p class="first">Explicit constraint on the supply voltage.</p>
 <p>In this case, the system will try to enable as many cores at the given supply
 as possible within the given power budget. If the supply voltage is relatively
 high, it ends up with a dark silicon homogeneous many-core system. Use
-<a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HomoSys.perf_by_vfs" title="lumos.model.system.HomoSys.perf_by_vfs"><tt class="xref py py-func docutils literal"><span class="pre">perf_by_vfs()</span></tt></a> and
-<a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HomoSys.perf_by_vdd" title="lumos.model.system.HomoSys.perf_by_vdd"><tt class="xref py py-func docutils literal"><span class="pre">perf_by_vdd()</span></tt></a> for this scenario.</p>
+<tt class="xref py py-func docutils literal"><span class="pre">perf_by_vfs()</span></tt> and
+<tt class="xref py py-func docutils literal"><span class="pre">perf_by_vdd()</span></tt> for this scenario.</p>
 </li>
-<li><p class="first">Explicit constrain on the number of active cores.</p>
+<li><p class="first">Explicit constraint on the number of active cores.</p>
 <p>In this case, the system will probe for the highest supply voltage for the
 core to meet the overall power budget. Use
-<a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HomoSys.perf_by_cnum" title="lumos.model.system.HomoSys.perf_by_cnum"><tt class="xref py py-func docutils literal"><span class="pre">perf_by_cnum()</span></tt></a> for this scenario.</p>
+<tt class="xref py py-func docutils literal"><span class="pre">perf_by_cnum()</span></tt> for this scenario.</p>
 </li>
 <li><p class="first">No constraints on the supply voltage or the number of active cores,</p>
 <p>In this case, the system will probe for the optimal configuration of supply
 voltage and the number of cores to achieve the best overall throughput. Use
-<a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HomoSys.opt_core_num" title="lumos.model.system.HomoSys.opt_core_num"><tt class="xref py py-func docutils literal"><span class="pre">opt_core_num()</span></tt></a> for this scenario.</p>
+<tt class="xref py py-func docutils literal"><span class="pre">opt_core_num()</span></tt> for this scenario.</p>
 </li>
 </ul>
 </div>
 <div class="section" id="example-analyses">
 <h3>Example Analyses<a class="headerlink" href="#example-analyses" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic">
-<li><p class="first">Example of using <a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HomoSys" title="lumos.model.system.HomoSys"><tt class="xref py py-class docutils literal"><span class="pre">HomoSys</span></tt></a></p>
-<p>An example analysis of <a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HomoSys" title="lumos.model.system.HomoSys"><tt class="xref py py-class docutils literal"><span class="pre">HomoSys</span></tt></a> is in
+<li><p class="first">Example of using <tt class="xref py py-class docutils literal"><span class="pre">HomogSys</span></tt></p>
+<p>An example analysis of <tt class="xref py py-class docutils literal"><span class="pre">HomogSys</span></tt> is in
 <tt class="docutils literal"><span class="pre">$LUMOS_HOME/lumos/analyses/homosys_example.py</span></tt>. This example models a
 homogeneous many-core architecture composed of Niagara2-like in-order cores.
 The system is defined as follow:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">sys</span> <span class="o">=</span> <span class="n">HomoSys</span><span class="p">()</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">sys</span> <span class="o">=</span> <span class="n">HomogSys</span><span class="p">()</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">set_sys_prop</span><span class="p">(</span><span class="n">area</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sys_area</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sys_power</span><span class="p">)</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">set_sys_prop</span><span class="p">(</span><span class="n">core</span><span class="o">=</span><span class="n">IOCore</span><span class="p">(</span><span class="n">mech</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mech</span><span class="p">))</span>
 </pre></div>
@@ -337,33 +339,33 @@ tweaks to system parameters, for example, the second scenario requires:</p>
 <p>More details can be found in
 <a class="reference internal" href="apidoc/lumos.analyses.html#lumos.analyses.homosys_example.HomosysExample.analyze" title="lumos.analyses.homosys_example.HomosysExample.analyze"><tt class="xref py py-func docutils literal"><span class="pre">analyze()</span></tt></a>. For each
 scenario, the relative performance is obtained by
-<a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HomoSys.opt_core_num" title="lumos.model.system.HomoSys.opt_core_num"><tt class="xref py py-func docutils literal"><span class="pre">opt_core_num()</span></tt></a> as follow:</p>
+<tt class="xref py py-func docutils literal"><span class="pre">opt_core_num()</span></tt> as follow:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">ret</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">opt_core_num</span><span class="p">()</span>
 <span class="n">ret</span><span class="p">[</span><span class="s">&#39;perf&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>Finally, <a class="reference internal" href="apidoc/lumos.analyses.html#lumos.analyses.analysis.plot_series" title="lumos.analyses.analysis.plot_series"><tt class="xref py py-func docutils literal"><span class="pre">plot_series()</span></tt></a> is used to generate
+<p>Finally, <a class="reference internal" href="apidoc/lumos.analyses.html#lumos.analyses.analysis.plot_series" title="lumos.analyses.analysis.plot_series"><tt class="xref py py-func docutils literal"><span class="pre">plot_series()</span></tt></a> is used to generate a
 plot for the above scenarios, as in
 <a class="reference internal" href="apidoc/lumos.analyses.html#lumos.analyses.homosys_example.HomosysExample.plot" title="lumos.analyses.homosys_example.HomosysExample.plot"><tt class="xref py py-func docutils literal"><span class="pre">plot()</span></tt></a>.</p>
 </li>
-<li><p class="first">Example of using <a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HeteroSys" title="lumos.model.system.HeteroSys"><tt class="xref py py-class docutils literal"><span class="pre">HeteroSys</span></tt></a></p>
-<p>An example analysis of <a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HeteroSys" title="lumos.model.system.HeteroSys"><tt class="xref py py-class docutils literal"><span class="pre">HeteroSys</span></tt></a> is in
+<li><p class="first">Example of using <tt class="xref py py-class docutils literal"><span class="pre">HeterogSys</span></tt></p>
+<p>An example analysis of <tt class="xref py py-class docutils literal"><span class="pre">HeterogSys</span></tt> is in
 <tt class="docutils literal"><span class="pre">$LUMOS_HOME/lumos/analyses/heterosys_example.py</span></tt>. This example models a
 heterogeneous many-core system composed of in-order cores, reconfigurable
 logic (FPGA), and dedicated ASICs. All related files for this analysis are
 placed in <tt class="docutils literal"><span class="pre">$LUMOS_HOME/analyses/heterosys_example</span></tt>. For maximum flexibility,
-this example employ an external configuration file to specify various input
+this example employs an external configuration file to specify various input
 parameters in addition to command line parameters. The default configurations
-file is <tt class="docutils literal"><span class="pre">heterosys_example.cfg</span></tt>. This example use pre-defined synthetic
+file is <tt class="docutils literal"><span class="pre">heterosys_example.cfg</span></tt>. This example uses pre-defined synthetic
 kernels and workloads stored in <tt class="docutils literal"><span class="pre">kernels_asicfpgaratio10x.xml</span></tt> and
-<tt class="docutils literal"><span class="pre">workload_norm40x10.xml</span></tt>. The analysis will load kernels and workload as
-follow:</p>
+<tt class="docutils literal"><span class="pre">workload_norm40x10.xml</span></tt>. The analysis will load kernels and the workload as
+follows:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">kernels</span> <span class="o">=</span> <span class="n">kernel</span><span class="o">.</span><span class="n">load_xml</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">kernel</span><span class="p">)</span>
 <span class="n">workload</span> <span class="o">=</span> <span class="n">workload</span><span class="o">.</span><span class="n">load_xml</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">workload</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The system is defined as follow:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="n">sys</span> <span class="o">=</span> <span class="n">HeteroSys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">budget</span><span class="p">)</span>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">sys</span> <span class="o">=</span> <span class="n">HeterogSys</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">budget</span><span class="p">)</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">set_mech</span><span class="p">(</span><span class="s">&#39;HKMGS&#39;</span><span class="p">)</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">set_tech</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
 <span class="k">if</span> <span class="n">kfirst</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>  <span class="c"># there are ASIC accelerators to be added</span>
@@ -374,7 +376,7 @@ follow:</p>
 <span class="n">sys</span><span class="o">.</span><span class="n">use_gpacc</span> <span class="o">=</span> <span class="bp">True</span>
 </pre></div>
 </div>
-<p>The performance is collected as follow:</p>
+<p>The performance is collected as follows:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">perfs</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span> <span class="n">sys</span><span class="o">.</span><span class="n">get_perf</span><span class="p">(</span><span class="n">app</span><span class="p">)[</span><span class="s">&#39;perf&#39;</span><span class="p">]</span>
             <span class="k">for</span> <span class="n">app</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">workload</span><span class="p">])</span>
 </pre></div>
@@ -388,9 +390,48 @@ to run fast on multicore machines.</p>
 <li><p class="first">More examples.</p>
 <p>There are a lot of analyses in <tt class="docutils literal"><span class="pre">$LUMOS_HOME/lumos/analyses</span></tt>, which can be
 used as examples of various functions the Lumos framework provides.
-Unfortunately, they were less documented at this moment.</p>
+Unfortunately, they are less documented at this moment.</p>
 </li>
 </ol>
+</div>
+</div>
+<div class="section" id="license">
+<h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>LICENSE TERMS
+
+Copyright (c) 2013, Liang Wang and Kevin Skadron,
+Department of Computer Science, University of Virginia
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+1. Redistribution of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+2. Redistribution in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+3. Neither the name of the University of Virginia nor the names of its
+   contributors may be used to endorse or promote products derived from this
+   software without specific prior written permission.
+4. All advertising materials or publications mentioning features or use of this
+   software must display the following acknowledgment: "This product includes
+   software developed by the University of Virginia" and should also cite
+   
+   L. Wang, K. Skadron, "Dark vs. Dim Silicon and Near-Threshold Computing
+   Extended Results," University of Virginia Department of Computer Science
+   Technical Report TR-2013-01.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHORS ''AS IS'' AND ANY EXPRESS OR IMPLIED
+WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+SHALL THE UNIVERSITY OF VIRGINIA BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY
+OF SUCH DAMAGE.
+</pre>
 </div>
 </div>
 <div class="section" id="indices-and-tables">
