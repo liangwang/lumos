@@ -43,13 +43,8 @@ clean:
 	@echo " There is a git repository in $(BUILDDIR)/html, quit delete the directory"
 #@echo "-rm -rf $(BUILDDIR)/*"
 
-publish: html
-	@echo
-	@echo "publish $(BUILDDIR)/html"
-	/bin/rm -rf /if10/lw2aw/public_html/lumos
-	/bin/cp -r $(BUILDDIR)/html /if10/lw2aw/public_html/lumos
 
-html: apidoc
+html: apidoc ../LICENSE
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo
 	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."

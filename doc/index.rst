@@ -38,10 +38,9 @@ always get the latest code of Lumos at `github <https://github.com/liangwang/lum
 Quick Start
 ===========
 
-Lumos is written in Python, so you definitely need a `python
-<http://www.python.org>`_ installation to run it. Before starting to use the Lumos
-framework, make sure you have meet the requirement for extra python
-packages:
+Lumos is written in Python, so you need a `python <http://www.python.org>`_
+installation to run it. Before starting to use the Lumos framework, make sure
+you have met the requirement for extra python packages:
 
 * numpy and scipy
 
@@ -99,25 +98,24 @@ Now the plots for this sample analysis should be ready to check out in
 Analysis
 ========
 
-A typical analysis in the Lumos framework involves with three steps:
-define the worload, define the system, do analysis.
+A typical analysis in the Lumos framework involves three steps: define the
+worload, define the system, do analysis.
 
 Define Workload
 ---------------
 
 .. highlight:: xml
 
-The workload in the Lumos framework is defined as a pool of
-applications. Each single application is divided into serial and
-parallel parts, and the ratio is specified as ``f_parallel``. Part
-of an application can be also partitioned into several computing
-kernels. These kernels can be accelerated by various computing
-units, such as multicore, possibly dim CPU cores, RL, and
-customized ASIC. We model the speedup and the power consumption of
-RL and customized ASIC for a given kernel by u-core parameters.
+The workload in the Lumos framework is defined as a pool of applications. Each
+single application is divided into serial and parallel parts, and the ratio is
+specified as ``f_parallel``. Part of an application can be also partitioned into
+several computing kernels. These kernels can be accelerated by various computing
+units, such as multicore, possibly dim CPU cores, RL, and customized ASIC. We
+model the speedup and the power consumption of RL and customized ASIC for a
+given kernel by u-core parameters.
 
-A workload is defined by enumerate all applications in the format
-of XML, such as::
+A workload is defined by enumerating all applications in the format of XML, such
+as::
 
        <workload>
           <app name="app0">
@@ -129,9 +127,12 @@ of XML, such as::
           ...
        </workload>
 
-where ``f_parallel`` is the parallel ratio. Within
-``kernel_config``, the ``name`` is the name of the kernel, and
-``cov`` is the coverage in percentage of the corresponding kernel.
+where ``f_parallel`` is the parallel ratio. Within ``kernel_config``, the
+``name`` is the name of the kernel, and ``cov`` is the kernel's execution time
+in percentage to the application running with a single baseline core (e.g. an
+in-order core at the nominal supply voltage and 45nm). Coverages of kernels are
+not necessarily summed to 100%. Lumos will assume the rest of application can
+not be accelerated and only be executed on conventional cores.
 
 A set of kernels is enumerated in the format of XML as well, such
 as::
@@ -149,15 +150,14 @@ Where ``miu`` is the relative performance for FPGA and ASIC,
 respectively. ``occur`` is the probability of this kernel to be
 presented in an application.
 
-There are a couple of helper functions to assist you generating
-kernels, applications following certain statistical distributions. See
+There are a couple of helper functions to assist you in generating kernels and
+applications following certain statistical distributions. See
 :func:`~lumos.model.kernel.create_fixednorm_xml`,
 :func:`~lumos.model.kernel.create_randnorm_xml`,
 :func:`~lumos.model.workload.build`,
-:func:`~lumos.model.workload.build_fixedcov` for more details.
-Moreover, existing XML descriptions for kernels and workload can be
-loaded by :func:`~lumos.model.kernel.load_xml` and
-:func:`~lumos.model.workload.load_xml`, respectively.
+:func:`~lumos.model.workload.build_fixedcov` for more details. Moreover,
+existing XML descriptions can be loaded by :func:`~lumos.model.kernel.load_xml`
+for kernels and :func:`~lumos.model.workload.load_xml` for workloads.
 
 Define System
 -------------
@@ -165,13 +165,13 @@ Define System
 Lumos supports conventional cores such as a Niagara2-like in-order core and an
 out-or-order core (:class:`~lumos.model.core.IOCore` and
 :class:`~lumos.model.core.O3Core`), as well as un-conventional cores, such as
-accelerators (:class:`~lumos.model.ucore.UCore`), federated cores
+accelerators (:class:`~lumos.model.ucore.UCore`), and federated cores
 (:class:`~lumos.model.fedcore.FedCore`).
 
 On top of these cores, Lumos supports two kinds of systems: a homogeneous
-multi-core system (:class:`~lumos.model.system.HomoSys`), and a heterogeneous
+multi-core system (:class:`~lumos.model.system.HomogSys`), and a heterogeneous
 multi-core system with a serial core and certain amount of throughput cores, as
-well as accelerators (:class:`~lumos.model.system.HeteroSys`). The usage of
+well as accelerators (:class:`~lumos.model.system.HeterogSys`). The usage of
 these two systems are demonstrated later in Example Analysis section.
 
 
@@ -182,28 +182,28 @@ Do Analysis
 :func:`~lumos.model.system.HeteroSys.get_perf` to get the relative
 performance of the system for a given application.
 
-:class:`~lumos.model.system.HomoSys` provides a couple of methods to retrieve
+:class:`~lumos.model.system.HomogSys` provides a couple of methods to retrieve
 relative performance of system for a given application:
 
-* Explicit constrain on the supply voltage.
+* Explicit constraint on the supply voltage.
 
   In this case, the system will try to enable as many cores at the given supply
   as possible within the given power budget. If the supply voltage is relatively
   high, it ends up with a dark silicon homogeneous many-core system. Use
-  :func:`~lumos.model.system.HomoSys.perf_by_vfs` and
-  :func:`~lumos.model.system.HomoSys.perf_by_vdd` for this scenario.
+  :func:`~lumos.model.system.HomogSys.perf_by_vfs` and
+  :func:`~lumos.model.system.HomogSys.perf_by_vdd` for this scenario.
 
-* Explicit constrain on the number of active cores.
+* Explicit constraint on the number of active cores.
 
   In this case, the system will probe for the highest supply voltage for the
   core to meet the overall power budget. Use
-  :func:`~lumos.model.system.HomoSys.perf_by_cnum` for this scenario.
+  :func:`~lumos.model.system.HomogSys.perf_by_cnum` for this scenario.
 
 * No constraints on the supply voltage or the number of active cores,
 
   In this case, the system will probe for the optimal configuration of supply
   voltage and the number of cores to achieve the best overall throughput. Use
-  :func:`~lumos.model.system.HomoSys.opt_core_num` for this scenario.
+  :func:`~lumos.model.system.HomogSys.opt_core_num` for this scenario.
 
 
 Example Analyses
@@ -211,14 +211,14 @@ Example Analyses
 
 .. highlight:: python
 
-1. Example of using :class:`~lumos.model.system.HomoSys`
+1. Example of using :class:`~lumos.model.system.HomogSys`
 
-   An example analysis of :class:`~lumos.model.system.HomoSys` is in
+   An example analysis of :class:`~lumos.model.system.HomogSys` is in
    ``$LUMOS_HOME/lumos/analyses/homosys_example.py``. This example models a
    homogeneous many-core architecture composed of Niagara2-like in-order cores.
    The system is defined as follow::
 
-       sys = HomoSys()
+       sys = HomogSys()
        sys.set_sys_prop(area=self.sys_area, power=self.sys_power)
        sys.set_sys_prop(core=IOCore(mech=self.mech))
 
@@ -236,37 +236,37 @@ Example Analyses
    More details can be found in
    :func:`~lumos.analyses.homosys_example.HomosysExample.analyze`. For each
    scenario, the relative performance is obtained by
-   :func:`~lumos.model.system.HomoSys.opt_core_num` as follow::
+   :func:`~lumos.model.system.HomogSys.opt_core_num` as follow::
 
        ret = sys.opt_core_num()
        ret['perf']
 
 
-   Finally, :func:`~lumos.analyses.analysis.plot_series` is used to generate
+   Finally, :func:`~lumos.analyses.analysis.plot_series` is used to generate a
    plot for the above scenarios, as in
    :func:`~lumos.analyses.homosys_example.HomosysExample.plot`.
 
 
-2. Example of using :class:`~lumos.model.system.HeteroSys`
+2. Example of using :class:`~lumos.model.system.HeterogSys`
 
-   An example analysis of :class:`~lumos.model.system.HeteroSys` is in
+   An example analysis of :class:`~lumos.model.system.HeterogSys` is in
    ``$LUMOS_HOME/lumos/analyses/heterosys_example.py``. This example models a
    heterogeneous many-core system composed of in-order cores, reconfigurable
    logic (FPGA), and dedicated ASICs. All related files for this analysis are
    placed in ``$LUMOS_HOME/analyses/heterosys_example``. For maximum flexibility,
-   this example employ an external configuration file to specify various input
+   this example employs an external configuration file to specify various input
    parameters in addition to command line parameters. The default configurations
-   file is ``heterosys_example.cfg``. This example use pre-defined synthetic
+   file is ``heterosys_example.cfg``. This example uses pre-defined synthetic
    kernels and workloads stored in ``kernels_asicfpgaratio10x.xml`` and
-   ``workload_norm40x10.xml``. The analysis will load kernels and workload as
-   follow::
+   ``workload_norm40x10.xml``. The analysis will load kernels and the workload as
+   follows::
 
        kernels = kernel.load_xml(options.kernel)
        workload = workload.load_xml(options.workload)
 
    The system is defined as follow::
 
-       sys = HeteroSys(self.budget)
+       sys = HeterogSys(self.budget)
        sys.set_mech('HKMGS')
        sys.set_tech(16)
        if kfirst != 0:  # there are ASIC accelerators to be added
@@ -276,7 +276,7 @@ Example Analyses
        sys.realloc_gpacc(alloc*(1-kfirst))
        sys.use_gpacc = True
 
-   The performance is collected as follow::
+   The performance is collected as follows::
 
        perfs = numpy.array([ sys.get_perf(app)['perf']
                    for app in self.workload])
@@ -292,12 +292,13 @@ Example Analyses
 
    There are a lot of analyses in ``$LUMOS_HOME/lumos/analyses``, which can be
    used as examples of various functions the Lumos framework provides.
-   Unfortunately, they were less documented at this moment.
+   Unfortunately, they are less documented at this moment.
 
+License
+=======
 
-
-
-
+.. include:: ../LICENSE
+   :literal:
 
 Indices and tables
 ==================
