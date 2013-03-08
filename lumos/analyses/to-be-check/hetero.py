@@ -6,7 +6,7 @@ import cPickle as pickle
 import matplotlib
 matplotlib.use('Agg')
 
-from model.system import HeteroSys
+from model.system import HeterogSys
 from model.app import App
 from model.budget import *
 
@@ -56,7 +56,7 @@ class TypeAnalysis(BaseAnalysis):
         :returns: N/A
 
         """
-        sys = HeteroSys(budget=self.budget)
+        sys = HeterogSys(budget=self.budget)
         sys.set_mech(self.mech)
         app = self.app
         kid = app.get_kernel()
@@ -154,7 +154,7 @@ class AccAnalysis(BaseAnalysis):
                 self.app.tag, self.budget.power, self.budget.area)
 
     def analyze(self):
-        sys = HeteroSys(self.budget)
+        sys = HeterogSys(self.budget)
         sys.set_mech(self.mech)
 
         app = self.app
@@ -229,7 +229,7 @@ class FPGAAnalysis(BaseAnalysis):
         self.id = self.prefix
 
     def analyze(self):
-        sys = HeteroSys(self.budget)
+        sys = HeterogSys(self.budget)
         sys.set_mech('HKMGS')
         sys.set_tech(16)
         sys.use_gpacc = True

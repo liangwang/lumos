@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 """
-An exmaple on using :class:`~lumos.model.system.HeteroSys`.
+An exmaple on using :class:`~lumos.model.system.HeterogSys`.
 
 """
 import logging
@@ -9,7 +9,7 @@ import cPickle as pickle
 import itertools
 import matplotlib.pyplot as plt
 
-from lumos.model.system import HeteroSys
+from lumos.model.system import HeterogSys
 from lumos.model.application import App
 from lumos.model import kernel, workload
 from lumos.model.budget import *
@@ -79,7 +79,7 @@ class HeterosysExample(BaseAnalysis):
             alloc = a * 0.01
             kfirst = k * 0.01
 
-            sys = HeteroSys(self.budget)
+            sys = HeterogSys(self.budget)
             sys.set_mech('HKMGS')
             sys.set_tech(16)
             if kfirst != 0:

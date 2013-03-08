@@ -7,7 +7,7 @@ import cPickle as pickle
 #matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-from lumos.model.system import HeteroSys
+from lumos.model.system import HeterogSys
 from lumos.model import kernel, workload
 from lumos.model.budget import *
 
@@ -72,7 +72,7 @@ class ASICInc(object):
             ker_alloc = ker_ratio * 0.01
             dummy_alloc = (self.asic_ratio - ker_ratio) * 0.01
 
-            sys = HeteroSys(self.budget)
+            sys = HeterogSys(self.budget)
             sys.set_mech('HKMGS')
             sys.set_tech(16)
             sys.set_asic(ker, ker_alloc)

@@ -12,7 +12,7 @@ import itertools
 import matplotlib
 import matplotlib.pyplot as plt
 
-from lumos.model.system import HeteroSys
+from lumos.model.system import HeterogSys
 from lumos.model import kernel, workload
 from lumos.model.budget import *
 from lumos.model.kernel import UCoreParam
@@ -79,7 +79,7 @@ class ASICDual(BaseAnalysis):
             alloc = a * 0.01
             kfirst = k * 0.01
 
-            sys = HeteroSys(self.budget)
+            sys = HeterogSys(self.budget)
             sys.set_mech('HKMGS')
             sys.set_tech(16)
             sys.set_asic('_gen_fixednorm_004', alloc*kfirst)

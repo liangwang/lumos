@@ -7,7 +7,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-from model.system import HeteroSys
+from model.system import HeterogSys
 from model.app import App
 from model import kernel
 from model.budget import *

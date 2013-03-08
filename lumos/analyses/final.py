@@ -13,7 +13,7 @@ from os.path import join as joinpath
 from optparse import OptionParser
 import os
 from lumos.model.application import App
-from lumos.model.system import HomoSys
+from lumos.model.system import HomogSys
 from lumos.model.core import IOCore
 from lumos.model.tech import PTMScale as ptmtech
 from lumos.model.freq import readNormData, readMCData
@@ -81,7 +81,7 @@ class Dasi2012Analysis(BaseAnalysis):
         self.id = '%s_%dw_%dmm' % (self.prefix, power, area)
 
     def analyze(self):
-        sys = HomoSys()
+        sys = HomogSys()
         sys.set_sys_prop(area=self.sys_area, power=self.sys_power)
         sys.set_sys_prop(core=IOCore(mech=self.mech))
         speed_lists = []
@@ -170,7 +170,7 @@ class PenaltyAdjustAnalysis(BaseAnalysis):
         self.id = '%s_%dw_%dmm' % (self.prefix, power, area)
 
     def analyze(self):
-        sys = HomoSys()
+        sys = HomogSys()
         sys.set_sys_prop(area=self.sys_area, power=self.sys_power)
         sys.set_sys_prop(core=IOCore(mech='HKMGS'))
         speed_lists = []
@@ -342,7 +342,7 @@ class ParallelismAnalysis(BaseAnalysis):
         #self.analyze_hplp()
 
     def analyze_darkdim(self):
-        sys = HomoSys()
+        sys = HomogSys()
         sys.set_sys_prop(area=self.sys_area, power=self.sys_power)
         sys.set_sys_prop(core=IOCore(mech='HKMGS'))
         speed_lists = []
@@ -403,7 +403,7 @@ class ParallelismAnalysis(BaseAnalysis):
             pickle.dump(vdd_lists, f)
 
     def analyze_hplp(self):
-        sys = HomoSys()
+        sys = HomogSys()
         sys.set_sys_prop(core=IOCore())
         sys.set_sys_prop(area=self.sys_area, power=self.sys_power)
 
@@ -584,7 +584,7 @@ class MainAnalyzer(object):
 
         ylabel = 'Speedup (normalized)'
 
-        sys = HomoSys()
+        sys = HomogSys()
 
         # 45nm without variation
         def annotate45(axes, figure):
@@ -704,7 +704,7 @@ class MainAnalyzer(object):
         figsize = (6, 3.5)
         ylabel = 'Speedup (normalized)'
 
-        sys = HomoSys()
+        sys = HomogSys()
 
         sys.set_sys_prop(core=IOCore(mech='HKMGS'))
 
@@ -959,7 +959,7 @@ class MainAnalyzer(object):
 
     def do_darkdim(self):
 
-        sys = HomoSys()
+        sys = HomogSys()
         sys.set_sys_prop(core=IOCore(mech='HKMGS'))
 
         sys.set_sys_prop(area=SYS_LARGE['area'], power=SYS_LARGE['power'])
@@ -1060,7 +1060,7 @@ class MainAnalyzer(object):
 
     def do_hplp(self):
 
-        sys = HomoSys()
+        sys = HomogSys()
         sys.set_sys_prop(core=IOCore())
 
         sys.set_sys_prop(area=SYS_SMALL['area'], power=SYS_SMALL['power'])
@@ -1181,7 +1181,7 @@ class MainAnalyzer(object):
 
     def do_sysconf(self):
 
-        sys = HomoSys()
+        sys = HomogSys()
         sys_area = 100
 
         sys.set_sys_prop(core=IOCore(mech='HKMGS'), area=sys_area)

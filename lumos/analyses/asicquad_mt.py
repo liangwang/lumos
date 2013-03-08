@@ -6,7 +6,7 @@ import cPickle as pickle
 import itertools
 import matplotlib
 
-from lumos.model.system import HeteroSys
+from lumos.model.system import HeterogSys
 from lumos.model import kernel, workload
 from lumos.model.budget import *
 from lumos.model.kernel import UCoreParam
@@ -75,7 +75,7 @@ class ASICQuad(object):
             kids = self.kids
             #kfirst = k * 0.01
 
-            sys = HeteroSys(self.budget)
+            sys = HeterogSys(self.budget)
             sys.set_mech('HKMGS')
             sys.set_tech(16)
             for idx,kid in enumerate(kids):

@@ -7,7 +7,7 @@ import csv
 from model.core import Core
 from model.tech import PTMScale
 import model.system
-from model.system import HomoSys
+from model.system import HomogSys
 import analysis
 DATA_DIR=joinpath(analysis.DATA_DIR, 'speedup')
 FIG_DIR=joinpath(analysis.FIG_DIR, 'speedup')
@@ -31,7 +31,7 @@ except OSError:
 # to be developed
 def analyze(ctype, mech, tech, variation,
            ofile=None):
-    sys = HomoSys()
+    sys = HomogSys()
     core = Core(ctype=ctype, mech=mech,
                 tech=tech, variation=variation)
 
@@ -111,7 +111,7 @@ def plot_speedup(ifile=None, ofile=None, has_title=False):
 
     perList = (100, 95, 90, 85, 80, 75, 70, 65, 60, 55, 50)
 
-    sys = HomoSys()
+    sys = HomogSys()
     for area in areaList:
         for power in powerList:
             sys.set_sys_prop(area=area, power=power, core=Core())

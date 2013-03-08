@@ -7,7 +7,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
 
-from lumos.model.system import HeteroSys
+from lumos.model.system import HeterogSys
 from lumos.model.core import O3Core
 from lumos.model.application import App
 from lumos.model import kernel, workload
@@ -68,7 +68,7 @@ class IOO3(object):
     def analyze(self):
 
         tech = self.tech
-        sys_o3 = HeteroSys(self.budget, mech='HKMGS',
+        sys_o3 = HeterogSys(self.budget, mech='HKMGS',
                            tech=tech,
                            serial_core=O3Core(mech='HKMGS',tech=tech))
 
@@ -76,24 +76,24 @@ class IOO3(object):
         area = sel_core.base_area * 2
         perf = sel_core.base_perf * 1.1
         sel_core.set_base(area=area, perf=perf)
-        sys_sel = HeteroSys(self.budget, mech='HKMGS', tech=tech,
+        sys_sel = HeterogSys(self.budget, mech='HKMGS', tech=tech,
                 serial_core=sel_core)
 
         sel_core2 = O3Core(mech='HKMGS', tech=tech)
         area = sel_core2.base_area * 3
         perf = sel_core2.base_perf * 1.2
         sel_core2.set_base(area=area, perf=perf)
-        sys_sel2 = HeteroSys(self.budget, mech='HKMGS', tech=tech,
+        sys_sel2 = HeterogSys(self.budget, mech='HKMGS', tech=tech,
                 serial_core=sel_core2)
 
         sel_core3 = O3Core(mech='HKMGS', tech=tech)
         area = sel_core3.base_area * 4
         perf = sel_core3.base_perf * 1.2
         sel_core3.set_base(area=area, perf=perf)
-        sys_sel3 = HeteroSys(self.budget, mech='HKMGS', tech=tech,
+        sys_sel3 = HeterogSys(self.budget, mech='HKMGS', tech=tech,
                 serial_core=sel_core3)
 
-        sys_io = HeteroSys(self.budget, mech='HKMGS', tech=tech)
+        sys_io = HeterogSys(self.budget, mech='HKMGS', tech=tech)
 
         apps = [ App(f=f) for f in self.appf_list ]
 

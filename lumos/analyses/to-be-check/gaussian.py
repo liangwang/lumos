@@ -7,7 +7,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-from model.system import HeteroSys
+from model.system import HeterogSys
 from model.app import App
 from model import kernel
 from model.budget import *
@@ -67,7 +67,7 @@ class Worker(multiprocessing.Process):
             app = App(f=1)
             app.reg_kernel(kid, cov)
 
-            sys = HeteroSys(self.budget)
+            sys = HeterogSys(self.budget)
             sys.set_mech('HKMGS')
             sys.set_tech(16)
             sys.use_gpacc = True

@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 """
-An exmple on using :class:`~lumos.model.system.HomoSys`.
+An exmple on using :class:`~lumos.model.system.HomogSys`.
 
 """
 import cPickle as pickle
 from os.path import join as joinpath
 from optparse import OptionParser
-from lumos.model.system import HomoSys
+from lumos.model.system import HomogSys
 from lumos.model.core import IOCore
 from lumos.model.budget import SysLarge, SysMedium, SysSmall
 
@@ -38,7 +38,7 @@ class HomosysExample(BaseAnalysis):
         self.id = '%s_%dw_%dmm' % (self.prefix, power, area)
 
     def analyze(self):
-        sys = HomoSys()
+        sys = HomogSys()
         sys.set_sys_prop(area=self.sys_area, power=self.sys_power)
         sys.set_sys_prop(core=IOCore(mech=self.mech))
         speed_lists = []

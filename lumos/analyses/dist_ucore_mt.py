@@ -8,7 +8,7 @@ import itertools
 #matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-from lumos.model.system import HeteroSys
+from lumos.model.system import HeterogSys
 from lumos.model.application import App
 from lumos.model import kernel, workload
 from lumos.model.budget import *
@@ -77,7 +77,7 @@ class Hybrid(BaseAnalysis):
             alloc = a * 0.01
             kfirst = k * 0.01
 
-            sys = HeteroSys(self.budget)
+            sys = HeterogSys(self.budget)
             sys.set_mech('HKMGS')
             sys.set_tech(16)
             if kfirst != 0:
@@ -317,7 +317,7 @@ class ASICQuad(BaseAnalysis):
             kids = self.kids
             #kfirst = k * 0.01
 
-            sys = HeteroSys(self.budget)
+            sys = HeterogSys(self.budget)
             sys.set_mech('HKMGS')
             sys.set_tech(16)
             for idx in xrange(3):
@@ -564,7 +564,7 @@ class ASICTriple(BaseAnalysis):
             kids = self.kids
             #kfirst = k * 0.01
 
-            sys = HeteroSys(self.budget)
+            sys = HeterogSys(self.budget)
             sys.set_mech('HKMGS')
             sys.set_tech(16)
             for idx in xrange(3):
@@ -882,7 +882,7 @@ class ASICDual(BaseAnalysis):
             alloc = a * 0.01
             kfirst = k * 0.01
 
-            sys = HeteroSys(self.budget)
+            sys = HeterogSys(self.budget)
             sys.set_mech('HKMGS')
             sys.set_tech(16)
             sys.set_asic('_gen_fixednorm_004', alloc*kfirst)
@@ -1162,7 +1162,7 @@ class ASICSingle(BaseAnalysis):
         def process(self, job):
             alloc, acc = job
 
-            sys = HeteroSys(self.budget)
+            sys = HeterogSys(self.budget)
             sys.set_mech('HKMGS')
             sys.set_tech(16)
             sys.set_asic(acc, alloc)
@@ -1441,7 +1441,7 @@ class ASICAnalysis(BaseAnalysis):
             app = App(f=1)
             app.reg_kernel(kid, cov)
 
-            sys = HeteroSys(self.budget)
+            sys = HeterogSys(self.budget)
             sys.set_mech('HKMGS')
             sys.set_tech(16)
             #sys.use_gpacc = True
@@ -1616,7 +1616,7 @@ class FPGAAnalysis(BaseAnalysis):
             app = App(f=1)
             app.reg_kernel(kid, cov)
 
-            sys = HeteroSys(self.budget)
+            sys = HeterogSys(self.budget)
             sys.set_mech('HKMGS')
             sys.set_tech(16)
             sys.use_gpacc = True
@@ -1804,7 +1804,7 @@ class FPGAFixedArea(BaseAnalysis):
             app = App(f=1)
             app.reg_kernel(kid, cov)
 
-            sys = HeteroSys(self.budget)
+            sys = HeterogSys(self.budget)
             sys.set_mech('HKMGS')
             sys.set_tech(16)
             sys.use_gpacc = True
@@ -2052,7 +2052,7 @@ class FPGAFixedArea2(BaseAnalysis):
 
             alloc = a * 0.01
 
-            sys = HeteroSys(self.budget)
+            sys = HeterogSys(self.budget)
             sys.set_mech('HKMGS')
             sys.set_tech(16)
             sys.realloc_gpacc(alloc)

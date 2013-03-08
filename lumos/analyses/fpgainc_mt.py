@@ -5,7 +5,7 @@ import logging
 import cPickle as pickle
 import matplotlib.pyplot as plt
 
-from lumos.model.system import HeteroSys
+from lumos.model.system import HeterogSys
 from lumos.model.application import App
 from lumos.model import kernel, workload
 from lumos.model.budget import *
@@ -66,7 +66,7 @@ class FPGAInc(object):
             fpga_alloc = fpga_ratio * 0.01
             dummy_alloc = (self.ucore_ratio - fpga_ratio) * 0.01
 
-            sys = HeteroSys(self.budget)
+            sys = HeterogSys(self.budget)
             sys.set_mech('HKMGS')
             sys.set_tech(16)
             sys.set_asic('dummy', dummy_alloc)
@@ -237,7 +237,7 @@ class FPGAOpt(object):
 
             fpga_alloc = fpga_ratio * 0.01
 
-            sys = HeteroSys(self.budget)
+            sys = HeterogSys(self.budget)
             sys.set_mech('HKMGS')
             sys.set_tech(16)
 

@@ -6,7 +6,7 @@ from optparse import OptionParser
 import os
 from model.app import App
 import model.system
-from model.system import HomoSys
+from model.system import HomogSys
 from model.core import Core
 import analysis
 FIG_DIR=joinpath(analysis.FIG_DIR, 'optcore')
@@ -25,7 +25,7 @@ def plotHPLP(area, power, var, suffix):
     lsList = ('o-', 's-', '*-', '^-')
     legendList = []
 
-    sys = HomoSys()
+    sys = HomogSys()
     sys.set_sys_prop(area=area, power=power, core=Core())
 
     fig = plt.figure(figsize=(8,6))
@@ -86,7 +86,7 @@ def plotWithVmin(area, power, var, suffix):
             legendList = ('LP-free', 'LP-1.1Vt', 'LP-1.2Vt', 'LP-1.3Vt',
                           'HP-free', 'HP-1.1Vt', 'HP-1.2Vt', 'HP-1.3Vt')
 
-    sys = HomoSys()
+    sys = HomogSys()
     sys.set_sys_prop(area=area, power=power, core=Core())
 
     lsList = ('o-', 's-', '*-', '^-','o-', 's-', '*-', '^-')
@@ -175,7 +175,7 @@ def plotWithVminHPOnly(area, power, var, suffix):
         vminList = (0, 1.1, 1.2, 1.3)
         legendList = ('HP-free', 'HP-1.1Vt', 'HP-1.2Vt', 'HP-1.3Vt')
 
-    sys = HomoSys()
+    sys = HomogSys()
     sys.set_sys_prop(area=area, power=power, core=Core())
 
     lsList = ('o-', 's-', '*-', '^-')
@@ -258,7 +258,7 @@ def plotVminHPDark(area, power, var, suffix):
         vminList = (0, 1.1, 1.2, 1.3)
         legendList = ('HP-dark', 'HP-free', 'HP-1.1Vt', 'HP-1.2Vt', 'HP-1.3Vt')
 
-    sys = HomoSys()
+    sys = HomogSys()
     sys.set_sys_prop(area=area, power=power, core=Core())
 
     lsList = ('o-', 's-', '*-', '^-')
@@ -364,7 +364,7 @@ def plotMechWithTypeCombined(area, power, suffix):
     lsList = ('o-', 's-', '*-', '^-')
     legendList = []
 
-    sys = HomoSys()
+    sys = HomogSys()
     sys.set_sys_prop(area=area, power=power, core=Core())
 
     fig = plt.figure(figsize=(16,6))
@@ -421,7 +421,7 @@ def plotMechWithTypeCombinedDark(area, power, suffix):
     lsList = ('o-', 's-', '*-', '^-', 'p-', 'x-')
     legendList = []
 
-    sys = HomoSys()
+    sys = HomogSys()
     sys.set_sys_prop(area=area, power=power, core=Core())
 
     fig = plt.figure(figsize=(14,6))
@@ -505,7 +505,7 @@ def plotWithMechs(area, power, var, suffix):
     else:
         cmechList = ('LP','HKMGS')
 
-    sys = HomoSys()
+    sys = HomogSys()
     sys.set_sys_prop(area=area, power=power, core=Core())
 
     lsList = ('o-', 's-', '*-', '^-')
@@ -588,7 +588,7 @@ def plotWithParaRatios(area, power, suffix):
     fList = (0.1, 0.5, 0.9, 0.99, 1)
     legend_f = [ ('f=%g'%f) for f in fList]
 
-    sys = HomoSys()
+    sys = HomogSys()
     sys.set_sys_prop(area=area, power=power, core=Core())
 
     lsList = ('o-', 's-', '*-', '^-', 'p-')
@@ -664,7 +664,7 @@ def printWithParaRatios(area, power, suffix):
     fList = (0.1, 0.5, 0.9, 0.99, 1)
     legend_f = [ ('f=%g'%f) for f in fList]
 
-    sys = HomoSys()
+    sys = HomogSys()
     sys.set_sys_prop(area=area, power=power, core=Core())
 
     for cmech in cmechList:

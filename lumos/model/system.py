@@ -16,7 +16,7 @@ import lumos.settings as settings
 DEBUG = settings.LUMOS_DEBUG
 
 
-class HeteroSys(object):
+class HeterogSys(object):
     """
     This class models a heterogeneous many core system composed of
     regular cores and accelerators such as dedicated ASICs,
@@ -390,7 +390,7 @@ class HeteroSys(object):
                 'vdd': self.opt_vdd}
 
 
-class _HeteroSys_old(object):
+class _HeterogSys_old(object):
     """Heterogenous system composed by regular cores, accelerators
     such as ASICs, FPGA, and GPU"""
 
@@ -692,7 +692,7 @@ class _HeteroSys_old(object):
 class AsymSys(object):
     """
     Asymmetric system composed by IO cores, O3 cores, FPGAs, GPUs, and ASICs (or UCores)
-    This is an older implementation. HeteroSys is a newer implementation.
+    This is an older implementation. HeterogSys is a newer implementation.
     """
 
     def __init__(self, budget):
@@ -937,7 +937,7 @@ class AsymSys(object):
 
         return alloc_ok
 
-class HomoSys(object):
+class HomogSys(object):
     """
     This class models a homogeneous many core system composed of
     either in-order cores or out-of-order cores.
@@ -1607,7 +1607,7 @@ class System(object):
         return (speedup_list,util_list)
 
 if __name__ == '__main__':
-    sys = HomoSys(area=600, power=120)
+    sys = HomogSys(area=600, power=120)
     sys.set_sys_prop(core=IOCore(mech='HKMGS', tech=45))
     app=App(f=1)
     for cnum in (2,4,8,16,32,64):

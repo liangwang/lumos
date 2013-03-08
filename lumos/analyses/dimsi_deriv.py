@@ -13,7 +13,7 @@ HOME = joinpath(analysis.HOME, ANALYSIS_NAME)
 FIG_DIR, DATA_DIR = analysis.make_ws_dirs(ANALYSIS_NAME)
 
 def anal():
-    sys = system.HomoSys(area=200, power=120)
+    sys = system.HomogSys(area=200, power=120)
     sys.set_sys_prop(core=core.IOCore(tech=16, mech='HKMGS'))
     cnum_max = sys.get_core_num()
     perf_list = [ sys.perf_by_cnum(cnum, app=App(f=1))['perf'] for cnum in xrange(1, cnum_max+1)]

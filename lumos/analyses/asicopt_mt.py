@@ -7,7 +7,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.ticker import MultipleLocator
 
-from lumos.model.system import HeteroSys
+from lumos.model.system import HeterogSys
 from lumos.model import kernel, workload
 from lumos.model.budget import *
 
@@ -77,7 +77,7 @@ class ASICOpt(object):
                 #return (ker, ker_ratio, 0,0,0,0)
             #end of debug
 
-            sys = HeteroSys(self.budget)
+            sys = HeterogSys(self.budget)
             sys.set_mech('HKMGS')
             sys.set_tech(16)
             sys.set_asic('fixedcov', ucore_alloc*0.01*asic_alloc*0.01)
@@ -416,7 +416,7 @@ class FixedArea(object):
         def process(self, job):
             app = job
 
-            sys = HeteroSys(self.budget)
+            sys = HeterogSys(self.budget)
             sys.set_mech('HKMGS')
             sys.set_tech(16)
             sys.use_gpacc = True
@@ -573,7 +573,7 @@ class FPGASensitivity(object):
                 #return (ker, ker_ratio, 0,0,0,0)
             #end of debug
 
-            sys = HeteroSys(self.budget)
+            sys = HeterogSys(self.budget)
             sys.set_mech('HKMGS')
             sys.set_tech(16)
             sys.use_gpacc = True

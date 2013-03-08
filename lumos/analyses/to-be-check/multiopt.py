@@ -7,7 +7,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-from model.system import HeteroSys
+from model.system import HeterogSys
 from model.app import App
 from model import kernel, workload
 from model.budget import *
@@ -517,7 +517,7 @@ class MultiOpt(object):
 def verify(budget, kfn, wfn):
     kernels = kernel.load_xml(kfn)
     wld = workload.load_xml(wfn)
-    #sys1 = HeteroSys(budget)
+    #sys1 = HeterogSys(budget)
     #sys1.set_mech('HKMGS')
     #sys1.set_tech(16)
     #sys1.set_asic('_gen_fixednorm_003', 0.03)
@@ -532,7 +532,7 @@ def verify(budget, kfn, wfn):
     #mean = perfs.mean()
     #print mean
 
-    #sys1 = HeteroSys(budget)
+    #sys1 = HeterogSys(budget)
     #sys1.set_mech('HKMGS')
     #sys1.set_tech(16)
     ##sys1.set_asic('_gen_fixednorm_005', 0.05)
@@ -545,7 +545,7 @@ def verify(budget, kfn, wfn):
     #print mean
 
     # seed = 80
-    sys1 = HeteroSys(budget)
+    sys1 = HeterogSys(budget)
     sys1.set_mech('HKMGS')
     sys1.set_tech(16)
     sys1.set_asic('_gen_fixednorm_003', 0.04)
@@ -560,7 +560,7 @@ def verify(budget, kfn, wfn):
     print '80: {mean}'.format(mean=mean)
 
     # seed = 70
-    sys1 = HeteroSys(budget)
+    sys1 = HeterogSys(budget)
     sys1.set_mech('HKMGS')
     sys1.set_tech(16)
     sys1.set_asic('_gen_fixednorm_002', 0.03)
@@ -577,7 +577,7 @@ def verify(budget, kfn, wfn):
     print '70: {mean}'.format(mean=mean)
 
     # seed = 60
-    sys1 = HeteroSys(budget)
+    sys1 = HeterogSys(budget)
     sys1.set_mech('HKMGS')
     sys1.set_tech(16)
     sys1.set_asic('_gen_fixednorm_002', 0.04)
