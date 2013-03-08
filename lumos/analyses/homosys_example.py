@@ -113,7 +113,7 @@ if __name__ == '__main__':
     parser = OptionParser()
 
     mode_choices = ('a', 'p', 'ap')
-    parser.add_option('--mode', default='p', choices=mode_choices,
+    parser.add_option('--mode', default='ap', choices=mode_choices,
                       help='choose the running mode, choose from ('
                       + ','.join(mode_choices)
                       + '), default: %default]')
