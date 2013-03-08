@@ -178,8 +178,8 @@ these two systems are demonstrated later in Example Analysis section.
 Do Analysis
 -----------
 
-:class:`~lumos.model.system.HeteroSys` provides a method
-:func:`~lumos.model.system.HeteroSys.get_perf` to get the relative
+:class:`~lumos.model.system.HeterogSys` provides a method
+:func:`~lumos.model.system.HeterogSys.get_perf` to get the relative
 performance of the system for a given application.
 
 :class:`~lumos.model.system.HomogSys` provides a couple of methods to retrieve

@@ -926,7 +926,7 @@ the global kernel pool, it will be overide with the new one.</p>
 <em class="property">class </em><tt class="descclassname">lumos.model.system.</tt><tt class="descname">AsymSys</tt><big>(</big><em>budget</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#AsymSys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.AsymSys" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>Asymmetric system composed by IO cores, O3 cores, FPGAs, GPUs, and ASICs (or UCores)
-This is an older implementation. HeteroSys is a newer implementation.</p>
+This is an older implementation. HeterogSys is a newer implementation.</p>
 <dl class="method">
 <dt id="lumos.model.system.AsymSys.get_perf">
 <tt class="descname">get_perf</tt><big>(</big><em>area=None</em>, <em>power=None</em>, <em>app=0</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#AsymSys.get_perf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.AsymSys.get_perf" title="Permalink to this definition">¶</a></dt>
@@ -1049,8 +1049,8 @@ This is an older implementation. HeteroSys is a newer implementation.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="lumos.model.system.HeteroSys">
-<em class="property">class </em><tt class="descclassname">lumos.model.system.</tt><tt class="descname">HeteroSys</tt><big>(</big><em>budget</em>, <em>mech=None</em>, <em>tech=None</em>, <em>serial_core=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#HeteroSys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.HeteroSys" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.system.HeterogSys">
+<em class="property">class </em><tt class="descclassname">lumos.model.system.</tt><tt class="descname">HeterogSys</tt><big>(</big><em>budget</em>, <em>mech=None</em>, <em>tech=None</em>, <em>serial_core=None</em><big>)</big><a class="headerlink" href="#lumos.model.system.HeterogSys" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>This class models a heterogeneous many core system composed of
 regular cores and accelerators such as dedicated ASICs,
@@ -1077,8 +1077,8 @@ cores, accelerators such as ASICs, FPGA, and GPU.</p>
 </dd>
 </dl>
 <dl class="method">
-<dt id="lumos.model.system.HeteroSys.del_asic">
-<tt class="descname">del_asic</tt><big>(</big><em>kid</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#HeteroSys.del_asic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.HeteroSys.del_asic" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.system.HeterogSys.del_asic">
+<tt class="descname">del_asic</tt><big>(</big><em>kid</em><big>)</big><a class="headerlink" href="#lumos.model.system.HeterogSys.del_asic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove an ASIC accelerator from the system, free its area to other
 computing components. By default, the freed area is allocated to
 throughput cores.</p>
@@ -1095,14 +1095,14 @@ throughput cores.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="lumos.model.system.HeteroSys.del_asics">
-<tt class="descname">del_asics</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#HeteroSys.del_asics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.HeteroSys.del_asics" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.system.HeterogSys.del_asics">
+<tt class="descname">del_asics</tt><big>(</big><big>)</big><a class="headerlink" href="#lumos.model.system.HeterogSys.del_asics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove all ASIC accelerators in the system.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="lumos.model.system.HeteroSys.get_perf">
-<tt class="descname">get_perf</tt><big>(</big><em>app</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#HeteroSys.get_perf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.HeteroSys.get_perf" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.system.HeterogSys.get_perf">
+<tt class="descname">get_perf</tt><big>(</big><em>app</em><big>)</big><a class="headerlink" href="#lumos.model.system.HeterogSys.get_perf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the optimal performance fo the system. It uses accelerators to execute
 kernels if available. Otherwise, kernels are executed and accelerated by
 throughput cores. The system will try to find the optimal number of throughput
@@ -1130,8 +1130,8 @@ of the application.</dd>
 </dd></dl>
 
 <dl class="method">
-<dt id="lumos.model.system.HeteroSys.realloc_gpacc">
-<tt class="descname">realloc_gpacc</tt><big>(</big><em>area_ratio</em>, <em>ctype='FPGA'</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#HeteroSys.realloc_gpacc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.HeteroSys.realloc_gpacc" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.system.HeterogSys.realloc_gpacc">
+<tt class="descname">realloc_gpacc</tt><big>(</big><em>area_ratio</em>, <em>ctype='FPGA'</em><big>)</big><a class="headerlink" href="#lumos.model.system.HeterogSys.realloc_gpacc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adjust the area of a general-purpose accelerator. Currently, only FPGA
 is supported.</p>
 <dl class="docutils">
@@ -1149,8 +1149,8 @@ is supported.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="lumos.model.system.HeteroSys.set_asic">
-<tt class="descname">set_asic</tt><big>(</big><em>kid</em>, <em>area_ratio</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#HeteroSys.set_asic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.HeteroSys.set_asic" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.system.HeterogSys.set_asic">
+<tt class="descname">set_asic</tt><big>(</big><em>kid</em>, <em>area_ratio</em><big>)</big><a class="headerlink" href="#lumos.model.system.HeterogSys.set_asic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the ASIC accelerator&#8217;s area</p>
 <dl class="docutils">
 <dt>Args:</dt>
@@ -1167,8 +1167,8 @@ is supported.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="lumos.model.system.HeteroSys.set_core_pv">
-<tt class="descname">set_core_pv</tt><big>(</big><em>pv</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#HeteroSys.set_core_pv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.HeteroSys.set_core_pv" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.system.HeterogSys.set_core_pv">
+<tt class="descname">set_core_pv</tt><big>(</big><em>pv</em><big>)</big><a class="headerlink" href="#lumos.model.system.HeterogSys.set_core_pv" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether consider process variations.</p>
 <dl class="docutils">
 <dt>Args:</dt>
@@ -1183,8 +1183,8 @@ is supported.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="lumos.model.system.HeteroSys.set_mech">
-<tt class="descname">set_mech</tt><big>(</big><em>mech</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#HeteroSys.set_mech"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.HeteroSys.set_mech" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.system.HeterogSys.set_mech">
+<tt class="descname">set_mech</tt><big>(</big><em>mech</em><big>)</big><a class="headerlink" href="#lumos.model.system.HeterogSys.set_mech" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the scaling mechanism of all cores and ucores.</p>
 <dl class="docutils">
 <dt>Args:</dt>
@@ -1199,8 +1199,8 @@ is supported.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="lumos.model.system.HeteroSys.set_tech">
-<tt class="descname">set_tech</tt><big>(</big><em>tech</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#HeteroSys.set_tech"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.HeteroSys.set_tech" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.system.HeterogSys.set_tech">
+<tt class="descname">set_tech</tt><big>(</big><em>tech</em><big>)</big><a class="headerlink" href="#lumos.model.system.HeterogSys.set_tech" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the technology node of all cores and ucores.</p>
 <dl class="docutils">
 <dt>Args:</dt>
@@ -1217,8 +1217,8 @@ is supported.</p>
 </dd></dl>
 
 <dl class="class">
-<dt id="lumos.model.system.HomoSys">
-<em class="property">class </em><tt class="descclassname">lumos.model.system.</tt><tt class="descname">HomoSys</tt><big>(</big><em>area=None</em>, <em>power=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#HomoSys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.HomoSys" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.system.HomogSys">
+<em class="property">class </em><tt class="descclassname">lumos.model.system.</tt><tt class="descname">HomogSys</tt><big>(</big><em>area=None</em>, <em>power=None</em><big>)</big><a class="headerlink" href="#lumos.model.system.HomogSys" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>This class models a homogeneous many core system composed of
 either in-order cores or out-of-order cores.</p>
@@ -1233,8 +1233,8 @@ either in-order cores or out-of-order cores.</p>
 </dd>
 </dl>
 <dl class="method">
-<dt id="lumos.model.system.HomoSys.get_core_num">
-<tt class="descname">get_core_num</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#HomoSys.get_core_num"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.HomoSys.get_core_num" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.system.HomogSys.get_core_num">
+<tt class="descname">get_core_num</tt><big>(</big><big>)</big><a class="headerlink" href="#lumos.model.system.HomogSys.get_core_num" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the number of cores for the system under area constraint.</p>
 <dl class="docutils">
 <dt>Args:</dt>
@@ -1245,13 +1245,13 @@ either in-order cores or out-of-order cores.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="lumos.model.system.HomoSys.opt_core_num">
-<tt class="descname">opt_core_num</tt><big>(</big><em>app=0</em>, <em>vmin=0.3</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#HomoSys.opt_core_num"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.HomoSys.opt_core_num" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.system.HomogSys.opt_core_num">
+<tt class="descname">opt_core_num</tt><big>(</big><em>app=0</em>, <em>vmin=0.3</em><big>)</big><a class="headerlink" href="#lumos.model.system.HomogSys.opt_core_num" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="lumos.model.system.HomoSys.perf_by_cnum">
-<tt class="descname">perf_by_cnum</tt><big>(</big><em>cnum</em>, <em>app=0</em>, <em>vmin=0.3</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#HomoSys.perf_by_cnum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.HomoSys.perf_by_cnum" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.system.HomogSys.perf_by_cnum">
+<tt class="descname">perf_by_cnum</tt><big>(</big><em>cnum</em>, <em>app=0</em>, <em>vmin=0.3</em><big>)</big><a class="headerlink" href="#lumos.model.system.HomogSys.perf_by_cnum" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the relative performance of the system for a given application, with a
 given constraint on the number of active cores.</p>
 <dl class="docutils">
@@ -1286,13 +1286,13 @@ constraint.</dd>
 </dd></dl>
 
 <dl class="method">
-<dt id="lumos.model.system.HomoSys.perf_by_dark">
-<tt class="descname">perf_by_dark</tt><big>(</big><em>app=0</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#HomoSys.perf_by_dark"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.HomoSys.perf_by_dark" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.system.HomogSys.perf_by_dark">
+<tt class="descname">perf_by_dark</tt><big>(</big><em>app=0</em><big>)</big><a class="headerlink" href="#lumos.model.system.HomogSys.perf_by_dark" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="lumos.model.system.HomoSys.perf_by_vdd">
-<tt class="descname">perf_by_vdd</tt><big>(</big><em>vdd</em>, <em>app=0</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#HomoSys.perf_by_vdd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.HomoSys.perf_by_vdd" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.system.HomogSys.perf_by_vdd">
+<tt class="descname">perf_by_vdd</tt><big>(</big><em>vdd</em>, <em>app=0</em><big>)</big><a class="headerlink" href="#lumos.model.system.HomogSys.perf_by_vdd" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the relative performance of the system for a given application, after
 scaling the supply voltage by the given value.</p>
 <dl class="docutils">
@@ -1321,8 +1321,8 @@ available cores, then it turns to be a dark silicon configuration.</dd>
 </dd></dl>
 
 <dl class="method">
-<dt id="lumos.model.system.HomoSys.perf_by_vfs">
-<tt class="descname">perf_by_vfs</tt><big>(</big><em>vfs</em>, <em>app=0</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#HomoSys.perf_by_vfs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.HomoSys.perf_by_vfs" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.system.HomogSys.perf_by_vfs">
+<tt class="descname">perf_by_vfs</tt><big>(</big><em>vfs</em>, <em>app=0</em><big>)</big><a class="headerlink" href="#lumos.model.system.HomogSys.perf_by_vfs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the relative performance of the system for a given application, after
 scaling the supply voltage by the given factor.</p>
 <dl class="docutils">
@@ -1353,8 +1353,8 @@ available cores, then it turns to be a dark silicon configuration.</dd>
 </dd></dl>
 
 <dl class="method">
-<dt id="lumos.model.system.HomoSys.set_core_prop">
-<tt class="descname">set_core_prop</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#HomoSys.set_core_prop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.HomoSys.set_core_prop" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.system.HomogSys.set_core_prop">
+<tt class="descname">set_core_prop</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#lumos.model.system.HomogSys.set_core_prop" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set properties of the core in the system. It just calls the corresponding
 method of the core object.</p>
 <dl class="docutils">
@@ -1366,8 +1366,8 @@ method of the core object.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="lumos.model.system.HomoSys.set_sys_prop">
-<tt class="descname">set_sys_prop</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#HomoSys.set_sys_prop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.HomoSys.set_sys_prop" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.system.HomogSys.set_sys_prop">
+<tt class="descname">set_sys_prop</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#lumos.model.system.HomogSys.set_sys_prop" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set properties of the core in the system. Any property can be set
 by this method, such as budgets of area and power, and the composed
 core.</p>
@@ -1380,13 +1380,13 @@ core.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="lumos.model.system.HomoSys.speedup_by_vfslist">
-<tt class="descname">speedup_by_vfslist</tt><big>(</big><em>vfs_list</em>, <em>app=0</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#HomoSys.speedup_by_vfslist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.HomoSys.speedup_by_vfslist" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.system.HomogSys.speedup_by_vfslist">
+<tt class="descname">speedup_by_vfslist</tt><big>(</big><em>vfs_list</em>, <em>app=0</em><big>)</big><a class="headerlink" href="#lumos.model.system.HomogSys.speedup_by_vfslist" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="lumos.model.system.HomoSys.speedup_by_vlist">
-<tt class="descname">speedup_by_vlist</tt><big>(</big><em>v_list</em>, <em>app=0</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#HomoSys.speedup_by_vlist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.HomoSys.speedup_by_vlist" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.system.HomogSys.speedup_by_vlist">
+<tt class="descname">speedup_by_vlist</tt><big>(</big><em>v_list</em>, <em>app=0</em><big>)</big><a class="headerlink" href="#lumos.model.system.HomogSys.speedup_by_vlist" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

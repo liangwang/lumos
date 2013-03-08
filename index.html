@@ -282,43 +282,43 @@ out-or-order core (<a class="reference internal" href="apidoc/lumos.model.html#l
 accelerators (<a class="reference internal" href="apidoc/lumos.model.html#lumos.model.ucore.UCore" title="lumos.model.ucore.UCore"><tt class="xref py py-class docutils literal"><span class="pre">UCore</span></tt></a>), and federated cores
 (<a class="reference internal" href="apidoc/lumos.model.html#lumos.model.fedcore.FedCore" title="lumos.model.fedcore.FedCore"><tt class="xref py py-class docutils literal"><span class="pre">FedCore</span></tt></a>).</p>
 <p>On top of these cores, Lumos supports two kinds of systems: a homogeneous
-multi-core system (<tt class="xref py py-class docutils literal"><span class="pre">HomogSys</span></tt>), and a heterogeneous
+multi-core system (<a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HomogSys" title="lumos.model.system.HomogSys"><tt class="xref py py-class docutils literal"><span class="pre">HomogSys</span></tt></a>), and a heterogeneous
 multi-core system with a serial core and certain amount of throughput cores, as
-well as accelerators (<tt class="xref py py-class docutils literal"><span class="pre">HeterogSys</span></tt>). The usage of
+well as accelerators (<a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HeterogSys" title="lumos.model.system.HeterogSys"><tt class="xref py py-class docutils literal"><span class="pre">HeterogSys</span></tt></a>). The usage of
 these two systems are demonstrated later in Example Analysis section.</p>
 </div>
 <div class="section" id="do-analysis">
 <h3>Do Analysis<a class="headerlink" href="#do-analysis" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HeteroSys" title="lumos.model.system.HeteroSys"><tt class="xref py py-class docutils literal"><span class="pre">HeteroSys</span></tt></a> provides a method
-<a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HeteroSys.get_perf" title="lumos.model.system.HeteroSys.get_perf"><tt class="xref py py-func docutils literal"><span class="pre">get_perf()</span></tt></a> to get the relative
+<p><a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HeterogSys" title="lumos.model.system.HeterogSys"><tt class="xref py py-class docutils literal"><span class="pre">HeterogSys</span></tt></a> provides a method
+<a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HeterogSys.get_perf" title="lumos.model.system.HeterogSys.get_perf"><tt class="xref py py-func docutils literal"><span class="pre">get_perf()</span></tt></a> to get the relative
 performance of the system for a given application.</p>
-<p><tt class="xref py py-class docutils literal"><span class="pre">HomogSys</span></tt> provides a couple of methods to retrieve
+<p><a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HomogSys" title="lumos.model.system.HomogSys"><tt class="xref py py-class docutils literal"><span class="pre">HomogSys</span></tt></a> provides a couple of methods to retrieve
 relative performance of system for a given application:</p>
 <ul>
 <li><p class="first">Explicit constraint on the supply voltage.</p>
 <p>In this case, the system will try to enable as many cores at the given supply
 as possible within the given power budget. If the supply voltage is relatively
 high, it ends up with a dark silicon homogeneous many-core system. Use
-<tt class="xref py py-func docutils literal"><span class="pre">perf_by_vfs()</span></tt> and
-<tt class="xref py py-func docutils literal"><span class="pre">perf_by_vdd()</span></tt> for this scenario.</p>
+<a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HomogSys.perf_by_vfs" title="lumos.model.system.HomogSys.perf_by_vfs"><tt class="xref py py-func docutils literal"><span class="pre">perf_by_vfs()</span></tt></a> and
+<a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HomogSys.perf_by_vdd" title="lumos.model.system.HomogSys.perf_by_vdd"><tt class="xref py py-func docutils literal"><span class="pre">perf_by_vdd()</span></tt></a> for this scenario.</p>
 </li>
 <li><p class="first">Explicit constraint on the number of active cores.</p>
 <p>In this case, the system will probe for the highest supply voltage for the
 core to meet the overall power budget. Use
-<tt class="xref py py-func docutils literal"><span class="pre">perf_by_cnum()</span></tt> for this scenario.</p>
+<a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HomogSys.perf_by_cnum" title="lumos.model.system.HomogSys.perf_by_cnum"><tt class="xref py py-func docutils literal"><span class="pre">perf_by_cnum()</span></tt></a> for this scenario.</p>
 </li>
 <li><p class="first">No constraints on the supply voltage or the number of active cores,</p>
 <p>In this case, the system will probe for the optimal configuration of supply
 voltage and the number of cores to achieve the best overall throughput. Use
-<tt class="xref py py-func docutils literal"><span class="pre">opt_core_num()</span></tt> for this scenario.</p>
+<a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HomogSys.opt_core_num" title="lumos.model.system.HomogSys.opt_core_num"><tt class="xref py py-func docutils literal"><span class="pre">opt_core_num()</span></tt></a> for this scenario.</p>
 </li>
 </ul>
 </div>
 <div class="section" id="example-analyses">
 <h3>Example Analyses<a class="headerlink" href="#example-analyses" title="Permalink to this headline">¶</a></h3>
 <ol class="arabic">
-<li><p class="first">Example of using <tt class="xref py py-class docutils literal"><span class="pre">HomogSys</span></tt></p>
-<p>An example analysis of <tt class="xref py py-class docutils literal"><span class="pre">HomogSys</span></tt> is in
+<li><p class="first">Example of using <a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HomogSys" title="lumos.model.system.HomogSys"><tt class="xref py py-class docutils literal"><span class="pre">HomogSys</span></tt></a></p>
+<p>An example analysis of <a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HomogSys" title="lumos.model.system.HomogSys"><tt class="xref py py-class docutils literal"><span class="pre">HomogSys</span></tt></a> is in
 <tt class="docutils literal"><span class="pre">$LUMOS_HOME/lumos/analyses/homosys_example.py</span></tt>. This example models a
 homogeneous many-core architecture composed of Niagara2-like in-order cores.
 The system is defined as follow:</p>
@@ -339,7 +339,7 @@ tweaks to system parameters, for example, the second scenario requires:</p>
 <p>More details can be found in
 <a class="reference internal" href="apidoc/lumos.analyses.html#lumos.analyses.homosys_example.HomosysExample.analyze" title="lumos.analyses.homosys_example.HomosysExample.analyze"><tt class="xref py py-func docutils literal"><span class="pre">analyze()</span></tt></a>. For each
 scenario, the relative performance is obtained by
-<tt class="xref py py-func docutils literal"><span class="pre">opt_core_num()</span></tt> as follow:</p>
+<a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HomogSys.opt_core_num" title="lumos.model.system.HomogSys.opt_core_num"><tt class="xref py py-func docutils literal"><span class="pre">opt_core_num()</span></tt></a> as follow:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="n">ret</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">opt_core_num</span><span class="p">()</span>
 <span class="n">ret</span><span class="p">[</span><span class="s">&#39;perf&#39;</span><span class="p">]</span>
 </pre></div>
@@ -348,8 +348,8 @@ scenario, the relative performance is obtained by
 plot for the above scenarios, as in
 <a class="reference internal" href="apidoc/lumos.analyses.html#lumos.analyses.homosys_example.HomosysExample.plot" title="lumos.analyses.homosys_example.HomosysExample.plot"><tt class="xref py py-func docutils literal"><span class="pre">plot()</span></tt></a>.</p>
 </li>
-<li><p class="first">Example of using <tt class="xref py py-class docutils literal"><span class="pre">HeterogSys</span></tt></p>
-<p>An example analysis of <tt class="xref py py-class docutils literal"><span class="pre">HeterogSys</span></tt> is in
+<li><p class="first">Example of using <a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HeterogSys" title="lumos.model.system.HeterogSys"><tt class="xref py py-class docutils literal"><span class="pre">HeterogSys</span></tt></a></p>
+<p>An example analysis of <a class="reference internal" href="apidoc/lumos.model.html#lumos.model.system.HeterogSys" title="lumos.model.system.HeterogSys"><tt class="xref py py-class docutils literal"><span class="pre">HeterogSys</span></tt></a> is in
 <tt class="docutils literal"><span class="pre">$LUMOS_HOME/lumos/analyses/heterosys_example.py</span></tt>. This example models a
 heterogeneous many-core system composed of in-order cores, reconfigurable
 logic (FPGA), and dedicated ASICs. All related files for this analysis are
