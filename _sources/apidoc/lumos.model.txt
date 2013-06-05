@@ -25,6 +25,14 @@ model Package
     :undoc-members:
     :show-inheritance:
 
+:mod:`chip` Module
+------------------
+
+.. automodule:: lumos.model.chip
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 :mod:`core` Module
 ------------------
 

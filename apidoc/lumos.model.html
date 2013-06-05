@@ -25,6 +25,9 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within Lumos 0.1 documentation"
+          href="../_static/opensearch.xml"/>
     <link rel="top" title="Lumos 0.1 documentation" href="../index.html" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
           rel='stylesheet' type='text/css'>
@@ -96,6 +99,7 @@
 <li><a class="reference internal" href="#id1"><tt class="docutils literal"><span class="pre">model</span></tt> Package</a></li>
 <li><a class="reference internal" href="#module-lumos.model.application"><tt class="docutils literal"><span class="pre">application</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-lumos.model.budget"><tt class="docutils literal"><span class="pre">budget</span></tt> Module</a></li>
+<li><a class="reference internal" href="#module-lumos.model.chip"><tt class="docutils literal"><span class="pre">chip</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-lumos.model.core"><tt class="docutils literal"><span class="pre">core</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-lumos.model.fedcore"><tt class="docutils literal"><span class="pre">fedcore</span></tt> Module</a></li>
 <li><a class="reference internal" href="#module-lumos.model.freq"><tt class="docutils literal"><span class="pre">freq</span></tt> Module</a></li>
@@ -314,6 +318,75 @@ False if failed</td>
 <dt id="lumos.model.budget.Budget">
 <em class="property">class </em><tt class="descclassname">lumos.model.budget.</tt><tt class="descname">Budget</tt><big>(</big><em>area=0</em>, <em>power=0</em>, <em>bw=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/budget.html#Budget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.budget.Budget" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+</div>
+<div class="section" id="module-lumos.model.chip">
+<span id="chip-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">chip</span></tt> Module<a class="headerlink" href="#module-lumos.model.chip" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="lumos.model.chip.Chip">
+<em class="property">class </em><tt class="descclassname">lumos.model.chip.</tt><tt class="descname">Chip</tt><a class="reference internal" href="../_modules/lumos/model/chip.html#Chip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.chip.Chip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>This class models a chip derived from a floorplan</p>
+<dl class="method">
+<dt id="lumos.model.chip.Chip.add_tmap">
+<tt class="descname">add_tmap</tt><big>(</big><em>tmap</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/chip.html#Chip.add_tmap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.chip.Chip.add_tmap" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.model.chip.Chip.add_vthmap">
+<tt class="descname">add_vthmap</tt><big>(</big><em>vthmap</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/chip.html#Chip.add_vthmap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.chip.Chip.add_vthmap" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.model.chip.Chip.build_chip">
+<tt class="descname">build_chip</tt><big>(</big><em>flp</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/chip.html#Chip.build_chip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.chip.Chip.build_chip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build a chip from floorplan, in variusNTV format</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>flp (str):</dt>
+<dd>The path of the floorplan file, in variusNTV format.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>N/A</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="lumos.model.chip.Unit">
+<em class="property">class </em><tt class="descclassname">lumos.model.chip.</tt><tt class="descname">Unit</tt><big>(</big><em>dp0=0.307</em>, <em>sp0=0.1058</em>, <em>vdd0=0.765</em>, <em>vth=0.3</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/chip.html#Unit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.chip.Unit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Models on-chip units, such as logic, cache</p>
+<dl class="method">
+<dt id="lumos.model.chip.Unit.add_delay">
+<tt class="descname">add_delay</tt><big>(</big><em>vdd</em>, <em>d_mu</em>, <em>d_sd</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/chip.html#Unit.add_delay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.chip.Unit.add_delay" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.model.chip.Unit.get_delay">
+<tt class="descname">get_delay</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/model/chip.html#Unit.get_delay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.chip.Unit.get_delay" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.model.chip.Unit.set_prop">
+<tt class="descname">set_prop</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/chip.html#Unit.set_prop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.chip.Unit.set_prop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the value of a property</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="lumos.model.chip.Unit.set_vdd">
+<tt class="descname">set_vdd</tt><big>(</big><em>vdd</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/chip.html#Unit.set_vdd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.chip.Unit.set_vdd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.model.chip.Unit.set_vth">
+<tt class="descname">set_vth</tt><big>(</big><em>vth</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/chip.html#Unit.set_vth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.chip.Unit.set_vth" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
 
 </div>
 <div class="section" id="module-lumos.model.core">
