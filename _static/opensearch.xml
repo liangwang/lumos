@@ -4,7 +4,7 @@
   <Description>Search Lumos 0.1 documentation</Description>
   <InputEncoding>utf-8</InputEncoding>
   <Url type="text/html" method="get"
-       template="liangwang.github.io/lumos/search.html?q={searchTerms}&amp;check_keywords=yes&amp;area=default"/>
+       template="http://liangwang.github.io/lumos//search.html?q={searchTerms}&amp;check_keywords=yes&amp;area=default"/>
   <LongName>Lumos 0.1 documentation</LongName>
   
 </OpenSearchDescription>
