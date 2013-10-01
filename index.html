@@ -25,9 +25,6 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="search" type="application/opensearchdescription+xml"
-          title="Search within Lumos 0.1 documentation"
-          href="_static/opensearch.xml"/>
     <link rel="top" title="Lumos 0.1 documentation" href="#" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
           rel='stylesheet' type='text/css'>
@@ -206,9 +203,10 @@ transparent to users). Just follow these steps:</p>
 </div>
 </li>
 <li><p class="first">Set environment variable <tt class="docutils literal"><span class="pre">LUMOS_HOME</span></tt> to root directory of the
-package:</p>
+package, as well as the <tt class="docutils literal"><span class="pre">PYTHONPATH</span></tt>:</p>
 <div class="highlight-python"><pre>&gt;cd Lumos-0.1
-&gt;export LUMOS_HOME=(full-path-to)/Lumos-0.1</pre>
+&gt;export LUMOS_HOME=${PWD}
+&gt;export PYTHONPATH=$LUMOS_HOME:$PYTHONPATH</pre>
 </div>
 </li>
 <li><p class="first">Run the sample analysis:</p>
@@ -219,7 +217,7 @@ package:</p>
 </li>
 </ol>
 <p>Now the plots for this sample analysis should be ready to check out in
-<tt class="docutils literal"><span class="pre">$LUMOS_HOME/analyses/core/figures</span></tt>.</p>
+<tt class="docutils literal"><span class="pre">$LUMOS_HOME/analyses/homosys_example/figures</span></tt>.</p>
 </div>
 <div class="section" id="analysis">
 <h2>Analysis<a class="headerlink" href="#analysis" title="Permalink to this headline">¶</a></h2>
