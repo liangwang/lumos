@@ -1,0 +1,79 @@
+<kernels>
+  <kernel name="dummy">
+    <accelerator>
+      <fpga miu="1"/>
+      <asic miu="1"/>
+    </accelerator>
+    <occur>0</occur>
+  </kernel>
+  <kernel name="_gen_fixednorm_000">
+    <accelerator>
+      <fpga miu="2.000e+01"/>
+      <asic_gen_fixednorm_000 miu="1.000e+02"/>
+    </accelerator>
+    <occur>3.206e-03</occur>
+  </kernel>
+  <kernel name="_gen_fixednorm_001">
+    <accelerator>
+      <fpga miu="2.444e+01"/>
+      <asic_gen_fixednorm_001 miu="1.222e+02"/>
+    </accelerator>
+    <occur>2.089e-02</occur>
+  </kernel>
+  <kernel name="_gen_fixednorm_002">
+    <accelerator>
+      <fpga miu="2.889e+01"/>
+      <asic_gen_fixednorm_002 miu="1.444e+02"/>
+    </accelerator>
+    <occur>9.075e-02</occur>
+  </kernel>
+  <kernel name="_gen_fixednorm_003">
+    <accelerator>
+      <fpga miu="3.333e+01"/>
+      <asic_gen_fixednorm_003 miu="1.667e+02"/>
+    </accelerator>
+    <occur>2.414e-01</occur>
+  </kernel>
+  <kernel name="_gen_fixednorm_004">
+    <accelerator>
+      <fpga miu="3.778e+01"/>
+      <asic_gen_fixednorm_004 miu="1.889e+02"/>
+    </accelerator>
+    <occur>3.937e-01</occur>
+  </kernel>
+  <kernel name="_gen_fixednorm_005">
+    <accelerator>
+      <fpga miu="4.222e+01"/>
+      <asic_gen_fixednorm_005 miu="2.111e+02"/>
+    </accelerator>
+    <occur>3.937e-01</occur>
+  </kernel>
+  <kernel name="_gen_fixednorm_006">
+    <accelerator>
+      <fpga miu="4.667e+01"/>
+      <asic_gen_fixednorm_006 miu="2.333e+02"/>
+    </accelerator>
+    <occur>2.414e-01</occur>
+  </kernel>
+  <kernel name="_gen_fixednorm_007">
+    <accelerator>
+      <fpga miu="5.111e+01"/>
+      <asic_gen_fixednorm_007 miu="2.556e+02"/>
+    </accelerator> 
+    <occur>9.075e-02</occur>
+  </kernel>
+  <kernel name="_gen_fixednorm_008">
+    <accelerator>
+      <fpga miu="5.556e+01"/>
+      <asic_gen_fixednorm_008 miu="2.778e+02"/>
+    </accelerator>
+    <occur>2.089e-02</occur>
+  </kernel>
+  <kernel name="_gen_fixednorm_009">
+    <accelerator>
+      <fpga miu="6.000e+01"/>
+      <asic_gen_fixednorm_009 miu="3.000e+02"/>
+    </accelerator>
+    <occur>3.206e-03</occur>
+  </kernel>
+</kernels>

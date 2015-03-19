@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 import logging
-import application
-from application import App
-import kernel
+from . import application
+from .application import App
+from .application import Application
+from . import kernel
 import scipy.stats
-import ConfigParser
-#import xml.etree.ElementTree as ET
+# import ConfigParser
+# import xml.etree.ElementTree as ET
 from lxml import etree
 
 
@@ -101,26 +102,26 @@ def build_fixedcov(app_num, kernels, cov):
     return workload
 
 
-def dump(workload, fname='workload.cfg'):
-    """Dump workload into a file
+# def dump(workload, fname='workload.cfg'):
+#     """Dump workload into a file
 
-    :workload: @todo
-    :fname: @todo
-    :returns: @todo
+#     :workload: @todo
+#     :fname: @todo
+#     :returns: @todo
 
-    """
-    cfg = ConfigParser.RawConfigParser()
-    app_num = len(workload)
-    for idx in xrange(app_num):
-        app = workload[idx]
-        cfg.add_section(app.name)
-        kernels = app.kernels
-        kernel_config = ','.join( [ '%s:%.3e' % (kid, kernels[kid]) for kid in kernels] )
-        cfg.set(app.name, 'f_parallel', app.f)
-        cfg.set(app.name, 'kernel_config', kernel_config)
+#     """
+#     cfg = ConfigParser.RawConfigParser()
+#     app_num = len(workload)
+#     for idx in xrange(app_num):
+#         app = workload[idx]
+#         cfg.add_section(app.name)
+#         kernels = app.kernels
+#         kernel_config = ','.join( [ '%s:%.3e' % (kid, kernels[kid]) for kid in kernels] )
+#         cfg.set(app.name, 'f_parallel', app.f)
+#         cfg.set(app.name, 'kernel_config', kernel_config)
 
-    with open(fname, 'wb') as f:
-        cfg.write(f)
+#     with open(fname, 'wb') as f:
+#         cfg.write(f)
 
 
 def dump_xml(workload, fname='workload.xml'):
@@ -143,24 +144,88 @@ def dump_xml(workload, fname='workload.xml'):
     tree = etree.ElementTree(root)
     tree.write(fname, pretty_print=True)
 
-def load(fname='workload.cfg'):
-    cfg = ConfigParser.RawConfigParser()
-    cfg.read(fname)
-    worklord = []
-    for sec in cfg.sections():
-        app_name = sec
-        app_f = float(cfg.get(sec, 'f_parallel'))
-        app = App(f=app_f, name=app_name)
-        kernel_config = cfg.get(sec, 'kernel_config')
-        for kcfg in kernel_config.split(','):
-            kcfg_tmp = kcfg.split(':')
-            kid = kcfg_tmp[0]
-            cov = float(kcfg_tmp[1])
-            app.reg_kernel(kid, cov)
-            workload.append(app)
+# def load(fname='workload.cfg'):
+#     cfg = ConfigParser.RawConfigParser()
+#     cfg.read(fname)
+#     worklord = []
+#     for sec in cfg.sections():
+#         app_name = sec
+#         app_f = float(cfg.get(sec, 'f_parallel'))
+#         app = App(f=app_f, name=app_name)
+#         kernel_config = cfg.get(sec, 'kernel_config')
+#         for kcfg in kernel_config.split(','):
+#             kcfg_tmp = kcfg.split(':')
+#             kid = kcfg_tmp[0]
+#             cov = float(kcfg_tmp[1])
+#             app.reg_kernel(kid, cov)
+#             workload.append(app)
+
+#     return workload
+
+
+def load_from_xml(kernels, fname='workload.xml'):
+    """Load a workload (a set of applications) from an XML file
+
+    Args:
+       fname (filepath):
+          The XML file to be loaded
+
+    Returns:
+       workload (dict):
+          A dict of applications this workload contains, indexed by application name
+    """
+    workload = dict()
+    tree = etree.parse(fname)
+    for app_root in tree.iter('app'):
+        app_name = app_root.get('name')
+
+        ele = app_root.find('f_parallel')
+        f_parallel = float(ele.text)
+        app = Application(f=f_parallel, name=app_name)
+
+        kcfg_root = app_root.find('kernel_config')
+        for k_ele in kcfg_root.iter('kernel'):
+            kid = k_ele.get('name')
+            kernel = kernels[kid]
+            cov = float(k_ele.get('cov'))
+            app.add_kernel(kernel, cov)
+
+        workload[app_name] = app
 
     return workload
 
+
+def load_workload(kernels, fname='workload.xml'):
+    """
+    Load a workload from an XML file
+
+    Args:
+       fname (str):
+          The XML file to be loaded
+
+    Returns:
+       workload (dict):
+          A dict of applications this workload contains, indexed by application name
+    """
+    workload = dict()
+    tree = etree.parse(fname)
+    for app_root in tree.iter('app'):
+        app_name = app_root.get('name')
+
+        ele = app_root.find('f_parallel')
+        f_parallel = float(ele.text)
+        app = Application(f=f_parallel, name=app_name)
+
+        kcfg_root = app_root.find('kernel_config')
+        for k_ele in kcfg_root.iter('kernel'):
+            kid = k_ele.get('name')
+            kernel = kernels[kid]
+            cov = float(k_ele.get('cov'))
+            app.add_kernel(kernel, cov)
+
+        workload[app_name] = app
+
+    return workload
 
 
 def load_xml(fname='workload.xml'):

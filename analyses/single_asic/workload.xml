@@ -1,0 +1,114 @@
+<workload>
+  <!-- f ratio 100% -->
+  <app name="app_f100_c10">
+    <f_parallel>1</f_parallel>
+    <kernel_config>
+      <kernel name="ker" cov="0.1"/>
+    </kernel_config>
+  </app>
+  <app name="app_f100_c20">
+    <f_parallel>1</f_parallel>
+    <kernel_config>
+      <kernel name="ker" cov="0.2"/>
+    </kernel_config>
+  </app>
+  <app name="app_f100_c30">
+    <f_parallel>1</f_parallel>
+    <kernel_config>
+      <kernel name="ker" cov="0.3"/>
+    </kernel_config>
+  </app>
+  <app name="app_f100_c40">
+    <f_parallel>1</f_parallel>
+    <kernel_config>
+      <kernel name="ker" cov="0.4"/>
+    </kernel_config>
+  </app>
+  <app name="app_f100_c50">
+    <f_parallel>1</f_parallel>
+    <kernel_config>
+      <kernel name="ker" cov="0.5"/>
+    </kernel_config>
+  </app>
+  <!-- f ratio 90% -->
+  <app name="app_f90_c10">
+    <f_parallel>0.9</f_parallel>
+    <kernel_config>
+      <kernel name="ker" cov="0.1"/>
+    </kernel_config>
+  </app>
+  <app name="app_f90_c20">
+    <f_parallel>0.9</f_parallel>
+    <kernel_config>
+      <kernel name="ker" cov="0.2"/>
+    </kernel_config>
+  </app>
+  <app name="app_f90_c30">
+    <f_parallel>0.9</f_parallel>
+    <kernel_config>
+      <kernel name="ker" cov="0.3"/>
+    </kernel_config>
+  </app>
+  <app name="app_f90_c40">
+    <f_parallel>0.9</f_parallel>
+    <kernel_config>
+      <kernel name="ker" cov="0.4"/>
+    </kernel_config>
+  </app>
+  <app name="app_f90_c50">
+    <f_parallel>0.9</f_parallel>
+    <kernel_config>
+      <kernel name="ker" cov="0.5"/>
+    </kernel_config>
+  </app>
+  <!-- f ratio 50% -->
+  <app name="app_f50_c10">
+    <f_parallel>0.5</f_parallel>
+    <kernel_config>
+      <kernel name="ker" cov="0.1"/>
+    </kernel_config>
+  </app>
+  <app name="app_f50_c20">
+    <f_parallel>0.5</f_parallel>
+    <kernel_config>
+      <kernel name="ker" cov="0.2"/>
+    </kernel_config>
+  </app>
+  <app name="app_f50_c30">
+    <f_parallel>0.5</f_parallel>
+    <kernel_config>
+      <kernel name="ker" cov="0.3"/>
+    </kernel_config>
+  </app>
+  <app name="app_f50_c40">
+    <f_parallel>0.5</f_parallel>
+    <kernel_config>
+      <kernel name="ker" cov="0.4"/>
+    </kernel_config>
+  </app>
+  <!-- f ratio 10% -->
+  <!-- <app name="app_f10_c10"> -->
+  <!--   <f_parallel>0.1</f_parallel> -->
+  <!--   <kernel_config> -->
+  <!--     <kernel name="ker" cov="0.1"/> -->
+  <!--   </kernel_config> -->
+  <!-- </app> -->
+  <!-- <app name="app_f10_c20"> -->
+  <!--   <f_parallel>0.1</f_parallel> -->
+  <!--   <kernel_config> -->
+  <!--     <kernel name="ker" cov="0.2"/> -->
+  <!--   </kernel_config> -->
+  <!-- </app> -->
+  <!-- <app name="app_f10_c30"> -->
+  <!--   <f_parallel>0.1</f_parallel> -->
+  <!--   <kernel_config> -->
+  <!--     <kernel name="ker" cov="0.3"/> -->
+  <!--   </kernel_config> -->
+  <!-- </app> -->
+  <!-- <app name="app_f10_c40"> -->
+  <!--   <f_parallel>0.1</f_parallel> -->
+  <!--   <kernel_config> -->
+  <!--     <kernel name="ker" cov="0.4"/> -->
+  <!--   </kernel_config> -->
+  <!-- </app> -->
+</workload>

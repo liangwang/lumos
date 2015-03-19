@@ -1,0 +1,10 @@
+<kernels>
+  <kernel name="ker">
+    <accelerator>
+      <fpga miu="10" />
+      <asic_5x miu="50" />
+      <asic_10x miu="100" />
+      <asic_50x miu="500" />
+    </accelerator>
+  </kernel>
+</kernels>

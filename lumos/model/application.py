@@ -2,6 +2,121 @@
 import logging
 import numpy.random
 import scipy.stats
+import sys
+
+_logger = logging.getLogger('Application')
+_logger.setLevel(logging.INFO)
+
+class ApplicationError(Exception):
+    pass
+
+
+class Application(object):
+    """ (New version) An application is a program a system runs for.
+
+    The application has certain characteristics, such as parallel ratio
+    """
+    def __init__(self, f=0.9, m=0, name='app'):
+        """ Initialize an application
+
+        Arguments:
+        f -- the fraction of parallel part of program (default 0.9)
+        m -- the factor of memory latency (default 0)
+
+        """
+        self.f = f
+        self.f_noacc = f
+
+        self.m = m
+
+        self.name = name
+
+        self.kernels = dict()
+        self.kernels_coverage = dict()
+
+        self.tag = self.tag_update()
+
+    def __repr__(self):
+        return self.tag
+
+    def tag_update(self):
+        f_str = str(int((self.f-self.f_noacc)*100))
+
+        return '-'.join([f_str, ] + [(
+            '%s-%d' % (kid, int(self.kernels_coverage[kid]*100)))
+            for kid in self.kernels_coverage])
+
+    def add_kernel(self, kernel, cov):
+        """Register a kernel to be accelerate.
+
+        The kernel could be accelerated by certain ASIC, or more
+        generalized GPU/FPGA
+
+        Args:
+           kernel (:class:`~lumos.model.ptm_new.kernel.Kernel`):
+              The kernel object
+           cov (float):
+              The coerage of the kernel, relative to the serial execution
+
+        Returns:
+           bool, True if successfull, False otherwise.
+        """
+        kid = kernel.kid
+        if kid in self.kernels:
+            _logger.warning('Kernel %s already exist' % kid)
+            return False
+
+        if cov > self.f_noacc:
+            raise ApplicationError(
+                '[add_kernel]: cov of {0} is too large to exceed the overall '
+                'parallel ratio {1}'.format(cov, self.f_noacc))
+
+        self.kernels[kid] = kernel
+        self.kernels_coverage[kid] = cov
+        self.f_noacc = self.f_noacc - cov
+
+        self.tag = self.tag_update()
+
+        return True
+
+    def set_cov(self, kid, cov):
+        """Set the coverage of a kernel
+
+           Args:
+              kid (str):
+                 The kid (name) of the kernel
+              cov (float):
+                 The coverage of the kernel to be updated
+
+           Returns:
+              bool, True if successfull, False otherwise.
+        """
+        if kid not in self.kernels:
+            _logger.error('Kernel %s has not been registerd' % kid)
+            return False
+
+        cov_old = self.kernels_coverage[kid]
+
+        if self.f_noacc + cov_old < cov:
+            _logger.error('[set_cov]: cov of %s is too large to exceed the overall parallel ratio' % kid)
+            return False
+
+        self.kernels_coverage[kid] = cov
+        self.f_noacc = self.f_noacc + cov_old - cov
+
+        self.tag = self.tag_update()
+
+        return True
+
+    def get_all_kernels(self):
+        return self.kernels.keys()
+
+    def get_cov(self, kid):
+        return self.kernels_coverage[kid]
+
+    def get_kernel(self, kid):
+        return self.kernels[kid]
+
 
 
 class App(object):
@@ -31,7 +146,7 @@ class App(object):
     def tag_update(self):
         f_str = str(int((self.f-self.f_noacc)*100))
 
-        return '-'.join([f_str,] + [('%s-%d' % (kid, int(self.kernels[kid]*100))) for kid in self.kernels])
+        return '-'.join([f_str,] + [('%s-%d' % (kid, int(self.kernels[kid]*100))) for kid in sorted(self.kernels)])
 
     def reg_kernel(self, kid, cov):
         """Register a kernel that could be accelerated by certain ASIC, or more
@@ -46,11 +161,11 @@ class App(object):
         kernels = self.kernels
 
         if kid in kernels:
-            logging.error('Kernel %s already exist' % kid)
+            _logger.error('Kernel %s already exist' % kid)
             return False
 
         if cov > self.f_noacc:
-            logging.error('cov of %s is too large to exceed the overall parallel ratio' % kid)
+            _logger.error('cov {1} of kernel "{0}" is too large to exceed the overall parallel ratio {2}'.format(kid, cov, self.f_noacc))
             return False
 
         kernels[kid] = cov
@@ -72,13 +187,13 @@ class App(object):
         kernels = self.kernels
 
         if kid not in kernels:
-            logging.error('Kernel %s has not been registerd' % kid)
+            _logger.error('Kernel %s has not been registerd' % kid)
             return False
 
         cov_old = kernels[kid]
 
         if self.f_noacc + cov_old < cov:
-            logging.error('cov of %s is too large to exceed the overall parallel ratio' % kid)
+            _logger.error('cov of %s is too large to exceed the overall parallel ratio' % kid)
             return False
 
         kernels[kid] = cov
@@ -108,68 +223,69 @@ class App(object):
         else:
             return False
 
-class UCoreParam:
-    def __init__(self, miu, phi, bw):
-        self.miu = miu
-        self.phi = phi
-        self.bw = bw
+# FIXME: is this used or not?
+## class UCoreParam:
+##     def __init__(self, miu, phi, bw):
+##         self.miu = miu
+##         self.phi = phi
+##         self.bw = bw
 
+# FIXME: is this used or not?
+## class AppMMM(dict):
+##     name = 'MMM'
+##     def __init__(self, f=0.9, m=0, f_acc=0):
+##         super(dict, self).__init__()
 
-class AppMMM(dict):
-    name = 'MMM'
-    def __init__(self, f=0.9, m=0, f_acc=0):
-        super(dict, self).__init__()
+##         self["GPU"] = UCoreParam(miu=3.41,phi=0.74, bw=0.725)
+##         self["FPGA"] = UCoreParam(miu=0.75,phi=0.31, bw=0.325)
+##         self["ASIC"] = UCoreParam(miu=27.4,phi=0.79, bw=3.62)
+##         self["O3CPU"] = UCoreParam(miu=1,phi=1, bw=0.216)
+##         self["IO"] = UCoreParam(miu=1,phi=1, bw=0.16)
 
-        self["GPU"] = UCoreParam(miu=3.41,phi=0.74, bw=0.725)
-        self["FPGA"] = UCoreParam(miu=0.75,phi=0.31, bw=0.325)
-        self["ASIC"] = UCoreParam(miu=27.4,phi=0.79, bw=3.62)
-        self["O3CPU"] = UCoreParam(miu=1,phi=1, bw=0.216)
-        self["IO"] = UCoreParam(miu=1,phi=1, bw=0.16)
+##         self.f = f
+##         self.f_acc = f_acc
+##         self.m = m
 
-        self.f = f
-        self.f_acc = f_acc
-        self.m = m
+##         self.tag = '_'.join([self.name,
+##             '-'.join([str(int(100*(1-f))), str(int(100*(f-f_acc))), str(int(100*f_acc))])])
 
-        self.tag = '_'.join([self.name,
-            '-'.join([str(int(100*(1-f))), str(int(100*(f-f_acc))), str(int(100*f_acc))])])
+# FIXME: is this used or not?
+## class AppBS(dict):
+##     name = 'BS'
+##     def __init__(self, f=0.9, m=0, f_acc=0):
+##         super(dict, self).__init__()
 
+##         self["GPU"] = UCoreParam(miu=17.0,phi=0.57, bw=5.85)
+##         self["FPGA"] = UCoreParam(miu=5.68,phi=0.26, bw=3.975)
+##         self["ASIC"] = UCoreParam(miu=482,phi=4.75, bw=66.249)
+##         self["O3CPU"] = UCoreParam(miu=1,phi=1, bw=0.35)
+##         self["IO"] = UCoreParam(miu=1,phi=1, bw=0.26)
 
-class AppBS(dict):
-    name = 'BS'
-    def __init__(self, f=0.9, m=0, f_acc=0):
-        super(dict, self).__init__()
+##         self.f = f
+##         self.f_acc = f_acc
+##         self.m = m
 
-        self["GPU"] = UCoreParam(miu=17.0,phi=0.57, bw=5.85)
-        self["FPGA"] = UCoreParam(miu=5.68,phi=0.26, bw=3.975)
-        self["ASIC"] = UCoreParam(miu=482,phi=4.75, bw=66.249)
-        self["O3CPU"] = UCoreParam(miu=1,phi=1, bw=0.35)
-        self["IO"] = UCoreParam(miu=1,phi=1, bw=0.26)
+##         self.tag = '_'.join([self.name,
+##             '-'.join([str(int(100*(1-f))), str(int(100*(f-f_acc))), str(int(100*f_acc))])])
 
-        self.f = f
-        self.f_acc = f_acc
-        self.m = m
+# FIXME: is this used or not?
+## class AppFFT64(dict):
+##     name = 'FFT'
+##     def __init__(self, f=0.9, m=0, f_acc=0):
+##         super(dict, self).__init__()
 
-        self.tag = '_'.join([self.name,
-            '-'.join([str(int(100*(1-f))), str(int(100*(f-f_acc))), str(int(100*f_acc))])])
+##         self["GPU"] = UCoreParam(miu=2.42,phi=0.59, bw = 1)
+##         self["FPGA"] = UCoreParam(miu=2.81,phi=0.29, bw = 1)
+##         self["ASIC"] = UCoreParam(miu=733,phi=5.34, bw = 1)
+##         self["O3CPU"] = UCoreParam(miu=1,phi=1, bw=1)
+##         self["IO"] = UCoreParam(miu=1,phi=1, bw=1)
 
+##         self.f = f
+##         self.f_acc = f_acc
+##         self.m = m
 
-class AppFFT64(dict):
-    name = 'FFT'
-    def __init__(self, f=0.9, m=0, f_acc=0):
-        super(dict, self).__init__()
-
-        self["GPU"] = UCoreParam(miu=2.42,phi=0.59, bw = 1)
-        self["FPGA"] = UCoreParam(miu=2.81,phi=0.29, bw = 1)
-        self["ASIC"] = UCoreParam(miu=733,phi=5.34, bw = 1)
-        self["O3CPU"] = UCoreParam(miu=1,phi=1, bw=1)
-        self["IO"] = UCoreParam(miu=1,phi=1, bw=1)
-
-        self.f = f
-        self.f_acc = f_acc
-        self.m = m
-
-        self.tag = '_'.join([self.name,
-            '-'.join([str(int(100*(1-f))), str(int(100*(f-f_acc))), str(int(100*f_acc))])])
+##         self.tag = '_'.join([self.name,
+##             '-'.join([str(int(100*(1-f))), str(int(100*(f-f_acc))), str(int(100*f_acc))])])
 
 
 def build(cov, occ, probs, kernels, name, f_parallel=1):
@@ -266,9 +382,3 @@ def random_kernel_cov(cov_params):
         r = 0
 
     return r
-
-if __name__ == '__main__':
-    app = App(1)
-    app.reg_kernel('MMM', 0.1)
-    app.reg_kernel('BS', 0.2)
-    print app.tag

@@ -1,0 +1,20 @@
+[system]
+budget=option('large','medium','small','custom')
+sys_area=float
+sys_power=float
+thru_core=option('IOCore', 'IOCore_TFET')
+
+[app]
+kernels=string
+workload=string
+
+[explore-variables]
+f_parallel=force_list
+asic_cov=force_list
+asic_alloc=integer_list_ext
+asic_perf=integer_list_ext
+
+[analysis]
+action=string_list
+fmt=option('pdf','png')
+nprocs=integer
