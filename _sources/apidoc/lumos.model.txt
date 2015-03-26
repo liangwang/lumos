@@ -1,99 +1,79 @@
-model Package
-=============
+lumos.model package
+===================
 
-:mod:`model` Package
---------------------
+Subpackages
+-----------
 
-.. automodule:: lumos.model
-    :members:
-    :undoc-members:
-    :show-inheritance:
+.. toctree::
 
-:mod:`application` Module
--------------------------
+    lumos.model.core
+    lumos.model.system
+    lumos.model.tech
+
+Submodules
+----------
+
+lumos.model.application module
+------------------------------
 
 .. automodule:: lumos.model.application
     :members:
     :undoc-members:
     :show-inheritance:
 
-:mod:`budget` Module
---------------------
+lumos.model.asacc module
+------------------------
 
-.. automodule:: lumos.model.budget
+.. automodule:: lumos.model.asacc
     :members:
     :undoc-members:
     :show-inheritance:
 
-:mod:`chip` Module
-------------------
-
-.. automodule:: lumos.model.chip
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-:mod:`core` Module
-------------------
-
-.. automodule:: lumos.model.core
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-:mod:`fedcore` Module
----------------------
-
-.. automodule:: lumos.model.fedcore
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-:mod:`freq` Module
-------------------
-
-.. automodule:: lumos.model.freq
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-:mod:`kernel` Module
---------------------
+lumos.model.kernel module
+-------------------------
 
 .. automodule:: lumos.model.kernel
     :members:
     :undoc-members:
     :show-inheritance:
 
-:mod:`system` Module
---------------------
+lumos.model.misc module
+-----------------------
 
-.. automodule:: lumos.model.system
+.. automodule:: lumos.model.misc
     :members:
     :undoc-members:
     :show-inheritance:
 
-:mod:`tech` Module
-------------------
+lumos.model.plot module
+-----------------------
 
-.. automodule:: lumos.model.tech
+.. automodule:: lumos.model.plot
     :members:
     :undoc-members:
     :show-inheritance:
 
-:mod:`ucore` Module
--------------------
+lumos.model.ucore module
+------------------------
 
 .. automodule:: lumos.model.ucore
     :members:
     :undoc-members:
     :show-inheritance:
 
-:mod:`workload` Module
-----------------------
+lumos.model.workload module
+---------------------------
 
 .. automodule:: lumos.model.workload
     :members:
     :undoc-members:
     :show-inheritance:
 
+
+Module contents
+---------------
+
+.. automodule:: lumos.model
+    :members:
+    :undoc-members:
+    :show-inheritance:

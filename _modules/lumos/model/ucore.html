@@ -1,6 +1,4 @@
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -9,8 +7,11 @@
     
     <title>lumos.model.ucore &mdash; Lumos 0.1 documentation</title>
     
-    <link rel="stylesheet" href="../../../_static/lumos.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/bootstrap-3.2.0/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/bootstrap-3.2.0/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -24,95 +25,94 @@
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
     <link rel="top" title="Lumos 0.1 documentation" href="../../../index.html" />
-    <link rel="up" title="Module code" href="../../index.html" />
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
-          rel='stylesheet' type='text/css'>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
- 
-    <style type="text/css">
-      table.right { float: right; margin-left: 20px; }
-      table.right td { border: 1px solid #ccc; }
-      
-    </style>
-    <script type="text/javascript">
-      // intelligent scrolling of the sidebar content
-      $(window).scroll(function() {
-        var sb = $('.sphinxsidebarwrapper');
-        var win = $(window);
-        var sbh = sb.height();
-        var offset = $('.sphinxsidebar').position()['top'];
-        var wintop = win.scrollTop();
-        var winbot = wintop + win.innerHeight();
-        var curtop = sb.position()['top'];
-        var curbot = curtop + sbh;
-        // does sidebar fit in window?
-        if (sbh < win.innerHeight()) {
-          // yes: easy case -- always keep at the top
-          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
-                                $(document).height() - sbh - 200]));
-        } else {
-          // no: only scroll if top/bottom edge of sidebar is at
-          // top/bottom edge of window
-          if (curtop > wintop && curbot > winbot) {
-            sb.css('top', $u.max([wintop - offset - 10, 0]));
-          } else if (curtop < wintop && curbot < winbot) {
-            sb.css('top', $u.min([winbot - sbh - offset - 20,
-                                  $(document).height() - sbh - 200]));
-          }
-        }
-      });
-    </script>
+    <link rel="up" title="lumos.model" href="../model.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
 
   </head>
-  <body>
-<div class="pageheader">
-  <div>
-    <a href="../../../index.html">
-      <img src="../../../_static/lumos.png" alt="LUMOS" />
-    </a>
-  </div>
-</div>
+  <body role="document">
 
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="../../../index.html">Lumos home</a>&nbsp;|</li>
-        <li><a href="../../../contents.html">Documentation</a> &raquo;</li>
-
-          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
-      </ul>
-    </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          Lumos</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
       </div>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body">
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
             
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="simple">
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
   <h1>Source code for lumos.model.ucore</h1><div class="highlight"><pre>
 <span class="c">#!/usr/bin/env python</span>
 <span class="sd">&quot;&quot;&quot;</span>
@@ -126,10 +126,8 @@
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">tech</span> <span class="kn">import</span> <span class="n">Base</span> <span class="k">as</span> <span class="n">techbase</span><span class="p">,</span> <span class="n">Scale</span> <span class="k">as</span> <span class="n">techscl</span>
-<span class="kn">from</span> <span class="nn">tech</span> <span class="kn">import</span> <span class="n">ProjScale</span> <span class="k">as</span> <span class="n">projscl</span>
-<span class="kn">from</span> <span class="nn">tech</span> <span class="kn">import</span> <span class="n">LPBase</span> <span class="k">as</span> <span class="n">lpbase</span><span class="p">,</span> <span class="n">PTMScale</span> <span class="k">as</span> <span class="n">ptmscl</span>
-<span class="kn">import</span> <span class="nn">kernel</span>
+<span class="kn">from</span> <span class="nn">.tech</span> <span class="kn">import</span> <span class="n">CMOSTechModel</span>
+
 
 
 <span class="c"># area of core i7-960, core only</span>
@@ -138,16 +136,21 @@
 <span class="n">BCE_PERF</span> <span class="o">=</span> <span class="mf">43.5</span>
 <span class="c"># extracted from Core i7-960&#39;s TDP, 130W / 4 = 32.5, then exclude uncomputing components, e.g. LLC, MCs</span>
 <span class="n">BCE_POWER</span> <span class="o">=</span> <span class="mi">20</span>
+<span class="c"># Technology nodes for BCE characteristics</span>
+<span class="n">BCE_TECH</span> <span class="o">=</span> <span class="mi">45</span>
 
+<span class="n">BCE_BW</span> <span class="o">=</span> <span class="mi">1</span>     <span class="c"># FIXME: change to more realistic values</span>
+
+<div class="viewcode-block" id="UCoreError"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.ucore.UCoreError">[docs]</a><span class="k">class</span> <span class="nc">UCoreError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span>
+</div>
 <div class="viewcode-block" id="UCore"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.ucore.UCore">[docs]</a><span class="k">class</span> <span class="nc">UCore</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">area</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ctype</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">mech</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">tech</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uid</span><span class="p">,</span> <span class="n">area</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ctype</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">tech</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s">&#39;hp&#39;</span><span class="p">):</span>
         <span class="n">update</span> <span class="o">=</span> <span class="bp">True</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">ctype</span> <span class="o">=</span> <span class="n">ctype</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ctype</span> <span class="o">=</span> <span class="n">ctype</span>
 
-        <span class="k">if</span> <span class="n">mech</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">update</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_mech</span> <span class="o">=</span> <span class="n">mech</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tech_model</span> <span class="o">=</span> <span class="n">CMOSTechModel</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">tech</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
             <span class="n">update</span> <span class="o">=</span> <span class="bp">False</span>
@@ -155,55 +158,52 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_area</span> <span class="o">=</span> <span class="n">area</span>
 
+        <span class="bp">self</span><span class="o">.</span><span class="n">_uid</span> <span class="o">=</span> <span class="n">uid</span>
+
         <span class="k">if</span> <span class="n">update</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">__update_config</span><span class="p">()</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ctype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">DeprecationWarning</span><span class="p">(</span><span class="s">&#39;ctype is not used for UCore&#39;</span><span class="p">)</span>
+
+
     <span class="k">def</span> <span class="nf">__update_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Internal function to update value of mech/ctype/tech specific parameters</span>
+        <span class="sd">&quot;&quot;&quot;Internal function to update value of ctype/tech specific parameters</span>
 <span class="sd">        :returns: @todo</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_area</span>
         <span class="n">tech</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tech</span>
-        <span class="n">mech</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mech</span>
+        <span class="n">vnom</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tech_model</span><span class="o">.</span><span class="n">vnom</span><span class="p">(</span><span class="n">tech</span><span class="p">)</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
+        <span class="n">bce_vnom</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tech_model</span><span class="o">.</span><span class="n">vnom</span><span class="p">(</span><span class="n">BCE_TECH</span><span class="p">)</span><span class="o">*</span><span class="mi">1000</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_a0</span> <span class="o">=</span> <span class="n">BCE_AREA</span> <span class="o">*</span> <span class="n">techscl</span><span class="o">.</span><span class="n">area</span><span class="p">[</span><span class="n">tech</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_a0</span> <span class="o">=</span> <span class="n">BCE_AREA</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tech_model</span><span class="o">.</span><span class="n">area_scale</span><span class="p">[</span><span class="n">tech</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tech_model</span><span class="o">.</span><span class="n">area_scale</span><span class="p">[</span><span class="n">BCE_TECH</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="n">mech</span> <span class="o">==</span> <span class="s">&#39;ITRS&#39;</span> <span class="ow">or</span> <span class="n">mech</span> <span class="o">==</span> <span class="s">&#39;CONS&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_perf0</span> <span class="o">=</span> <span class="n">BCE_PERF</span> <span class="o">*</span> <span class="n">projscl</span><span class="o">.</span><span class="n">freq</span><span class="p">[</span><span class="n">mech</span><span class="p">][</span><span class="n">tech</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_p0</span> <span class="o">=</span> <span class="n">BCE_POWER</span> <span class="o">*</span> <span class="n">projscl</span><span class="o">.</span><span class="n">dp</span><span class="p">[</span><span class="n">mech</span><span class="p">][</span><span class="n">tech</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_bw0</span> <span class="o">=</span> <span class="n">projscl</span><span class="o">.</span><span class="n">freq</span><span class="p">[</span><span class="n">mech</span><span class="p">][</span><span class="n">tech</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="n">mech</span> <span class="o">==</span> <span class="s">&#39;HKMGS&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_perf0</span> <span class="o">=</span> <span class="n">BCE_PERF</span> <span class="o">*</span> <span class="n">ptmscl</span><span class="o">.</span><span class="n">freq</span><span class="p">[</span><span class="n">mech</span><span class="p">][</span><span class="n">tech</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_p0</span> <span class="o">=</span> <span class="n">BCE_POWER</span> <span class="o">*</span> <span class="n">ptmscl</span><span class="o">.</span><span class="n">dp</span><span class="p">[</span><span class="n">mech</span><span class="p">][</span><span class="n">tech</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_bw0</span> <span class="o">=</span> <span class="n">ptmscl</span><span class="o">.</span><span class="n">freq</span><span class="p">[</span><span class="n">mech</span><span class="p">][</span><span class="n">tech</span><span class="p">]</span>
-        <span class="k">elif</span> <span class="n">mech</span> <span class="o">==</span> <span class="s">&#39;LP&#39;</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;U-core does not support LP processes&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_perf0</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_p0</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_bw0</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_perf0</span> <span class="o">=</span> <span class="n">BCE_PERF</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tech_model</span><span class="o">.</span><span class="n">fnom_scale</span><span class="p">[</span><span class="n">tech</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tech_model</span><span class="o">.</span><span class="n">fnom_scale</span><span class="p">[</span><span class="n">BCE_TECH</span><span class="p">]</span>
 
-<div class="viewcode-block" id="UCore.perf"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.ucore.UCore.perf">[docs]</a>    <span class="k">def</span> <span class="nf">perf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">bandwidth</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Calculate the performance score of a u-core</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_p0</span> <span class="o">=</span> <span class="n">BCE_POWER</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tech_model</span><span class="o">.</span><span class="n">dynamic_power_scale</span><span class="p">[</span><span class="n">tech</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tech_model</span><span class="o">.</span><span class="n">dynamic_power_scale</span><span class="p">[</span><span class="n">BCE_TECH</span><span class="p">]</span>
 
-<span class="sd">        :app: @todo</span>
-<span class="sd">        :returns: @todo</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bw0</span> <span class="o">=</span> <span class="n">BCE_BW</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tech_model</span><span class="o">.</span><span class="n">fnom_scale</span><span class="p">[</span><span class="n">tech</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tech_model</span><span class="o">.</span><span class="n">fnom_scale</span><span class="p">[</span><span class="n">BCE_TECH</span><span class="p">]</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="UCore.perf"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.ucore.UCore.perf">[docs]</a>    <span class="k">def</span> <span class="nf">perf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">bandwidth</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="n">uparam</span> <span class="o">=</span> <span class="n">kernel</span><span class="o">.</span><span class="n">get_acc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_uid</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="n">power</span><span class="p">:</span>
-            <span class="n">area_p</span> <span class="o">=</span> <span class="p">(</span><span class="n">power</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p0</span> <span class="o">/</span> <span class="n">app</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ctype</span><span class="p">]</span><span class="o">.</span><span class="n">phi</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_a0</span>
+            <span class="n">area_p</span> <span class="o">=</span> <span class="p">(</span><span class="n">power</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p0</span> <span class="o">/</span> <span class="n">uparam</span><span class="o">.</span><span class="n">phi</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_a0</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">area_p</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxint</span>
 
         <span class="k">if</span> <span class="n">bandwidth</span><span class="p">:</span>
-            <span class="n">area_b</span> <span class="o">=</span> <span class="p">(</span><span class="n">bandwidth</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bw0</span> <span class="o">/</span> <span class="n">app</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ctype</span><span class="p">]</span><span class="o">.</span><span class="n">bw</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_a0</span>
+            <span class="n">area_b</span> <span class="o">=</span> <span class="p">(</span><span class="n">bandwidth</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bw0</span> <span class="o">/</span> <span class="n">uparam</span><span class="o">.</span><span class="n">bw</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_a0</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">area_b</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxint</span>
 
         <span class="n">area_eff</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">area_p</span><span class="p">,</span> <span class="n">area_b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_area</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perf0</span> <span class="o">*</span> <span class="p">(</span><span class="n">area_eff</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_a0</span><span class="p">)</span> <span class="o">*</span> <span class="n">app</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ctype</span><span class="p">]</span><span class="o">.</span><span class="n">miu</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perf0</span> <span class="o">*</span> <span class="p">(</span><span class="n">area_eff</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_a0</span><span class="p">)</span> <span class="o">*</span> <span class="n">uparam</span><span class="o">.</span><span class="n">miu</span>
+
 </div>
 <div class="viewcode-block" id="UCore.power"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.ucore.UCore.power">[docs]</a>    <span class="k">def</span> <span class="nf">power</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Calculate the power of a u-core with certain application</span>
@@ -212,7 +212,7 @@
 <span class="sd">        :returns: @todo</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p0</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_area</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">_a0</span><span class="p">)</span> <span class="o">*</span> <span class="n">app</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ctype</span><span class="p">]</span><span class="o">.</span><span class="n">phi</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p0</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_area</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">_a0</span><span class="p">)</span> <span class="o">*</span> <span class="n">app</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_uid</span><span class="p">]</span><span class="o">.</span><span class="n">phi</span>
 </div>
 <div class="viewcode-block" id="UCore.bandwidth"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.ucore.UCore.bandwidth">[docs]</a>    <span class="k">def</span> <span class="nf">bandwidth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Calculate the bandwith consumed by the ucore</span>
@@ -221,33 +221,17 @@
 <span class="sd">        :returns: @todo</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bw0</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_area</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">_a0</span><span class="p">)</span> <span class="o">*</span> <span class="n">app</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">ctype</span><span class="p">]</span><span class="o">.</span><span class="n">bw</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bw0</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_area</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">_a0</span><span class="p">)</span> <span class="o">*</span> <span class="n">app</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_uid</span><span class="p">]</span><span class="o">.</span><span class="n">bw</span>
 </div>
-<div class="viewcode-block" id="UCore.config"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.ucore.UCore.config">[docs]</a>    <span class="k">def</span> <span class="nf">config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mech</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">ctype</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">tech</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">area</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<div class="viewcode-block" id="UCore.config"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.ucore.UCore.config">[docs]</a>    <span class="k">def</span> <span class="nf">config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tech</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">area</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Configurate ucore characteristics</span>
 
-<span class="sd">        :mech: @todo</span>
-<span class="sd">        :ctype: @todo</span>
 <span class="sd">        :tech: @todo</span>
 <span class="sd">        :area: @todo</span>
 <span class="sd">        :returns: @todo</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">update</span> <span class="o">=</span> <span class="bp">True</span>
-
-        <span class="k">if</span> <span class="n">mech</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_mech</span> <span class="o">=</span> <span class="n">mech</span>
-            <span class="c">#logging.debug(&#39;mech is %s&#39; % mech)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mech</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">update</span> <span class="o">=</span> <span class="bp">False</span>
-            <span class="c">#logging.debug(&#39;mech is not set, no internal update&#39;)</span>
-
-        <span class="k">if</span> <span class="n">ctype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ctype</span> <span class="o">=</span> <span class="n">ctype</span>
-            <span class="c">#logging.debug(&#39;ctype is %s&#39; % ctype)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">ctype</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">update</span> <span class="o">=</span> <span class="bp">False</span>
-            <span class="c">#logging.debug(&#39;ctype is not set, no internal update&#39;)</span>
 
         <span class="k">if</span> <span class="n">tech</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_tech</span> <span class="o">=</span> <span class="n">tech</span>
@@ -267,118 +251,54 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">__update_config</span><span class="p">()</span>
 </div>
     <span class="nd">@property</span>
-<div class="viewcode-block" id="UCore.area"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.ucore.UCore.area">[docs]</a>    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Get the area of the core &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_area</span>
-</div>
+
     <span class="nd">@property</span>
-<div class="viewcode-block" id="UCore.tech"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.ucore.UCore.tech">[docs]</a>    <span class="k">def</span> <span class="nf">tech</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">tech</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Get the technology node, in nm &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tech</span>
+
 </div>
+<div class="viewcode-block" id="AppAccelerator"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.ucore.AppAccelerator">[docs]</a><span class="k">class</span> <span class="nc">AppAccelerator</span><span class="p">(</span><span class="n">UCore</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uid</span><span class="p">,</span> <span class="n">ker_obj</span><span class="p">,</span> <span class="n">area</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tech</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s">&#39;hp&#39;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">AppAccelerator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">uid</span><span class="p">,</span>
+            <span class="n">area</span><span class="o">=</span><span class="n">area</span><span class="p">,</span> <span class="n">tech</span><span class="o">=</span><span class="n">tech</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_ker_obj</span> <span class="o">=</span> <span class="n">ker_obj</span>
+
     <span class="nd">@property</span>
-<div class="viewcode-block" id="UCore.mech"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.ucore.UCore.mech">[docs]</a>    <span class="k">def</span> <span class="nf">mech</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the scaling mechanism, either ITRS or CON(servative) &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mech</span>
+    <span class="k">def</span> <span class="nf">kid</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; The kernel id (str) that this accelerator targets at. This is a read-only property</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ker_obj</span><span class="o">.</span><span class="n">kid</span>
+
+<div class="viewcode-block" id="AppAccelerator.perf"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.ucore.AppAccelerator.perf">[docs]</a>    <span class="k">def</span> <span class="nf">perf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">bandwidth</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">AppAccelerator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">perf</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_ker_obj</span><span class="p">,</span> <span class="n">power</span><span class="p">,</span> <span class="n">bandwidth</span><span class="p">)</span>
 
 </div></div>
-<div class="viewcode-block" id="ASIC"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.ucore.ASIC">[docs]</a><span class="k">class</span> <span class="nc">ASIC</span><span class="p">(</span><span class="n">UCore</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;ASIC accelerator&quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kid</span><span class="p">,</span> <span class="n">area</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">mech</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">tech</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;initilize ASIC</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">UCore</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">area</span><span class="p">,</span> <span class="s">&#39;ASIC&#39;</span><span class="p">,</span> <span class="n">mech</span><span class="p">,</span> <span class="n">tech</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">kid</span> <span class="o">=</span> <span class="n">kid</span>
-
-<div class="viewcode-block" id="ASIC.perf"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.ucore.ASIC.perf">[docs]</a>    <span class="k">def</span> <span class="nf">perf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">bandwidth</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;performance under constraints</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">ker</span> <span class="o">=</span> <span class="n">kernel</span><span class="o">.</span><span class="n">get_kernel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kid</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">power</span><span class="p">:</span>
-            <span class="n">area_p</span> <span class="o">=</span> <span class="p">(</span><span class="n">power</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p0</span> <span class="o">/</span> <span class="n">ker</span><span class="p">[</span><span class="s">&#39;ASIC&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">phi</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_a0</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">area_p</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxint</span>
-
-        <span class="k">if</span> <span class="n">bandwidth</span><span class="p">:</span>
-            <span class="n">area_b</span> <span class="o">=</span> <span class="p">(</span><span class="n">bandwidth</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bw0</span> <span class="o">/</span> <span class="n">ker</span><span class="p">[</span><span class="s">&#39;ASIC&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">bw</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_a0</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">area_b</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxint</span>
-
-        <span class="n">area_eff</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">area_p</span><span class="p">,</span> <span class="n">area_b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_area</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perf0</span> <span class="o">*</span> <span class="p">(</span><span class="n">area_eff</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_a0</span><span class="p">)</span> <span class="o">*</span> <span class="n">ker</span><span class="p">[</span><span class="s">&#39;ASIC&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">miu</span>
-</div>
-<div class="viewcode-block" id="ASIC.config"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.ucore.ASIC.config">[docs]</a>    <span class="k">def</span> <span class="nf">config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mech</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">tech</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">area</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="n">UCore</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mech</span><span class="p">,</span> <span class="s">&#39;ASIC&#39;</span><span class="p">,</span> <span class="n">tech</span><span class="p">,</span> <span class="n">area</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="ASIC.power"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.ucore.ASIC.power">[docs]</a>    <span class="k">def</span> <span class="nf">power</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;not implemented&quot;</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="ASIC.bandwidth"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.ucore.ASIC.bandwidth">[docs]</a>    <span class="k">def</span> <span class="nf">bandwidth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;not implemented&quot;</span><span class="p">)</span>
-</div></div>
-<div class="viewcode-block" id="FPGA"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.ucore.FPGA">[docs]</a><span class="k">class</span> <span class="nc">FPGA</span><span class="p">(</span><span class="n">UCore</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;FPGA accelerator&quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">area</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">mech</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">tech</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Initialize FPGA</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">UCore</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">area</span><span class="p">,</span> <span class="s">&#39;FPGA&#39;</span><span class="p">,</span> <span class="n">mech</span><span class="p">,</span> <span class="n">tech</span><span class="p">)</span>
-
-<div class="viewcode-block" id="FPGA.perf"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.ucore.FPGA.perf">[docs]</a>    <span class="k">def</span> <span class="nf">perf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kid</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">bandwidth</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="n">ker</span> <span class="o">=</span> <span class="n">kernel</span><span class="o">.</span><span class="n">get_kernel</span><span class="p">(</span><span class="n">kid</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">power</span><span class="p">:</span>
-            <span class="n">area_p</span> <span class="o">=</span> <span class="p">(</span><span class="n">power</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_p0</span> <span class="o">/</span> <span class="n">ker</span><span class="p">[</span><span class="s">&#39;FPGA&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">phi</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_a0</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">area_p</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxint</span>
-
-        <span class="k">if</span> <span class="n">bandwidth</span><span class="p">:</span>
-            <span class="n">area_b</span> <span class="o">=</span> <span class="p">(</span><span class="n">bandwidth</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bw0</span> <span class="o">/</span> <span class="n">ker</span><span class="p">[</span><span class="s">&#39;FPGA&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">bw</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_a0</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">area_b</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">maxint</span>
-
-        <span class="n">area_eff</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">area_p</span><span class="p">,</span> <span class="n">area_b</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_area</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perf0</span> <span class="o">*</span> <span class="p">(</span><span class="n">area_eff</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_a0</span><span class="p">)</span> <span class="o">*</span> <span class="n">ker</span><span class="p">[</span><span class="s">&#39;FPGA&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">miu</span>
-</div>
-<div class="viewcode-block" id="FPGA.config"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.ucore.FPGA.config">[docs]</a>    <span class="k">def</span> <span class="nf">config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mech</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">tech</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">area</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="n">UCore</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mech</span><span class="p">,</span> <span class="s">&#39;FPGA&#39;</span><span class="p">,</span> <span class="n">tech</span><span class="p">,</span> <span class="n">area</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="FPGA.power"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.ucore.FPGA.power">[docs]</a>    <span class="k">def</span> <span class="nf">power</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;not implemented&quot;</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="FPGA.bandwidth"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.ucore.FPGA.bandwidth">[docs]</a>    <span class="k">def</span> <span class="nf">bandwidth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;not implemented&quot;</span><span class="p">)</span></div></div>
+<div class="viewcode-block" id="GPAccelerator"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.ucore.GPAccelerator">[docs]</a><span class="k">class</span> <span class="nc">GPAccelerator</span><span class="p">(</span><span class="n">UCore</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">uid</span><span class="p">,</span> <span class="n">area</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tech</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s">&#39;hp&#39;</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">GPAccelerator</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">uid</span><span class="p">,</span>
+            <span class="n">area</span><span class="o">=</span><span class="n">area</span><span class="p">,</span> <span class="n">tech</span><span class="o">=</span><span class="n">tech</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="n">model_name</span><span class="p">)</span></div>
 </pre></div>
 
-          </div>
-        </div>
-      </div>
-      <div class="clearer"></div>
     </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="../../../index.html">Lumos home</a>&nbsp;|</li>
-        <li><a href="../../../contents.html">Documentation</a> &raquo;</li>
-
-          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
-      </ul>
-    </div>
-    <div class="footer">
-        &copy; Copyright 2013, Liang Wang.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
-    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2013, Liang Wang.<br/>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.<br/>
+    </p>
+  </div>
+</footer>
   </body>
 </html>

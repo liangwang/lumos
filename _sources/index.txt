@@ -10,6 +10,7 @@
 .. toctree::
    :maxdepth: 2
 
+
 Introduction
 ============
 
@@ -81,11 +82,10 @@ transparent to users). Just follow these steps:
    >tar zxvf Lumos-0.1.tar.gz
 
 2. Set environment variable ``LUMOS_HOME`` to root directory of the
-   package, as well as the ``PYTHONPATH``::
+   package::
 
    >cd Lumos-0.1
-   >export LUMOS_HOME=${PWD}
-   >export PYTHONPATH=$LUMOS_HOME:$PYTHONPATH
+   >export LUMOS_HOME=(full-path-to)/Lumos-0.1
 
 3. Run the sample analysis::
 
@@ -94,7 +94,7 @@ transparent to users). Just follow these steps:
 4. Done!
 
 Now the plots for this sample analysis should be ready to check out in
-``$LUMOS_HOME/analyses/homosys_example/figures``.
+``$LUMOS_HOME/analyses/core/figures``.
 
 Analysis
 ========

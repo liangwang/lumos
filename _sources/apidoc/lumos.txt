@@ -1,19 +1,31 @@
-lumos Package
+lumos package
 =============
-
-:mod:`settings` Module
-----------------------
-
-.. automodule:: lumos.settings
-    :members:
-    :undoc-members:
-    :show-inheritance:
 
 Subpackages
 -----------
 
 .. toctree::
 
-    lumos.analyses
+    lumos.analysis
     lumos.model
+    lumos.unittests
 
+Submodules
+----------
+
+lumos.settings module
+---------------------
+
+.. automodule:: lumos.settings
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: lumos
+    :members:
+    :undoc-members:
+    :show-inheritance:

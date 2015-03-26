@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>lumos.model.system.hom &mdash; Lumos 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/bootstrap-3.2.0/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/bootstrap-3.2.0/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../../../_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="Lumos 0.1 documentation" href="../../../../index.html" />
+    <link rel="up" title="lumos.model" href="../../model.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body role="document">
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../index.html">
+          Lumos</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="simple">
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <h1>Source code for lumos.model.system.hom</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">..core</span> <span class="kn">import</span> <span class="n">IOCore_CMOS</span> <span class="k">as</span> <span class="n">IOCore</span><span class="p">,</span> <span class="n">O3Core_CMOS</span> <span class="k">as</span> <span class="n">O3Core</span>
+<span class="kn">from</span> <span class="nn">..core.io_cmos</span> <span class="kn">import</span> <span class="n">PERF_BASE</span>
+<span class="kn">from</span> <span class="nn">..application</span> <span class="kn">import</span> <span class="n">Application</span>
+
+<span class="n">VMIN</span> <span class="o">=</span> <span class="mi">300</span>
+<span class="n">VMAX</span> <span class="o">=</span> <span class="mi">1100</span>
+<span class="n">VSF_MAX</span> <span class="o">=</span> <span class="mf">1.3</span>  <span class="c"># maxium vdd is 1.3 * vdd_nominal</span>
+<span class="n">V_PRECISION</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c"># 1mV</span>
+
+
+<span class="kn">from</span> <span class="nn">lumos</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="n">_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&#39;HomogSys&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">:</span>
+    <span class="n">_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+<div class="viewcode-block" id="HomSys"><a class="viewcode-back" href="../../../../apidoc/lumos.model.system.html#lumos.model.system.hom.HomSys">[docs]</a><span class="k">class</span> <span class="nc">HomSys</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class models a homogeneous many core system composed of</span>
+<span class="sd">    either in-order cores or out-of-order cores.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">       area (num):</span>
+<span class="sd">          Area budget of the system.</span>
+<span class="sd">       power (num):</span>
+<span class="sd">          Power budget of the system.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">area</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">area</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">area</span> <span class="o">=</span> <span class="n">area</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">area</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="n">power</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">power</span> <span class="o">=</span> <span class="n">power</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">power</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">core</span> <span class="o">=</span> <span class="n">IOCore</span><span class="p">(</span><span class="n">tech</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s">&#39;hp&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="HomSys.set_core_prop"><a class="viewcode-back" href="../../../../apidoc/lumos.model.system.html#lumos.model.system.hom.HomSys.set_core_prop">[docs]</a>    <span class="k">def</span> <span class="nf">set_core_prop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set properties of the core in the system. It just calls the corresponding</span>
+<span class="sd">        method of the core object.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">           Named property and its value.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">           N/A</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="HomSys.set_sys_prop"><a class="viewcode-back" href="../../../../apidoc/lumos.model.system.html#lumos.model.system.hom.HomSys.set_sys_prop">[docs]</a>    <span class="k">def</span> <span class="nf">set_sys_prop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set properties of the core in the system. Any property can be set</span>
+<span class="sd">        by this method, such as budgets of area and power, and the composed</span>
+<span class="sd">        core.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">           Named property and its value.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">           N/A</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="n">k</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="HomSys.get_core_num"><a class="viewcode-back" href="../../../../apidoc/lumos.model.system.html#lumos.model.system.hom.HomSys.get_core_num">[docs]</a>    <span class="k">def</span> <span class="nf">get_core_num</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the number of cores for the system under area constraint.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">           N/A</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">           The number of cores</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">core</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">core</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span> <span class="o">/</span> <span class="n">core</span><span class="o">.</span><span class="n">area</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="HomSys.perf_by_vdd"><a class="viewcode-back" href="../../../../apidoc/lumos.model.system.html#lumos.model.system.hom.HomSys.perf_by_vdd">[docs]</a>    <span class="k">def</span> <span class="nf">perf_by_vdd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vdd</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the relative performance of the system for a given application, after</span>
+<span class="sd">        scaling the supply voltage by the given value.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">           vdd (num):</span>
+<span class="sd">              The voltage to be scaled to.</span>
+<span class="sd">           app (:class:`~lumos.model.application.Application`):</span>
+<span class="sd">              The targeted application.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">          dict: results wrapped in a python dict with three keys:</span>
+
+<span class="sd">          perf (num):</span>
+<span class="sd">            The relatvie performance.</span>
+<span class="sd">          active (num):</span>
+<span class="sd">            The number of active cores. If it less than the number of</span>
+<span class="sd">            available cores, then it turns to be a dark silicon configuration.</span>
+<span class="sd">          core (num):</span>
+<span class="sd">            The number of available cores on system.</span>
+<span class="sd">          util (num):</span>
+<span class="sd">            The utilization of the system at given supply voltage.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">core</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">core</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">f</span>
+
+        <span class="n">core</span><span class="o">.</span><span class="n">vdd</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">vnom</span><span class="o">*</span><span class="n">VSF_MAX</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">vmax</span><span class="p">)</span>
+        <span class="n">sperf</span><span class="o">=</span><span class="n">core</span><span class="o">.</span><span class="n">perf</span>
+
+        <span class="n">core</span><span class="o">.</span><span class="n">vdd</span> <span class="o">=</span> <span class="n">vdd</span>
+        <span class="n">active_num</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span> <span class="o">/</span> <span class="n">core</span><span class="o">.</span><span class="n">area</span><span class="p">),</span>
+                         <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">power</span> <span class="o">/</span> <span class="n">core</span><span class="o">.</span><span class="n">power</span><span class="p">))</span>
+
+        <span class="n">perf</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">f</span><span class="p">)</span> <span class="o">/</span> <span class="n">sperf</span> <span class="o">+</span> <span class="n">f</span> <span class="o">/</span> <span class="p">(</span><span class="n">active_num</span> <span class="o">*</span> <span class="n">core</span><span class="o">.</span><span class="n">perf</span><span class="p">))</span>
+        <span class="n">core_num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span> <span class="o">/</span> <span class="n">core</span><span class="o">.</span><span class="n">area</span><span class="p">)</span>
+        <span class="n">util</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">active_num</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">core_num</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;perf&#39;</span><span class="p">:</span> <span class="n">perf</span><span class="o">/</span><span class="n">PERF_BASE</span><span class="p">,</span>
+                <span class="s">&#39;active&#39;</span><span class="p">:</span> <span class="n">active_num</span><span class="p">,</span>
+                <span class="s">&#39;core&#39;</span> <span class="p">:</span> <span class="n">core_num</span><span class="p">,</span>
+                <span class="s">&#39;util&#39;</span><span class="p">:</span> <span class="n">util</span><span class="p">}</span>
+</div>
+<div class="viewcode-block" id="HomSys.perf_by_cnum"><a class="viewcode-back" href="../../../../apidoc/lumos.model.system.html#lumos.model.system.hom.HomSys.perf_by_cnum">[docs]</a>    <span class="k">def</span> <span class="nf">perf_by_cnum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cnum</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the relative performance of the system for a given application, with a</span>
+<span class="sd">        given constraint on the number of active cores.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">          cnum (num):</span>
+<span class="sd">            The number of core required to be active.</span>
+<span class="sd">          app (:class:`~lumos.model.Application`):</span>
+<span class="sd">            The targeted application.</span>
+<span class="sd">          vmin (num):</span>
+<span class="sd">            An optional argument to specify the lowest boundary which supply</span>
+<span class="sd">            voltage can be scaled down.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">          dict: results wrapped in a python dict with three keys:</span>
+
+<span class="sd">          perf (num):</span>
+<span class="sd">            The relatvie performance.</span>
+<span class="sd">          vdd (num):</span>
+<span class="sd">            The supply voltage of the optimal configuration under core number</span>
+<span class="sd">            constraint.</span>
+<span class="sd">          freq (num):</span>
+<span class="sd">            The frequency with the optimal configuration under core number</span>
+<span class="sd">            constraint.</span>
+<span class="sd">          cnum (num):</span>
+<span class="sd">            The actual number of active cores, if the requried number can not be met.</span>
+<span class="sd">          util (num):</span>
+<span class="sd">            The utilization of the system at the optimal configuraiton.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">core</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">core</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">f</span>
+
+        <span class="n">cnum_max</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="o">/</span><span class="n">core</span><span class="o">.</span><span class="n">area</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">cnum</span> <span class="o">&gt;</span> <span class="n">cnum_max</span> <span class="ow">or</span> <span class="n">cnum</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+
+        <span class="n">cpower</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">power</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">cnum</span><span class="p">)</span>
+        <span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Per-core power budget: {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cpower</span><span class="p">))</span>
+
+        <span class="c"># Serial performance is achieved by the highest vdd</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">vdd</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">vnom</span><span class="o">*</span><span class="n">VSF_MAX</span><span class="p">),</span> <span class="n">core</span><span class="o">.</span><span class="n">vmax</span><span class="p">)</span>
+        <span class="n">sperf</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">perf</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">vmin</span><span class="p">:</span>
+            <span class="n">vmin</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">vmin</span>
+
+        <span class="c"># Check whether vmin can meet the power requirement</span>
+        <span class="k">if</span> <span class="n">vmin</span> <span class="o">&gt;=</span> <span class="n">core</span><span class="o">.</span><span class="n">vmin</span><span class="p">:</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">vdd</span> <span class="o">=</span> <span class="n">vmin</span>
+            <span class="k">if</span> <span class="n">core</span><span class="o">.</span><span class="n">power</span> <span class="o">&gt;</span> <span class="n">cpower</span><span class="p">:</span>
+                <span class="c"># Either vmin is too high or active_cnum is too large</span>
+                <span class="c"># so that the system could not meet the power budget even</span>
+                <span class="c"># with the minimum vdd. Return the active core number with vmin</span>
+                <span class="c"># Users can capture the exception by comparing the active_cnum</span>
+                <span class="c"># and the returned active_cnum</span>
+                <span class="n">active_cnum</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="o">/</span><span class="n">core</span><span class="o">.</span><span class="n">area</span><span class="p">),</span>
+                                 <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">power</span><span class="o">/</span><span class="n">core</span><span class="o">.</span><span class="n">power</span><span class="p">))</span>
+
+                <span class="n">perf</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">f</span><span class="p">)</span><span class="o">/</span><span class="n">sperf</span> <span class="o">+</span> <span class="n">f</span><span class="o">/</span><span class="p">(</span><span class="n">active_cnum</span><span class="o">*</span><span class="n">core</span><span class="o">.</span><span class="n">perf</span><span class="p">))</span>
+                <span class="n">util</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">active_cnum</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">cnum</span><span class="p">)</span>
+                <span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;vmin is too high or active_cnum is too large&#39;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="p">{</span><span class="s">&#39;perf&#39;</span><span class="p">:</span> <span class="n">perf</span><span class="o">/</span><span class="n">PERF_BASE</span><span class="p">,</span>
+                        <span class="s">&#39;vdd&#39;</span><span class="p">:</span> <span class="n">vmin</span><span class="p">,</span>
+                        <span class="s">&#39;cnum&#39;</span><span class="p">:</span> <span class="n">active_cnum</span><span class="p">,</span>
+                        <span class="s">&#39;freq&#39;</span><span class="p">:</span> <span class="n">core</span><span class="o">.</span><span class="n">freq</span><span class="p">,</span>
+                        <span class="s">&#39;util&#39;</span><span class="p">:</span> <span class="n">util</span><span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">vmin</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">vmin</span>
+
+
+        <span class="n">vl</span> <span class="o">=</span> <span class="n">vmin</span>
+        <span class="n">vr</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">vnom</span> <span class="o">*</span> <span class="n">VSF_MAX</span><span class="p">),</span> <span class="n">core</span><span class="o">.</span><span class="n">vmax</span><span class="p">)</span>
+        <span class="n">vm</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">vl</span><span class="o">+</span><span class="n">vr</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="k">while</span> <span class="p">(</span><span class="n">vr</span><span class="o">-</span><span class="n">vl</span><span class="p">)</span><span class="o">&gt;</span><span class="n">V_PRECISION</span><span class="p">:</span>
+            <span class="n">vm</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">vl</span><span class="o">+</span><span class="n">vr</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">vdd</span> <span class="o">=</span> <span class="n">vm</span>
+
+            <span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;[Core]</span><span class="se">\t</span><span class="s">:vl: {0}mV, vr: {1}mV, vm: {2}mV, freq: {3}, power: {4}, area: {5}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vl</span><span class="p">,</span> <span class="n">vr</span><span class="p">,</span> <span class="n">vm</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">freq</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">power</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">area</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">core</span><span class="o">.</span><span class="n">power</span> <span class="o">&gt;</span> <span class="n">cpower</span><span class="p">:</span>
+                <span class="n">vl</span> <span class="o">=</span> <span class="n">vl</span>
+                <span class="n">vr</span> <span class="o">=</span> <span class="n">vm</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">vl</span> <span class="o">=</span> <span class="n">vm</span>
+                <span class="n">vr</span> <span class="o">=</span> <span class="n">vr</span>
+
+        <span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;End of bin-search, vl: {0}mV, vr: {1}mV&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vl</span><span class="p">,</span> <span class="n">vr</span><span class="p">))</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">vdd</span> <span class="o">=</span> <span class="n">vl</span>
+        <span class="n">lpower</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">power</span>
+        <span class="n">lfreq</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">freq</span>
+        <span class="n">lcnum</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="o">/</span><span class="n">core</span><span class="o">.</span><span class="n">area</span><span class="p">),</span>
+                    <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">power</span><span class="o">/</span><span class="n">lpower</span><span class="p">))</span>
+        <span class="n">lperf</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">f</span><span class="p">)</span><span class="o">/</span><span class="n">sperf</span> <span class="o">+</span> <span class="n">f</span><span class="o">/</span><span class="p">(</span><span class="n">cnum</span><span class="o">*</span><span class="n">core</span><span class="o">.</span><span class="n">perf</span><span class="p">))</span>
+
+        <span class="n">core</span><span class="o">.</span><span class="n">vdd</span> <span class="o">=</span> <span class="n">vr</span>
+        <span class="n">rpower</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">power</span>
+        <span class="n">rfreq</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">freq</span>
+        <span class="n">rcnum</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="o">/</span><span class="n">core</span><span class="o">.</span><span class="n">area</span><span class="p">),</span>
+                    <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">power</span><span class="o">/</span><span class="n">rpower</span><span class="p">))</span>
+        <span class="n">rperf</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">f</span><span class="p">)</span><span class="o">/</span><span class="n">sperf</span> <span class="o">+</span> <span class="n">f</span><span class="o">/</span><span class="p">(</span><span class="n">cnum</span><span class="o">*</span><span class="n">core</span><span class="o">.</span><span class="n">perf</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">rpower</span> <span class="o">&lt;=</span> <span class="n">cpower</span><span class="p">:</span>
+            <span class="c"># right bound meets the power constraint</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s">&#39;perf&#39;</span><span class="p">:</span> <span class="n">rperf</span><span class="o">/</span><span class="n">PERF_BASE</span><span class="p">,</span>
+                    <span class="s">&#39;vdd&#39;</span><span class="p">:</span> <span class="n">vr</span><span class="p">,</span>
+                    <span class="s">&#39;cnum&#39;</span><span class="p">:</span> <span class="n">cnum</span><span class="p">,</span>
+                    <span class="s">&#39;freq&#39;</span><span class="p">:</span> <span class="n">rfreq</span><span class="p">,</span>
+                    <span class="s">&#39;util&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">cnum</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">cnum_max</span><span class="p">)}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s">&#39;perf&#39;</span><span class="p">:</span> <span class="n">lperf</span><span class="o">/</span><span class="n">PERF_BASE</span><span class="p">,</span>
+                    <span class="s">&#39;vdd&#39;</span><span class="p">:</span> <span class="n">vl</span><span class="p">,</span>
+                    <span class="s">&#39;freq&#39;</span><span class="p">:</span> <span class="n">lfreq</span><span class="p">,</span>
+                    <span class="s">&#39;cnum&#39;</span><span class="p">:</span> <span class="n">cnum</span><span class="p">,</span>
+                    <span class="s">&#39;util&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">cnum</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">cnum_max</span><span class="p">)}</span>
+
+
+
+</div>
+<div class="viewcode-block" id="HomSys.speedup_by_vfslist"><a class="viewcode-back" href="../../../../apidoc/lumos.model.system.html#lumos.model.system.hom.HomSys.speedup_by_vfslist">[docs]</a>    <span class="k">def</span> <span class="nf">speedup_by_vfslist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vfs_list</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
+        <span class="n">core</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">core</span>
+
+        <span class="c">#para_ratio = 0.99</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">f</span>
+
+        <span class="c">#core.dvfs_by_volt(VMAX)</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">dvfs_by_factor</span><span class="p">(</span><span class="n">VSF_MAX</span><span class="p">)</span>
+        <span class="c">#sperf = core.perf0*core.freq</span>
+        <span class="n">sperf</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">perf</span>
+
+        <span class="n">perf_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">speedup_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">util_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c">#debug code</span>
+        <span class="c">#if self.area == 0 or self.power == 0:</span>
+            <span class="c">#print &#39;area: %d, power: %d&#39; % (self.area, self.power)</span>
+            <span class="c">#raise Exception(&#39;wrong input&#39;)</span>
+        <span class="c">#end debug</span>
+
+        <span class="k">for</span> <span class="n">vfs</span> <span class="ow">in</span> <span class="n">vfs_list</span><span class="p">:</span>
+            <span class="c"># FIXME: dvfs_by_volt for future technology</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">dvfs_by_factor</span><span class="p">(</span><span class="n">vfs</span><span class="p">)</span>
+            <span class="n">active_num</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="o">/</span><span class="n">core</span><span class="o">.</span><span class="n">area</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">power</span><span class="o">/</span><span class="n">core</span><span class="o">.</span><span class="n">power</span><span class="p">)</span>
+            <span class="c">#perf = 1/ ((1-f)/sperf + f/(active_num*core.perf0*core.freq))</span>
+            <span class="n">perf</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span> <span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">f</span><span class="p">)</span><span class="o">/</span><span class="n">sperf</span> <span class="o">+</span> <span class="n">f</span><span class="o">/</span><span class="p">(</span><span class="n">active_num</span><span class="o">*</span><span class="n">core</span><span class="o">.</span><span class="n">perf</span><span class="p">))</span>
+            <span class="n">speedup_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">perf</span><span class="o">/</span><span class="n">PERF_BASE</span><span class="p">)</span>
+            <span class="n">util</span> <span class="o">=</span> <span class="mi">100</span><span class="o">*</span><span class="n">active_num</span><span class="o">*</span><span class="n">core</span><span class="o">.</span><span class="n">area</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span>
+            <span class="n">util_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">util</span><span class="p">)</span>
+
+            <span class="c"># code segment for debug</span>
+            <span class="c">#import math</span>
+            <span class="c">#if math.fabs(vsf-0.55)&lt;0.01 and self.power==110 and self.area==5000:</span>
+                <span class="c">#print &#39;area %d: active_num %f, perf %f, core power %f, core area %f, sys util %f&#39; % (self.area, active_num, perf, core.power, core.area, util)</span>
+            <span class="c">#if math.fabs(vsf-0.6)&lt;0.01 and self.power==110 and self.area==4000:</span>
+                <span class="c">#print &#39;area %d: active_num %f, perf %f, core power %f, core area %f, sys util %f&#39; % (self.area, active_num, perf, core.power, core.area, util)</span>
+            <span class="c"># end debug</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">speedup_list</span><span class="p">,</span><span class="n">util_list</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="HomSys.speedup_by_vlist"><a class="viewcode-back" href="../../../../apidoc/lumos.model.system.html#lumos.model.system.hom.HomSys.speedup_by_vlist">[docs]</a>    <span class="k">def</span> <span class="nf">speedup_by_vlist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v_list</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
+        <span class="n">core</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">core</span>
+
+        <span class="c">#para_ratio = 0.99</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">f</span>
+
+        <span class="c">#core.dvfs_by_volt(VMAX)</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">dvfs_by_factor</span><span class="p">(</span><span class="n">VSF_MAX</span><span class="p">)</span>
+        <span class="c">#sperf = core.perf0*core.freq</span>
+        <span class="n">sperf</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">perf</span>
+
+        <span class="n">perf_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">speedup_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">util_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c">#debug code</span>
+        <span class="c">#if self.area == 0 or self.power == 0:</span>
+            <span class="c">#print &#39;area: %d, power: %d&#39; % (self.area, self.power)</span>
+            <span class="c">#raise Exception(&#39;wrong input&#39;)</span>
+        <span class="c">#end debug</span>
+
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">v_list</span><span class="p">:</span>
+            <span class="c"># FIXME: dvfs_by_volt for future technology</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">dvfs_by_volt</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+            <span class="n">active_num</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="o">/</span><span class="n">core</span><span class="o">.</span><span class="n">area</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">power</span><span class="o">/</span><span class="n">core</span><span class="o">.</span><span class="n">power</span><span class="p">)</span>
+            <span class="c">#perf = 1/ ((1-f)/sperf + f/(active_num*core.perf0*core.freq))</span>
+            <span class="n">perf</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span> <span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">f</span><span class="p">)</span><span class="o">/</span><span class="n">sperf</span> <span class="o">+</span> <span class="n">f</span><span class="o">/</span><span class="p">(</span><span class="n">active_num</span><span class="o">*</span><span class="n">core</span><span class="o">.</span><span class="n">perf</span><span class="p">))</span>
+            <span class="n">speedup_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">perf</span><span class="o">/</span><span class="n">PERF_BASE</span><span class="p">)</span>
+            <span class="n">util</span> <span class="o">=</span> <span class="mi">100</span><span class="o">*</span><span class="n">active_num</span><span class="o">*</span><span class="n">core</span><span class="o">.</span><span class="n">area</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span>
+            <span class="n">util_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">util</span><span class="p">)</span>
+
+            <span class="c"># code segment for debug</span>
+            <span class="c">#import math</span>
+            <span class="c">#if math.fabs(vsf-0.55)&lt;0.01 and self.power==110 and self.area==5000:</span>
+                <span class="c">#print &#39;area %d: active_num %f, perf %f, core power %f, core area %f, sys util %f&#39; % (self.area, active_num, perf, core.power, core.area, util)</span>
+            <span class="c">#if math.fabs(vsf-0.6)&lt;0.01 and self.power==110 and self.area==4000:</span>
+                <span class="c">#print &#39;area %d: active_num %f, perf %f, core power %f, core area %f, sys util %f&#39; % (self.area, active_num, perf, core.power, core.area, util)</span>
+            <span class="c"># end debug</span>
+
+        <span class="k">return</span> <span class="p">(</span><span class="n">speedup_list</span><span class="p">,</span><span class="n">util_list</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="HomSys.opt_core_num"><a class="viewcode-back" href="../../../../apidoc/lumos.model.system.html#lumos.model.system.hom.HomSys.opt_core_num">[docs]</a>    <span class="k">def</span> <span class="nf">opt_core_num</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="n">VMIN</span><span class="p">):</span>
+
+        <span class="n">cnum_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_core_num</span><span class="p">()</span>
+        <span class="n">cnumList</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">cnum_max</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">perf</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">cnum</span> <span class="ow">in</span> <span class="n">cnumList</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">perf_by_cnum</span><span class="p">(</span><span class="n">cnum</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">vmin</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s">&#39;cnum&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">cnum</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s">&#39;perf&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">perf</span><span class="p">:</span>
+                <span class="n">perf</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s">&#39;perf&#39;</span><span class="p">]</span>
+                <span class="n">vdd</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s">&#39;vdd&#39;</span><span class="p">]</span>
+                <span class="n">util</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s">&#39;util&#39;</span><span class="p">]</span>
+                <span class="n">freq</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s">&#39;freq&#39;</span><span class="p">]</span>
+                <span class="n">optimal_cnum</span> <span class="o">=</span> <span class="n">cnum</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;cnum&#39;</span><span class="p">:</span> <span class="n">optimal_cnum</span><span class="p">,</span>
+                <span class="s">&#39;vdd&#39;</span> <span class="p">:</span> <span class="n">vdd</span><span class="p">,</span>
+                <span class="s">&#39;freq&#39;</span><span class="p">:</span> <span class="n">freq</span><span class="p">,</span>
+                <span class="s">&#39;util&#39;</span><span class="p">:</span> <span class="n">util</span><span class="p">,</span>
+                <span class="s">&#39;perf&#39;</span><span class="p">:</span> <span class="n">perf</span><span class="p">}</span>
+
+</div>
+<div class="viewcode-block" id="HomSys.perf_by_dark"><a class="viewcode-back" href="../../../../apidoc/lumos.model.system.html#lumos.model.system.hom.HomSys.perf_by_dark">[docs]</a>    <span class="k">def</span> <span class="nf">perf_by_dark</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
+        <span class="n">core</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">core</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">f</span>
+
+        <span class="c">#core.dvfs_by_volt(VMAX)</span>
+        <span class="n">core</span><span class="o">.</span><span class="n">dvfs_by_factor</span><span class="p">(</span><span class="n">VSF_MAX</span><span class="p">)</span>
+        <span class="c">#sperf=core.perf0*core.freq</span>
+        <span class="n">sperf</span><span class="o">=</span><span class="n">core</span><span class="o">.</span><span class="n">perf</span>
+
+        <span class="n">vdd</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">v0</span> <span class="o">*</span> <span class="n">VSF_MAX</span>
+
+        <span class="n">active_num</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="o">/</span><span class="n">core</span><span class="o">.</span><span class="n">area</span><span class="p">),</span>
+                         <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">power</span><span class="o">/</span><span class="n">core</span><span class="o">.</span><span class="n">power</span><span class="p">))</span>
+        <span class="c">#perf = 1/ ((1-f)/sperf + f/(active_num*core.perf0*core.freq))</span>
+        <span class="n">perf</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span> <span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">f</span><span class="p">)</span><span class="o">/</span><span class="n">sperf</span> <span class="o">+</span> <span class="n">f</span><span class="o">/</span><span class="p">(</span><span class="n">active_num</span><span class="o">*</span><span class="n">core</span><span class="o">.</span><span class="n">perf</span><span class="p">))</span>
+        <span class="n">core_num</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">area</span><span class="o">/</span><span class="n">core</span><span class="o">.</span><span class="n">area</span><span class="p">)</span>
+        <span class="n">util</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">active_num</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">core_num</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;perf&#39;</span><span class="p">:</span> <span class="n">perf</span><span class="o">/</span><span class="n">PERF_BASE</span><span class="p">,</span>
+                <span class="s">&#39;active&#39;</span><span class="p">:</span> <span class="n">active_num</span><span class="p">,</span>
+                <span class="s">&#39;core&#39;</span> <span class="p">:</span> <span class="n">core_num</span><span class="p">,</span>
+                <span class="s">&#39;util&#39;</span><span class="p">:</span> <span class="n">util</span><span class="p">,</span>
+                <span class="s">&#39;vdd&#39;</span><span class="p">:</span> <span class="n">vdd</span><span class="p">}</span>
+</pre></div></div></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2013, Liang Wang.<br/>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

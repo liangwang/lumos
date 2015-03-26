@@ -1,0 +1,10 @@
+lumos.model.tech.cmos.hp package
+================================
+
+Module contents
+---------------
+
+.. automodule:: lumos.model.tech.cmos.hp
+    :members:
+    :undoc-members:
+    :show-inheritance:

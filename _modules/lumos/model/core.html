@@ -1,6 +1,4 @@
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -9,8 +7,11 @@
     
     <title>lumos.model.core &mdash; Lumos 0.1 documentation</title>
     
-    <link rel="stylesheet" href="../../../_static/lumos.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/bootstrap-3.2.0/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/bootstrap-3.2.0/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -24,95 +25,94 @@
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
     <link rel="top" title="Lumos 0.1 documentation" href="../../../index.html" />
-    <link rel="up" title="Module code" href="../../index.html" />
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
-          rel='stylesheet' type='text/css'>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
- 
-    <style type="text/css">
-      table.right { float: right; margin-left: 20px; }
-      table.right td { border: 1px solid #ccc; }
-      
-    </style>
-    <script type="text/javascript">
-      // intelligent scrolling of the sidebar content
-      $(window).scroll(function() {
-        var sb = $('.sphinxsidebarwrapper');
-        var win = $(window);
-        var sbh = sb.height();
-        var offset = $('.sphinxsidebar').position()['top'];
-        var wintop = win.scrollTop();
-        var winbot = wintop + win.innerHeight();
-        var curtop = sb.position()['top'];
-        var curbot = curtop + sbh;
-        // does sidebar fit in window?
-        if (sbh < win.innerHeight()) {
-          // yes: easy case -- always keep at the top
-          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
-                                $(document).height() - sbh - 200]));
-        } else {
-          // no: only scroll if top/bottom edge of sidebar is at
-          // top/bottom edge of window
-          if (curtop > wintop && curbot > winbot) {
-            sb.css('top', $u.max([wintop - offset - 10, 0]));
-          } else if (curtop < wintop && curbot < winbot) {
-            sb.css('top', $u.min([winbot - sbh - offset - 20,
-                                  $(document).height() - sbh - 200]));
-          }
-        }
-      });
-    </script>
+    <link rel="up" title="lumos.model" href="../model.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
 
   </head>
-  <body>
-<div class="pageheader">
-  <div>
-    <a href="../../../index.html">
-      <img src="../../../_static/lumos.png" alt="LUMOS" />
-    </a>
-  </div>
-</div>
+  <body role="document">
 
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="../../../index.html">Lumos home</a>&nbsp;|</li>
-        <li><a href="../../../contents.html">Documentation</a> &raquo;</li>
-
-          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
-      </ul>
-    </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          Lumos</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
       </div>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body">
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
             
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="simple">
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
   <h1>Source code for lumos.model.core</h1><div class="highlight"><pre>
 <span class="c">#!/usr/bin/env python</span>
 <span class="sd">&quot;&quot;&quot;</span>
@@ -121,609 +121,136 @@
 <span class="sd">in-order core and an out-of-order core respectively.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">abc</span>
+<span class="kn">from</span> <span class="nn">lumos</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">..tech</span> <span class="kn">import</span> <span class="n">TechModelError</span>
+
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">tech</span> <span class="kn">import</span> <span class="n">Base</span> <span class="k">as</span> <span class="n">techbase</span><span class="p">,</span> <span class="n">Scale</span> <span class="k">as</span> <span class="n">techscl</span>
-<span class="kn">from</span> <span class="nn">tech</span> <span class="kn">import</span> <span class="n">ProjScale</span> <span class="k">as</span> <span class="n">projscl</span>
-<span class="kn">from</span> <span class="nn">tech</span> <span class="kn">import</span> <span class="n">LPBase</span> <span class="k">as</span> <span class="n">lpbase</span><span class="p">,</span> <span class="n">PTMScale</span> <span class="k">as</span> <span class="n">ptmscl</span>
-<span class="kn">import</span> <span class="nn">freq</span>
-<span class="kn">from</span> <span class="nn">freq</span> <span class="kn">import</span> <span class="n">PTMScale2</span> <span class="k">as</span> <span class="n">vfmodel</span>
+<span class="n">_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&#39;BaseCore&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">:</span>
+    <span class="n">_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
 
-<span class="kn">import</span> <span class="nn">lumos.settings</span> <span class="kn">as</span> <span class="nn">settings</span>
-<span class="n">MC_CKT</span> <span class="o">=</span> <span class="n">settings</span><span class="o">.</span><span class="n">LUMOS_SIM_CIRCUIT</span>
-<span class="c">#TODO: add code to MC_BEST case</span>
-<span class="n">MC_BEST</span> <span class="o">=</span> <span class="bp">False</span>
 
-<span class="c"># from: http://www.spec.org/cpu2006/results/res2009q3/cpu2006-20090721-08251.html</span>
-<span class="c"># SPECfp_rate2006 / 8(cores) / 2 (threads) * (4.2/1.58) (freq scaling factor) * 1.4 ( 1/0.7, tech scaling factor)</span>
-<span class="c">#PERF_BASE = 15.92</span>
-<span class="c"># adjust to federation</span>
-<span class="n">PERF_BASE</span> <span class="o">=</span> <span class="mf">12.92</span>
+<div class="viewcode-block" id="BaseCoreError"><a class="viewcode-back" href="../../../apidoc/lumos.model.core.html#lumos.model.core.BaseCoreError">[docs]</a><span class="k">class</span> <span class="nc">BaseCoreError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span>
 
-<span class="c"># from: http://www.spec.org/cpu2006/results/res2010q1/cpu2006-20100215-09685.html</span>
-<span class="c"># SPECfp2006 * (3.7/3.3) (freq scaling factor)</span>
-<span class="n">O3_PERF_BASE</span> <span class="o">=</span> <span class="mf">28.48</span>
+</div>
+<div class="viewcode-block" id="BaseCore"><a class="viewcode-back" href="../../../apidoc/lumos.model.core.html#lumos.model.core.BaseCore">[docs]</a><span class="k">class</span> <span class="nc">BaseCore</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">abc</span><span class="o">.</span><span class="n">ABCMeta</span>
 
-<div class="viewcode-block" id="AbstractCore"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.core.AbstractCore">[docs]</a><span class="k">class</span> <span class="nc">AbstractCore</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Abstract Core module. Need to be extended to real cores with a</span>
-<span class="sd">    couple of base line characteristics at nominal voltage.</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tech</span><span class="p">,</span> <span class="n">tech_model</span><span class="p">,</span> <span class="n">core_type</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tech</span> <span class="o">=</span> <span class="n">tech</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tech_model</span> <span class="o">=</span> <span class="n">tech_model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_core_type</span> <span class="o">=</span> <span class="n">core_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vdd_mv</span> <span class="o">=</span> <span class="n">tech_model</span><span class="o">.</span><span class="n">vnom_dict</span><span class="p">[</span><span class="n">tech</span><span class="p">]</span>
 
-<span class="sd">    Attributes:</span>
-<span class="sd">       tech (num):</span>
-<span class="sd">          Technology nodes, possible values are 45, 32, 22, 16</span>
-<span class="sd">       mech (str):</span>
-<span class="sd">          Scaling mechanism, possible values are &#39;HKMGS&#39; and &#39;LP&#39;</span>
-<span class="sd">       area (num):</span>
-<span class="sd">          The area of the core, in mm^2.</span>
-<span class="sd">       dp (num):</span>
-<span class="sd">          Dynamic power, in Watts (W).</span>
-<span class="sd">       dp0 (num):</span>
-<span class="sd">          Dynamic power when the core is at nominal supply voltage and frequency, in Watts (W).</span>
-<span class="sd">       sp (num):</span>
-<span class="sd">          Static power, in Watts (W).</span>
-<span class="sd">       sp0 (num):</span>
-<span class="sd">          Statci power at nominal voltage, in Watts (W)</span>
-<span class="sd">       power (num):</span>
-<span class="sd">          Total power of the core, in Watts (W). It equals to dp+sp.</span>
-<span class="sd">       vdd (num):</span>
-<span class="sd">          Supply voltage, in Volts (V).</span>
-<span class="sd">       vdd0 (num):</span>
-<span class="sd">          Nominal supply voltage, in Volts (V)</span>
-<span class="sd">       freq (num):</span>
-<span class="sd">          Frequency, in GHz.</span>
-<span class="sd">       f0 (num):</span>
-<span class="sd">          Frequency at nominal supply voltage, in GHz.</span>
-<span class="sd">       perf (num):</span>
-<span class="sd">          Relative performance to the baseline in-order core at 45nm.</span>
-<span class="sd">       perf0 (num):</span>
-<span class="sd">          Relatvie performance at nominal supply.</span>
-<span class="sd">       vt (num):</span>
-<span class="sd">          Threshold voltage, in Volts (V)</span>
-<span class="sd">       vsf_min (num):</span>
-<span class="sd">          The minimum supply voltage factor.</span>
-<span class="sd">       vsf_max (num):</span>
-<span class="sd">          The maximum supply voltage factor.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mech</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">tech</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">pv</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">pen_adjust</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">sigma_level</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Args:</span>
-<span class="sd">           mech (str):</span>
-<span class="sd">              The scaling mechanism, choose from &#39;HKMGS&#39;, &#39;LP&#39;</span>
-<span class="sd">           tech (num):</span>
-<span class="sd">              The technology node, choose from &#39;45&#39;,&#39;32&#39;,&#39;22&#39;,&#39;16&#39;</span>
-<span class="sd">           pv (bool):</span>
-<span class="sd">              Boolean flag indicating whether process variation is modeled</span>
-<span class="sd">           pen_adjust (num):</span>
-<span class="sd">              Penalty adjustment thanks to variation tolerant techniques.</span>
-<span class="sd">           sigma_level (num):</span>
-<span class="sd">              How many sigmas to consider when modeling the variation-induced worst delay</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="nd">@abc.abstractmethod</span>
+<div class="viewcode-block" id="BaseCore.init"><a class="viewcode-back" href="../../../apidoc/lumos.model.core.html#lumos.model.core.BaseCore.init">[docs]</a>    <span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span>
+</div>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">ctype</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_core_type</span>
 
-        <span class="n">update</span> <span class="o">=</span> <span class="bp">True</span> <span class="c"># A flag for lazy update. The core module only updates its</span>
-                      <span class="c"># parameters after all parameters (e.g. mech, tech) have been</span>
-                      <span class="c"># set.</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">freq</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39; In freq, tech: {0}, vdd(mv): {1}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_tech</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vdd_mv</span><span class="p">))</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_f0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tech_model</span><span class="o">.</span><span class="n">freq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tech</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vdd_mv</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">TechModelError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BaseCoreError</span><span class="p">(</span><span class="s">&#39;no freq info for {0}nm at {1}mV&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_tech</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vdd_mv</span><span class="p">))</span>
 
-        <span class="k">if</span> <span class="n">mech</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">update</span> <span class="o">=</span> <span class="bp">False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_mech</span> <span class="o">=</span> <span class="n">mech</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">perf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perf0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tech_model</span><span class="o">.</span><span class="n">freq</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tech</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">vdd</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">tech</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">update</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">power</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dp</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">sp</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">dp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dp0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tech_model</span><span class="o">.</span><span class="n">dynamic_power</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tech</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vdd_mv</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">sp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sp0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tech_model</span><span class="o">.</span><span class="n">static_power</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tech</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vdd_mv</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tech</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tech</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BaseCoreError</span><span class="p">(</span><span class="s">&#39;No technology node specified&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tech</span>
+    <span class="nd">@tech.setter</span>
+    <span class="k">def</span> <span class="nf">tech</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tech</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_tech</span> <span class="o">=</span> <span class="n">tech</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_pv</span> <span class="o">=</span> <span class="n">pv</span>
-        <span class="k">if</span> <span class="n">pen_adjust</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">pen_adjust</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">pen_adjust</span> <span class="o">=</span> <span class="n">pen_adjust</span>
-
-        <span class="k">if</span> <span class="n">sigma_level</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sigma_level</span> <span class="o">=</span> <span class="mi">3</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sigma_level</span> <span class="o">=</span> <span class="n">sigma_level</span>
-
-        <span class="k">if</span> <span class="n">update</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__update_config</span><span class="p">()</span>
-
-
-    <span class="k">def</span> <span class="nf">__update_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Internal function to update value of mech/ctype/tech specific parameters &quot;&quot;&quot;</span>
-        <span class="n">tech</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tech</span>
-        <span class="n">mech</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mech</span>
-        <span class="n">pv</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pv</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_perf0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_perf</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_area</span> <span class="o">*</span> <span class="n">techscl</span><span class="o">.</span><span class="n">area</span><span class="p">[</span><span class="n">tech</span><span class="p">]</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">_fsf</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_vsf</span> <span class="o">=</span> <span class="mi">1</span>
-
-        <span class="k">if</span> <span class="n">mech</span> <span class="o">==</span> <span class="s">&#39;ITRS&#39;</span> <span class="ow">or</span> <span class="n">mech</span> <span class="o">==</span> <span class="s">&#39;CONS&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_vt</span> <span class="o">=</span> <span class="n">projscl</span><span class="o">.</span><span class="n">vt</span><span class="p">[</span><span class="n">mech</span><span class="p">][</span><span class="n">tech</span><span class="p">]</span>
-            <span class="n">v0</span> <span class="o">=</span> <span class="n">projscl</span><span class="o">.</span><span class="n">vdd</span><span class="p">[</span><span class="n">mech</span><span class="p">][</span><span class="n">tech</span><span class="p">]</span>
-            <span class="n">f0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_freq</span> <span class="o">*</span> <span class="n">projscl</span><span class="o">.</span><span class="n">freq</span><span class="p">[</span><span class="n">mech</span><span class="p">][</span><span class="n">tech</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_perf0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_perf</span> <span class="o">*</span> <span class="n">projscl</span><span class="o">.</span><span class="n">freq</span><span class="p">[</span><span class="n">mech</span><span class="p">][</span><span class="n">tech</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_bw0</span> <span class="o">=</span> <span class="n">projscl</span><span class="o">.</span><span class="n">freq</span><span class="p">[</span><span class="n">mech</span><span class="p">][</span><span class="n">tech</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_v0</span> <span class="o">=</span> <span class="n">v0</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_f0</span> <span class="o">=</span> <span class="n">f0</span>
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">_dp0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_dp</span> <span class="o">*</span> <span class="n">projscl</span><span class="o">.</span><span class="n">dp</span><span class="p">[</span><span class="n">mech</span><span class="p">][</span><span class="n">tech</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_sp0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_sp</span> <span class="o">*</span> <span class="n">projscl</span><span class="o">.</span><span class="n">sp</span><span class="p">[</span><span class="n">mech</span><span class="p">][</span><span class="n">tech</span><span class="p">]</span>
-
-        <span class="k">elif</span> <span class="n">mech</span> <span class="o">==</span> <span class="s">&#39;HKMGS&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_vt</span> <span class="o">=</span> <span class="n">ptmscl</span><span class="o">.</span><span class="n">vt</span><span class="p">[</span><span class="n">mech</span><span class="p">][</span><span class="n">tech</span><span class="p">]</span>
-            <span class="n">v0</span> <span class="o">=</span> <span class="n">ptmscl</span><span class="o">.</span><span class="n">vdd</span><span class="p">[</span><span class="n">mech</span><span class="p">][</span><span class="n">tech</span><span class="p">]</span>
-            <span class="n">f0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_freq</span> <span class="o">*</span> <span class="n">ptmscl</span><span class="o">.</span><span class="n">freq</span><span class="p">[</span><span class="n">mech</span><span class="p">][</span><span class="n">tech</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_perf0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_perf</span> <span class="o">*</span> <span class="n">ptmscl</span><span class="o">.</span><span class="n">freq</span><span class="p">[</span><span class="n">mech</span><span class="p">][</span><span class="n">tech</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_bw0</span> <span class="o">=</span> <span class="n">ptmscl</span><span class="o">.</span><span class="n">freq</span><span class="p">[</span><span class="n">mech</span><span class="p">][</span><span class="n">tech</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_v0</span> <span class="o">=</span> <span class="n">v0</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_f0</span> <span class="o">=</span> <span class="n">f0</span>
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">_dp0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_dp</span> <span class="o">*</span> <span class="n">ptmscl</span><span class="o">.</span><span class="n">dp</span><span class="p">[</span><span class="n">mech</span><span class="p">][</span><span class="n">tech</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_sp0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_sp</span> <span class="o">*</span> <span class="n">ptmscl</span><span class="o">.</span><span class="n">sp</span><span class="p">[</span><span class="n">mech</span><span class="p">][</span><span class="n">tech</span><span class="p">]</span>
-
-        <span class="k">elif</span> <span class="n">mech</span> <span class="o">==</span> <span class="s">&#39;LP&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_vt</span> <span class="o">=</span> <span class="n">ptmscl</span><span class="o">.</span><span class="n">vt</span><span class="p">[</span><span class="n">mech</span><span class="p">][</span><span class="n">tech</span><span class="p">]</span>
-            <span class="n">v0</span> <span class="o">=</span> <span class="n">ptmscl</span><span class="o">.</span><span class="n">vdd</span><span class="p">[</span><span class="n">mech</span><span class="p">][</span><span class="n">tech</span><span class="p">]</span>
-            <span class="n">f0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_freq</span> <span class="o">*</span> <span class="n">ptmscl</span><span class="o">.</span><span class="n">freq</span><span class="p">[</span><span class="s">&#39;HKMGS&#39;</span><span class="p">][</span><span class="n">tech</span><span class="p">]</span> <span class="o">*</span> <span class="n">lpbase</span><span class="o">.</span><span class="n">freq</span><span class="p">[</span><span class="n">tech</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_perf0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_perf</span> <span class="o">*</span> <span class="n">ptmscl</span><span class="o">.</span><span class="n">freq</span><span class="p">[</span><span class="s">&#39;HKMGS&#39;</span><span class="p">][</span><span class="n">tech</span><span class="p">]</span> <span class="o">*</span> <span class="n">lpbase</span><span class="o">.</span><span class="n">freq</span><span class="p">[</span><span class="n">tech</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_bw0</span> <span class="o">=</span> <span class="n">ptmscl</span><span class="o">.</span><span class="n">freq</span><span class="p">[</span><span class="s">&#39;HKMGS&#39;</span><span class="p">][</span><span class="n">tech</span><span class="p">]</span> <span class="o">*</span> <span class="n">lpbase</span><span class="o">.</span><span class="n">freq</span><span class="p">[</span><span class="n">tech</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_v0</span> <span class="o">=</span> <span class="n">v0</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_f0</span> <span class="o">=</span> <span class="n">f0</span>
-
-            <span class="c"># dynamic power and static power use the same scaling factors</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_dp0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_dp</span> <span class="o">*</span> <span class="n">ptmscl</span><span class="o">.</span><span class="n">dp</span><span class="p">[</span><span class="s">&#39;HKMGS&#39;</span><span class="p">][</span><span class="n">tech</span><span class="p">]</span> <span class="o">*</span> <span class="n">lpbase</span><span class="o">.</span><span class="n">dp</span><span class="p">[</span><span class="n">tech</span><span class="p">]</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_sp0</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_sp</span> <span class="o">*</span> <span class="n">ptmscl</span><span class="o">.</span><span class="n">sp</span><span class="p">[</span><span class="s">&#39;HKMGS&#39;</span><span class="p">][</span><span class="n">tech</span><span class="p">]</span> <span class="o">*</span> <span class="n">lpbase</span><span class="o">.</span><span class="n">sp</span><span class="p">[</span><span class="n">tech</span><span class="p">]</span>
-
-        <span class="k">if</span> <span class="n">mech</span> <span class="o">==</span> <span class="s">&#39;ITRS&#39;</span> <span class="ow">or</span> <span class="n">mech</span> <span class="o">==</span> <span class="s">&#39;CONS&#39;</span><span class="p">:</span>
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">_vsf_max</span> <span class="o">=</span> <span class="mf">1.1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_v0</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_vsf_min</span> <span class="o">=</span> <span class="mf">0.3</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_v0</span>
-
-            <span class="k">if</span> <span class="n">pv</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="n">freq</span><span class="o">.</span><span class="n">PTMScaleMC</span><span class="p">(</span><span class="n">MC_CKT</span><span class="p">,</span> <span class="s">&#39;HKMGS&#39;</span><span class="p">,</span> <span class="n">tech</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">f0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pen_adjust</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma_level</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">var_penalty</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="o">.</span><span class="n">get_penalty</span><span class="p">(</span><span class="n">v0</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="n">vfmodel</span><span class="p">(</span><span class="n">MC_CKT</span><span class="p">,</span> <span class="s">&#39;HKMGS&#39;</span><span class="p">,</span> <span class="n">tech</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_v0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_f0</span><span class="p">)</span>
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">_sp_slope</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="o">.</span><span class="n">sp_slope</span>
-        <span class="k">elif</span> <span class="n">mech</span> <span class="o">==</span> <span class="s">&#39;HKMGS&#39;</span> <span class="ow">or</span> <span class="n">mech</span> <span class="o">==</span> <span class="s">&#39;LP&#39;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_vsf_max</span> <span class="o">=</span> <span class="mf">1.1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_v0</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_vsf_min</span> <span class="o">=</span> <span class="mf">0.3</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_v0</span>
-
-            <span class="k">if</span> <span class="n">pv</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="n">freq</span><span class="o">.</span><span class="n">PTMScaleMC</span><span class="p">(</span><span class="n">MC_CKT</span><span class="p">,</span> <span class="n">mech</span><span class="p">,</span> <span class="n">tech</span><span class="p">,</span> <span class="n">v0</span><span class="p">,</span> <span class="n">f0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pen_adjust</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sigma_level</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">var_penalty</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="o">.</span><span class="n">get_penalty</span><span class="p">(</span><span class="n">v0</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_model</span> <span class="o">=</span> <span class="n">vfmodel</span><span class="p">(</span><span class="n">MC_CKT</span><span class="p">,</span> <span class="n">mech</span><span class="p">,</span> <span class="n">tech</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_v0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_f0</span><span class="p">)</span>
-
-            <span class="bp">self</span><span class="o">.</span><span class="n">_sp_slope</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="o">.</span><span class="n">sp_slope</span>
-
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">vdd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vdd_mv</span>
+    <span class="nd">@vdd.setter</span>
+    <span class="k">def</span> <span class="nf">vdd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vdd_mv</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_vdd_mv</span> <span class="o">=</span> <span class="n">vdd_mv</span>
 
     <span class="nd">@property</span>
-<div class="viewcode-block" id="AbstractCore.tech"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.core.AbstractCore.tech">[docs]</a>    <span class="k">def</span> <span class="nf">tech</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the technology node, in nm &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tech</span>
-</div>
-    <span class="nd">@property</span>
-<div class="viewcode-block" id="AbstractCore.mech"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.core.AbstractCore.mech">[docs]</a>    <span class="k">def</span> <span class="nf">mech</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the scaling mechanism, either ITRS or CON(servative) &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mech</span>
-</div>
-    <span class="nd">@property</span>
-<div class="viewcode-block" id="AbstractCore.dp0"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.core.AbstractCore.dp0">[docs]</a>    <span class="k">def</span> <span class="nf">dp0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the dynamic power in nominal voltage and frequency &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dp0</span>
-</div>
-    <span class="nd">@property</span>
-<div class="viewcode-block" id="AbstractCore.dp"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.core.AbstractCore.dp">[docs]</a>    <span class="k">def</span> <span class="nf">dp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the dynamic power &quot;&quot;&quot;</span>
-        <span class="c">#if self._pv:</span>
-            <span class="c">#return self._dp0 * self._fsf_nom * self._vsf**2</span>
-        <span class="c">#else:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dp0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fsf</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vsf</span> <span class="o">**</span> <span class="mi">2</span>
-</div>
-    <span class="nd">@property</span>
-<div class="viewcode-block" id="AbstractCore.sp0"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.core.AbstractCore.sp0">[docs]</a>    <span class="k">def</span> <span class="nf">sp0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the static(leakage) power in nominal voltage and frequency &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sp0</span>
-</div>
-    <span class="nd">@property</span>
-<div class="viewcode-block" id="AbstractCore.sp"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.core.AbstractCore.sp">[docs]</a>    <span class="k">def</span> <span class="nf">sp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the static power &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">vnom</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tech_model</span><span class="o">.</span><span class="n">vnom</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tech</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BaseCoreError</span><span class="p">(</span><span class="s">&#39;no model loaded&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">TechModelError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BaseCoreError</span><span class="p">(</span>
+                <span class="s">&#39;no nominal supply for {0}nm&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tech</span><span class="p">))</span>
 
-        <span class="c">#return (self._sp0 * self._vsf *</span>
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_sp0</span> <span class="o">*</span>
-                <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_v0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vsf</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sp_slope</span><span class="p">)</span> <span class="o">/</span>
-                <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_v0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sp_slope</span><span class="p">))</span>
-</div>
     <span class="nd">@property</span>
-<div class="viewcode-block" id="AbstractCore.power"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.core.AbstractCore.power">[docs]</a>    <span class="k">def</span> <span class="nf">power</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the overall power &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sp</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">dp</span>
-</div>
+    <span class="k">def</span> <span class="nf">vmax</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tech_model</span><span class="o">.</span><span class="n">vmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tech</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BaseCoreError</span><span class="p">(</span><span class="s">&#39;No model loaded&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">TechModelError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BaseCoreError</span><span class="p">(</span><span class="s">&#39;No information for {0}nm&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tech</span><span class="p">))</span>
+
     <span class="nd">@property</span>
-<div class="viewcode-block" id="AbstractCore.v0"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.core.AbstractCore.v0">[docs]</a>    <span class="k">def</span> <span class="nf">v0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the nominal voltage &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_v0</span>
-</div>
+    <span class="k">def</span> <span class="nf">vmin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tech_model</span><span class="o">.</span><span class="n">vmin</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tech</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BaseCoreError</span><span class="p">(</span><span class="s">&#39;No model loaded&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">TechModelError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">BaseCoreError</span><span class="p">(</span><span class="s">&#39;No information for {0}nm&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tech</span><span class="p">))</span>
+
     <span class="nd">@property</span>
-<div class="viewcode-block" id="AbstractCore.vdd"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.core.AbstractCore.vdd">[docs]</a>    <span class="k">def</span> <span class="nf">vdd</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the supplying voltage &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_v0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vsf</span>
-</div>
-    <span class="nd">@property</span>
-<div class="viewcode-block" id="AbstractCore.f0"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.core.AbstractCore.f0">[docs]</a>    <span class="k">def</span> <span class="nf">f0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the nominal frequency &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_f0</span>
-</div>
-    <span class="nd">@property</span>
-<div class="viewcode-block" id="AbstractCore.freq"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.core.AbstractCore.freq">[docs]</a>    <span class="k">def</span> <span class="nf">freq</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the frequency &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pv</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_f0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fsf</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">var_penalty</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_f0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fsf</span>
-</div>
-    <span class="nd">@property</span>
-<div class="viewcode-block" id="AbstractCore.perf0"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.core.AbstractCore.perf0">[docs]</a>    <span class="k">def</span> <span class="nf">perf0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the base performance &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perf0</span>
-</div>
-    <span class="nd">@property</span>
-<div class="viewcode-block" id="AbstractCore.perf"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.core.AbstractCore.perf">[docs]</a>    <span class="k">def</span> <span class="nf">perf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the performance &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pv</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perf0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fsf</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">var_penalty</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perf0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fsf</span>
-</div>
-    <span class="nd">@property</span>
-<div class="viewcode-block" id="AbstractCore.vt"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.core.AbstractCore.vt">[docs]</a>    <span class="k">def</span> <span class="nf">vt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the threshold voltage &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vt</span>
-</div>
-    <span class="nd">@property</span>
-<div class="viewcode-block" id="AbstractCore.area"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.core.AbstractCore.area">[docs]</a>    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get the area of the core &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_area</span>
 </div>
-    <span class="nd">@property</span>
-<div class="viewcode-block" id="AbstractCore.vsf_max"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.core.AbstractCore.vsf_max">[docs]</a>    <span class="k">def</span> <span class="nf">vsf_max</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; voltage scaling factor, maximum &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vsf_max</span>
-</div>
-    <span class="nd">@property</span>
-<div class="viewcode-block" id="AbstractCore.vsf_min"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.core.AbstractCore.vsf_min">[docs]</a>    <span class="k">def</span> <span class="nf">vsf_min</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; voltage scaling factor, minimum &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vsf_min</span>
-
-    <span class="c">## Update core configuration</span>
-    <span class="c">#_config_options = (&#39;mech&#39;,&#39;ctype&#39;,&#39;tech&#39;,&#39;pv&#39;)</span>
-</div>
-<div class="viewcode-block" id="AbstractCore.config"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.core.AbstractCore.config">[docs]</a>    <span class="k">def</span> <span class="nf">config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mech</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">tech</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">pv</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">pen_adjust</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">sigma_level</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Configurate parameters of a core.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">           mech (str):</span>
-<span class="sd">              Scaling mechanism, possible values are &#39;HKMGS&#39; and &#39;LP&#39;</span>
-<span class="sd">           tech (num):</span>
-<span class="sd">              Technology node, in nanometers (nm). Possbile values are 45, 32, 22, 16.</span>
-<span class="sd">           pv (bool):</span>
-<span class="sd">              Whether consider process variation.</span>
-<span class="sd">           pen_adjust (num):</span>
-<span class="sd">              The variation penalty reduction factor.</span>
-<span class="sd">           sigma_level (int):</span>
-<span class="sd">              How many sigmas when consider the worst case variation penalty, default to 3.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">           N/A</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">update</span> <span class="o">=</span> <span class="bp">True</span>
-
-        <span class="k">if</span> <span class="n">mech</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_mech</span> <span class="o">=</span> <span class="n">mech</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mech</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">update</span> <span class="o">=</span> <span class="bp">False</span>
-            <span class="c">#logging.debug(&#39;mech is not set, failed to config core&#39;)</span>
-
-        <span class="c">#if ctype is not None:</span>
-            <span class="c">#self._ctype = ctype</span>
-        <span class="c">#elif self._ctype is None:</span>
-            <span class="c">#update = False</span>
-            <span class="c">##logging.debug(&#39;ctype is not set, failed to config core&#39;)</span>
-
-        <span class="k">if</span> <span class="n">tech</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_tech</span> <span class="o">=</span> <span class="n">tech</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tech</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">update</span> <span class="o">=</span> <span class="bp">False</span>
-            <span class="c">#logging.debug(&#39;tech is not set, failed to config core&#39;)</span>
-
-        <span class="k">if</span> <span class="n">pv</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_pv</span> <span class="o">=</span> <span class="n">pv</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pv</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="n">update</span> <span class="o">=</span> <span class="bp">False</span>
-            <span class="c">#logging.debug(&#39;pv is not set, failed to config core&#39;)</span>
-
-        <span class="k">if</span> <span class="n">pen_adjust</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">pen_adjust</span> <span class="o">=</span> <span class="n">pen_adjust</span>
-
-        <span class="k">if</span> <span class="n">sigma_level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sigma_level</span> <span class="o">=</span> <span class="n">sigma_level</span>
-
-        <span class="k">if</span> <span class="n">update</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">__update_config</span><span class="p">()</span>
-
-    <span class="c">#def config(self, **kwargs):</span>
-        <span class="c">#&quot;&quot;&quot; Configurate core, available options are:</span>
-            <span class="c">#tech: Technology node, possible values: 45, 32, 22, 16, 11, 8</span>
-            <span class="c">#mech: Scaling mechanism, possible values: ITRS, CONS</span>
-            <span class="c">#ctype: Core type, possible values: IO, O3</span>
-            <span class="c">#&quot;&quot;&quot;</span>
-        <span class="c">#for k,v in kwargs.items():</span>
-            <span class="c">#k=k.lower()</span>
-            <span class="c">#if k not in self._config_options:</span>
-                <span class="c">#raise AttributeError(&quot;Can NOT set attribute %s&quot; % k)</span>
-            <span class="c">#kk = &#39;_&#39;+k # translate key into internal name</span>
-            <span class="c">#setattr(self,kk,v)</span>
-        <span class="c">#self.__update_config()</span>
-
-</div>
-<div class="viewcode-block" id="AbstractCore.dvfs_by_factor"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.core.AbstractCore.dvfs_by_factor">[docs]</a>    <span class="k">def</span> <span class="nf">dvfs_by_factor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vsf</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Change the supply voltage and frequency accordingly by a factor.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">           vsf (num):</span>
-<span class="sd">              Scaling factors of the supply voltage.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">           N/A</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">volt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_v0</span> <span class="o">*</span> <span class="n">vsf</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_vsf</span> <span class="o">=</span> <span class="n">vsf</span>
-
-        <span class="n">scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span>
-        <span class="n">freq</span> <span class="o">=</span> <span class="n">scale</span><span class="o">.</span><span class="n">get_freq</span><span class="p">(</span><span class="n">volt</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_fsf</span> <span class="o">=</span> <span class="n">freq</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_f0</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pv</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">var_penalty</span> <span class="o">=</span> <span class="n">scale</span><span class="o">.</span><span class="n">get_penalty</span><span class="p">(</span><span class="n">volt</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="AbstractCore.dvfs_by_volt"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.core.AbstractCore.dvfs_by_volt">[docs]</a>    <span class="k">def</span> <span class="nf">dvfs_by_volt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Change the supply voltage and frquency accordingly by specifying the new voltage.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">           v (num):</span>
-<span class="sd">              The new voltage value to be scaled to.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">           N/A</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_vsf</span> <span class="o">=</span> <span class="n">v</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_v0</span>
-        <span class="n">scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span>
-        <span class="n">freq</span> <span class="o">=</span> <span class="n">scale</span><span class="o">.</span><span class="n">get_freq</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_fsf</span> <span class="o">=</span> <span class="n">freq</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_f0</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pv</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">var_penalty</span> <span class="o">=</span> <span class="n">scale</span><span class="o">.</span><span class="n">get_penalty</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-</div>
-<div class="viewcode-block" id="AbstractCore.scale_with_vlist"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.core.AbstractCore.scale_with_vlist">[docs]</a>    <span class="k">def</span> <span class="nf">scale_with_vlist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vlist</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Change the supply voltage in batch by providing a list of voltage values.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">           vlist (list):</span>
-<span class="sd">              A list of supply voltage values to be scaled to.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">           freq (list):</span>
-<span class="sd">              The corresponding frequency of each input voltage.</span>
-<span class="sd">           dp (list):</span>
-<span class="sd">              The corresponding dynamic power of each input voltage.</span>
-<span class="sd">           sp (list):</span>
-<span class="sd">              The corresponding static power of each input voltage</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">freqs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="o">.</span><span class="n">get_freqs</span><span class="p">(</span><span class="n">vlist</span><span class="p">)</span>
-        <span class="n">sp</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="n">vlist</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sp_slope</span><span class="p">)</span> <span class="o">/</span> <span class="mi">10</span> <span class="o">**</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_v0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sp_slope</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sp0</span>
-        <span class="c">#if not self._pv:</span>
-        <span class="n">dp</span> <span class="o">=</span> <span class="p">(</span><span class="n">freqs</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_f0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">vlist</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_v0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dp0</span>
-        <span class="c">#else:</span>
-            <span class="c">#freqs_nom = self._model_nom.get_freqs(vlist)</span>
-            <span class="c">#dp = (freqs_nom/self._f0_nom) * (vlist/self._v0)**2 * self._dp0</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pv</span><span class="p">:</span>
-            <span class="n">var_penalties</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_model</span><span class="o">.</span><span class="n">get_penalties</span><span class="p">(</span><span class="n">vlist</span><span class="p">)</span>
-            <span class="k">return</span> <span class="p">{</span><span class="s">&#39;freq&#39;</span><span class="p">:</span> <span class="n">freqs</span> <span class="o">*</span> <span class="n">var_penalties</span><span class="p">,</span>
-                    <span class="s">&#39;dp&#39;</span><span class="p">:</span> <span class="n">dp</span><span class="p">,</span> <span class="s">&#39;sp&#39;</span><span class="p">:</span> <span class="n">sp</span><span class="p">}</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="p">{</span><span class="s">&#39;freq&#39;</span><span class="p">:</span> <span class="n">freqs</span><span class="p">,</span> <span class="s">&#39;dp&#39;</span><span class="p">:</span> <span class="n">dp</span><span class="p">,</span> <span class="s">&#39;sp&#39;</span><span class="p">:</span> <span class="n">sp</span><span class="p">}</span>
-</div>
-<div class="viewcode-block" id="AbstractCore.set_base"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.core.AbstractCore.set_base">[docs]</a>    <span class="k">def</span> <span class="nf">set_base</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the base values for frequency, dynamic power, static</span>
-<span class="sd">        power, and relative performance at nominal supply voltage, as</span>
-<span class="sd">        well as the area, all at 45nm.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">           kwargs:</span>
-<span class="sd">              Named parameters to be set. Candidates are &#39;area&#39;, &#39;freq&#39;, &#39;perf&#39;,</span>
-<span class="sd">              &#39;dp&#39;, &#39;sp&#39;.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">           N/A</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="n">k</span> <span class="o">=</span> <span class="n">k</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s">&#39;base_&#39;</span><span class="o">+</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">__update_config</span><span class="p">()</span>
-
-
-</div></div>
-<div class="viewcode-block" id="IOCore"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.core.IOCore">[docs]</a><span class="k">class</span> <span class="nc">IOCore</span><span class="p">(</span><span class="n">AbstractCore</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A Niagara2-like in-order core model. Check out more details at :class:`~lumos.model.core.AbstractCore`.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mech</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">tech</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">pv</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">pen_adjust</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">sigma_level</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">base_area</span> <span class="o">=</span> <span class="n">techbase</span><span class="o">.</span><span class="n">area</span><span class="p">[</span><span class="s">&#39;IO&#39;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base_freq</span> <span class="o">=</span> <span class="n">techbase</span><span class="o">.</span><span class="n">freq</span><span class="p">[</span><span class="s">&#39;IO&#39;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base_perf</span> <span class="o">=</span> <span class="n">PERF_BASE</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base_dp</span> <span class="o">=</span> <span class="n">techbase</span><span class="o">.</span><span class="n">dp</span><span class="p">[</span><span class="s">&#39;IO&#39;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base_sp</span> <span class="o">=</span> <span class="n">techbase</span><span class="o">.</span><span class="n">sp</span><span class="p">[</span><span class="s">&#39;IO&#39;</span><span class="p">]</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">IOCore</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">mech</span><span class="o">=</span><span class="n">mech</span><span class="p">,</span> <span class="n">tech</span><span class="o">=</span><span class="n">tech</span><span class="p">,</span> <span class="n">pv</span><span class="o">=</span><span class="n">pv</span><span class="p">,</span>
-                <span class="n">pen_adjust</span><span class="o">=</span><span class="n">pen_adjust</span><span class="p">,</span> <span class="n">sigma_level</span><span class="o">=</span><span class="n">sigma_level</span><span class="p">)</span>
-
-
-<div class="viewcode-block" id="IOCore.bandwidth"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.core.IOCore.bandwidth">[docs]</a>    <span class="k">def</span> <span class="nf">bandwidth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get the bandwidth requirement for a specific application. It</span>
-<span class="sd">        assumes the bandwidth requirement scales linearly to the</span>
-<span class="sd">        frequency.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">           app (:class:`~lumos.model.application.App`):</span>
-<span class="sd">              The application.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">           The bandwidth requirement for the given application.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fsf</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bw0</span> <span class="o">*</span> <span class="n">app</span><span class="p">[</span><span class="s">&#39;IO&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">bw</span>
-
-</div></div>
-<div class="viewcode-block" id="O3Core"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.core.O3Core">[docs]</a><span class="k">class</span> <span class="nc">O3Core</span><span class="p">(</span><span class="n">AbstractCore</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    An out-of-order core model. More detials in :class:`~lumos.model.core.AbstractCore`</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mech</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">tech</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">pv</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">pen_adjust</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">sigma_level</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">base_area</span> <span class="o">=</span> <span class="n">techbase</span><span class="o">.</span><span class="n">area</span><span class="p">[</span><span class="s">&#39;O3&#39;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base_freq</span> <span class="o">=</span> <span class="n">techbase</span><span class="o">.</span><span class="n">freq</span><span class="p">[</span><span class="s">&#39;O3&#39;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base_perf</span> <span class="o">=</span> <span class="n">O3_PERF_BASE</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base_dp</span> <span class="o">=</span> <span class="n">techbase</span><span class="o">.</span><span class="n">dp</span><span class="p">[</span><span class="s">&#39;O3&#39;</span><span class="p">]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base_sp</span> <span class="o">=</span> <span class="n">techbase</span><span class="o">.</span><span class="n">sp</span><span class="p">[</span><span class="s">&#39;O3&#39;</span><span class="p">]</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">O3Core</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">mech</span><span class="o">=</span><span class="n">mech</span><span class="p">,</span> <span class="n">tech</span><span class="o">=</span><span class="n">tech</span><span class="p">,</span> <span class="n">pv</span><span class="o">=</span><span class="n">pv</span><span class="p">,</span>
-                <span class="n">pen_adjust</span><span class="o">=</span><span class="n">pen_adjust</span><span class="p">,</span> <span class="n">sigma_level</span><span class="o">=</span><span class="n">sigma_level</span><span class="p">)</span>
-
-</div>
-<span class="k">def</span> <span class="nf">__plot_split</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">tech</span><span class="p">):</span>
-    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s">&#39;Technology node at </span><span class="si">%d</span><span class="s">nm&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tech</span><span class="p">,))</span>
-    <span class="n">axes</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
-    <span class="n">axes</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">&#39;Supply Voltage (V)&#39;</span><span class="p">)</span>
-    <span class="n">axes</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">&#39;Frequency (GHz)&#39;</span><span class="p">)</span>
-    <span class="n">axes</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="s">&#39;rD&#39;</span><span class="p">)</span>
-    <span class="n">axes</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">)</span>
-    <span class="n">axes</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s">&#39;log&#39;</span><span class="p">)</span>
-    <span class="n">axes</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">lines</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;Fitting&#39;</span><span class="p">,</span> <span class="s">&#39;Simulated&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s">&#39;upper left&#39;</span><span class="p">)</span>
-    <span class="n">axes</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s">&#39;freq_volt.pdf&#39;</span><span class="p">)</span>
-
-    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-    <span class="n">axes</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
-    <span class="n">axes</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">&#39;Supply Voltage (V)&#39;</span><span class="p">)</span>
-    <span class="n">axes</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">&#39;Power (W)&#39;</span><span class="p">)</span>
-    <span class="n">axes</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="s">&#39;-D&#39;</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="s">&#39;-o&#39;</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="s">&#39;-^&#39;</span><span class="p">)</span>
-    <span class="n">axes</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">)</span>
-    <span class="n">axes</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s">&#39;log&#39;</span><span class="p">)</span>
-    <span class="n">axes</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">axes</span><span class="o">.</span><span class="n">lines</span><span class="p">,</span> <span class="p">[</span><span class="s">&#39;Dynamic Power&#39;</span><span class="p">,</span> <span class="s">&#39;Static Power&#39;</span><span class="p">,</span> <span class="s">&#39;Overall&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s">&#39;upper left&#39;</span><span class="p">,</span> <span class="n">prop</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="s">&#39;medium&#39;</span><span class="p">))</span>
-    <span class="n">axes</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s">&#39;power.pdf&#39;</span><span class="p">)</span>
-
-
-<span class="k">def</span> <span class="nf">__plot_nosplit</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">tech</span><span class="p">,</span> <span class="n">mech</span><span class="p">):</span>
-    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">13.5</span><span class="p">,</span> <span class="mf">6.9</span><span class="p">))</span>
-    <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%d</span><span class="s">nm&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">tech</span><span class="p">,))</span>
-
-    <span class="c"># Frequency scaling plot</span>
-    <span class="n">axes1</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
-    <span class="n">axes1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s">&#39;s&#39;</span><span class="p">)</span>
-    <span class="n">axes1</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s">&#39;log&#39;</span><span class="p">)</span>
-    <span class="n">axes1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&#39;Freq&#39;</span><span class="p">)</span>
-    <span class="n">axes1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">)</span>
-
-    <span class="c"># Power scaling plot</span>
-    <span class="n">axes2</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
-    <span class="n">axes2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
-    <span class="n">axes2</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s">&#39;log&#39;</span><span class="p">)</span>
-    <span class="n">axes2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">&#39;Power&#39;</span><span class="p">)</span>
-    <span class="n">axes2</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">)</span>
-
-    <span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">_core_</span><span class="si">%d</span><span class="s">nm.png&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">mech</span><span class="p">,</span> <span class="n">tech</span><span class="p">,))</span>
-
-
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;&quot;</span>
-<span class="sd">    This is a test program to generate freq/power plots for Core</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-    <span class="n">techList</span> <span class="o">=</span> <span class="p">(</span><span class="mi">45</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
-    <span class="c">#mechList = (&#39;LP&#39;, &#39;HKMGS&#39;, &#39;ITRS&#39;, &#39;CONS&#39;)</span>
-    <span class="n">mechList</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;HKMGS&#39;</span><span class="p">,</span> <span class="p">)</span>
-    <span class="n">vsList</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="o">*</span> <span class="mf">0.05</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">23</span><span class="p">)]</span>
-    <span class="k">for</span> <span class="n">mech</span> <span class="ow">in</span> <span class="n">mechList</span><span class="p">:</span>
-        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
-        <span class="n">axes</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">tech</span> <span class="ow">in</span> <span class="n">techList</span><span class="p">:</span>
-            <span class="n">c</span> <span class="o">=</span> <span class="n">IOCore</span><span class="p">(</span><span class="n">tech</span><span class="o">=</span><span class="n">tech</span><span class="p">,</span> <span class="n">mech</span><span class="o">=</span><span class="n">mech</span><span class="p">)</span>
-            <span class="c">#c.config(tech=32)</span>
-            <span class="c">#print &#39;tech:%d, mech: %s, dp: %f, sp: %f, freq:%f&#39; % (tech, mech, c.dp0, c.sp0, c.freq)</span>
-
-            <span class="n">fs</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">dp</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">sp</span> <span class="o">=</span> <span class="p">[]</span>
-            <span class="n">p</span> <span class="o">=</span> <span class="p">[]</span>
-
-            <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vsList</span><span class="p">:</span>
-                <span class="n">c</span><span class="o">.</span><span class="n">dvfs_by_volt</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-                <span class="n">fs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">freq</span><span class="o">/</span><span class="n">c</span><span class="o">.</span><span class="n">f0</span><span class="p">)</span>
-                <span class="n">dp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">dp</span><span class="p">)</span>
-                <span class="n">sp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">sp</span><span class="p">)</span>
-                <span class="n">p</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">power</span><span class="p">)</span>
-
-            <span class="c">#axes.plot(vsList, dp)</span>
-            <span class="c">#__plot_split(vs, fs, dp, sp, p, tech)</span>
-            <span class="n">__plot_nosplit</span><span class="p">(</span><span class="n">vsList</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">dp</span><span class="p">,</span> <span class="n">sp</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">tech</span><span class="p">,</span> <span class="n">mech</span><span class="p">)</span>
-
-        <span class="c">#axes.set_yscale(&#39;log&#39;)</span>
-        <span class="c">#axes.legend(axes.lines, [ (&#39;%dnm&#39; % tech) for tech in techList ], loc=&#39;lower right&#39;)</span>
-        <span class="c">#axes.set_xlim(0.2, 1.2)</span>
-        <span class="c">#fig.savefig(&#39;%s.png&#39; % mech)</span>
+<span class="kn">from</span> <span class="nn">.io_cmos</span> <span class="kn">import</span> <span class="n">IOCore</span> <span class="k">as</span> <span class="n">IOCore_CMOS</span>
+<span class="kn">from</span> <span class="nn">.o3_cmos</span> <span class="kn">import</span> <span class="n">O3Core</span> <span class="k">as</span> <span class="n">O3Core_CMOS</span>
+<span class="kn">from</span> <span class="nn">.io_tfet</span> <span class="kn">import</span> <span class="n">IOCore</span> <span class="k">as</span> <span class="n">IOCore_TFET</span>
+<span class="kn">from</span> <span class="nn">.o3_tfet</span> <span class="kn">import</span> <span class="n">O3Core</span> <span class="k">as</span> <span class="n">O3Core_TFET</span>
 </pre></div>
 
-          </div>
-        </div>
-      </div>
-      <div class="clearer"></div>
     </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="../../../index.html">Lumos home</a>&nbsp;|</li>
-        <li><a href="../../../contents.html">Documentation</a> &raquo;</li>
-
-          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
-      </ul>
-    </div>
-    <div class="footer">
-        &copy; Copyright 2013, Liang Wang.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
-    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2013, Liang Wang.<br/>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.<br/>
+    </p>
+  </div>
+</footer>
   </body>
 </html>

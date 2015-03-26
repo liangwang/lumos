@@ -1,6 +1,4 @@
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -9,12 +7,15 @@
     
     <title>Python Module Index &mdash; Lumos 0.1 documentation</title>
     
-    <link rel="stylesheet" href="_static/lumos.css" type="text/css" />
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-3.2.0/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-3.2.0/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
+        URL_ROOT:    './',
         VERSION:     '0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -24,103 +25,105 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
     <link rel="top" title="Lumos 0.1 documentation" href="index.html" />
 
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
-          rel='stylesheet' type='text/css'>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
- 
-    <style type="text/css">
-      table.right { float: right; margin-left: 20px; }
-      table.right td { border: 1px solid #ccc; }
-      
-    </style>
-    <script type="text/javascript">
-      // intelligent scrolling of the sidebar content
-      $(window).scroll(function() {
-        var sb = $('.sphinxsidebarwrapper');
-        var win = $(window);
-        var sbh = sb.height();
-        var offset = $('.sphinxsidebar').position()['top'];
-        var wintop = win.scrollTop();
-        var winbot = wintop + win.innerHeight();
-        var curtop = sb.position()['top'];
-        var curbot = curtop + sbh;
-        // does sidebar fit in window?
-        if (sbh < win.innerHeight()) {
-          // yes: easy case -- always keep at the top
-          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
-                                $(document).height() - sbh - 200]));
-        } else {
-          // no: only scroll if top/bottom edge of sidebar is at
-          // top/bottom edge of window
-          if (curtop > wintop && curbot > winbot) {
-            sb.css('top', $u.max([wintop - offset - 10, 0]));
-          } else if (curtop < wintop && curbot < winbot) {
-            sb.css('top', $u.min([winbot - sbh - offset - 20,
-                                  $(document).height() - sbh - 200]));
-          }
-        }
-      });
-    </script>
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
 
 
 
   </head>
-  <body>
-<div class="pageheader">
-  <div>
-    <a href="index.html">
-      <img src="_static/lumos.png" alt="LUMOS" />
-    </a>
-  </div>
-</div>
+  <body role="document">
 
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="#" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="index.html">Lumos home</a>&nbsp;|</li>
-        <li><a href="contents.html">Documentation</a> &raquo;</li>
- 
-      </ul>
-    </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          Lumos</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
       </div>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body">
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
             
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="simple">
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
 
    <h1>Python Module Index</h1>
 
    <div class="modindex-jumpbox">
    <a href="#cap-a"><strong>a</strong></a> | 
+   <a href="#cap-l"><strong>l</strong></a> | 
    <a href="#cap-m"><strong>m</strong></a> | 
-   <a href="#cap-s"><strong>s</strong></a>
+   <a href="#cap-s"><strong>s</strong></a> | 
+   <a href="#cap-u"><strong>u</strong></a>
    </div>
 
    <table class="indextable modindextable" cellspacing="0" cellpadding="2">
@@ -131,92 +134,20 @@
        <td><img src="_static/minus.png" class="toggler"
               id="toggle-1" style="display: none" alt="-" /></td>
        <td>
-       <tt class="xref">lumos.analyses</tt></td><td>
+       <a href="apidoc/lumos.analysis.html#module-lumos.analysis"><code class="xref">lumos.analysis</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-1">
        <td></td>
        <td>&nbsp;&nbsp;&nbsp;
-       <a href="apidoc/lumos.analyses.html#module-lumos.analyses.analysis"><tt class="xref">lumos.analyses.analysis</tt></a></td><td>
+       <a href="apidoc/lumos.analysis.html#module-lumos.analysis.argparser"><code class="xref">lumos.analysis.argparser</code></a></td><td>
        <em></em></td></tr>
-     <tr class="cg-1">
+     <tr class="pcap"><td></td><td>&nbsp;</td><td></td></tr>
+     <tr class="cap" id="cap-l"><td></td><td>
+       <strong>l</strong></td><td></td></tr>
+     <tr>
        <td></td>
-       <td>&nbsp;&nbsp;&nbsp;
-       <a href="apidoc/lumos.analyses.html#module-lumos.analyses.asicdual_mt"><tt class="xref">lumos.analyses.asicdual_mt</tt></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&nbsp;&nbsp;&nbsp;
-       <a href="apidoc/lumos.analyses.html#module-lumos.analyses.asicinc_mt"><tt class="xref">lumos.analyses.asicinc_mt</tt></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&nbsp;&nbsp;&nbsp;
-       <a href="apidoc/lumos.analyses.html#module-lumos.analyses.asicopt_mt"><tt class="xref">lumos.analyses.asicopt_mt</tt></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&nbsp;&nbsp;&nbsp;
-       <a href="apidoc/lumos.analyses.html#module-lumos.analyses.asicquad_mt"><tt class="xref">lumos.analyses.asicquad_mt</tt></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&nbsp;&nbsp;&nbsp;
-       <a href="apidoc/lumos.analyses.html#module-lumos.analyses.asictriple_mt"><tt class="xref">lumos.analyses.asictriple_mt</tt></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&nbsp;&nbsp;&nbsp;
-       <a href="apidoc/lumos.analyses.html#module-lumos.analyses.core"><tt class="xref">lumos.analyses.core</tt></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&nbsp;&nbsp;&nbsp;
-       <a href="apidoc/lumos.analyses.html#module-lumos.analyses.diminc_mt"><tt class="xref">lumos.analyses.diminc_mt</tt></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&nbsp;&nbsp;&nbsp;
-       <a href="apidoc/lumos.analyses.html#module-lumos.analyses.dimsi_deriv"><tt class="xref">lumos.analyses.dimsi_deriv</tt></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&nbsp;&nbsp;&nbsp;
-       <a href="apidoc/lumos.analyses.html#module-lumos.analyses.dimsi_fpga_mt"><tt class="xref">lumos.analyses.dimsi_fpga_mt</tt></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&nbsp;&nbsp;&nbsp;
-       <a href="apidoc/lumos.analyses.html#module-lumos.analyses.dist_ucore_mt"><tt class="xref">lumos.analyses.dist_ucore_mt</tt></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&nbsp;&nbsp;&nbsp;
-       <a href="apidoc/lumos.analyses.html#module-lumos.analyses.final"><tt class="xref">lumos.analyses.final</tt></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&nbsp;&nbsp;&nbsp;
-       <a href="apidoc/lumos.analyses.html#module-lumos.analyses.fpgainc_mt"><tt class="xref">lumos.analyses.fpgainc_mt</tt></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&nbsp;&nbsp;&nbsp;
-       <a href="apidoc/lumos.analyses.html#module-lumos.analyses.heterosys_example"><tt class="xref">lumos.analyses.heterosys_example</tt></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&nbsp;&nbsp;&nbsp;
-       <a href="apidoc/lumos.analyses.html#module-lumos.analyses.homosys_example"><tt class="xref">lumos.analyses.homosys_example</tt></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&nbsp;&nbsp;&nbsp;
-       <a href="apidoc/lumos.analyses.html#module-lumos.analyses.ioo3"><tt class="xref">lumos.analyses.ioo3</tt></a></td><td>
-       <em></em></td></tr>
-     <tr class="cg-1">
-       <td></td>
-       <td>&nbsp;&nbsp;&nbsp;
-       <a href="apidoc/lumos.analyses.html#module-lumos.analyses.o3sel"><tt class="xref">lumos.analyses.o3sel</tt></a></td><td>
+       <td>
+       <a href="apidoc/lumos.html#module-lumos"><code class="xref">lumos</code></a></td><td>
        <em></em></td></tr>
      <tr class="pcap"><td></td><td>&nbsp;</td><td></td></tr>
      <tr class="cap" id="cap-m"><td></td><td>
@@ -225,62 +156,137 @@
        <td><img src="_static/minus.png" class="toggler"
               id="toggle-2" style="display: none" alt="-" /></td>
        <td>
-       <a href="apidoc/lumos.model.html#module-lumos.model"><tt class="xref">lumos.model</tt></a></td><td>
+       <a href="apidoc/lumos.model.html#module-lumos.model"><code class="xref">lumos.model</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-2">
        <td></td>
        <td>&nbsp;&nbsp;&nbsp;
-       <a href="apidoc/lumos.model.html#module-lumos.model.application"><tt class="xref">lumos.model.application</tt></a></td><td>
+       <a href="apidoc/lumos.model.html#module-lumos.model.application"><code class="xref">lumos.model.application</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-2">
        <td></td>
        <td>&nbsp;&nbsp;&nbsp;
-       <a href="apidoc/lumos.model.html#module-lumos.model.budget"><tt class="xref">lumos.model.budget</tt></a></td><td>
+       <a href="apidoc/lumos.model.html#module-lumos.model.asacc"><code class="xref">lumos.model.asacc</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-2">
        <td></td>
        <td>&nbsp;&nbsp;&nbsp;
-       <a href="apidoc/lumos.model.html#module-lumos.model.chip"><tt class="xref">lumos.model.chip</tt></a></td><td>
+       <a href="apidoc/lumos.model.core.html#module-lumos.model.core"><code class="xref">lumos.model.core</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-2">
        <td></td>
        <td>&nbsp;&nbsp;&nbsp;
-       <a href="apidoc/lumos.model.html#module-lumos.model.core"><tt class="xref">lumos.model.core</tt></a></td><td>
+       <a href="apidoc/lumos.model.core.html#module-lumos.model.core.io_cmos"><code class="xref">lumos.model.core.io_cmos</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-2">
        <td></td>
        <td>&nbsp;&nbsp;&nbsp;
-       <a href="apidoc/lumos.model.html#module-lumos.model.fedcore"><tt class="xref">lumos.model.fedcore</tt></a></td><td>
+       <a href="apidoc/lumos.model.core.html#module-lumos.model.core.io_tfet"><code class="xref">lumos.model.core.io_tfet</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-2">
        <td></td>
        <td>&nbsp;&nbsp;&nbsp;
-       <a href="apidoc/lumos.model.html#module-lumos.model.freq"><tt class="xref">lumos.model.freq</tt></a></td><td>
+       <a href="apidoc/lumos.model.core.html#module-lumos.model.core.o3_cmos"><code class="xref">lumos.model.core.o3_cmos</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-2">
        <td></td>
        <td>&nbsp;&nbsp;&nbsp;
-       <a href="apidoc/lumos.model.html#module-lumos.model.kernel"><tt class="xref">lumos.model.kernel</tt></a></td><td>
+       <a href="apidoc/lumos.model.core.html#module-lumos.model.core.o3_tfet"><code class="xref">lumos.model.core.o3_tfet</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-2">
        <td></td>
        <td>&nbsp;&nbsp;&nbsp;
-       <a href="apidoc/lumos.model.html#module-lumos.model.system"><tt class="xref">lumos.model.system</tt></a></td><td>
+       <a href="apidoc/lumos.model.html#module-lumos.model.kernel"><code class="xref">lumos.model.kernel</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-2">
        <td></td>
        <td>&nbsp;&nbsp;&nbsp;
-       <a href="apidoc/lumos.model.html#module-lumos.model.tech"><tt class="xref">lumos.model.tech</tt></a></td><td>
+       <a href="apidoc/lumos.model.html#module-lumos.model.misc"><code class="xref">lumos.model.misc</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-2">
        <td></td>
        <td>&nbsp;&nbsp;&nbsp;
-       <a href="apidoc/lumos.model.html#module-lumos.model.ucore"><tt class="xref">lumos.model.ucore</tt></a></td><td>
+       <a href="apidoc/lumos.model.html#module-lumos.model.plot"><code class="xref">lumos.model.plot</code></a></td><td>
        <em></em></td></tr>
      <tr class="cg-2">
        <td></td>
        <td>&nbsp;&nbsp;&nbsp;
-       <a href="apidoc/lumos.model.html#module-lumos.model.workload"><tt class="xref">lumos.model.workload</tt></a></td><td>
+       <a href="apidoc/lumos.model.system.html#module-lumos.model.system"><code class="xref">lumos.model.system</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-2">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="apidoc/lumos.model.system.html#module-lumos.model.system.het"><code class="xref">lumos.model.system.het</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-2">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="apidoc/lumos.model.system.html#module-lumos.model.system.hetero"><code class="xref">lumos.model.system.hetero</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-2">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="apidoc/lumos.model.system.html#module-lumos.model.system.hom"><code class="xref">lumos.model.system.hom</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-2">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="apidoc/lumos.model.system.html#module-lumos.model.system.homo"><code class="xref">lumos.model.system.homo</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-2">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="apidoc/lumos.model.system.html#module-lumos.model.system.mpsoc"><code class="xref">lumos.model.system.mpsoc</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-2">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="apidoc/lumos.model.tech.html#module-lumos.model.tech"><code class="xref">lumos.model.tech</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-2">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="apidoc/lumos.model.tech.cmos.html#module-lumos.model.tech.cmos"><code class="xref">lumos.model.tech.cmos</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-2">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="apidoc/lumos.model.tech.cmos.hp.html#module-lumos.model.tech.cmos.hp"><code class="xref">lumos.model.tech.cmos.hp</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-2">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="apidoc/lumos.model.tech.cmos.lp.html#module-lumos.model.tech.cmos.lp"><code class="xref">lumos.model.tech.cmos.lp</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-2">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="apidoc/lumos.model.tech.tfet.html#module-lumos.model.tech.tfet"><code class="xref">lumos.model.tech.tfet</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-2">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="apidoc/lumos.model.tech.tfet.homoTFET30nm.html#module-lumos.model.tech.tfet.homoTFET30nm"><code class="xref">lumos.model.tech.tfet.homoTFET30nm</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-2">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="apidoc/lumos.model.tech.tfet.homoTFET60nm.html#module-lumos.model.tech.tfet.homoTFET60nm"><code class="xref">lumos.model.tech.tfet.homoTFET60nm</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-2">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="apidoc/lumos.model.tech.tfet.html#module-lumos.model.tech.tfet.tfet_interp"><code class="xref">lumos.model.tech.tfet.tfet_interp</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-2">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="apidoc/lumos.model.html#module-lumos.model.ucore"><code class="xref">lumos.model.ucore</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-2">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="apidoc/lumos.model.html#module-lumos.model.workload"><code class="xref">lumos.model.workload</code></a></td><td>
        <em></em></td></tr>
      <tr class="pcap"><td></td><td>&nbsp;</td><td></td></tr>
      <tr class="cap" id="cap-s"><td></td><td>
@@ -288,33 +294,55 @@
      <tr>
        <td></td>
        <td>
-       <a href="apidoc/lumos.html#module-lumos.settings"><tt class="xref">lumos.settings</tt></a></td><td>
+       <a href="apidoc/lumos.html#module-lumos.settings"><code class="xref">lumos.settings</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="pcap"><td></td><td>&nbsp;</td><td></td></tr>
+     <tr class="cap" id="cap-u"><td></td><td>
+       <strong>u</strong></td><td></td></tr>
+     <tr>
+       <td><img src="_static/minus.png" class="toggler"
+              id="toggle-3" style="display: none" alt="-" /></td>
+       <td>
+       <a href="apidoc/lumos.unittests.html#module-lumos.unittests"><code class="xref">lumos.unittests</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-3">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="apidoc/lumos.unittests.html#module-lumos.unittests.test_acc"><code class="xref">lumos.unittests.test_acc</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-3">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="apidoc/lumos.unittests.html#module-lumos.unittests.test_homogsys"><code class="xref">lumos.unittests.test_homogsys</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-3">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="apidoc/lumos.unittests.html#module-lumos.unittests.test_mpsoc"><code class="xref">lumos.unittests.test_mpsoc</code></a></td><td>
+       <em></em></td></tr>
+     <tr class="cg-3">
+       <td></td>
+       <td>&nbsp;&nbsp;&nbsp;
+       <a href="apidoc/lumos.unittests.html#module-lumos.unittests.test_ptmnew_app"><code class="xref">lumos.unittests.test_ptmnew_app</code></a></td><td>
        <em></em></td></tr>
    </table>
 
 
-          </div>
-        </div>
-      </div>
-      <div class="clearer"></div>
     </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="#" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="index.html">Lumos home</a>&nbsp;|</li>
-        <li><a href="contents.html">Documentation</a> &raquo;</li>
- 
-      </ul>
-    </div>
-    <div class="footer">
-        &copy; Copyright 2013, Liang Wang.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
-    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2013, Liang Wang.<br/>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.<br/>
+    </p>
+  </div>
+</footer>
   </body>
 </html>

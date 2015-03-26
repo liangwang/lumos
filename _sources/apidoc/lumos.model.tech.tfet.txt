@@ -1,0 +1,30 @@
+lumos.model.tech.tfet package
+=============================
+
+Subpackages
+-----------
+
+.. toctree::
+
+    lumos.model.tech.tfet.homoTFET30nm
+    lumos.model.tech.tfet.homoTFET60nm
+
+Submodules
+----------
+
+lumos.model.tech.tfet.tfet_interp module
+----------------------------------------
+
+.. automodule:: lumos.model.tech.tfet.tfet_interp
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: lumos.model.tech.tfet
+    :members:
+    :undoc-members:
+    :show-inheritance:

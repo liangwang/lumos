@@ -1,0 +1,10 @@
+lumos.model.tech.tfet.homoTFET60nm package
+==========================================
+
+Module contents
+---------------
+
+.. automodule:: lumos.model.tech.tfet.homoTFET60nm
+    :members:
+    :undoc-members:
+    :show-inheritance:

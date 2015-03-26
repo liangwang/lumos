@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>lumos.model.core package &mdash; Lumos 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-3.2.0/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-3.2.0/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="Lumos 0.1 documentation" href="../index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body role="document">
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          Lumos</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="simple">
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">lumos.model.core package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-lumos.model.core.io_cmos">lumos.model.core.io_cmos module</a></li>
+<li><a class="reference internal" href="#module-lumos.model.core.io_tfet">lumos.model.core.io_tfet module</a></li>
+<li><a class="reference internal" href="#module-lumos.model.core.o3_cmos">lumos.model.core.o3_cmos module</a></li>
+<li><a class="reference internal" href="#module-lumos.model.core.o3_tfet">lumos.model.core.o3_tfet module</a></li>
+<li><a class="reference internal" href="#module-lumos.model.core">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="../_sources/apidoc/lumos.model.core.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <div class="section" id="lumos-model-core-package">
+<h1>lumos.model.core package<a class="headerlink" href="#lumos-model-core-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-lumos.model.core.io_cmos">
+<span id="lumos-model-core-io-cmos-module"></span><h2>lumos.model.core.io_cmos module<a class="headerlink" href="#module-lumos.model.core.io_cmos" title="Permalink to this headline">¶</a></h2>
+<p>This module models conventional cores. Two variants are derived from
+an abstract base class AbstractCore, as IOCore and O3Core for an
+in-order core and an out-of-order core respectively.</p>
+<dl class="class">
+<dt id="lumos.model.core.io_cmos.IOCore">
+<em class="property">class </em><code class="descclassname">lumos.model.core.io_cmos.</code><code class="descname">IOCore</code><span class="sig-paren">(</span><em>tech</em>, <em>model_name='hp'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/core/io_cmos.html#IOCore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.io_cmos.IOCore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lumos.model.core.BaseCore" title="lumos.model.core.BaseCore"><code class="xref py py-class docutils literal"><span class="pre">lumos.model.core.BaseCore</span></code></a></p>
+<dl class="method">
+<dt id="lumos.model.core.io_cmos.IOCore.init">
+<code class="descname">init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/core/io_cmos.html#IOCore.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.io_cmos.IOCore.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-lumos.model.core.io_tfet">
+<span id="lumos-model-core-io-tfet-module"></span><h2>lumos.model.core.io_tfet module<a class="headerlink" href="#module-lumos.model.core.io_tfet" title="Permalink to this headline">¶</a></h2>
+<p>This module models conventional cores. Two variants are derived from
+an abstract base class AbstractCore, as IOCore and O3Core for an
+in-order core and an out-of-order core respectively.</p>
+<dl class="class">
+<dt id="lumos.model.core.io_tfet.IOCore">
+<em class="property">class </em><code class="descclassname">lumos.model.core.io_tfet.</code><code class="descname">IOCore</code><span class="sig-paren">(</span><em>tech</em>, <em>model_name='homoTFET30nm'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/core/io_tfet.html#IOCore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.io_tfet.IOCore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lumos.model.core.BaseCore" title="lumos.model.core.BaseCore"><code class="xref py py-class docutils literal"><span class="pre">lumos.model.core.BaseCore</span></code></a></p>
+<dl class="method">
+<dt id="lumos.model.core.io_tfet.IOCore.init">
+<code class="descname">init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/core/io_tfet.html#IOCore.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.io_tfet.IOCore.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-lumos.model.core.o3_cmos">
+<span id="lumos-model-core-o3-cmos-module"></span><h2>lumos.model.core.o3_cmos module<a class="headerlink" href="#module-lumos.model.core.o3_cmos" title="Permalink to this headline">¶</a></h2>
+<p>This module models conventional cores. Two variants are derived from
+an abstract base class AbstractCore, as IOCore and O3Core for an
+in-order core and an out-of-order core respectively.</p>
+<dl class="class">
+<dt id="lumos.model.core.o3_cmos.O3Core">
+<em class="property">class </em><code class="descclassname">lumos.model.core.o3_cmos.</code><code class="descname">O3Core</code><span class="sig-paren">(</span><em>tech</em>, <em>model_name='hp'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/core/o3_cmos.html#O3Core"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.o3_cmos.O3Core" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lumos.model.core.BaseCore" title="lumos.model.core.BaseCore"><code class="xref py py-class docutils literal"><span class="pre">lumos.model.core.BaseCore</span></code></a></p>
+<dl class="method">
+<dt id="lumos.model.core.o3_cmos.O3Core.init">
+<code class="descname">init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/core/o3_cmos.html#O3Core.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.o3_cmos.O3Core.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-lumos.model.core.o3_tfet">
+<span id="lumos-model-core-o3-tfet-module"></span><h2>lumos.model.core.o3_tfet module<a class="headerlink" href="#module-lumos.model.core.o3_tfet" title="Permalink to this headline">¶</a></h2>
+<p>This module models conventional cores. Two variants are derived from
+an abstract base class AbstractCore, as IOCore and O3Core for an
+in-order core and an out-of-order core respectively.</p>
+<dl class="class">
+<dt id="lumos.model.core.o3_tfet.O3Core">
+<em class="property">class </em><code class="descclassname">lumos.model.core.o3_tfet.</code><code class="descname">O3Core</code><span class="sig-paren">(</span><em>tech</em>, <em>model_name='homoTFET30nm'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/core/o3_tfet.html#O3Core"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.o3_tfet.O3Core" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lumos.model.core.BaseCore" title="lumos.model.core.BaseCore"><code class="xref py py-class docutils literal"><span class="pre">lumos.model.core.BaseCore</span></code></a></p>
+<dl class="method">
+<dt id="lumos.model.core.o3_tfet.O3Core.init">
+<code class="descname">init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/core/o3_tfet.html#O3Core.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.o3_tfet.O3Core.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-lumos.model.core">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-lumos.model.core" title="Permalink to this headline">¶</a></h2>
+<p>This module models conventional cores. Two variants are derived from
+an abstract base class AbstractCore, as IOCore and O3Core for an
+in-order core and an out-of-order core respectively.</p>
+<dl class="class">
+<dt id="lumos.model.core.BaseCore">
+<em class="property">class </em><code class="descclassname">lumos.model.core.</code><code class="descname">BaseCore</code><span class="sig-paren">(</span><em>tech</em>, <em>tech_model</em>, <em>core_type</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/core.html#BaseCore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.BaseCore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="attribute">
+<dt id="lumos.model.core.BaseCore.area">
+<code class="descname">area</code><a class="headerlink" href="#lumos.model.core.BaseCore.area" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="lumos.model.core.BaseCore.ctype">
+<code class="descname">ctype</code><a class="headerlink" href="#lumos.model.core.BaseCore.ctype" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="lumos.model.core.BaseCore.dp">
+<code class="descname">dp</code><a class="headerlink" href="#lumos.model.core.BaseCore.dp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="lumos.model.core.BaseCore.freq">
+<code class="descname">freq</code><a class="headerlink" href="#lumos.model.core.BaseCore.freq" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.model.core.BaseCore.init">
+<code class="descname">init</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/core.html#BaseCore.init"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.BaseCore.init" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="lumos.model.core.BaseCore.perf">
+<code class="descname">perf</code><a class="headerlink" href="#lumos.model.core.BaseCore.perf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="lumos.model.core.BaseCore.power">
+<code class="descname">power</code><a class="headerlink" href="#lumos.model.core.BaseCore.power" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="lumos.model.core.BaseCore.sp">
+<code class="descname">sp</code><a class="headerlink" href="#lumos.model.core.BaseCore.sp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="lumos.model.core.BaseCore.tech">
+<code class="descname">tech</code><a class="headerlink" href="#lumos.model.core.BaseCore.tech" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="lumos.model.core.BaseCore.vdd">
+<code class="descname">vdd</code><a class="headerlink" href="#lumos.model.core.BaseCore.vdd" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="lumos.model.core.BaseCore.vmax">
+<code class="descname">vmax</code><a class="headerlink" href="#lumos.model.core.BaseCore.vmax" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="lumos.model.core.BaseCore.vmin">
+<code class="descname">vmin</code><a class="headerlink" href="#lumos.model.core.BaseCore.vmin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="lumos.model.core.BaseCore.vnom">
+<code class="descname">vnom</code><a class="headerlink" href="#lumos.model.core.BaseCore.vnom" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="lumos.model.core.BaseCoreError">
+<em class="property">exception </em><code class="descclassname">lumos.model.core.</code><code class="descname">BaseCoreError</code><a class="reference internal" href="../_modules/lumos/model/core.html#BaseCoreError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.BaseCoreError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2013, Liang Wang.<br/>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

@@ -1,6 +1,4 @@
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -9,8 +7,11 @@
     
     <title>lumos.model.application &mdash; Lumos 0.1 documentation</title>
     
-    <link rel="stylesheet" href="../../../_static/lumos.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/bootstrap-3.2.0/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/bootstrap-3.2.0/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -24,111 +25,147 @@
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
     <link rel="top" title="Lumos 0.1 documentation" href="../../../index.html" />
-    <link rel="up" title="Module code" href="../../index.html" />
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
-          rel='stylesheet' type='text/css'>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
- 
-    <style type="text/css">
-      table.right { float: right; margin-left: 20px; }
-      table.right td { border: 1px solid #ccc; }
-      
-    </style>
-    <script type="text/javascript">
-      // intelligent scrolling of the sidebar content
-      $(window).scroll(function() {
-        var sb = $('.sphinxsidebarwrapper');
-        var win = $(window);
-        var sbh = sb.height();
-        var offset = $('.sphinxsidebar').position()['top'];
-        var wintop = win.scrollTop();
-        var winbot = wintop + win.innerHeight();
-        var curtop = sb.position()['top'];
-        var curbot = curtop + sbh;
-        // does sidebar fit in window?
-        if (sbh < win.innerHeight()) {
-          // yes: easy case -- always keep at the top
-          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
-                                $(document).height() - sbh - 200]));
-        } else {
-          // no: only scroll if top/bottom edge of sidebar is at
-          // top/bottom edge of window
-          if (curtop > wintop && curbot > winbot) {
-            sb.css('top', $u.max([wintop - offset - 10, 0]));
-          } else if (curtop < wintop && curbot < winbot) {
-            sb.css('top', $u.min([winbot - sbh - offset - 20,
-                                  $(document).height() - sbh - 200]));
-          }
-        }
-      });
-    </script>
+    <link rel="up" title="lumos.model" href="../model.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
 
   </head>
-  <body>
-<div class="pageheader">
-  <div>
-    <a href="../../../index.html">
-      <img src="../../../_static/lumos.png" alt="LUMOS" />
-    </a>
-  </div>
-</div>
+  <body role="document">
 
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="../../../index.html">Lumos home</a>&nbsp;|</li>
-        <li><a href="../../../contents.html">Documentation</a> &raquo;</li>
-
-          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
-      </ul>
-    </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          Lumos</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
       </div>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body">
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
             
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="simple">
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
   <h1>Source code for lumos.model.application</h1><div class="highlight"><pre>
 <span class="c">#!/usr/bin/env python</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">numpy.random</span>
 <span class="kn">import</span> <span class="nn">scipy.stats</span>
+<span class="kn">from</span> <span class="nn">igraph</span> <span class="kn">import</span> <span class="n">Graph</span><span class="p">,</span> <span class="n">OUT</span> <span class="k">as</span> <span class="n">GRAPH_OUT</span>
+
+<span class="n">_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&#39;Application&#39;</span><span class="p">)</span>
+<span class="n">_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="App"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.application.App">[docs]</a><span class="k">class</span> <span class="nc">App</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; An application is a program a system runs for. The application has certain characteristics, such as parallel ratio &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ApplicationError"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.application.ApplicationError">[docs]</a><span class="k">class</span> <span class="nc">ApplicationError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+</div>
+<div class="viewcode-block" id="AppDAG"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.application.AppDAG">[docs]</a><span class="k">class</span> <span class="nc">AppDAG</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; An application modeled as a directed acyclic graph (DAG)</span>
+
+<span class="sd">    An application is DAG of tasks/kernels.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_g</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="n">directed</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_kernels</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_node_id</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="AppDAG.add_kernel"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.application.AppDAG.add_kernel">[docs]</a>    <span class="k">def</span> <span class="nf">add_kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kerobj</span><span class="p">):</span>
+        <span class="n">node_id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_node_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_node_id</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_kernels</span><span class="p">[</span><span class="n">node_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">kerobj</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_g</span><span class="o">.</span><span class="n">add_vertex</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">node_id</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">node_id</span>
+</div>
+<div class="viewcode-block" id="AppDAG.add_dependence"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.application.AppDAG.add_dependence">[docs]</a>    <span class="k">def</span> <span class="nf">add_dependence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">from_</span><span class="p">,</span> <span class="n">to_</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_g</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span><span class="n">from_</span><span class="p">,</span> <span class="n">to_</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="AppDAG.get_kernel"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.application.AppDAG.get_kernel">[docs]</a>    <span class="k">def</span> <span class="nf">get_kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_kernels</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+
+</div></div>
+<div class="viewcode-block" id="Application"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.application.Application">[docs]</a><span class="k">class</span> <span class="nc">Application</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; An application is a program a system runs for.</span>
+
+<span class="sd">    The application has certain characteristics, such as parallel ratio</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s">&#39;app&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Initialize an application</span>
 
-<span class="sd">        Arguments:</span>
-<span class="sd">        f -- the fraction of parallel part of program (default 0.9)</span>
-<span class="sd">        m -- the factor of memory latency (default 0)</span>
-
+<span class="sd">        Args:</span>
+<span class="sd">          f (float):</span>
+<span class="sd">            the fraction of parallel part of program (default 0.9)</span>
+<span class="sd">          m (float):</span>
+<span class="sd">            the factor of memory latency (default 0)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">f_noacc</span> <span class="o">=</span> <span class="n">f</span>
@@ -137,196 +174,278 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kernels_coverage</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">tag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tag_update</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tag</span>
 
-<div class="viewcode-block" id="App.tag_update"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.application.App.tag_update">[docs]</a>    <span class="k">def</span> <span class="nf">tag_update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Application.tag_update"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.application.Application.tag_update">[docs]</a>    <span class="k">def</span> <span class="nf">tag_update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">f_str</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">f_noacc</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="s">&#39;-&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">f_str</span><span class="p">,]</span> <span class="o">+</span> <span class="p">[(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">-</span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">kid</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="p">[</span><span class="n">kid</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="p">)))</span> <span class="k">for</span> <span class="n">kid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="p">])</span>
+        <span class="k">return</span> <span class="s">&#39;-&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">f_str</span><span class="p">,</span> <span class="p">]</span> <span class="o">+</span> <span class="p">[(</span>
+            <span class="s">&#39;</span><span class="si">%s</span><span class="s">-</span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">kid</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kernels_coverage</span><span class="p">[</span><span class="n">kid</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="p">)))</span>
+            <span class="k">for</span> <span class="n">kid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernels_coverage</span><span class="p">])</span>
 </div>
-<div class="viewcode-block" id="App.reg_kernel"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.application.App.reg_kernel">[docs]</a>    <span class="k">def</span> <span class="nf">reg_kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kid</span><span class="p">,</span> <span class="n">cov</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Register a kernel that could be accelerated by certain ASIC, or more</span>
-<span class="sd">           Generalized GPU/FPGA</span>
+<div class="viewcode-block" id="Application.add_kernel"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.application.Application.add_kernel">[docs]</a>    <span class="k">def</span> <span class="nf">add_kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">cov</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Register a kernel to be accelerate.</span>
 
-<span class="sd">        :kid: @todo</span>
-<span class="sd">        :cov: @todo</span>
-<span class="sd">        :returns: True if register succeed</span>
-<span class="sd">                  False if failed</span>
+<span class="sd">        The kernel could be accelerated by certain ASIC, or more</span>
+<span class="sd">        generalized GPU/FPGA</span>
 
+<span class="sd">        Args:</span>
+<span class="sd">          kernel (:class:`~lumos.model.kernel.Kernel`):</span>
+<span class="sd">            The kernel object</span>
+<span class="sd">          cov (float):</span>
+<span class="sd">            The coerage of the kernel, relative to the serial execution</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">          ApplicationError:</span>
+<span class="sd">            the given coverage (cov) is larger than the overall parallel ratio</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">          N/A</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">kernels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span>
-
-        <span class="k">if</span> <span class="n">kid</span> <span class="ow">in</span> <span class="n">kernels</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Kernel </span><span class="si">%s</span><span class="s"> already exist&#39;</span> <span class="o">%</span> <span class="n">kid</span><span class="p">)</span>
+        <span class="n">kid</span> <span class="o">=</span> <span class="n">kernel</span><span class="o">.</span><span class="n">kid</span>
+        <span class="k">if</span> <span class="n">kid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="p">:</span>
+            <span class="n">_logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s">&#39;Kernel </span><span class="si">%s</span><span class="s"> already exist&#39;</span> <span class="o">%</span> <span class="n">kid</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">False</span>
 
         <span class="k">if</span> <span class="n">cov</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_noacc</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;cov of </span><span class="si">%s</span><span class="s"> is too large to exceed the overall parallel ratio&#39;</span> <span class="o">%</span> <span class="n">kid</span><span class="p">)</span>
-            <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">raise</span> <span class="n">ApplicationError</span><span class="p">(</span>
+                <span class="s">&#39;[add_kernel]: cov of {0} is too large to exceed the overall &#39;</span>
+                <span class="s">&#39;parallel ratio {1}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cov</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_noacc</span><span class="p">))</span>
 
-        <span class="n">kernels</span><span class="p">[</span><span class="n">kid</span><span class="p">]</span> <span class="o">=</span> <span class="n">cov</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="p">[</span><span class="n">kid</span><span class="p">]</span> <span class="o">=</span> <span class="n">kernel</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kernels_coverage</span><span class="p">[</span><span class="n">kid</span><span class="p">]</span> <span class="o">=</span> <span class="n">cov</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">f_noacc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_noacc</span> <span class="o">-</span> <span class="n">cov</span>
 
-        <span class="c">#self.tag = &#39;_&#39;.join([kid, &#39;-&#39;.join([str(int(100*(1-self.f))), str(int(100*(self.f_noacc))), str(int(100*cov))])])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">tag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tag_update</span><span class="p">()</span>
-
-        <span class="k">return</span> <span class="bp">True</span>
 </div>
-<div class="viewcode-block" id="App.set_cov"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.application.App.set_cov">[docs]</a>    <span class="k">def</span> <span class="nf">set_cov</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kid</span><span class="p">,</span> <span class="n">cov</span><span class="p">):</span>
+<div class="viewcode-block" id="Application.set_cov"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.application.Application.set_cov">[docs]</a>    <span class="k">def</span> <span class="nf">set_cov</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kid</span><span class="p">,</span> <span class="n">cov</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Set the coverage of a kernel</span>
 
-<span class="sd">        :kid: @todo</span>
-<span class="sd">        :cov: @todo</span>
-<span class="sd">        :returns: @todo</span>
+<span class="sd">        Args:</span>
+<span class="sd">          kid (str):</span>
+<span class="sd">            The kid (name) of the kernel</span>
+<span class="sd">          cov (float):</span>
+<span class="sd">            The coverage of the kernel to be updated</span>
 
+<span class="sd">        Raises:</span>
+<span class="sd">          ApplicationError:</span>
+<span class="sd">            the given coverage (cov) is larger than the overall parallel ratio</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">          N/A</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">kernels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span>
-
-        <span class="k">if</span> <span class="n">kid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kernels</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Kernel </span><span class="si">%s</span><span class="s"> has not been registerd&#39;</span> <span class="o">%</span> <span class="n">kid</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">kid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="p">:</span>
+            <span class="n">_logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Kernel </span><span class="si">%s</span><span class="s"> has not been registerd&#39;</span> <span class="o">%</span> <span class="n">kid</span><span class="p">)</span>
             <span class="k">return</span> <span class="bp">False</span>
 
-        <span class="n">cov_old</span> <span class="o">=</span> <span class="n">kernels</span><span class="p">[</span><span class="n">kid</span><span class="p">]</span>
+        <span class="n">cov_old</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernels_coverage</span><span class="p">[</span><span class="n">kid</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_noacc</span> <span class="o">+</span> <span class="n">cov_old</span> <span class="o">&lt;</span> <span class="n">cov</span><span class="p">:</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;cov of </span><span class="si">%s</span><span class="s"> is too large to exceed the overall parallel ratio&#39;</span> <span class="o">%</span> <span class="n">kid</span><span class="p">)</span>
-            <span class="k">return</span> <span class="bp">False</span>
+            <span class="k">raise</span> <span class="n">ApplicationError</span><span class="p">(</span><span class="s">&#39;[set_cov]: cov of {0} is too large to exceed &#39;</span>
+                                   <span class="s">&#39;the overall parallel ratio&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">kid</span><span class="p">))</span>
 
-        <span class="n">kernels</span><span class="p">[</span><span class="n">kid</span><span class="p">]</span> <span class="o">=</span> <span class="n">cov</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">kernels_coverage</span><span class="p">[</span><span class="n">kid</span><span class="p">]</span> <span class="o">=</span> <span class="n">cov</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">f_noacc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f_noacc</span> <span class="o">+</span> <span class="n">cov_old</span> <span class="o">-</span> <span class="n">cov</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">tag</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tag_update</span><span class="p">()</span>
-
-        <span class="k">return</span> <span class="bp">True</span>
 </div>
-<div class="viewcode-block" id="App.get_kernel"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.application.App.get_kernel">[docs]</a>    <span class="k">def</span> <span class="nf">get_kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the first kernel as kid</span>
-<span class="sd">        :returns: @todo</span>
+<div class="viewcode-block" id="Application.get_all_kernels"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.application.Application.get_all_kernels">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_kernels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Get all kernels within the application</span>
+
+<span class="sd">        Args: N/A</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">          kernels (list): a list of names for all kernels within the application</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">kids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">kids</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-</div>
-<div class="viewcode-block" id="App.get_kids"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.application.App.get_kids">[docs]</a>    <span class="k">def</span> <span class="nf">get_kids</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
 </div>
-<div class="viewcode-block" id="App.get_cov"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.application.App.get_cov">[docs]</a>    <span class="k">def</span> <span class="nf">get_cov</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kid</span><span class="p">):</span>
+<div class="viewcode-block" id="Application.get_cov"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.application.Application.get_cov">[docs]</a>    <span class="k">def</span> <span class="nf">get_cov</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kid</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernels_coverage</span><span class="p">[</span><span class="n">kid</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="Application.get_kernel"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.application.Application.get_kernel">[docs]</a>    <span class="k">def</span> <span class="nf">get_kernel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kid</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="p">[</span><span class="n">kid</span><span class="p">]</span>
-</div>
-<div class="viewcode-block" id="App.has_kernels"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.application.App.has_kernels">[docs]</a>    <span class="k">def</span> <span class="nf">has_kernels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">kernels</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">True</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">False</span>
+
+
+<span class="c"># class App(object):</span>
+<span class="c">#     &quot;&quot;&quot; An application is a program a system runs for. The application has certain characteristics, such as parallel ratio &quot;&quot;&quot;</span>
+<span class="c">#     def __init__(self, f=0.9, m=0, name=&#39;app&#39;):</span>
+<span class="c">#         &quot;&quot;&quot; Initialize an application</span>
+
+<span class="c">#         Arguments:</span>
+<span class="c">#         f -- the fraction of parallel part of program (default 0.9)</span>
+<span class="c">#         m -- the factor of memory latency (default 0)</span>
+
+<span class="c">#         &quot;&quot;&quot;</span>
+<span class="c">#         self.f = f</span>
+<span class="c">#         self.f_noacc = f</span>
+
+<span class="c">#         self.m = m</span>
+
+<span class="c">#         self.name = name</span>
+
+<span class="c">#         self.kernels = {}</span>
+
+<span class="c">#         self.tag = self.tag_update()</span>
+
+<span class="c">#     def __repr__(self):</span>
+<span class="c">#         return self.tag</span>
+
+<span class="c">#     def tag_update(self):</span>
+<span class="c">#         f_str = str(int((self.f-self.f_noacc)*100))</span>
+
+<span class="c">#         return &#39;-&#39;.join([f_str,] + [(&#39;%s-%d&#39; % (kid, int(self.kernels[kid]*100))) for kid in sorted(self.kernels)])</span>
+
+<span class="c">#     def reg_kernel(self, kid, cov):</span>
+<span class="c">#         &quot;&quot;&quot;Register a kernel that could be accelerated by certain ASIC, or more</span>
+<span class="c">#            Generalized GPU/FPGA</span>
+
+<span class="c">#         :kid: @todo</span>
+<span class="c">#         :cov: @todo</span>
+<span class="c">#         :returns: True if register succeed</span>
+<span class="c">#                   False if failed</span>
+
+<span class="c">#         &quot;&quot;&quot;</span>
+<span class="c">#         kernels = self.kernels</span>
+
+<span class="c">#         if kid in kernels:</span>
+<span class="c">#             _logger.error(&#39;Kernel %s already exist&#39; % kid)</span>
+<span class="c">#             return False</span>
+
+<span class="c">#         if cov &gt; self.f_noacc:</span>
+<span class="c">#             _logger.error(&#39;cov {1} of kernel &quot;{0}&quot; is too large to exceed the overall parallel ratio {2}&#39;.format(kid, cov, self.f_noacc))</span>
+<span class="c">#             return False</span>
+
+<span class="c">#         kernels[kid] = cov</span>
+<span class="c">#         self.f_noacc = self.f_noacc - cov</span>
+
+<span class="c">#         #self.tag = &#39;_&#39;.join([kid, &#39;-&#39;.join([str(int(100*(1-self.f))), str(int(100*(self.f_noacc))), str(int(100*cov))])])</span>
+<span class="c">#         self.tag = self.tag_update()</span>
+
+<span class="c">#         return True</span>
+
+<span class="c">#     def set_cov(self, kid, cov):</span>
+<span class="c">#         &quot;&quot;&quot;Set the coverage of a kernel</span>
+
+<span class="c">#         :kid: @todo</span>
+<span class="c">#         :cov: @todo</span>
+<span class="c">#         :returns: @todo</span>
+
+<span class="c">#         &quot;&quot;&quot;</span>
+<span class="c">#         kernels = self.kernels</span>
+
+<span class="c">#         if kid not in kernels:</span>
+<span class="c">#             _logger.error(&#39;Kernel %s has not been registerd&#39; % kid)</span>
+<span class="c">#             return False</span>
+
+<span class="c">#         cov_old = kernels[kid]</span>
+
+<span class="c">#         if self.f_noacc + cov_old &lt; cov:</span>
+<span class="c">#             _logger.error(&#39;cov of %s is too large to exceed the overall parallel ratio&#39; % kid)</span>
+<span class="c">#             return False</span>
+
+<span class="c">#         kernels[kid] = cov</span>
+<span class="c">#         self.f_noacc = self.f_noacc + cov_old - cov</span>
+
+<span class="c">#         self.tag = self.tag_update()</span>
+
+<span class="c">#         return True</span>
+
+<span class="c">#     def get_kernel(self):</span>
+<span class="c">#         &quot;&quot;&quot;Get the first kernel as kid</span>
+<span class="c">#         :returns: @todo</span>
+
+<span class="c">#         &quot;&quot;&quot;</span>
+<span class="c">#         kids = self.kernels.keys()</span>
+<span class="c">#         return kids[0]</span>
+
+<span class="c">#     def get_kids(self):</span>
+<span class="c">#         return self.kernels.keys()</span>
+
+<span class="c">#     def get_cov(self, kid):</span>
+<span class="c">#         return self.kernels[kid]</span>
+
+<span class="c">#     def has_kernels(self):</span>
+<span class="c">#         if self.kernels:</span>
+<span class="c">#             return True</span>
+<span class="c">#         else:</span>
+<span class="c">#             return False</span>
+
+<span class="c">## class AppMMM(dict):</span>
+<span class="c">##         self[&quot;GPU&quot;] = UCoreParam(miu=3.41,phi=0.74, bw=0.725)</span>
+<span class="c">##         self[&quot;FPGA&quot;] = UCoreParam(miu=0.75,phi=0.31, bw=0.325)</span>
+<span class="c">##         self[&quot;ASIC&quot;] = UCoreParam(miu=27.4,phi=0.79, bw=3.62)</span>
+<span class="c">##         self[&quot;O3CPU&quot;] = UCoreParam(miu=1,phi=1, bw=0.216)</span>
+<span class="c">##         self[&quot;IO&quot;] = UCoreParam(miu=1,phi=1, bw=0.16)</span>
+
+<span class="c">## class AppBS(dict):</span>
+<span class="c">##         self[&quot;GPU&quot;] = UCoreParam(miu=17.0,phi=0.57, bw=5.85)</span>
+<span class="c">##         self[&quot;FPGA&quot;] = UCoreParam(miu=5.68,phi=0.26, bw=3.975)</span>
+<span class="c">##         self[&quot;ASIC&quot;] = UCoreParam(miu=482,phi=4.75, bw=66.249)</span>
+<span class="c">##         self[&quot;O3CPU&quot;] = UCoreParam(miu=1,phi=1, bw=0.35)</span>
+<span class="c">##         self[&quot;IO&quot;] = UCoreParam(miu=1,phi=1, bw=0.26)</span>
+
+<span class="c">## class AppFFT64(dict):</span>
+<span class="c">##         self[&quot;GPU&quot;] = UCoreParam(miu=2.42,phi=0.59, bw = 1)</span>
+<span class="c">##         self[&quot;FPGA&quot;] = UCoreParam(miu=2.81,phi=0.29, bw = 1)</span>
+<span class="c">##         self[&quot;ASIC&quot;] = UCoreParam(miu=733,phi=5.34, bw = 1)</span>
+<span class="c">##         self[&quot;O3CPU&quot;] = UCoreParam(miu=1,phi=1, bw=1)</span>
+<span class="c">##         self[&quot;IO&quot;] = UCoreParam(miu=1,phi=1, bw=1)</span>
+
+<span class="c"># def build(cov, occ, probs, kernels, name, f_parallel=1):</span>
+<span class="c">#     &quot;&quot;&quot;Build an application from a set of kernels</span>
+
+<span class="c">#     Args:</span>
+<span class="c">#       cov (float):</span>
+<span class="c">#         coverage percentage of all present kernels</span>
+<span class="c">#       occ (float):</span>
+<span class="c">#         occurance bit-vector for all kernels</span>
+<span class="c">#       probs (float):</span>
+<span class="c">#         probability vector of all kernels for appearance</span>
+<span class="c">#       kernels (kernel):</span>
+<span class="c">#         all possible kernels (kernel pool)</span>
+<span class="c">#       name (str):</span>
+<span class="c">#         the name of the application</span>
+<span class="c">#       f_parallel (float):</span>
+<span class="c">#         the fraction of parallel part</span>
+
+<span class="c">#     Returns:</span>
+<span class="c">#       the resulting application</span>
+
+<span class="c">#     &quot;&quot;&quot;</span>
+<span class="c">#     active_kernels = dict()</span>
+<span class="c">#     psum = 0</span>
+<span class="c">#     for o,p,acc in zip(occ, probs, kernels):</span>
+<span class="c">#         if o:</span>
+<span class="c">#             active_kernels[p] = acc</span>
+<span class="c">#             psum = psum + p</span>
+
+<span class="c">#     ksorted = sorted(active_kernels.items())</span>
+<span class="c">#     krever = ksorted[:] # make another copy</span>
+<span class="c">#     krever.reverse()</span>
+<span class="c">#     app = App(f=f_parallel, name=name)</span>
+
+<span class="c">#     for (p, acc),(prv,acc2) in zip(ksorted, krever):</span>
+<span class="c">#         kcov = cov * prv / psum</span>
+<span class="c">#         #kcov = 0.05</span>
+<span class="c">#         app.reg_kernel(acc, kcov)</span>
+
+<span class="c">#     return app</span>
+
+
+<span class="c"># def build_single(cov, kernel, name, f_parallel=1):</span>
+<span class="c">#     app = App(f=f_parallel, name=name)</span>
+<span class="c">#     app.reg_kernel(kernel, cov)</span>
+
+<span class="c">#     return app</span>
+
 </div></div>
-<div class="viewcode-block" id="UCoreParam"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.application.UCoreParam">[docs]</a><span class="k">class</span> <span class="nc">UCoreParam</span><span class="p">:</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">miu</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">bw</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">miu</span> <span class="o">=</span> <span class="n">miu</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">phi</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">bw</span> <span class="o">=</span> <span class="n">bw</span>
-
-</div>
-<div class="viewcode-block" id="AppMMM"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.application.AppMMM">[docs]</a><span class="k">class</span> <span class="nc">AppMMM</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s">&#39;MMM&#39;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">f_acc</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
-
-        <span class="bp">self</span><span class="p">[</span><span class="s">&quot;GPU&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mf">3.41</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mf">0.74</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">0.725</span><span class="p">)</span>
-        <span class="bp">self</span><span class="p">[</span><span class="s">&quot;FPGA&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mf">0.31</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">0.325</span><span class="p">)</span>
-        <span class="bp">self</span><span class="p">[</span><span class="s">&quot;ASIC&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mf">27.4</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mf">0.79</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">3.62</span><span class="p">)</span>
-        <span class="bp">self</span><span class="p">[</span><span class="s">&quot;O3CPU&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">0.216</span><span class="p">)</span>
-        <span class="bp">self</span><span class="p">[</span><span class="s">&quot;IO&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">0.16</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">f_acc</span> <span class="o">=</span> <span class="n">f_acc</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="n">m</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">tag</span> <span class="o">=</span> <span class="s">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="s">&#39;-&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">f</span><span class="p">))),</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(</span><span class="n">f</span><span class="o">-</span><span class="n">f_acc</span><span class="p">))),</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">f_acc</span><span class="p">))])])</span>
-
-</div>
-<div class="viewcode-block" id="AppBS"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.application.AppBS">[docs]</a><span class="k">class</span> <span class="nc">AppBS</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s">&#39;BS&#39;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">f_acc</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
-
-        <span class="bp">self</span><span class="p">[</span><span class="s">&quot;GPU&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mf">17.0</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mf">0.57</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">5.85</span><span class="p">)</span>
-        <span class="bp">self</span><span class="p">[</span><span class="s">&quot;FPGA&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mf">5.68</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mf">0.26</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">3.975</span><span class="p">)</span>
-        <span class="bp">self</span><span class="p">[</span><span class="s">&quot;ASIC&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mi">482</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mf">4.75</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">66.249</span><span class="p">)</span>
-        <span class="bp">self</span><span class="p">[</span><span class="s">&quot;O3CPU&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">0.35</span><span class="p">)</span>
-        <span class="bp">self</span><span class="p">[</span><span class="s">&quot;IO&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mf">0.26</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">f_acc</span> <span class="o">=</span> <span class="n">f_acc</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="n">m</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">tag</span> <span class="o">=</span> <span class="s">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="s">&#39;-&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">f</span><span class="p">))),</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(</span><span class="n">f</span><span class="o">-</span><span class="n">f_acc</span><span class="p">))),</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">f_acc</span><span class="p">))])])</span>
-
-</div>
-<div class="viewcode-block" id="AppFFT64"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.application.AppFFT64">[docs]</a><span class="k">class</span> <span class="nc">AppFFT64</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="s">&#39;FFT&#39;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">f_acc</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="nb">dict</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">()</span>
-
-        <span class="bp">self</span><span class="p">[</span><span class="s">&quot;GPU&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mf">2.42</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mf">0.59</span><span class="p">,</span> <span class="n">bw</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="p">[</span><span class="s">&quot;FPGA&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mf">2.81</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mf">0.29</span><span class="p">,</span> <span class="n">bw</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="p">[</span><span class="s">&quot;ASIC&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mi">733</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mf">5.34</span><span class="p">,</span> <span class="n">bw</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="p">[</span><span class="s">&quot;O3CPU&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="p">[</span><span class="s">&quot;IO&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">UCoreParam</span><span class="p">(</span><span class="n">miu</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">f_acc</span> <span class="o">=</span> <span class="n">f_acc</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="n">m</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">tag</span> <span class="o">=</span> <span class="s">&#39;_&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-            <span class="s">&#39;-&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">f</span><span class="p">))),</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="p">(</span><span class="n">f</span><span class="o">-</span><span class="n">f_acc</span><span class="p">))),</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="mi">100</span><span class="o">*</span><span class="n">f_acc</span><span class="p">))])])</span>
-
-</div>
-<div class="viewcode-block" id="build"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.application.build">[docs]</a><span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="n">cov</span><span class="p">,</span> <span class="n">occ</span><span class="p">,</span> <span class="n">probs</span><span class="p">,</span> <span class="n">kernels</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">f_parallel</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Build an application from a set of kernels</span>
-
-<span class="sd">    :cov: coverage percentage of all present kernels</span>
-<span class="sd">    :occ: occurance bit-vector for all kernels</span>
-<span class="sd">    :probs: probability vector of all kernels for appearance</span>
-<span class="sd">    :kernels: all possible kernels (kernel pool)</span>
-<span class="sd">    :name: The name of the application</span>
-<span class="sd">    :f_parallel: the fraction of parallel part</span>
-<span class="sd">    :returns: the resulting application</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">active_kernels</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-    <span class="n">psum</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="n">o</span><span class="p">,</span><span class="n">p</span><span class="p">,</span><span class="n">acc</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">occ</span><span class="p">,</span> <span class="n">probs</span><span class="p">,</span> <span class="n">kernels</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">o</span><span class="p">:</span>
-            <span class="n">active_kernels</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">acc</span>
-            <span class="n">psum</span> <span class="o">=</span> <span class="n">psum</span> <span class="o">+</span> <span class="n">p</span>
-
-    <span class="n">ksorted</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">active_kernels</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
-    <span class="n">krever</span> <span class="o">=</span> <span class="n">ksorted</span><span class="p">[:]</span> <span class="c"># make another copy</span>
-    <span class="n">krever</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
-    <span class="n">app</span> <span class="o">=</span> <span class="n">App</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="n">f_parallel</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-
-    <span class="k">for</span> <span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">acc</span><span class="p">),(</span><span class="n">prv</span><span class="p">,</span><span class="n">acc2</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ksorted</span><span class="p">,</span> <span class="n">krever</span><span class="p">):</span>
-        <span class="n">kcov</span> <span class="o">=</span> <span class="n">cov</span> <span class="o">*</span> <span class="n">prv</span> <span class="o">/</span> <span class="n">psum</span>
-        <span class="c">#kcov = 0.05</span>
-        <span class="n">app</span><span class="o">.</span><span class="n">reg_kernel</span><span class="p">(</span><span class="n">acc</span><span class="p">,</span> <span class="n">kcov</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">app</span>
-
-</div>
-<div class="viewcode-block" id="build_single"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.application.build_single">[docs]</a><span class="k">def</span> <span class="nf">build_single</span><span class="p">(</span><span class="n">cov</span><span class="p">,</span> <span class="n">kernel</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">f_parallel</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-    <span class="n">app</span> <span class="o">=</span> <span class="n">App</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="n">f_parallel</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
-    <span class="n">app</span><span class="o">.</span><span class="n">reg_kernel</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span> <span class="n">cov</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">app</span>
-
-</div>
 <div class="viewcode-block" id="random_uc_cov"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.application.random_uc_cov">[docs]</a><span class="k">def</span> <span class="nf">random_uc_cov</span><span class="p">(</span><span class="n">dist</span><span class="p">,</span> <span class="n">param1</span><span class="p">,</span> <span class="n">param2</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;@todo: Docstring for rand_uc_cov</span>
 
@@ -381,38 +500,24 @@
         <span class="n">loggging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;Unknown distribution for coverage: </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">dist</span><span class="p">)</span>
         <span class="n">r</span> <span class="o">=</span> <span class="mi">0</span>
 
-    <span class="k">return</span> <span class="n">r</span>
-</div>
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">app</span> <span class="o">=</span> <span class="n">App</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">app</span><span class="o">.</span><span class="n">reg_kernel</span><span class="p">(</span><span class="s">&#39;MMM&#39;</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
-    <span class="n">app</span><span class="o">.</span><span class="n">reg_kernel</span><span class="p">(</span><span class="s">&#39;BS&#39;</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">)</span>
-    <span class="k">print</span> <span class="n">app</span><span class="o">.</span><span class="n">tag</span>
+    <span class="k">return</span> <span class="n">r</span></div>
 </pre></div>
 
-          </div>
-        </div>
-      </div>
-      <div class="clearer"></div>
     </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="../../../index.html">Lumos home</a>&nbsp;|</li>
-        <li><a href="../../../contents.html">Documentation</a> &raquo;</li>
-
-          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
-      </ul>
-    </div>
-    <div class="footer">
-        &copy; Copyright 2013, Liang Wang.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
-    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2013, Liang Wang.<br/>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.<br/>
+    </p>
+  </div>
+</footer>
   </body>
 </html>

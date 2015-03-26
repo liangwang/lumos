@@ -1,16 +1,17 @@
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>model Package &mdash; Lumos 0.1 documentation</title>
+    <title>lumos.model package &mdash; Lumos 0.1 documentation</title>
     
-    <link rel="stylesheet" href="../_static/lumos.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-3.2.0/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-3.2.0/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -24,283 +25,315 @@
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
     <link rel="top" title="Lumos 0.1 documentation" href="../index.html" />
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
-          rel='stylesheet' type='text/css'>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
- 
-    <style type="text/css">
-      table.right { float: right; margin-left: 20px; }
-      table.right td { border: 1px solid #ccc; }
-      
-    </style>
-    <script type="text/javascript">
-      // intelligent scrolling of the sidebar content
-      $(window).scroll(function() {
-        var sb = $('.sphinxsidebarwrapper');
-        var win = $(window);
-        var sbh = sb.height();
-        var offset = $('.sphinxsidebar').position()['top'];
-        var wintop = win.scrollTop();
-        var winbot = wintop + win.innerHeight();
-        var curtop = sb.position()['top'];
-        var curbot = curtop + sbh;
-        // does sidebar fit in window?
-        if (sbh < win.innerHeight()) {
-          // yes: easy case -- always keep at the top
-          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
-                                $(document).height() - sbh - 200]));
-        } else {
-          // no: only scroll if top/bottom edge of sidebar is at
-          // top/bottom edge of window
-          if (curtop > wintop && curbot > winbot) {
-            sb.css('top', $u.max([wintop - offset - 10, 0]));
-          } else if (curtop < wintop && curbot < winbot) {
-            sb.css('top', $u.min([winbot - sbh - offset - 20,
-                                  $(document).height() - sbh - 200]));
-          }
-        }
-      });
-    </script>
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
 
   </head>
-  <body>
-<div class="pageheader">
-  <div>
-    <a href="../index.html">
-      <img src="../_static/lumos.png" alt="LUMOS" />
-    </a>
-  </div>
-</div>
+  <body role="document">
 
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="../index.html">Lumos home</a>&nbsp;|</li>
-        <li><a href="../contents.html">Documentation</a> &raquo;</li>
- 
-      </ul>
-    </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">model Package</a><ul>
-<li><a class="reference internal" href="#id1"><tt class="docutils literal"><span class="pre">model</span></tt> Package</a></li>
-<li><a class="reference internal" href="#module-lumos.model.application"><tt class="docutils literal"><span class="pre">application</span></tt> Module</a></li>
-<li><a class="reference internal" href="#module-lumos.model.budget"><tt class="docutils literal"><span class="pre">budget</span></tt> Module</a></li>
-<li><a class="reference internal" href="#module-lumos.model.chip"><tt class="docutils literal"><span class="pre">chip</span></tt> Module</a></li>
-<li><a class="reference internal" href="#module-lumos.model.core"><tt class="docutils literal"><span class="pre">core</span></tt> Module</a></li>
-<li><a class="reference internal" href="#module-lumos.model.fedcore"><tt class="docutils literal"><span class="pre">fedcore</span></tt> Module</a></li>
-<li><a class="reference internal" href="#module-lumos.model.freq"><tt class="docutils literal"><span class="pre">freq</span></tt> Module</a></li>
-<li><a class="reference internal" href="#module-lumos.model.kernel"><tt class="docutils literal"><span class="pre">kernel</span></tt> Module</a></li>
-<li><a class="reference internal" href="#module-lumos.model.system"><tt class="docutils literal"><span class="pre">system</span></tt> Module</a></li>
-<li><a class="reference internal" href="#module-lumos.model.tech"><tt class="docutils literal"><span class="pre">tech</span></tt> Module</a></li>
-<li><a class="reference internal" href="#module-lumos.model.ucore"><tt class="docutils literal"><span class="pre">ucore</span></tt> Module</a></li>
-<li><a class="reference internal" href="#module-lumos.model.workload"><tt class="docutils literal"><span class="pre">workload</span></tt> Module</a></li>
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          Lumos</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="simple">
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"><ul>
+<li><a class="reference internal" href="#">lumos.model package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-lumos.model.application">lumos.model.application module</a></li>
+<li><a class="reference internal" href="#module-lumos.model.asacc">lumos.model.asacc module</a></li>
+<li><a class="reference internal" href="#module-lumos.model.kernel">lumos.model.kernel module</a></li>
+<li><a class="reference internal" href="#module-lumos.model.misc">lumos.model.misc module</a></li>
+<li><a class="reference internal" href="#module-lumos.model.plot">lumos.model.plot module</a></li>
+<li><a class="reference internal" href="#module-lumos.model.ucore">lumos.model.ucore module</a></li>
+<li><a class="reference internal" href="#module-lumos.model.workload">lumos.model.workload module</a></li>
+<li><a class="reference internal" href="#module-lumos.model">Module contents</a></li>
 </ul>
 </li>
 </ul>
-
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../_sources/apidoc/lumos.model.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body">
+</ul>
+</li>
+              
             
-  <div class="section" id="model-package">
-<h1>model Package<a class="headerlink" href="#model-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="id1">
-<h2><tt class="xref py py-mod docutils literal"><span class="pre">model</span></tt> Package<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<span class="target" id="module-lumos.model"></span></div>
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm">
+<div id="sourcelink">
+  <a href="../_sources/apidoc/lumos.model.txt"
+     rel="nofollow">Source</a>
+</div></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <div class="section" id="lumos-model-package">
+<h1>lumos.model package<a class="headerlink" href="#lumos-model-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="lumos.model.core.html">lumos.model.core package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lumos.model.core.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumos.model.core.html#module-lumos.model.core.io_cmos">lumos.model.core.io_cmos module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumos.model.core.html#module-lumos.model.core.io_tfet">lumos.model.core.io_tfet module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumos.model.core.html#module-lumos.model.core.o3_cmos">lumos.model.core.o3_cmos module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumos.model.core.html#module-lumos.model.core.o3_tfet">lumos.model.core.o3_tfet module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumos.model.core.html#module-lumos.model.core">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lumos.model.system.html">lumos.model.system package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lumos.model.system.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumos.model.system.html#module-lumos.model.system.het">lumos.model.system.het module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumos.model.system.html#module-lumos.model.system.hetero">lumos.model.system.hetero module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumos.model.system.html#module-lumos.model.system.hom">lumos.model.system.hom module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumos.model.system.html#module-lumos.model.system.homo">lumos.model.system.homo module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumos.model.system.html#module-lumos.model.system.mpsoc">lumos.model.system.mpsoc module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lumos.model.system.html#module-lumos.model.system">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lumos.model.tech.html">lumos.model.tech package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lumos.model.tech.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="lumos.model.tech.cmos.html">lumos.model.tech.cmos package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="lumos.model.tech.cmos.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="lumos.model.tech.cmos.hp.html">lumos.model.tech.cmos.hp package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="lumos.model.tech.cmos.hp.html#module-lumos.model.tech.cmos.hp">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="lumos.model.tech.cmos.lp.html">lumos.model.tech.cmos.lp package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="lumos.model.tech.cmos.lp.html#module-lumos.model.tech.cmos.lp">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="lumos.model.tech.cmos.html#module-lumos.model.tech.cmos">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="lumos.model.tech.tfet.html">lumos.model.tech.tfet package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="lumos.model.tech.tfet.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="lumos.model.tech.tfet.homoTFET30nm.html">lumos.model.tech.tfet.homoTFET30nm package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="lumos.model.tech.tfet.homoTFET30nm.html#module-lumos.model.tech.tfet.homoTFET30nm">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l5"><a class="reference internal" href="lumos.model.tech.tfet.homoTFET60nm.html">lumos.model.tech.tfet.homoTFET60nm package</a><ul>
+<li class="toctree-l6"><a class="reference internal" href="lumos.model.tech.tfet.homoTFET60nm.html#module-lumos.model.tech.tfet.homoTFET60nm">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="lumos.model.tech.tfet.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="lumos.model.tech.tfet.html#module-lumos.model.tech.tfet.tfet_interp">lumos.model.tech.tfet.tfet_interp module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="lumos.model.tech.tfet.html#module-lumos.model.tech.tfet">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="lumos.model.tech.html#module-lumos.model.tech">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
 <div class="section" id="module-lumos.model.application">
-<span id="application-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">application</span></tt> Module<a class="headerlink" href="#module-lumos.model.application" title="Permalink to this headline">¶</a></h2>
+<span id="lumos-model-application-module"></span><h2>lumos.model.application module<a class="headerlink" href="#module-lumos.model.application" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="lumos.model.application.App">
-<em class="property">class </em><tt class="descclassname">lumos.model.application.</tt><tt class="descname">App</tt><big>(</big><em>f=0.9</em>, <em>m=0</em>, <em>name='app'</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/application.html#App"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.App" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-<p>An application is a program a system runs for. The application has certain characteristics, such as parallel ratio</p>
+<dt id="lumos.model.application.AppDAG">
+<em class="property">class </em><code class="descclassname">lumos.model.application.</code><code class="descname">AppDAG</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/application.html#AppDAG"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.AppDAG" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>An application modeled as a directed acyclic graph (DAG)</p>
+<p>An application is DAG of tasks/kernels.</p>
 <dl class="method">
-<dt id="lumos.model.application.App.get_cov">
-<tt class="descname">get_cov</tt><big>(</big><em>kid</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/application.html#App.get_cov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.App.get_cov" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.application.AppDAG.add_dependence">
+<code class="descname">add_dependence</code><span class="sig-paren">(</span><em>from_</em>, <em>to_</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/application.html#AppDAG.add_dependence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.AppDAG.add_dependence" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="lumos.model.application.App.get_kernel">
-<tt class="descname">get_kernel</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/model/application.html#App.get_kernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.App.get_kernel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the first kernel as kid
-:returns: &#64;todo</p>
+<dt id="lumos.model.application.AppDAG.add_kernel">
+<code class="descname">add_kernel</code><span class="sig-paren">(</span><em>kerobj</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/application.html#AppDAG.add_kernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.AppDAG.add_kernel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.model.application.AppDAG.get_kernel">
+<code class="descname">get_kernel</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/application.html#AppDAG.get_kernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.AppDAG.get_kernel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="lumos.model.application.Application">
+<em class="property">class </em><code class="descclassname">lumos.model.application.</code><code class="descname">Application</code><span class="sig-paren">(</span><em>f=0.9</em>, <em>m=0</em>, <em>name='app'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/application.html#Application"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.Application" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>An application is a program a system runs for.</p>
+<p>The application has certain characteristics, such as parallel ratio</p>
+<dl class="method">
+<dt id="lumos.model.application.Application.add_kernel">
+<code class="descname">add_kernel</code><span class="sig-paren">(</span><em>kernel</em>, <em>cov</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/application.html#Application.add_kernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.Application.add_kernel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Register a kernel to be accelerate.</p>
+<p>The kernel could be accelerated by certain ASIC, or more
+generalized GPU/FPGA</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>kernel (<a class="reference internal" href="#lumos.model.kernel.Kernel" title="lumos.model.kernel.Kernel"><code class="xref py py-class docutils literal"><span class="pre">Kernel</span></code></a>):</dt>
+<dd>The kernel object</dd>
+<dt>cov (float):</dt>
+<dd>The coerage of the kernel, relative to the serial execution</dd>
+</dl>
+</dd>
+<dt>Raises:</dt>
+<dd><dl class="first last docutils">
+<dt>ApplicationError:</dt>
+<dd>the given coverage (cov) is larger than the overall parallel ratio</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>N/A</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="lumos.model.application.App.get_kids">
-<tt class="descname">get_kids</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/model/application.html#App.get_kids"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.App.get_kids" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.application.App.has_kernels">
-<tt class="descname">has_kernels</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/model/application.html#App.has_kernels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.App.has_kernels" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.application.App.reg_kernel">
-<tt class="descname">reg_kernel</tt><big>(</big><em>kid</em>, <em>cov</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/application.html#App.reg_kernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.App.reg_kernel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Register a kernel that could be accelerated by certain ASIC, or more
-Generalized GPU/FPGA</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Kid :</th><td class="field-body">&#64;todo</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Cov :</th><td class="field-body">&#64;todo</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if register succeed
-False if failed</td>
-</tr>
-</tbody>
-</table>
+<dt id="lumos.model.application.Application.get_all_kernels">
+<code class="descname">get_all_kernels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/application.html#Application.get_all_kernels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.Application.get_all_kernels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get all kernels within the application</p>
+<p>Args: N/A</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>kernels (list): a list of names for all kernels within the application</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="lumos.model.application.App.set_cov">
-<tt class="descname">set_cov</tt><big>(</big><em>kid</em>, <em>cov</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/application.html#App.set_cov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.App.set_cov" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.application.Application.get_cov">
+<code class="descname">get_cov</code><span class="sig-paren">(</span><em>kid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/application.html#Application.get_cov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.Application.get_cov" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.model.application.Application.get_kernel">
+<code class="descname">get_kernel</code><span class="sig-paren">(</span><em>kid</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/application.html#Application.get_kernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.Application.get_kernel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.model.application.Application.set_cov">
+<code class="descname">set_cov</code><span class="sig-paren">(</span><em>kid</em>, <em>cov</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/application.html#Application.set_cov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.Application.set_cov" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the coverage of a kernel</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Kid :</th><td class="field-body">&#64;todo</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Cov :</th><td class="field-body">&#64;todo</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">&#64;todo</td>
-</tr>
-</tbody>
-</table>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>kid (str):</dt>
+<dd>The kid (name) of the kernel</dd>
+<dt>cov (float):</dt>
+<dd>The coverage of the kernel to be updated</dd>
+</dl>
+</dd>
+<dt>Raises:</dt>
+<dd><dl class="first last docutils">
+<dt>ApplicationError:</dt>
+<dd>the given coverage (cov) is larger than the overall parallel ratio</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>N/A</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
-<dt id="lumos.model.application.App.tag_update">
-<tt class="descname">tag_update</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/model/application.html#App.tag_update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.App.tag_update" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.application.Application.tag_update">
+<code class="descname">tag_update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/application.html#Application.tag_update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.Application.tag_update" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
-<dl class="class">
-<dt id="lumos.model.application.AppBS">
-<em class="property">class </em><tt class="descclassname">lumos.model.application.</tt><tt class="descname">AppBS</tt><big>(</big><em>f=0.9</em>, <em>m=0</em>, <em>f_acc=0</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/application.html#AppBS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.AppBS" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">dict</span></tt></a></p>
-<dl class="attribute">
-<dt id="lumos.model.application.AppBS.name">
-<tt class="descname">name</tt><em class="property"> = 'BS'</em><a class="headerlink" href="#lumos.model.application.AppBS.name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<dl class="exception">
+<dt id="lumos.model.application.ApplicationError">
+<em class="property">exception </em><code class="descclassname">lumos.model.application.</code><code class="descname">ApplicationError</code><a class="reference internal" href="../_modules/lumos/model/application.html#ApplicationError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.ApplicationError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></p>
 </dd></dl>
-
-<dl class="class">
-<dt id="lumos.model.application.AppFFT64">
-<em class="property">class </em><tt class="descclassname">lumos.model.application.</tt><tt class="descname">AppFFT64</tt><big>(</big><em>f=0.9</em>, <em>m=0</em>, <em>f_acc=0</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/application.html#AppFFT64"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.AppFFT64" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">dict</span></tt></a></p>
-<dl class="attribute">
-<dt id="lumos.model.application.AppFFT64.name">
-<tt class="descname">name</tt><em class="property"> = 'FFT'</em><a class="headerlink" href="#lumos.model.application.AppFFT64.name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="lumos.model.application.AppMMM">
-<em class="property">class </em><tt class="descclassname">lumos.model.application.</tt><tt class="descname">AppMMM</tt><big>(</big><em>f=0.9</em>, <em>m=0</em>, <em>f_acc=0</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/application.html#AppMMM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.AppMMM" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">dict</span></tt></a></p>
-<dl class="attribute">
-<dt id="lumos.model.application.AppMMM.name">
-<tt class="descname">name</tt><em class="property"> = 'MMM'</em><a class="headerlink" href="#lumos.model.application.AppMMM.name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="lumos.model.application.UCoreParam">
-<em class="property">class </em><tt class="descclassname">lumos.model.application.</tt><tt class="descname">UCoreParam</tt><big>(</big><em>miu</em>, <em>phi</em>, <em>bw</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/application.html#UCoreParam"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.UCoreParam" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="lumos.model.application.build">
-<tt class="descclassname">lumos.model.application.</tt><tt class="descname">build</tt><big>(</big><em>cov</em>, <em>occ</em>, <em>probs</em>, <em>kernels</em>, <em>name</em>, <em>f_parallel=1</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/application.html#build"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.build" title="Permalink to this definition">¶</a></dt>
-<dd><p>Build an application from a set of kernels</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Cov :</th><td class="field-body">coverage percentage of all present kernels</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Occ :</th><td class="field-body">occurance bit-vector for all kernels</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Probs :</th><td class="field-body">probability vector of all kernels for appearance</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Kernels :</th><td class="field-body">all possible kernels (kernel pool)</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Name :</th><td class="field-body">The name of the application</td>
-</tr>
-<tr class="field-even field"><th class="field-name">F_parallel :</th><td class="field-body">the fraction of parallel part</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">the resulting application</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="function">
-<dt id="lumos.model.application.build_single">
-<tt class="descclassname">lumos.model.application.</tt><tt class="descname">build_single</tt><big>(</big><em>cov</em>, <em>kernel</em>, <em>name</em>, <em>f_parallel=1</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/application.html#build_single"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.build_single" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 <dl class="function">
 <dt id="lumos.model.application.random_kernel_cov">
-<tt class="descclassname">lumos.model.application.</tt><tt class="descname">random_kernel_cov</tt><big>(</big><em>cov_params</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/application.html#random_kernel_cov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.random_kernel_cov" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lumos.model.application.</code><code class="descname">random_kernel_cov</code><span class="sig-paren">(</span><em>cov_params</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/application.html#random_kernel_cov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.random_kernel_cov" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="lumos.model.application.random_uc_cov">
-<tt class="descclassname">lumos.model.application.</tt><tt class="descname">random_uc_cov</tt><big>(</big><em>dist</em>, <em>param1</em>, <em>param2</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/application.html#random_uc_cov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.random_uc_cov" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lumos.model.application.</code><code class="descname">random_uc_cov</code><span class="sig-paren">(</span><em>dist</em>, <em>param1</em>, <em>param2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/application.html#random_uc_cov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.application.random_uc_cov" title="Permalink to this definition">¶</a></dt>
 <dd><p>&#64;todo: Docstring for rand_uc_cov</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Dist :</th><td class="field-body">&#64;todo</td>
+<tr class="field-odd field"><th class="field-name">Dist:</th><td class="field-body">&#64;todo</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Param1 :</th><td class="field-body">&#64;todo</td>
+<tr class="field-even field"><th class="field-name">Param1:</th><td class="field-body">&#64;todo</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Param2 :</th><td class="field-body">&#64;todo</td>
+<tr class="field-odd field"><th class="field-name">Param2:</th><td class="field-body">&#64;todo</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">&#64;todo</td>
 </tr>
@@ -309,541 +342,194 @@ False if failed</td>
 </dd></dl>
 
 </div>
-<div class="section" id="module-lumos.model.budget">
-<span id="budget-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">budget</span></tt> Module<a class="headerlink" href="#module-lumos.model.budget" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-lumos.model.asacc">
+<span id="lumos-model-asacc-module"></span><h2>lumos.model.asacc module<a class="headerlink" href="#module-lumos.model.asacc" title="Permalink to this headline">¶</a></h2>
+<p>Models application-specific hardware accelerators (ASAcc), parameters extracted from Chung&#8217;s paper:</p>
+<blockquote>
+<div><em>Sing-Chip Heterogenerous Computing: Does the Future Include Custom Logic,
+FPGAs, and GPGPUs?</em>, Eric S. Chung, et al., MICRO&#8216;10</div></blockquote>
 <dl class="class">
-<dt id="lumos.model.budget.Budget">
-<em class="property">class </em><tt class="descclassname">lumos.model.budget.</tt><tt class="descname">Budget</tt><big>(</big><em>area=0</em>, <em>power=0</em>, <em>bw=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/budget.html#Budget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.budget.Budget" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</div>
-<div class="section" id="module-lumos.model.chip">
-<span id="chip-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">chip</span></tt> Module<a class="headerlink" href="#module-lumos.model.chip" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="lumos.model.chip.Chip">
-<em class="property">class </em><tt class="descclassname">lumos.model.chip.</tt><tt class="descname">Chip</tt><a class="reference internal" href="../_modules/lumos/model/chip.html#Chip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.chip.Chip" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-<p>This class models a chip derived from a floorplan</p>
-<dl class="method">
-<dt id="lumos.model.chip.Chip.add_tmap">
-<tt class="descname">add_tmap</tt><big>(</big><em>tmap</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/chip.html#Chip.add_tmap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.chip.Chip.add_tmap" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.chip.Chip.add_vthmap">
-<tt class="descname">add_vthmap</tt><big>(</big><em>vthmap</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/chip.html#Chip.add_vthmap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.chip.Chip.add_vthmap" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.chip.Chip.build_chip">
-<tt class="descname">build_chip</tt><big>(</big><em>flp</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/chip.html#Chip.build_chip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.chip.Chip.build_chip" title="Permalink to this definition">¶</a></dt>
-<dd><p>Build a chip from floorplan, in variusNTV format</p>
+<dt id="lumos.model.asacc.ASAcc">
+<em class="property">class </em><code class="descclassname">lumos.model.asacc.</code><code class="descname">ASAcc</code><span class="sig-paren">(</span><em>acc_id</em>, <em>ker_obj</em>, <em>area</em>, <em>tech</em>, <em>tech_model</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/asacc.html#ASAcc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.asacc.ASAcc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Model an application-specific hardware accelerator, or ASIC accelerator.</p>
+<p>An accelerator has the following properties:</p>
 <dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>flp (str):</dt>
-<dd>The path of the floorplan file, in variusNTV format.</dd>
-</dl>
-</dd>
-<dt>Returns:</dt>
-<dd>N/A</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="lumos.model.chip.Unit">
-<em class="property">class </em><tt class="descclassname">lumos.model.chip.</tt><tt class="descname">Unit</tt><big>(</big><em>dp0=0.307</em>, <em>sp0=0.1058</em>, <em>vdd0=0.765</em>, <em>vth=0.3</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/chip.html#Unit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.chip.Unit" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-<p>Models on-chip units, such as logic, cache</p>
-<dl class="method">
-<dt id="lumos.model.chip.Unit.add_delay">
-<tt class="descname">add_delay</tt><big>(</big><em>vdd</em>, <em>d_mu</em>, <em>d_sd</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/chip.html#Unit.add_delay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.chip.Unit.add_delay" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.chip.Unit.get_delay">
-<tt class="descname">get_delay</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/model/chip.html#Unit.get_delay"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.chip.Unit.get_delay" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.chip.Unit.set_prop">
-<tt class="descname">set_prop</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/chip.html#Unit.set_prop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.chip.Unit.set_prop" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the value of a property</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.chip.Unit.set_vdd">
-<tt class="descname">set_vdd</tt><big>(</big><em>vdd</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/chip.html#Unit.set_vdd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.chip.Unit.set_vdd" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.chip.Unit.set_vth">
-<tt class="descname">set_vth</tt><big>(</big><em>vth</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/chip.html#Unit.set_vth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.chip.Unit.set_vth" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-</div>
-<div class="section" id="module-lumos.model.core">
-<span id="core-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">core</span></tt> Module<a class="headerlink" href="#module-lumos.model.core" title="Permalink to this headline">¶</a></h2>
-<p>This module models conventional cores. Two variants are derived from
-an abstract base class AbstractCore, as IOCore and O3Core for an
-in-order core and an out-of-order core respectively.</p>
-<dl class="class">
-<dt id="lumos.model.core.AbstractCore">
-<em class="property">class </em><tt class="descclassname">lumos.model.core.</tt><tt class="descname">AbstractCore</tt><big>(</big><em>mech=None</em>, <em>tech=None</em>, <em>pv=False</em>, <em>pen_adjust=None</em>, <em>sigma_level=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/core.html#AbstractCore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.AbstractCore" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-<p>Abstract Core module. Need to be extended to real cores with a
-couple of base line characteristics at nominal voltage and 45nm,
-such as area (<tt class="docutils literal"><span class="pre">base_area</span></tt>), frequency (<tt class="docutils literal"><span class="pre">base_freq</span></tt>), relative
-performance (<tt class="docutils literal"><span class="pre">base_perf</span></tt>), dynamic power (<tt class="docutils literal"><span class="pre">base_dp</span></tt>), and static power
-(<tt class="docutils literal"><span class="pre">base_sp</span></tt>).</p>
-<dl class="docutils">
-<dt>Attributes:</dt>
-<dd><dl class="first last docutils">
-<dt>tech (num):</dt>
-<dd>Technology nodes, possible values are 45, 32, 22, 16</dd>
-<dt>mech (str):</dt>
-<dd>Scaling mechanism, possible values are &#8216;HKMGS&#8217; and &#8216;LP&#8217;</dd>
-<dt>area (num):</dt>
-<dd>The area of the core, in mm^2.</dd>
-<dt>dp (num):</dt>
-<dd>Dynamic power, in Watts (W).</dd>
-<dt>dp0 (num):</dt>
-<dd>Dynamic power when the core is at nominal supply voltage and frequency, in Watts (W).</dd>
-<dt>sp (num):</dt>
-<dd>Static power, in Watts (W).</dd>
-<dt>sp0 (num):</dt>
-<dd>Statci power at nominal voltage, in Watts (W)</dd>
-<dt>power (num):</dt>
-<dd>Total power of the core, in Watts (W). It equals to dp+sp.</dd>
-<dt>vdd (num):</dt>
-<dd>Supply voltage, in Volts (V).</dd>
-<dt>vdd0 (num):</dt>
-<dd>Nominal supply voltage, in Volts (V)</dd>
-<dt>freq (num):</dt>
-<dd>Frequency, in GHz.</dd>
-<dt>f0 (num):</dt>
-<dd>Frequency at nominal supply voltage, in GHz.</dd>
-<dt>perf (num):</dt>
-<dd>Relative performance to the baseline in-order core at 45nm.</dd>
-<dt>perf0 (num):</dt>
-<dd>Relatvie performance at nominal supply.</dd>
-<dt>vt (num):</dt>
-<dd>Threshold voltage, in Volts (V)</dd>
-<dt>vsf_min (num):</dt>
-<dd>The minimum supply voltage factor.</dd>
-<dt>vsf_max (num):</dt>
-<dd>The maximum supply voltage factor.</dd>
-</dl>
-</dd>
+<dt>acc_id</dt>
+<dd>Accelerator identifier, this is in line with the acc_id in kernel
+description. This property is used to model alternate
+accelerators for the same computing kernel</dd>
+<dt>ker_obj</dt>
+<dd>The kernel object, for which the accelerator is designed.</dd>
+<dt>area</dt>
+<dd>The area of the accelerator, a metric of allocated resources.</dd>
+<dt>tech</dt>
+<dd>The technology nodes, e.g. 22(nm).</dd>
+<dt>tech_model</dt>
+<dd>The technology model, it could be CMOSTechModel or
+TFETTechModel.</dd>
+<dt>vdd</dt>
+<dd>The working supply voltage, it is initialized to the nominal
+supply of the associated technology node.</dd>
 </dl>
 <dl class="attribute">
-<dt id="lumos.model.core.AbstractCore.area">
-<tt class="descname">area</tt><a class="reference internal" href="../_modules/lumos/model/core.html#AbstractCore.area"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.AbstractCore.area" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.asacc.ASAcc.area">
+<code class="descname">area</code><a class="headerlink" href="#lumos.model.asacc.ASAcc.area" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the area of the core</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="lumos.model.core.AbstractCore.config">
-<tt class="descname">config</tt><big>(</big><em>mech=None</em>, <em>tech=None</em>, <em>pv=None</em>, <em>pen_adjust=None</em>, <em>sigma_level=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/core.html#AbstractCore.config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.AbstractCore.config" title="Permalink to this definition">¶</a></dt>
-<dd><p>Configurate parameters of a core.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>mech (str):</dt>
-<dd>Scaling mechanism, possible values are &#8216;HKMGS&#8217; and &#8216;LP&#8217;</dd>
-<dt>tech (num):</dt>
-<dd>Technology node, in nanometers (nm). Possbile values are 45, 32, 22, 16.</dd>
-<dt>pv (bool):</dt>
-<dd>Whether consider process variation.</dd>
-<dt>pen_adjust (num):</dt>
-<dd>The variation penalty reduction factor.</dd>
-<dt>sigma_level (int):</dt>
-<dd>How many sigmas when consider the worst case variation penalty, default to 3.</dd>
-</dl>
-</dd>
-<dt>Returns:</dt>
-<dd>N/A</dd>
-</dl>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.core.AbstractCore.dp">
-<tt class="descname">dp</tt><a class="reference internal" href="../_modules/lumos/model/core.html#AbstractCore.dp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.AbstractCore.dp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the dynamic power</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.core.AbstractCore.dp0">
-<tt class="descname">dp0</tt><a class="reference internal" href="../_modules/lumos/model/core.html#AbstractCore.dp0"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.AbstractCore.dp0" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the dynamic power in nominal voltage and frequency</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.core.AbstractCore.dvfs_by_factor">
-<tt class="descname">dvfs_by_factor</tt><big>(</big><em>vsf</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/core.html#AbstractCore.dvfs_by_factor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.AbstractCore.dvfs_by_factor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Change the supply voltage and frequency accordingly by a factor.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>vsf (num):</dt>
-<dd>Scaling factors of the supply voltage.</dd>
-</dl>
-</dd>
-<dt>Returns:</dt>
-<dd>N/A</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.core.AbstractCore.dvfs_by_volt">
-<tt class="descname">dvfs_by_volt</tt><big>(</big><em>v</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/core.html#AbstractCore.dvfs_by_volt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.AbstractCore.dvfs_by_volt" title="Permalink to this definition">¶</a></dt>
-<dd><p>Change the supply voltage and frquency accordingly by specifying the new voltage.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>v (num):</dt>
-<dd>The new voltage value to be scaled to.</dd>
-</dl>
-</dd>
-<dt>Returns:</dt>
-<dd>N/A</dd>
-</dl>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.core.AbstractCore.f0">
-<tt class="descname">f0</tt><a class="reference internal" href="../_modules/lumos/model/core.html#AbstractCore.f0"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.AbstractCore.f0" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the nominal frequency</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.core.AbstractCore.freq">
-<tt class="descname">freq</tt><a class="reference internal" href="../_modules/lumos/model/core.html#AbstractCore.freq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.AbstractCore.freq" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the frequency</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.core.AbstractCore.mech">
-<tt class="descname">mech</tt><a class="reference internal" href="../_modules/lumos/model/core.html#AbstractCore.mech"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.AbstractCore.mech" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the scaling mechanism, either ITRS or CON(servative)</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.core.AbstractCore.perf">
-<tt class="descname">perf</tt><a class="reference internal" href="../_modules/lumos/model/core.html#AbstractCore.perf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.AbstractCore.perf" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the performance</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.core.AbstractCore.perf0">
-<tt class="descname">perf0</tt><a class="reference internal" href="../_modules/lumos/model/core.html#AbstractCore.perf0"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.AbstractCore.perf0" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the base performance</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.core.AbstractCore.power">
-<tt class="descname">power</tt><a class="reference internal" href="../_modules/lumos/model/core.html#AbstractCore.power"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.AbstractCore.power" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the overall power</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.core.AbstractCore.scale_with_vlist">
-<tt class="descname">scale_with_vlist</tt><big>(</big><em>vlist</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/core.html#AbstractCore.scale_with_vlist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.AbstractCore.scale_with_vlist" title="Permalink to this definition">¶</a></dt>
-<dd><p>Change the supply voltage in batch by providing a list of voltage values.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>vlist (list):</dt>
-<dd>A list of supply voltage values to be scaled to.</dd>
-</dl>
-</dd>
-<dt>Returns:</dt>
-<dd><dl class="first last docutils">
-<dt>freq (list):</dt>
-<dd>The corresponding frequency of each input voltage.</dd>
-<dt>dp (list):</dt>
-<dd>The corresponding dynamic power of each input voltage.</dd>
-<dt>sp (list):</dt>
-<dd>The corresponding static power of each input voltage</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.core.AbstractCore.set_base">
-<tt class="descname">set_base</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/core.html#AbstractCore.set_base"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.AbstractCore.set_base" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the base values for frequency, dynamic power, static
-power, and relative performance at nominal supply voltage, as
-well as the area, all at 45nm.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>kwargs:</dt>
-<dd>Named parameters to be set. Candidates are &#8216;area&#8217;, &#8216;freq&#8217;, &#8216;perf&#8217;,
-&#8216;dp&#8217;, &#8216;sp&#8217;.</dd>
-</dl>
-</dd>
-<dt>Returns:</dt>
-<dd>N/A</dd>
-</dl>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.core.AbstractCore.sp">
-<tt class="descname">sp</tt><a class="reference internal" href="../_modules/lumos/model/core.html#AbstractCore.sp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.AbstractCore.sp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the static power</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.core.AbstractCore.sp0">
-<tt class="descname">sp0</tt><a class="reference internal" href="../_modules/lumos/model/core.html#AbstractCore.sp0"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.AbstractCore.sp0" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the static(leakage) power in nominal voltage and frequency</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.core.AbstractCore.tech">
-<tt class="descname">tech</tt><a class="reference internal" href="../_modules/lumos/model/core.html#AbstractCore.tech"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.AbstractCore.tech" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the technology node, in nm</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.core.AbstractCore.v0">
-<tt class="descname">v0</tt><a class="reference internal" href="../_modules/lumos/model/core.html#AbstractCore.v0"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.AbstractCore.v0" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the nominal voltage</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.core.AbstractCore.vdd">
-<tt class="descname">vdd</tt><a class="reference internal" href="../_modules/lumos/model/core.html#AbstractCore.vdd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.AbstractCore.vdd" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the supplying voltage</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.core.AbstractCore.vsf_max">
-<tt class="descname">vsf_max</tt><a class="reference internal" href="../_modules/lumos/model/core.html#AbstractCore.vsf_max"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.AbstractCore.vsf_max" title="Permalink to this definition">¶</a></dt>
-<dd><p>voltage scaling factor, maximum</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.core.AbstractCore.vsf_min">
-<tt class="descname">vsf_min</tt><a class="reference internal" href="../_modules/lumos/model/core.html#AbstractCore.vsf_min"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.AbstractCore.vsf_min" title="Permalink to this definition">¶</a></dt>
-<dd><p>voltage scaling factor, minimum</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.core.AbstractCore.vt">
-<tt class="descname">vt</tt><a class="reference internal" href="../_modules/lumos/model/core.html#AbstractCore.vt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.AbstractCore.vt" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the threshold voltage</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="lumos.model.core.IOCore">
-<em class="property">class </em><tt class="descclassname">lumos.model.core.</tt><tt class="descname">IOCore</tt><big>(</big><em>mech=None</em>, <em>tech=None</em>, <em>pv=False</em>, <em>pen_adjust=None</em>, <em>sigma_level=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/core.html#IOCore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.IOCore" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#lumos.model.core.AbstractCore" title="lumos.model.core.AbstractCore"><tt class="xref py py-class docutils literal"><span class="pre">lumos.model.core.AbstractCore</span></tt></a></p>
-<p>A Niagara2-like in-order core model. Check out more details at <a class="reference internal" href="#lumos.model.core.AbstractCore" title="lumos.model.core.AbstractCore"><tt class="xref py py-class docutils literal"><span class="pre">AbstractCore</span></tt></a>.</p>
-<dl class="method">
-<dt id="lumos.model.core.IOCore.bandwidth">
-<tt class="descname">bandwidth</tt><big>(</big><em>app</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/core.html#IOCore.bandwidth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.IOCore.bandwidth" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the bandwidth requirement for a specific application. It
-assumes the bandwidth requirement scales linearly to the
-frequency.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>app (<a class="reference internal" href="#lumos.model.application.App" title="lumos.model.application.App"><tt class="xref py py-class docutils literal"><span class="pre">App</span></tt></a>):</dt>
-<dd>The application.</dd>
-</dl>
-</dd>
-<dt>Returns:</dt>
-<dd>The bandwidth requirement for the given application.</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="lumos.model.core.O3Core">
-<em class="property">class </em><tt class="descclassname">lumos.model.core.</tt><tt class="descname">O3Core</tt><big>(</big><em>mech=None</em>, <em>tech=None</em>, <em>pv=False</em>, <em>pen_adjust=None</em>, <em>sigma_level=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/core.html#O3Core"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.core.O3Core" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#lumos.model.core.AbstractCore" title="lumos.model.core.AbstractCore"><tt class="xref py py-class docutils literal"><span class="pre">lumos.model.core.AbstractCore</span></tt></a></p>
-<p>An out-of-order core model. More detials in <a class="reference internal" href="#lumos.model.core.AbstractCore" title="lumos.model.core.AbstractCore"><tt class="xref py py-class docutils literal"><span class="pre">AbstractCore</span></tt></a></p>
-</dd></dl>
-
-</div>
-<div class="section" id="module-lumos.model.fedcore">
-<span id="fedcore-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">fedcore</span></tt> Module<a class="headerlink" href="#module-lumos.model.fedcore" title="Permalink to this headline">¶</a></h2>
-<p>Models federated core, which federates two in-order cores into a beefy out-of-order core as needed.</p>
-<dl class="class">
-<dt id="lumos.model.fedcore.FedCore">
-<em class="property">class </em><tt class="descclassname">lumos.model.fedcore.</tt><tt class="descname">FedCore</tt><big>(</big><em>tech=None</em>, <em>mech=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/fedcore.html#FedCore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.fedcore.FedCore" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-<p>Federated Core, composed by two in-order cores</p>
-<dl class="attribute">
-<dt id="lumos.model.fedcore.FedCore.area">
-<tt class="descname">area</tt><a class="reference internal" href="../_modules/lumos/model/fedcore.html#FedCore.area"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.fedcore.FedCore.area" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.fedcore.FedCore.config">
-<tt class="descname">config</tt><big>(</big><em>tech=None</em>, <em>mech=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/fedcore.html#FedCore.config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.fedcore.FedCore.config" title="Permalink to this definition">¶</a></dt>
-<dd><p>&#64;todo: Docstring for config</p>
+<dt id="lumos.model.asacc.ASAcc.bandwidth">
+<code class="descname">bandwidth</code><span class="sig-paren">(</span><em>app</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/asacc.html#ASAcc.bandwidth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.asacc.ASAcc.bandwidth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the bandwith consumed by the accelerator</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Tech :</th><td class="field-body">&#64;todo</td>
+<tr class="field-odd field"><th class="field-name">App:</th><td class="field-body">&#64;todo</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Mech :</th><td class="field-body">&#64;todo</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">&#64;todo</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">&#64;todo</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="lumos.model.fedcore.FedCore.perf">
-<tt class="descname">perf</tt><a class="reference internal" href="../_modules/lumos/model/fedcore.html#FedCore.perf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.fedcore.FedCore.perf" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.asacc.ASAcc.dp">
+<code class="descname">dp</code><a class="headerlink" href="#lumos.model.asacc.ASAcc.dp" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-</dd></dl>
-
-</div>
-<div class="section" id="module-lumos.model.freq">
-<span id="freq-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">freq</span></tt> Module<a class="headerlink" href="#module-lumos.model.freq" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="lumos.model.freq.PTMScale2">
-<em class="property">class </em><tt class="descclassname">lumos.model.freq.</tt><tt class="descname">PTMScale2</tt><big>(</big><em>ckt</em>, <em>ttype</em>, <em>tech</em>, <em>v0</em>, <em>f0</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/freq.html#PTMScale2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.freq.PTMScale2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Voltage-to-Frequency scaling based on circuits simulation with PTM</p>
-<dl class="method">
-<dt id="lumos.model.freq.PTMScale2.config">
-<tt class="descname">config</tt><big>(</big><em>v0</em>, <em>f0</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/freq.html#PTMScale2.config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.freq.PTMScale2.config" title="Permalink to this definition">¶</a></dt>
-<dd><p>&#8221;
-Configurate model with new set of parameters (vt, v0, f0)
-v0 : nominal voltage
-f0 : frequency under nominal voltage</p>
+<dl class="attribute">
+<dt id="lumos.model.asacc.ASAcc.kid">
+<code class="descname">kid</code><a class="headerlink" href="#lumos.model.asacc.ASAcc.kid" title="Permalink to this definition">¶</a></dt>
+<dd><p>The kernel id (str) that this accelerator targets at. This is a read-only property</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="lumos.model.freq.PTMScale2.get_freq">
-<tt class="descname">get_freq</tt><big>(</big><em>volt</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/freq.html#PTMScale2.get_freq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.freq.PTMScale2.get_freq" title="Permalink to this definition">¶</a></dt>
-<dd><p>&#8220;&#8221;
-volt must be a float/int, otherwise, use get_freqs</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.freq.PTMScale2.get_freqs">
-<tt class="descname">get_freqs</tt><big>(</big><em>volts</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/freq.html#PTMScale2.get_freqs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.freq.PTMScale2.get_freqs" title="Permalink to this definition">¶</a></dt>
-<dd><p>&#8221;
-volts must be a numpy.ndarray, otherwise, use get_freq</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="lumos.model.freq.PTMScaleMC">
-<em class="property">class </em><tt class="descclassname">lumos.model.freq.</tt><tt class="descname">PTMScaleMC</tt><big>(</big><em>ckt</em>, <em>ttype</em>, <em>tech</em>, <em>v0</em>, <em>f0</em>, <em>pen_adjust=1.0</em>, <em>sigma_level=3</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/freq.html#PTMScaleMC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.freq.PTMScaleMC" title="Permalink to this definition">¶</a></dt>
-<dd><p>scaling with variation from Monte-Carlo simulation</p>
-<dl class="method">
-<dt id="lumos.model.freq.PTMScaleMC.config">
-<tt class="descname">config</tt><big>(</big><em>v0</em>, <em>f0</em>, <em>pen_adjust=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/freq.html#PTMScaleMC.config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.freq.PTMScaleMC.config" title="Permalink to this definition">¶</a></dt>
-<dd><p>&#8221;
-Configurate model with new set of parameters (vt, v0, f0)
-v0 : nominal voltage
-f0 : frequency under nominal voltage</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.freq.PTMScaleMC.get_freq">
-<tt class="descname">get_freq</tt><big>(</big><em>volt</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/freq.html#PTMScaleMC.get_freq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.freq.PTMScaleMC.get_freq" title="Permalink to this definition">¶</a></dt>
-<dd><p>&#8220;&#8221;
-volt must be a float/int, otherwise, use get_freqs</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.freq.PTMScaleMC.get_freqs">
-<tt class="descname">get_freqs</tt><big>(</big><em>volts</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/freq.html#PTMScaleMC.get_freqs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.freq.PTMScaleMC.get_freqs" title="Permalink to this definition">¶</a></dt>
-<dd><p>&#8221;
-volts must be a numpy.ndarray, otherwise, use get_freq</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.freq.PTMScaleMC.get_penalties">
-<tt class="descname">get_penalties</tt><big>(</big><em>volts</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/freq.html#PTMScaleMC.get_penalties"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.freq.PTMScaleMC.get_penalties" title="Permalink to this definition">¶</a></dt>
-<dd><p>&#8221;
-volts must be a numpy.ndarray, otherwise, use get_penalty</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.freq.PTMScaleMC.get_penalty">
-<tt class="descname">get_penalty</tt><big>(</big><em>volt</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/freq.html#PTMScaleMC.get_penalty"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.freq.PTMScaleMC.get_penalty" title="Permalink to this definition">¶</a></dt>
-<dd><p>&#8220;&#8221;
-volt must be a float/int, otherwise, use get_panelties</p>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="function">
-<dt id="lumos.model.freq.gen_interp">
-<tt class="descclassname">lumos.model.freq.</tt><tt class="descname">gen_interp</tt><big>(</big><em>ckt</em>, <em>ttype</em>, <em>tech</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/freq.html#gen_interp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.freq.gen_interp" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.asacc.ASAcc.perf">
+<code class="descname">perf</code><span class="sig-paren">(</span><em>power=None</em>, <em>bandwidth=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/asacc.html#ASAcc.perf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.asacc.ASAcc.perf" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="function">
-<dt id="lumos.model.freq.preproc_sim_data">
-<tt class="descclassname">lumos.model.freq.</tt><tt class="descname">preproc_sim_data</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/model/freq.html#preproc_sim_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.freq.preproc_sim_data" title="Permalink to this definition">¶</a></dt>
+<dl class="attribute">
+<dt id="lumos.model.asacc.ASAcc.power">
+<code class="descname">power</code><a class="headerlink" href="#lumos.model.asacc.ASAcc.power" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the power of a accelerator with certain application</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lumos.model.asacc.ASAcc.sp">
+<code class="descname">sp</code><a class="headerlink" href="#lumos.model.asacc.ASAcc.sp" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="function">
-<dt id="lumos.model.freq.readMCData">
-<tt class="descclassname">lumos.model.freq.</tt><tt class="descname">readMCData</tt><big>(</big><em>ckt</em>, <em>ttype</em>, <em>tech</em>, <em>mctype='ProcessAndMismatch'</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/freq.html#readMCData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.freq.readMCData" title="Permalink to this definition">¶</a></dt>
+<dl class="attribute">
+<dt id="lumos.model.asacc.ASAcc.tech">
+<code class="descname">tech</code><a class="headerlink" href="#lumos.model.asacc.ASAcc.tech" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the technology node, in nm</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lumos.model.asacc.ASAcc.tech_model">
+<code class="descname">tech_model</code><a class="headerlink" href="#lumos.model.asacc.ASAcc.tech_model" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-<dl class="function">
-<dt id="lumos.model.freq.readNormData">
-<tt class="descclassname">lumos.model.freq.</tt><tt class="descname">readNormData</tt><big>(</big><em>ckt</em>, <em>ttype</em>, <em>tech</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/freq.html#readNormData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.freq.readNormData" title="Permalink to this definition">¶</a></dt>
-<dd><p>ckt: &#8216;inv&#8217;, &#8216;adder&#8217;
-ttype: &#8216;HKMGS&#8217;, &#8216;LP&#8217;
-tech: 45, 32, 22, 16</p>
+<dl class="attribute">
+<dt id="lumos.model.asacc.ASAcc.vdd">
+<code class="descname">vdd</code><a class="headerlink" href="#lumos.model.asacc.ASAcc.vdd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the supply voltage (vdd) of the accelerator</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="lumos.model.asacc.ASAccError">
+<em class="property">exception </em><code class="descclassname">lumos.model.asacc.</code><code class="descname">ASAccError</code><a class="reference internal" href="../_modules/lumos/model/asacc.html#ASAccError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.asacc.ASAccError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></p>
 </dd></dl>
 
 </div>
 <div class="section" id="module-lumos.model.kernel">
-<span id="kernel-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">kernel</span></tt> Module<a class="headerlink" href="#module-lumos.model.kernel" title="Permalink to this headline">¶</a></h2>
+<span id="lumos-model-kernel-module"></span><h2>lumos.model.kernel module<a class="headerlink" href="#module-lumos.model.kernel" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="lumos.model.kernel.Kernel">
-<em class="property">class </em><tt class="descclassname">lumos.model.kernel.</tt><tt class="descname">Kernel</tt><big>(</big><em>kid</em>, <em>app_occ_prob=1</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/kernel.html#Kernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.Kernel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/stdtypes.html#dict" title="(in Python v2.7)"><tt class="xref py py-class docutils literal"><span class="pre">dict</span></tt></a></p>
+<em class="property">class </em><code class="descclassname">lumos.model.kernel.</code><code class="descname">Kernel</code><span class="sig-paren">(</span><em>kid</em>, <em>parallel_factor=0</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/kernel.html#Kernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.Kernel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="method">
+<dt id="lumos.model.kernel.Kernel.add_kernel_param">
+<code class="descname">add_kernel_param</code><span class="sig-paren">(</span><em>acc_id</em>, <em>kernel_param</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/kernel.html#Kernel.add_kernel_param"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.Kernel.add_kernel_param" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.model.kernel.Kernel.del_kernel_param">
+<code class="descname">del_kernel_param</code><span class="sig-paren">(</span><em>acc_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/kernel.html#Kernel.del_kernel_param"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.Kernel.del_kernel_param" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.model.kernel.Kernel.get_all_accs">
+<code class="descname">get_all_accs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/kernel.html#Kernel.get_all_accs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.Kernel.get_all_accs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="lumos.model.kernel.Kernel.get_kernel_param">
+<code class="descname">get_kernel_param</code><span class="sig-paren">(</span><em>acc_id</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/kernel.html#Kernel.get_kernel_param"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.Kernel.get_kernel_param" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="lumos.model.kernel.Kernel.kid">
+<code class="descname">kid</code><a class="headerlink" href="#lumos.model.kernel.Kernel.kid" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="exception">
+<dt id="lumos.model.kernel.KernelError">
+<em class="property">exception </em><code class="descclassname">lumos.model.kernel.</code><code class="descname">KernelError</code><a class="reference internal" href="../_modules/lumos/model/kernel.html#KernelError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.KernelError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></p>
 </dd></dl>
 
 <dl class="class">
-<dt id="lumos.model.kernel.UCoreParam">
-<em class="property">class </em><tt class="descclassname">lumos.model.kernel.</tt><tt class="descname">UCoreParam</tt><big>(</big><em>miu=0.001</em>, <em>phi=0.001</em>, <em>bw=0.001</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/kernel.html#UCoreParam"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.UCoreParam" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.kernel.KernelParam">
+<em class="property">class </em><code class="descclassname">lumos.model.kernel.</code><code class="descname">KernelParam</code><span class="sig-paren">(</span><em>perf=0.001</em>, <em>power=0.001</em>, <em>bw=0.001</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/kernel.html#KernelParam"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.KernelParam" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<dl class="attribute">
+<dt id="lumos.model.kernel.KernelParam.PARAMS">
+<code class="descname">PARAMS</code><em class="property"> = ('perf', 'power', 'bw')</em><a class="headerlink" href="#lumos.model.kernel.KernelParam.PARAMS" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="attribute">
+<dt id="lumos.model.kernel.KernelParam.bw">
+<code class="descname">bw</code><a class="headerlink" href="#lumos.model.kernel.KernelParam.bw" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="lumos.model.kernel.KernelParam.perf">
+<code class="descname">perf</code><a class="headerlink" href="#lumos.model.kernel.KernelParam.perf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="lumos.model.kernel.KernelParam.power">
+<code class="descname">power</code><a class="headerlink" href="#lumos.model.kernel.KernelParam.power" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
 
 <dl class="function">
 <dt id="lumos.model.kernel.create_fixednorm">
-<tt class="descclassname">lumos.model.kernel.</tt><tt class="descname">create_fixednorm</tt><big>(</big><em>dist_params</em>, <em>fname='fixednorm.cfg'</em>, <em>size=100</em>, <em>kid_prefix='fixednorm'</em>, <em>occur=None</em>, <em>perf_range=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/kernel.html#create_fixednorm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.create_fixednorm" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lumos.model.kernel.</code><code class="descname">create_fixednorm</code><span class="sig-paren">(</span><em>dist_params</em>, <em>fname='fixednorm.cfg'</em>, <em>size=100</em>, <em>kid_prefix='fixednorm'</em>, <em>occur=None</em>, <em>perf_range=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/kernel.html#create_fixednorm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.create_fixednorm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create kernels with relative U-core performance following a normal distribution,
 but fixed kernel sample points</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Dist_params :</th><td class="field-body">distribution parameters, including mean, std, etc.</td>
+<tr class="field-odd field"><th class="field-name">Dist_params:</th><td class="field-body">distribution parameters, including mean, std, etc.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Fname :</th><td class="field-body">file to store kernels</td>
+<tr class="field-even field"><th class="field-name">Fname:</th><td class="field-body">file to store kernels</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Size :</th><td class="field-body">number of kernels to create</td>
+<tr class="field-odd field"><th class="field-name">Size:</th><td class="field-body">number of kernels to create</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Kid_prefix :</th><td class="field-body">prefix string for kernel id</td>
+<tr class="field-even field"><th class="field-name">Kid_prefix:</th><td class="field-body">prefix string for kernel id</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Perf_range :</th><td class="field-body">(min,max) of performance range, if not set, default to 0.5*mean, and 1.5*mean</td>
+<tr class="field-odd field"><th class="field-name">Perf_range:</th><td class="field-body">(min,max) of performance range, if not set, default to 0.5*mean, and 1.5*mean</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">N/A</td>
 </tr>
@@ -853,7 +539,7 @@ but fixed kernel sample points</p>
 
 <dl class="function">
 <dt id="lumos.model.kernel.create_fixednorm_xml">
-<tt class="descclassname">lumos.model.kernel.</tt><tt class="descname">create_fixednorm_xml</tt><big>(</big><em>dist_params</em>, <em>fname='fixednorm.xml'</em>, <em>size=100</em>, <em>kid_prefix='fixednorm'</em>, <em>perf_range=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/kernel.html#create_fixednorm_xml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.create_fixednorm_xml" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lumos.model.kernel.</code><code class="descname">create_fixednorm_xml</code><span class="sig-paren">(</span><em>dist_params</em>, <em>fname='fixednorm.xml'</em>, <em>size=100</em>, <em>kid_prefix='fixednorm'</em>, <em>perf_range=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/kernel.html#create_fixednorm_xml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.create_fixednorm_xml" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create kernels with relative U-core performance following a normal
 distribution. The actual sampled kernels have the relative performance
 uniformly drawn from the range of 0.5*mean to 1.5*mean, if not specified.
@@ -865,7 +551,7 @@ relative performance in the normal distribution.</p>
 <dt>dist_params (dict):</dt>
 <dd>Distribution parameters, such as mean, standard deviation.</dd>
 <dt>fname (str):</dt>
-<dd>file to save the generated kernels, default to <tt class="docutils literal"><span class="pre">fixednorm.xml</span></tt></dd>
+<dd>file to save the generated kernels, default to <code class="docutils literal"><span class="pre">fixednorm.xml</span></code></dd>
 <dt>size (int):</dt>
 <dd>number of kernels to create, default to 100.</dd>
 <dt>kid_prefix (str):</dt>
@@ -882,20 +568,20 @@ default to 0.5*mean as min, and 1.5*mean as max.</dd>
 
 <dl class="function">
 <dt id="lumos.model.kernel.create_randnorm">
-<tt class="descclassname">lumos.model.kernel.</tt><tt class="descname">create_randnorm</tt><big>(</big><em>dist_params</em>, <em>fname='norm.cfg'</em>, <em>size=100</em>, <em>kid_prefix='randnorm'</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/kernel.html#create_randnorm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.create_randnorm" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lumos.model.kernel.</code><code class="descname">create_randnorm</code><span class="sig-paren">(</span><em>dist_params</em>, <em>fname='norm.cfg'</em>, <em>size=100</em>, <em>kid_prefix='randnorm'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/kernel.html#create_randnorm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.create_randnorm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create kernels with performance in normal distribution,
 and randomly choose kernel sample points</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Dist_params :</th><td class="field-body">distribution parameters, including mean, std, etc.</td>
+<tr class="field-odd field"><th class="field-name">Dist_params:</th><td class="field-body">distribution parameters, including mean, std, etc.</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Fname :</th><td class="field-body">file to store kernels</td>
+<tr class="field-even field"><th class="field-name">Fname:</th><td class="field-body">file to store kernels</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Size :</th><td class="field-body">number of kernels to create</td>
+<tr class="field-odd field"><th class="field-name">Size:</th><td class="field-body">number of kernels to create</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Kid_prefix :</th><td class="field-body">prefix string for kernel id</td>
+<tr class="field-even field"><th class="field-name">Kid_prefix:</th><td class="field-body">prefix string for kernel id</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">N/A</td>
 </tr>
@@ -905,7 +591,7 @@ and randomly choose kernel sample points</p>
 
 <dl class="function">
 <dt id="lumos.model.kernel.create_randnorm_xml">
-<tt class="descclassname">lumos.model.kernel.</tt><tt class="descname">create_randnorm_xml</tt><big>(</big><em>dist_params</em>, <em>fname='randnorm.xml'</em>, <em>size=100</em>, <em>kid_prefix='randnorm'</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/kernel.html#create_randnorm_xml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.create_randnorm_xml" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lumos.model.kernel.</code><code class="descname">create_randnorm_xml</code><span class="sig-paren">(</span><em>dist_params</em>, <em>fname='randnorm.xml'</em>, <em>size=100</em>, <em>kid_prefix='randnorm'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/kernel.html#create_randnorm_xml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.create_randnorm_xml" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create kernels with relative U-core performance following a normal
 distribution. The actual sampled kernels have the relative performance
 randomly drawn from the normal distribution. The probability of presence in
@@ -917,7 +603,7 @@ normal distribution.</p>
 <dt>dist_params (dict):</dt>
 <dd>Distribution parameters, such as mean, standard deviation.</dd>
 <dt>fname (str):</dt>
-<dd>file to save the generated kernels, default to <tt class="docutils literal"><span class="pre">randnorm.xml</span></tt></dd>
+<dd>file to save the generated kernels, default to <code class="docutils literal"><span class="pre">randnorm.xml</span></code></dd>
 <dt>size (int):</dt>
 <dd>number of kernels to create, default to 100.</dd>
 <dt>kid_prefix (str):</dt>
@@ -931,44 +617,71 @@ normal distribution.</p>
 
 <dl class="function">
 <dt id="lumos.model.kernel.do_generate">
-<tt class="descclassname">lumos.model.kernel.</tt><tt class="descname">do_generate</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/model/kernel.html#do_generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.do_generate" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lumos.model.kernel.</code><code class="descname">do_generate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/kernel.html#do_generate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.do_generate" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="lumos.model.kernel.do_test">
-<tt class="descclassname">lumos.model.kernel.</tt><tt class="descname">do_test</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/lumos/model/kernel.html#do_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.do_test" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lumos.model.kernel.</code><code class="descname">do_test</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/kernel.html#do_test"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.do_test" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="lumos.model.kernel.gen_kernel_gauss">
-<tt class="descclassname">lumos.model.kernel.</tt><tt class="descname">gen_kernel_gauss</tt><big>(</big><em>mean</em>, <em>std</em>, <em>num=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/kernel.html#gen_kernel_gauss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.gen_kernel_gauss" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lumos.model.kernel.</code><code class="descname">gen_kernel_gauss</code><span class="sig-paren">(</span><em>mean</em>, <em>std</em>, <em>num=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/kernel.html#gen_kernel_gauss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.gen_kernel_gauss" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-<dl class="function">
-<dt id="lumos.model.kernel.get_kernel">
-<tt class="descclassname">lumos.model.kernel.</tt><tt class="descname">get_kernel</tt><big>(</big><em>kid</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/kernel.html#get_kernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.get_kernel" title="Permalink to this definition">¶</a></dt>
-<dd><p>get kernel by kid</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Kid :</th><td class="field-body">&#64;todo</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">kernel dict if kid existed in kernel_pool,
-None, if kid is not find</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
 
 <dl class="function">
 <dt id="lumos.model.kernel.load">
-<tt class="descclassname">lumos.model.kernel.</tt><tt class="descname">load</tt><big>(</big><em>fname='norm.cfg'</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/kernel.html#load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.load" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lumos.model.kernel.</code><code class="descname">load</code><span class="sig-paren">(</span><em>fname='norm.cfg'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/kernel.html#load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.load" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
+<dt id="lumos.model.kernel.load_from_xml">
+<code class="descclassname">lumos.model.kernel.</code><code class="descname">load_from_xml</code><span class="sig-paren">(</span><em>fname='norm.xml'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/kernel.html#load_from_xml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.load_from_xml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load kernels from an XML file. This is different from load_xml,
+which is old and should be obsolete. load_from_xml expects a
+different XML format from the previous load_xml.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>fname (str):</dt>
+<dd>The file to be loaded</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd><dl class="first last docutils">
+<dt>kernels (list):</dt>
+<dd>A sorted (by name) list of kernels that have been loaded.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="lumos.model.kernel.load_kernels">
+<code class="descclassname">lumos.model.kernel.</code><code class="descname">load_kernels</code><span class="sig-paren">(</span><em>fname='norm.xml'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/kernel.html#load_kernels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.load_kernels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load kernels from an XML file.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>fname (filepath):</dt>
+<dd>The file to be loaded, in XML format</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd><dl class="first last docutils">
+<dt>kernels (dict):</dt>
+<dd>A dict of (kernel_name, kernel_object) pair, indexed by kernel&#8217;s name.</dd>
+</dl>
+</dd>
+<dt>Raises:</dt>
+<dd>KernelError: if parameters is not float</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="lumos.model.kernel.load_xml">
-<tt class="descclassname">lumos.model.kernel.</tt><tt class="descname">load_xml</tt><big>(</big><em>fname='norm.xml'</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/kernel.html#load_xml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.load_xml" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lumos.model.kernel.</code><code class="descname">load_xml</code><span class="sig-paren">(</span><em>fname='norm.xml'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/kernel.html#load_xml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.load_xml" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load kernels from an XML file. Also update the global kernel pool
 (kernel_pool). If a kernel with the same name has already been loaded into
 the global kernel pool, it will be overide with the new one.</p>
@@ -988,814 +701,160 @@ the global kernel pool, it will be overide with the new one.</p>
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="module-lumos.model.system">
-<span id="system-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">system</span></tt> Module<a class="headerlink" href="#module-lumos.model.system" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="lumos.model.system.AsymSys">
-<em class="property">class </em><tt class="descclassname">lumos.model.system.</tt><tt class="descname">AsymSys</tt><big>(</big><em>budget</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#AsymSys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.AsymSys" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-<p>Asymmetric system composed by IO cores, O3 cores, FPGAs, GPUs, and ASICs (or UCores)
-This is an older implementation. HeterogSys is a newer implementation.</p>
-<dl class="method">
-<dt id="lumos.model.system.AsymSys.get_perf">
-<tt class="descname">get_perf</tt><big>(</big><em>area=None</em>, <em>power=None</em>, <em>app=0</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#AsymSys.get_perf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.AsymSys.get_perf" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the performance of the system on a certain app</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Area :</th><td class="field-body">&#64;todo</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Power :</th><td class="field-body">&#64;todo</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">App :</th><td class="field-body">&#64;todo</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">&#64;todo</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.AsymSys.set_core_prop">
-<tt class="descname">set_core_prop</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#AsymSys.set_core_prop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.AsymSys.set_core_prop" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set core properties</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">**kwargs :</th><td class="field-body">&#64;todo</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">&#64;todo</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.AsymSys.set_core_pv">
-<tt class="descname">set_core_pv</tt><big>(</big><em>pv</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#AsymSys.set_core_pv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.AsymSys.set_core_pv" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set process variation to core</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Pv :</th><td class="field-body">True: process variation, False: no variation</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">&#64;todo</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.AsymSys.set_mech">
-<tt class="descname">set_mech</tt><big>(</big><em>mech</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#AsymSys.set_mech"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.AsymSys.set_mech" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.AsymSys.set_sys_prop">
-<tt class="descname">set_sys_prop</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#AsymSys.set_sys_prop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.AsymSys.set_sys_prop" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set system properties</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">**kwargs :</th><td class="field-body">&#64;todo</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">&#64;todo</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.AsymSys.set_tech">
-<tt class="descname">set_tech</tt><big>(</big><em>tech</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#AsymSys.set_tech"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.AsymSys.set_tech" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.AsymSys.set_ucore_prop">
-<tt class="descname">set_ucore_prop</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#AsymSys.set_ucore_prop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.AsymSys.set_ucore_prop" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set u-core properties</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">**kwargs :</th><td class="field-body">&#64;todo</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">&#64;todo</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.AsymSys.set_ucore_type">
-<tt class="descname">set_ucore_type</tt><big>(</big><em>uctype</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#AsymSys.set_ucore_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.AsymSys.set_ucore_type" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.AsymSys.ucore_alloc">
-<tt class="descname">ucore_alloc</tt><big>(</big><em>area=None</em>, <em>per=None</em>, <em>cnum=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#AsymSys.ucore_alloc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.AsymSys.ucore_alloc" title="Permalink to this definition">¶</a></dt>
-<dd><p>allocate area budget for ucores</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Area :</th><td class="field-body">specify ucore area budget by absolute area value (mm^2)</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Per :</th><td class="field-body">specify ucore area budget by percentage</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Cnum :</th><td class="field-body">specify ucore area by the number of IO cores</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True for succeed, False for failure</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="lumos.model.system.HeterogSys">
-<em class="property">class </em><tt class="descclassname">lumos.model.system.</tt><tt class="descname">HeterogSys</tt><big>(</big><em>budget</em>, <em>mech=None</em>, <em>tech=None</em>, <em>serial_core=None</em><big>)</big><a class="headerlink" href="#lumos.model.system.HeterogSys" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-<p>This class models a heterogeneous many core system composed of
-regular cores and accelerators such as dedicated ASICs,
-reconfigurable logic (FPGA), and GPGPUs. composed by regular
-cores, accelerators such as ASICs, FPGA, and GPU.</p>
+<dl class="function">
+<dt id="lumos.model.kernel.reg_kernels">
+<code class="descclassname">lumos.model.kernel.</code><code class="descname">reg_kernels</code><span class="sig-paren">(</span><em>kernels</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/kernel.html#reg_kernels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.kernel.reg_kernels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add kernels to kernel dict</p>
 <dl class="docutils">
 <dt>Args:</dt>
 <dd><dl class="first last docutils">
-<dt>budget (<a class="reference internal" href="#lumos.model.budget.Budget" title="lumos.model.budget.Budget"><tt class="xref py py-class docutils literal"><span class="pre">Budget</span></tt></a>):</dt>
-<dd>The budget of the system (area and power). Possible values are
-<tt class="xref py py-class docutils literal"><span class="pre">SysSmall</span></tt>,
-<tt class="xref py py-class docutils literal"><span class="pre">SysMedium</span></tt>, and
-<tt class="xref py py-class docutils literal"><span class="pre">SysLarge</span></tt>.</dd>
-<dt>mech (str):</dt>
-<dd>Scaling mechanism of the system, possible values are &#8216;HKMGS&#8217; and &#8216;LP&#8217;.</dd>
-<dt>tech (num):</dt>
-<dd>Technology node of the system, possible values are 45, 32, 22, 16.</dd>
-<dt>serial_core (core):</dt>
-<dd>The core for serial part of the program. It could be
-<a class="reference internal" href="#lumos.model.core.IOCore" title="lumos.model.core.IOCore"><tt class="xref py py-class docutils literal"><span class="pre">IOCore</span></tt></a>,
-<a class="reference internal" href="#lumos.model.core.O3Core" title="lumos.model.core.O3Core"><tt class="xref py py-class docutils literal"><span class="pre">O3Core</span></tt></a>, or
-<a class="reference internal" href="#lumos.model.fedcore.FedCore" title="lumos.model.fedcore.FedCore"><tt class="xref py py-class docutils literal"><span class="pre">FedCore</span></tt></a>.</dd>
+<dt>kernels (dict):</dt>
+<dd>dict to kernels</dd>
 </dl>
 </dd>
-</dl>
-<dl class="method">
-<dt id="lumos.model.system.HeterogSys.del_asic">
-<tt class="descname">del_asic</tt><big>(</big><em>kid</em><big>)</big><a class="headerlink" href="#lumos.model.system.HeterogSys.del_asic" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove an ASIC accelerator from the system, free its area to other
-computing components. By default, the freed area is allocated to
-throughput cores.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>kid (str):</dt>
-<dd>The ID of kernel which the ASIC is targeted for.</dd>
-</dl>
-</dd>
-<dt>Returns:</dt>
-<dd>Bool indicating successful deletion</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.HeterogSys.del_asics">
-<tt class="descname">del_asics</tt><big>(</big><big>)</big><a class="headerlink" href="#lumos.model.system.HeterogSys.del_asics" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove all ASIC accelerators in the system.</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.HeterogSys.get_perf">
-<tt class="descname">get_perf</tt><big>(</big><em>app</em><big>)</big><a class="headerlink" href="#lumos.model.system.HeterogSys.get_perf" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the optimal performance fo the system. It uses accelerators to execute
-kernels if available. Otherwise, kernels are executed and accelerated by
-throughput cores. The system will try to find the optimal number of throughput
-cores to be active to achieve the best overall throughput.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>app (<a class="reference internal" href="#lumos.model.application.App" title="lumos.model.application.App"><tt class="xref py py-class docutils literal"><span class="pre">App</span></tt></a>):</dt>
-<dd>The targeted application.</dd>
-</dl>
-</dd>
-<dt>Returns:</dt>
-<dd><dl class="first last docutils">
-<dt>perf (num):</dt>
-<dd>Relative performance, also should be the optimal with the given
-system configuration.</dd>
-<dt>cnum (num):</dt>
-<dd>The number of active cores for the optimal configuration.</dd>
-<dt>vdd (num):</dt>
-<dd>The supply voltage of throughput cores when executing parallel part
-of the application.</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.HeterogSys.realloc_gpacc">
-<tt class="descname">realloc_gpacc</tt><big>(</big><em>area_ratio</em>, <em>ctype='FPGA'</em><big>)</big><a class="headerlink" href="#lumos.model.system.HeterogSys.realloc_gpacc" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adjust the area of a general-purpose accelerator. Currently, only FPGA
-is supported.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>area_ratio (num):</dt>
-<dd>The new area to be adjusted</dd>
-<dt>ctype (str):</dt>
-<dd>The type of general-purpose accelerator. Only &#8216;FPGA&#8217; is supported.</dd>
-</dl>
-</dd>
-<dt>Returns:</dt>
-<dd>Bool indicating a successful update.</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.HeterogSys.set_asic">
-<tt class="descname">set_asic</tt><big>(</big><em>kid</em>, <em>area_ratio</em><big>)</big><a class="headerlink" href="#lumos.model.system.HeterogSys.set_asic" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the ASIC accelerator&#8217;s area</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>kid (str):</dt>
-<dd>The ID of the kernel that the ASIC is targeted for.</dd>
-<dt>area_ratio (num):</dt>
-<dd>The new area ratio of the ASIC to be set.</dd>
-</dl>
-</dd>
-<dt>Returns:</dt>
-<dd>Bool to indicate whether successfully set the area.</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.HeterogSys.set_core_pv">
-<tt class="descname">set_core_pv</tt><big>(</big><em>pv</em><big>)</big><a class="headerlink" href="#lumos.model.system.HeterogSys.set_core_pv" title="Permalink to this definition">¶</a></dt>
-<dd><p>Whether consider process variations.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>pv (bool):</dt>
-<dd>Set true if process variation need to be considered.</dd>
-</dl>
-</dd>
-<dt>Returns:</dt>
+<dt>Return:</dt>
 <dd>N/A</dd>
 </dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.HeterogSys.set_mech">
-<tt class="descname">set_mech</tt><big>(</big><em>mech</em><big>)</big><a class="headerlink" href="#lumos.model.system.HeterogSys.set_mech" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the scaling mechanism of all cores and ucores.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>mech (str):</dt>
-<dd>The new scaling mechanism.</dd>
-</dl>
-</dd>
-<dt>Returns:</dt>
-<dd>N/A</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.HeterogSys.set_tech">
-<tt class="descname">set_tech</tt><big>(</big><em>tech</em><big>)</big><a class="headerlink" href="#lumos.model.system.HeterogSys.set_tech" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the technology node of all cores and ucores.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>tech (num):</dt>
-<dd>The technology node.</dd>
-</dl>
-</dd>
-<dt>Returns:</dt>
-<dd>N/A</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="lumos.model.system.HomogSys">
-<em class="property">class </em><tt class="descclassname">lumos.model.system.</tt><tt class="descname">HomogSys</tt><big>(</big><em>area=None</em>, <em>power=None</em><big>)</big><a class="headerlink" href="#lumos.model.system.HomogSys" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-<p>This class models a homogeneous many core system composed of
-either in-order cores or out-of-order cores.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>area (num):</dt>
-<dd>Area budget of the system.</dd>
-<dt>power (num):</dt>
-<dd>Power budget of the system.</dd>
-</dl>
-</dd>
-</dl>
-<dl class="method">
-<dt id="lumos.model.system.HomogSys.get_core_num">
-<tt class="descname">get_core_num</tt><big>(</big><big>)</big><a class="headerlink" href="#lumos.model.system.HomogSys.get_core_num" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the number of cores for the system under area constraint.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>N/A</dd>
-<dt>Returns:</dt>
-<dd>The number of cores</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.HomogSys.opt_core_num">
-<tt class="descname">opt_core_num</tt><big>(</big><em>app=0</em>, <em>vmin=0.3</em><big>)</big><a class="headerlink" href="#lumos.model.system.HomogSys.opt_core_num" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.HomogSys.perf_by_cnum">
-<tt class="descname">perf_by_cnum</tt><big>(</big><em>cnum</em>, <em>app=0</em>, <em>vmin=0.3</em><big>)</big><a class="headerlink" href="#lumos.model.system.HomogSys.perf_by_cnum" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the relative performance of the system for a given application, with a
-given constraint on the number of active cores.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>cnum (num):</dt>
-<dd>The number of core required to be active.</dd>
-<dt>app (<a class="reference internal" href="#lumos.model.application.App" title="lumos.model.application.App"><tt class="xref py py-class docutils literal"><span class="pre">App</span></tt></a>):</dt>
-<dd>The targeted application.</dd>
-<dt>vmin (num):</dt>
-<dd>An optional argument to specify the lowest boundary which supply
-voltage can be scaled down.</dd>
-</dl>
-</dd>
-<dt>Returns:</dt>
-<dd><dl class="first last docutils">
-<dt>perf (num):</dt>
-<dd>The relatvie performance.</dd>
-<dt>vdd (num):</dt>
-<dd>The supply voltage of the optimal configuration under core number
-constraint.</dd>
-<dt>freq (num):</dt>
-<dd>The frequency with the optimal configuration under core number
-constraint.</dd>
-<dt>cnum (num):</dt>
-<dd>The actual number of active cores, if the requried number can not be met.</dd>
-<dt>util (num):</dt>
-<dd>The utilization of the system at the optimal configuraiton.</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.HomogSys.perf_by_dark">
-<tt class="descname">perf_by_dark</tt><big>(</big><em>app=0</em><big>)</big><a class="headerlink" href="#lumos.model.system.HomogSys.perf_by_dark" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.HomogSys.perf_by_vdd">
-<tt class="descname">perf_by_vdd</tt><big>(</big><em>vdd</em>, <em>app=0</em><big>)</big><a class="headerlink" href="#lumos.model.system.HomogSys.perf_by_vdd" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the relative performance of the system for a given application, after
-scaling the supply voltage by the given value.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>vdd (num):</dt>
-<dd>The voltage to be scaled to.</dd>
-<dt>app (<a class="reference internal" href="#lumos.model.application.App" title="lumos.model.application.App"><tt class="xref py py-class docutils literal"><span class="pre">App</span></tt></a>):</dt>
-<dd>The targeted application.</dd>
-</dl>
-</dd>
-<dt>Returns:</dt>
-<dd><dl class="first last docutils">
-<dt>perf (num):</dt>
-<dd>The relatvie performance.</dd>
-<dt>active (num):</dt>
-<dd>The number of active cores. If it less than the number of
-available cores, then it turns to be a dark silicon configuration.</dd>
-<dt>core (num):</dt>
-<dd>The number of available cores on system.</dd>
-<dt>util (num):</dt>
-<dd>The utilization of the system at given supply voltage.</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.HomogSys.perf_by_vfs">
-<tt class="descname">perf_by_vfs</tt><big>(</big><em>vfs</em>, <em>app=0</em><big>)</big><a class="headerlink" href="#lumos.model.system.HomogSys.perf_by_vfs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the relative performance of the system for a given application, after
-scaling the supply voltage by the given factor.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>vfs (num):</dt>
-<dd>The voltage scaling factor</dd>
-<dt>app (<a class="reference internal" href="#lumos.model.application.App" title="lumos.model.application.App"><tt class="xref py py-class docutils literal"><span class="pre">App</span></tt></a>):</dt>
-<dd>The targeted application.</dd>
-</dl>
-</dd>
-<dt>Returns:</dt>
-<dd><dl class="first last docutils">
-<dt>perf (num):</dt>
-<dd>The relatvie performance.</dd>
-<dt>active (num):</dt>
-<dd>The number of active cores. If it less than the number of
-available cores, then it turns to be a dark silicon configuration.</dd>
-<dt>core (num):</dt>
-<dd>The number of available cores on system.</dd>
-<dt>freq (num):</dt>
-<dd>The frequency of the core, after scaling the supply voltage.</dd>
-<dt>util (num):</dt>
-<dd>The utilization of the system at given supply voltage.</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.HomogSys.set_core_prop">
-<tt class="descname">set_core_prop</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#lumos.model.system.HomogSys.set_core_prop" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set properties of the core in the system. It just calls the corresponding
-method of the core object.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>Named property and its value.</dd>
-<dt>Returns:</dt>
-<dd>N/A</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.HomogSys.set_sys_prop">
-<tt class="descname">set_sys_prop</tt><big>(</big><em>**kwargs</em><big>)</big><a class="headerlink" href="#lumos.model.system.HomogSys.set_sys_prop" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set properties of the core in the system. Any property can be set
-by this method, such as budgets of area and power, and the composed
-core.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>Named property and its value.</dd>
-<dt>Returns:</dt>
-<dd>N/A</dd>
-</dl>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.HomogSys.speedup_by_vfslist">
-<tt class="descname">speedup_by_vfslist</tt><big>(</big><em>vfs_list</em>, <em>app=0</em><big>)</big><a class="headerlink" href="#lumos.model.system.HomogSys.speedup_by_vfslist" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.HomogSys.speedup_by_vlist">
-<tt class="descname">speedup_by_vlist</tt><big>(</big><em>v_list</em>, <em>app=0</em><big>)</big><a class="headerlink" href="#lumos.model.system.HomogSys.speedup_by_vlist" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="lumos.model.system.System">
-<em class="property">class </em><tt class="descclassname">lumos.model.system.</tt><tt class="descname">System</tt><big>(</big><em>area=0</em>, <em>power=0</em>, <em>ctype='IO'</em>, <em>mech='ITRS'</em>, <em>tech=45</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#System"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.System" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-<dl class="attribute">
-<dt id="lumos.model.system.System.PROBE_PRECISION">
-<tt class="descname">PROBE_PRECISION</tt><em class="property"> = 0.0001</em><a class="headerlink" href="#lumos.model.system.System.PROBE_PRECISION" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.system.System.VSF_MAX">
-<tt class="descname">VSF_MAX</tt><em class="property"> = 1.0</em><a class="headerlink" href="#lumos.model.system.System.VSF_MAX" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.system.System.VSF_MIN">
-<tt class="descname">VSF_MIN</tt><em class="property"> = 0.2</em><a class="headerlink" href="#lumos.model.system.System.VSF_MIN" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.System.build">
-<tt class="descname">build</tt><big>(</big><em>type='sym-io'</em>, <em>area=200</em>, <em>power=80</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#System.build"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.System.build" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.System.get_speedup">
-<tt class="descname">get_speedup</tt><big>(</big><em>vsf_list</em>, <em>app=0</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#System.get_speedup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.System.get_speedup" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.System.probe">
-<tt class="descname">probe</tt><big>(</big><em>app=0</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#System.probe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.System.probe" title="Permalink to this definition">¶</a></dt>
-<dd><p>&#8221;
-Sweep voltage (by core.dvfs) to get the best performance for a given app</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.System.probe2">
-<tt class="descname">probe2</tt><big>(</big><em>app=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#System.probe2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.System.probe2" title="Permalink to this definition">¶</a></dt>
-<dd><p>&#8221;
-A fast version of probe, using binary search</p>
-</dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.System.set_core_prop">
-<tt class="descname">set_core_prop</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#System.set_core_prop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.System.set_core_prop" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.system.System.set_sys_prop">
-<tt class="descname">set_sys_prop</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/system.html#System.set_sys_prop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.system.System.set_sys_prop" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 </div>
-<div class="section" id="module-lumos.model.tech">
-<span id="tech-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">tech</span></tt> Module<a class="headerlink" href="#module-lumos.model.tech" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
-<dt id="lumos.model.tech.Base">
-<em class="property">class </em><tt class="descclassname">lumos.model.tech.</tt><tt class="descname">Base</tt><a class="reference internal" href="../_modules/lumos/model/tech.html#Base"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.tech.Base" title="Permalink to this definition">¶</a></dt>
-<dd><p>Technology-specific parameters at their nominal value, adopted from McPAT</p>
-<dl class="attribute">
-<dt id="lumos.model.tech.Base.area">
-<tt class="descname">area</tt><em class="property"> = {'O3': 26.48, 'IO': 7.65}</em><a class="headerlink" href="#lumos.model.tech.Base.area" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.tech.Base.dp">
-<tt class="descname">dp</tt><em class="property"> = {'O3': 19.83, 'IO': 6.14}</em><a class="headerlink" href="#lumos.model.tech.Base.dp" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.tech.Base.freq">
-<tt class="descname">freq</tt><em class="property"> = {'O3': 3.7, 'IO': 4.2}</em><a class="headerlink" href="#lumos.model.tech.Base.freq" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.tech.Base.sp">
-<tt class="descname">sp</tt><em class="property"> = {'O3': 5.34, 'IO': 1.058}</em><a class="headerlink" href="#lumos.model.tech.Base.sp" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.tech.Base.vdd">
-<tt class="descname">vdd</tt><em class="property"> = 1</em><a class="headerlink" href="#lumos.model.tech.Base.vdd" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.tech.Base.vt">
-<tt class="descname">vt</tt><em class="property"> = 0.45</em><a class="headerlink" href="#lumos.model.tech.Base.vt" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="lumos.model.tech.LPBase">
-<em class="property">class </em><tt class="descclassname">lumos.model.tech.</tt><tt class="descname">LPBase</tt><a class="reference internal" href="../_modules/lumos/model/tech.html#LPBase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.tech.LPBase" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="attribute">
-<dt id="lumos.model.tech.LPBase.dp">
-<tt class="descname">dp</tt><em class="property"> = {32: 0.323997, 16: 0.401115, 45: 0.302742, 22: 0.335472}</em><a class="headerlink" href="#lumos.model.tech.LPBase.dp" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.tech.LPBase.freq">
-<tt class="descname">freq</tt><em class="property"> = {32: 0.277807, 16: 0.264477, 45: 0.270976, 22: 0.255596}</em><a class="headerlink" href="#lumos.model.tech.LPBase.freq" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.tech.LPBase.sp">
-<tt class="descname">sp</tt><em class="property"> = {32: 0.0424488, 16: 0.490573, 45: 0.00841218, 22: 0.234791}</em><a class="headerlink" href="#lumos.model.tech.LPBase.sp" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="lumos.model.tech.PTMScale">
-<em class="property">class </em><tt class="descclassname">lumos.model.tech.</tt><tt class="descname">PTMScale</tt><a class="reference internal" href="../_modules/lumos/model/tech.html#PTMScale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.tech.PTMScale" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="attribute">
-<dt id="lumos.model.tech.PTMScale.dp">
-<tt class="descname">dp</tt><em class="property"> = {'LP': {32: 0.526511, 16: 0.121649, 45: 1, 22: 0.228541}, 'HKMGS': {32: 0.491971, 16: 0.091815, 45: 1, 22: 0.206244}}</em><a class="headerlink" href="#lumos.model.tech.PTMScale.dp" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.tech.PTMScale.freq">
-<tt class="descname">freq</tt><em class="property"> = {'LP': {32: 0.973895, 16: 0.648536, 45: 1, 22: 0.749425}, 'HKMGS': {32: 0.949949, 16: 0.664474, 45: 1, 22: 0.794519}}</em><a class="headerlink" href="#lumos.model.tech.PTMScale.freq" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.tech.PTMScale.sp">
-<tt class="descname">sp</tt><em class="property"> = {'LP': {32: 1.54438, 16: 7.64628, 45: 1, 22: 3.40117}, 'HKMGS': {32: 0.306052, 16: 0.131116, 45: 1, 22: 0.121858}}</em><a class="headerlink" href="#lumos.model.tech.PTMScale.sp" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.tech.PTMScale.vdd">
-<tt class="descname">vdd</tt><em class="property"> = {'LP': {32: 1.0, 16: 0.9, 45: 1.1, 22: 0.95}, 'HKMGS': {32: 0.9, 16: 0.7, 45: 1.0, 22: 0.8}}</em><a class="headerlink" href="#lumos.model.tech.PTMScale.vdd" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.tech.PTMScale.vt">
-<tt class="descname">vt</tt><em class="property"> = {'LP': {32: 0.647, 16: 0.71, 45: 0.622, 22: 0.707}, 'HKMGS': {32: 0.466, 16: 0.504, 45: 0.424, 22: 0.508}}</em><a class="headerlink" href="#lumos.model.tech.PTMScale.vt" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="lumos.model.tech.ProjScale">
-<em class="property">class </em><tt class="descclassname">lumos.model.tech.</tt><tt class="descname">ProjScale</tt><a class="reference internal" href="../_modules/lumos/model/tech.html#ProjScale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.tech.ProjScale" title="Permalink to this definition">¶</a></dt>
-<dd><p>The same with PTMScale, except for the frequency scaling. Frequency scaling uses factors from ITRS and CONV projections</p>
-<dl class="attribute">
-<dt id="lumos.model.tech.ProjScale.dp">
-<tt class="descname">dp</tt><em class="property"> = {'ITRS': {32: 0.491971, 16: 0.091815, 45: 1, 22: 0.206244}, 'CONS': {32: 0.491971, 16: 0.091815, 45: 1, 22: 0.206244}}</em><a class="headerlink" href="#lumos.model.tech.ProjScale.dp" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.tech.ProjScale.freq">
-<tt class="descname">freq</tt><em class="property"> = {'ITRS': {32: 1.16, 16: 1.81, 45: 1, 22: 1.45}, 'CONS': {32: 1.1, 16: 1.25, 45: 1, 22: 1.19}}</em><a class="headerlink" href="#lumos.model.tech.ProjScale.freq" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.tech.ProjScale.sp">
-<tt class="descname">sp</tt><em class="property"> = {'ITRS': {32: 0.306052, 16: 0.131116, 45: 1, 22: 0.121858}, 'CONS': {32: 0.306052, 16: 0.131116, 45: 1, 22: 0.121858}}</em><a class="headerlink" href="#lumos.model.tech.ProjScale.sp" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.tech.ProjScale.vdd">
-<tt class="descname">vdd</tt><em class="property"> = {'ITRS': {32: 0.9, 16: 0.7, 45: 1.0, 22: 0.8}, 'CONS': {32: 0.9, 16: 0.7, 45: 1.0, 22: 0.8}}</em><a class="headerlink" href="#lumos.model.tech.ProjScale.vdd" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.tech.ProjScale.vt">
-<tt class="descname">vt</tt><em class="property"> = {'ITRS': {32: 0.466, 16: 0.504, 45: 0.424, 22: 0.508}, 'CONS': {32: 0.466, 16: 0.504, 45: 0.424, 22: 0.508}}</em><a class="headerlink" href="#lumos.model.tech.ProjScale.vt" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
-<dl class="class">
-<dt id="lumos.model.tech.Scale">
-<em class="property">class </em><tt class="descclassname">lumos.model.tech.</tt><tt class="descname">Scale</tt><a class="reference internal" href="../_modules/lumos/model/tech.html#Scale"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.tech.Scale" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="attribute">
-<dt id="lumos.model.tech.Scale.area">
-<tt class="descname">area</tt><em class="property"> = {32: 0.5, 8: 0.03125, 11: 0.0625, 45: 1, 16: 0.125, 22: 0.25}</em><a class="headerlink" href="#lumos.model.tech.Scale.area" title="Permalink to this definition">¶</a></dt>
-<dd><p>vt base values were adopted from 2010Tables_FEP_FOCUS_C_ITRS.xls, sheet 2009_FEP2-HPDevice</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.tech.Scale.freq">
-<tt class="descname">freq</tt><em class="property"> = {'ITRS': {32: 1.16, 8: 2.63, 11: 2.26, 45: 1, 16: 1.81, 22: 1.45}, 'CONS': {32: 1.1, 8: 1.34, 11: 1.3, 45: 1, 16: 1.25, 22: 1.19}}</em><a class="headerlink" href="#lumos.model.tech.Scale.freq" title="Permalink to this definition">¶</a></dt>
-<dd><p>ITRS 2009, adopted from 2009Tables_FINAL_ORTC_v14.xls, sheet 2009_ORTC-4, frequency in MHz</p>
+<div class="section" id="module-lumos.model.misc">
+<span id="lumos-model-misc-module"></span><h2>lumos.model.misc module<a class="headerlink" href="#module-lumos.model.misc" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="lumos.model.misc.make_ws_dirs">
+<code class="descclassname">lumos.model.misc.</code><code class="descname">make_ws_dirs</code><span class="sig-paren">(</span><em>base</em>, <em>anl_name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/misc.html#make_ws_dirs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.misc.make_ws_dirs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create directories for an analysis.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">45nm :</th><td class="field-body">5875, due 2010</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>anl_name</strong> &#8211; the name of an analysis</td>
 </tr>
-<tr class="field-even field"><th class="field-name">32nm :</th><td class="field-body">6817, due 2012</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">22nm :</th><td class="field-body">8522, due 2015</td>
-</tr>
-<tr class="field-even field"><th class="field-name">16nm :</th><td class="field-body">10652, due 2018</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">11nm :</th><td class="field-body">13315, due 2021</td>
-</tr>
-<tr class="field-even field"><th class="field-name">8nm :</th><td class="field-body">15451, due 2023</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">a directory pair for figures (<em>fdir</em>) and data (<em>ddir</em>), respectively.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-<dl class="attribute">
-<dt id="lumos.model.tech.Scale.mech">
-<tt class="descname">mech</tt><em class="property"> = ['ITRS', 'CONS']</em><a class="headerlink" href="#lumos.model.tech.Scale.mech" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.tech.Scale.power">
-<tt class="descname">power</tt><em class="property"> = {'ITRS': {32: 0.66, 8: 0.12, 11: 0.25, 45: 1, 16: 0.38, 22: 0.54}, 'CONS': {32: 0.71, 8: 0.22, 11: 0.29, 45: 1, 16: 0.39, 22: 0.52}}</em><a class="headerlink" href="#lumos.model.tech.Scale.power" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.tech.Scale.tech">
-<tt class="descname">tech</tt><em class="property"> = 45</em><a class="headerlink" href="#lumos.model.tech.Scale.tech" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.tech.Scale.vdd">
-<tt class="descname">vdd</tt><em class="property"> = {'ITRS': {32: 0.93, 8: 0.62, 11: 0.68, 45: 1, 16: 0.75, 22: 0.84}, 'CONS': {32: 0.93, 8: 0.84, 11: 0.84, 45: 1, 16: 0.86, 22: 0.88}}</em><a class="headerlink" href="#lumos.model.tech.Scale.vdd" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
-<dt id="lumos.model.tech.Scale.vt">
-<tt class="descname">vt</tt><em class="property"> = {32: 0.8999999999999999, 8: 0.6, 11: 0.6599999999999999, 45: 1.0, 16: 0.73, 22: 0.8099999999999999}</em><a class="headerlink" href="#lumos.model.tech.Scale.vt" title="Permalink to this definition">¶</a></dt>
-<dd><p>effective gate capacitance from 2010Tables_PIDS_FOCUS_C_ITRS.xls, sheet 2009_PIDS2</p>
+<dl class="function">
+<dt id="lumos.model.misc.mk_dir">
+<code class="descclassname">lumos.model.misc.</code><code class="descname">mk_dir</code><span class="sig-paren">(</span><em>parent</em>, <em>dname</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/misc.html#mk_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.misc.mk_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create directory if not exist.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">45nm :</th><td class="field-body">0.97</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parent</strong> &#8211; The full path to the parent diretory</li>
+<li><strong>dname</strong> &#8211; The directory name to be created</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">32nm :</th><td class="field-body">0.95</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">22nm :</th><td class="field-body">0.68</td>
-</tr>
-<tr class="field-even field"><th class="field-name">16nm :</th><td class="field-body">0.61</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">11nm :</th><td class="field-body">0.53</td>
-</tr>
-<tr class="field-even field"><th class="field-name">8nm :</th><td class="field-body">0.48</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">The full path to the newly created directory</p>
+</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
+<dl class="function">
+<dt id="lumos.model.misc.parse_bw">
+<code class="descclassname">lumos.model.misc.</code><code class="descname">parse_bw</code><span class="sig-paren">(</span><em>bw_cfg</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/misc.html#parse_bw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.misc.parse_bw" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.model.misc.try_update">
+<code class="descclassname">lumos.model.misc.</code><code class="descname">try_update</code><span class="sig-paren">(</span><em>config</em>, <em>options</em>, <em>section</em>, <em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/misc.html#try_update"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.misc.try_update" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-lumos.model.plot">
+<span id="lumos-model-plot-module"></span><h2>lumos.model.plot module<a class="headerlink" href="#module-lumos.model.plot" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="lumos.model.plot.line_plot">
+<code class="descclassname">lumos.model.plot.</code><code class="descname">line_plot</code><span class="sig-paren">(</span><em>df</em>, <em>x_col</em>, <em>y_col</em>, <em>series_col</em>, <em>xlabel=None</em>, <em>ylabel=None</em>, <em>llabel=None</em>, <em>title=None</em>, <em>lncols=None</em>, <em>lloc=None</em>, <em>figsize=None</em>, <em>marker_list=None</em>, <em>ms_list=None</em>, <em>figdir=None</em>, <em>ofn=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/plot.html#line_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.plot.line_plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.model.plot.plot_data">
+<code class="descclassname">lumos.model.plot.</code><code class="descname">plot_data</code><span class="sig-paren">(</span><em>x_list</em>, <em>y_lists</em>, <em>xlabel</em>, <em>ylabel</em>, <em>legend_title=None</em>, <em>legend_labels=None</em>, <em>legend_loc=None</em>, <em>legend_prop=None</em>, <em>ylim=None</em>, <em>xlim=None</em>, <em>ylog=False</em>, <em>xgrid=True</em>, <em>ygrid=True</em>, <em>title=None</em>, <em>figsize=None</em>, <em>marker_list=None</em>, <em>ms_list=None</em>, <em>figdir=None</em>, <em>ofn=None</em>, <em>cb_func=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/plot.html#plot_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.plot.plot_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.model.plot.plot_data_nomarker">
+<code class="descclassname">lumos.model.plot.</code><code class="descname">plot_data_nomarker</code><span class="sig-paren">(</span><em>x_list</em>, <em>y_lists</em>, <em>xlabel</em>, <em>ylabel</em>, <em>legend_title=None</em>, <em>legend_labels=None</em>, <em>legend_loc=None</em>, <em>ylim=None</em>, <em>xlim=None</em>, <em>ylog=False</em>, <em>xgrid=True</em>, <em>ygrid=True</em>, <em>title=None</em>, <em>figsize=None</em>, <em>marker_list=None</em>, <em>ms_list=None</em>, <em>figdir=None</em>, <em>ofn=None</em>, <em>cb_func=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/plot.html#plot_data_nomarker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.plot.plot_data_nomarker" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.model.plot.plot_errbar">
+<code class="descclassname">lumos.model.plot.</code><code class="descname">plot_errbar</code><span class="sig-paren">(</span><em>x_list</em>, <em>y_lists</em>, <em>err_lists</em>, <em>xlabel</em>, <em>ylabel</em>, <em>legend_labels=None</em>, <em>legend_loc=None</em>, <em>ylim=None</em>, <em>xlim=None</em>, <em>ylog=False</em>, <em>xgrid=True</em>, <em>ygrid=True</em>, <em>title=None</em>, <em>figsize=None</em>, <em>marker_list=None</em>, <em>ms_list=None</em>, <em>figdir=None</em>, <em>ofn=None</em>, <em>cb_func=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/plot.html#plot_errbar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.plot.plot_errbar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.model.plot.plot_series">
+<code class="descclassname">lumos.model.plot.</code><code class="descname">plot_series</code><span class="sig-paren">(</span><em>x_list</em>, <em>y_lists</em>, <em>xlabel</em>, <em>ylabel</em>, <em>legend_labels=None</em>, <em>legend_loc=None</em>, <em>ylim=None</em>, <em>set_grid=True</em>, <em>title=None</em>, <em>figsize=None</em>, <em>marker_list=None</em>, <em>ms_list=None</em>, <em>figdir=None</em>, <em>ofn=None</em>, <em>cb_func=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/plot.html#plot_series"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.plot.plot_series" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="lumos.model.plot.plot_series2">
+<code class="descclassname">lumos.model.plot.</code><code class="descname">plot_series2</code><span class="sig-paren">(</span><em>x_list</em>, <em>y_lists</em>, <em>xlabel</em>, <em>ylabel</em>, <em>legend_labels</em>, <em>legend_loc</em>, <em>ylim=None</em>, <em>set_grid=True</em>, <em>title=None</em>, <em>figsize=None</em>, <em>marker_list=None</em>, <em>ms_list=None</em>, <em>figdir=None</em>, <em>ofn=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/plot.html#plot_series2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.plot.plot_series2" title="Permalink to this definition">¶</a></dt>
+<dd><p>For darkdim&#8217;s voltage plots only due to special legend layout</p>
 </dd></dl>
+
+<dl class="function">
+<dt id="lumos.model.plot.plot_twinx">
+<code class="descclassname">lumos.model.plot.</code><code class="descname">plot_twinx</code><span class="sig-paren">(</span><em>x_list</em>, <em>y1_lists</em>, <em>y2_lists</em>, <em>xlabel</em>, <em>y1label</em>, <em>y2label</em>, <em>legend_labels=None</em>, <em>legend_loc=None</em>, <em>title=None</em>, <em>xlim=None</em>, <em>y1lim=None</em>, <em>y2lim=None</em>, <em>set_grid=False</em>, <em>figsize=None</em>, <em>marker_list=None</em>, <em>ms_list=None</em>, <em>figdir=None</em>, <em>ofn=None</em>, <em>cb_func=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/plot.html#plot_twinx"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.plot.plot_twinx" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 <div class="section" id="module-lumos.model.ucore">
-<span id="ucore-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">ucore</span></tt> Module<a class="headerlink" href="#module-lumos.model.ucore" title="Permalink to this headline">¶</a></h2>
+<span id="lumos-model-ucore-module"></span><h2>lumos.model.ucore module<a class="headerlink" href="#module-lumos.model.ucore" title="Permalink to this headline">¶</a></h2>
 <p>Models unconventional cores, parameters extracted from Chung&#8217;s paper:</p>
 <blockquote>
 <div><em>Sing-Chip Heterogenerous Computing: Does the Future Include Custom Logic,
 FPGAs, and GPGPUs?</em>, Eric S. Chung, et al., MICRO&#8216;10</div></blockquote>
 <dl class="class">
-<dt id="lumos.model.ucore.ASIC">
-<em class="property">class </em><tt class="descclassname">lumos.model.ucore.</tt><tt class="descname">ASIC</tt><big>(</big><em>kid</em>, <em>area=0</em>, <em>mech=None</em>, <em>tech=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/ucore.html#ASIC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.ucore.ASIC" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#lumos.model.ucore.UCore" title="lumos.model.ucore.UCore"><tt class="xref py py-class docutils literal"><span class="pre">lumos.model.ucore.UCore</span></tt></a></p>
-<p>ASIC accelerator</p>
-<dl class="method">
-<dt id="lumos.model.ucore.ASIC.bandwidth">
-<tt class="descname">bandwidth</tt><big>(</big><em>app</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/ucore.html#ASIC.bandwidth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.ucore.ASIC.bandwidth" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.ucore.ASIC.config">
-<tt class="descname">config</tt><big>(</big><em>mech=None</em>, <em>tech=None</em>, <em>area=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/ucore.html#ASIC.config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.ucore.ASIC.config" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.ucore.ASIC.perf">
-<tt class="descname">perf</tt><big>(</big><em>power=None</em>, <em>bandwidth=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/ucore.html#ASIC.perf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.ucore.ASIC.perf" title="Permalink to this definition">¶</a></dt>
-<dd><p>performance under constraints</p>
+<dt id="lumos.model.ucore.AppAccelerator">
+<em class="property">class </em><code class="descclassname">lumos.model.ucore.</code><code class="descname">AppAccelerator</code><span class="sig-paren">(</span><em>uid</em>, <em>ker_obj</em>, <em>area=0</em>, <em>tech=None</em>, <em>model_name='hp'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/ucore.html#AppAccelerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.ucore.AppAccelerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lumos.model.ucore.UCore" title="lumos.model.ucore.UCore"><code class="xref py py-class docutils literal"><span class="pre">lumos.model.ucore.UCore</span></code></a></p>
+<dl class="attribute">
+<dt id="lumos.model.ucore.AppAccelerator.kid">
+<code class="descname">kid</code><a class="headerlink" href="#lumos.model.ucore.AppAccelerator.kid" title="Permalink to this definition">¶</a></dt>
+<dd><p>The kernel id (str) that this accelerator targets at. This is a read-only property</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="lumos.model.ucore.ASIC.power">
-<tt class="descname">power</tt><big>(</big><em>app</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/ucore.html#ASIC.power"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.ucore.ASIC.power" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.ucore.AppAccelerator.perf">
+<code class="descname">perf</code><span class="sig-paren">(</span><em>power=None</em>, <em>bandwidth=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/ucore.html#AppAccelerator.perf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.ucore.AppAccelerator.perf" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
-<dt id="lumos.model.ucore.FPGA">
-<em class="property">class </em><tt class="descclassname">lumos.model.ucore.</tt><tt class="descname">FPGA</tt><big>(</big><em>area=0</em>, <em>mech=None</em>, <em>tech=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/ucore.html#FPGA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.ucore.FPGA" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#lumos.model.ucore.UCore" title="lumos.model.ucore.UCore"><tt class="xref py py-class docutils literal"><span class="pre">lumos.model.ucore.UCore</span></tt></a></p>
-<p>FPGA accelerator</p>
-<dl class="method">
-<dt id="lumos.model.ucore.FPGA.bandwidth">
-<tt class="descname">bandwidth</tt><big>(</big><em>app</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/ucore.html#FPGA.bandwidth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.ucore.FPGA.bandwidth" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.ucore.FPGA.config">
-<tt class="descname">config</tt><big>(</big><em>mech=None</em>, <em>tech=None</em>, <em>area=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/ucore.html#FPGA.config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.ucore.FPGA.config" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.ucore.FPGA.perf">
-<tt class="descname">perf</tt><big>(</big><em>kid</em>, <em>power=None</em>, <em>bandwidth=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/ucore.html#FPGA.perf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.ucore.FPGA.perf" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="lumos.model.ucore.FPGA.power">
-<tt class="descname">power</tt><big>(</big><em>app</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/ucore.html#FPGA.power"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.ucore.FPGA.power" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<dt id="lumos.model.ucore.GPAccelerator">
+<em class="property">class </em><code class="descclassname">lumos.model.ucore.</code><code class="descname">GPAccelerator</code><span class="sig-paren">(</span><em>uid</em>, <em>area=0</em>, <em>tech=None</em>, <em>model_name='hp'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/ucore.html#GPAccelerator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.ucore.GPAccelerator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#lumos.model.ucore.UCore" title="lumos.model.ucore.UCore"><code class="xref py py-class docutils literal"><span class="pre">lumos.model.ucore.UCore</span></code></a></p>
 </dd></dl>
 
 <dl class="class">
 <dt id="lumos.model.ucore.UCore">
-<em class="property">class </em><tt class="descclassname">lumos.model.ucore.</tt><tt class="descname">UCore</tt><big>(</big><em>area=0</em>, <em>ctype=None</em>, <em>mech=None</em>, <em>tech=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/ucore.html#UCore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.ucore.UCore" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<em class="property">class </em><code class="descclassname">lumos.model.ucore.</code><code class="descname">UCore</code><span class="sig-paren">(</span><em>uid</em>, <em>area=0</em>, <em>ctype=None</em>, <em>tech=None</em>, <em>model_name='hp'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/ucore.html#UCore"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.ucore.UCore" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
 <dl class="attribute">
 <dt id="lumos.model.ucore.UCore.area">
-<tt class="descname">area</tt><a class="reference internal" href="../_modules/lumos/model/ucore.html#UCore.area"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.ucore.UCore.area" title="Permalink to this definition">¶</a></dt>
+<code class="descname">area</code><a class="headerlink" href="#lumos.model.ucore.UCore.area" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the area of the core</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="lumos.model.ucore.UCore.bandwidth">
-<tt class="descname">bandwidth</tt><big>(</big><em>app</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/ucore.html#UCore.bandwidth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.ucore.UCore.bandwidth" title="Permalink to this definition">¶</a></dt>
+<code class="descname">bandwidth</code><span class="sig-paren">(</span><em>app</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/ucore.html#UCore.bandwidth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.ucore.UCore.bandwidth" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the bandwith consumed by the ucore</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">App :</th><td class="field-body">&#64;todo</td>
+<tr class="field-odd field"><th class="field-name">App:</th><td class="field-body">&#64;todo</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">&#64;todo</td>
 </tr>
@@ -1805,19 +864,15 @@ FPGAs, and GPGPUs?</em>, Eric S. Chung, et al., MICRO&#8216;10</div></blockquote
 
 <dl class="method">
 <dt id="lumos.model.ucore.UCore.config">
-<tt class="descname">config</tt><big>(</big><em>mech=None</em>, <em>ctype=None</em>, <em>tech=None</em>, <em>area=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/ucore.html#UCore.config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.ucore.UCore.config" title="Permalink to this definition">¶</a></dt>
+<code class="descname">config</code><span class="sig-paren">(</span><em>tech=None</em>, <em>area=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/ucore.html#UCore.config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.ucore.UCore.config" title="Permalink to this definition">¶</a></dt>
 <dd><p>Configurate ucore characteristics</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Mech :</th><td class="field-body">&#64;todo</td>
+<tr class="field-odd field"><th class="field-name">Tech:</th><td class="field-body">&#64;todo</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Ctype :</th><td class="field-body">&#64;todo</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Tech :</th><td class="field-body">&#64;todo</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Area :</th><td class="field-body">&#64;todo</td>
+<tr class="field-even field"><th class="field-name">Area:</th><td class="field-body">&#64;todo</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">&#64;todo</td>
 </tr>
@@ -1826,36 +881,24 @@ FPGAs, and GPGPUs?</em>, Eric S. Chung, et al., MICRO&#8216;10</div></blockquote
 </dd></dl>
 
 <dl class="attribute">
-<dt id="lumos.model.ucore.UCore.mech">
-<tt class="descname">mech</tt><a class="reference internal" href="../_modules/lumos/model/ucore.html#UCore.mech"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.ucore.UCore.mech" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the scaling mechanism, either ITRS or CON(servative)</p>
-</dd></dl>
+<dt id="lumos.model.ucore.UCore.ctype">
+<code class="descname">ctype</code><a class="headerlink" href="#lumos.model.ucore.UCore.ctype" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="lumos.model.ucore.UCore.perf">
-<tt class="descname">perf</tt><big>(</big><em>app</em>, <em>power=None</em>, <em>bandwidth=None</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/ucore.html#UCore.perf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.ucore.UCore.perf" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the performance score of a u-core</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">App :</th><td class="field-body">&#64;todo</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">&#64;todo</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
+<code class="descname">perf</code><span class="sig-paren">(</span><em>kernel</em>, <em>power=None</em>, <em>bandwidth=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/ucore.html#UCore.perf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.ucore.UCore.perf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="lumos.model.ucore.UCore.power">
-<tt class="descname">power</tt><big>(</big><em>app</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/ucore.html#UCore.power"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.ucore.UCore.power" title="Permalink to this definition">¶</a></dt>
+<code class="descname">power</code><span class="sig-paren">(</span><em>app</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/ucore.html#UCore.power"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.ucore.UCore.power" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the power of a u-core with certain application</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">App :</th><td class="field-body">&#64;todo</td>
+<tr class="field-odd field"><th class="field-name">App:</th><td class="field-body">&#64;todo</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">&#64;todo</td>
 </tr>
@@ -1865,23 +908,29 @@ FPGAs, and GPGPUs?</em>, Eric S. Chung, et al., MICRO&#8216;10</div></blockquote
 
 <dl class="attribute">
 <dt id="lumos.model.ucore.UCore.tech">
-<tt class="descname">tech</tt><a class="reference internal" href="../_modules/lumos/model/ucore.html#UCore.tech"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.ucore.UCore.tech" title="Permalink to this definition">¶</a></dt>
+<code class="descname">tech</code><a class="headerlink" href="#lumos.model.ucore.UCore.tech" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the technology node, in nm</p>
 </dd></dl>
 
 </dd></dl>
 
+<dl class="exception">
+<dt id="lumos.model.ucore.UCoreError">
+<em class="property">exception </em><code class="descclassname">lumos.model.ucore.</code><code class="descname">UCoreError</code><a class="reference internal" href="../_modules/lumos/model/ucore.html#UCoreError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.ucore.UCoreError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">Exception</span></code></p>
+</dd></dl>
+
 </div>
 <div class="section" id="module-lumos.model.workload">
-<span id="workload-module"></span><h2><tt class="xref py py-mod docutils literal"><span class="pre">workload</span></tt> Module<a class="headerlink" href="#module-lumos.model.workload" title="Permalink to this headline">¶</a></h2>
+<span id="lumos-model-workload-module"></span><h2>lumos.model.workload module<a class="headerlink" href="#module-lumos.model.workload" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="lumos.model.workload.add_fixedcov">
-<tt class="descclassname">lumos.model.workload.</tt><tt class="descname">add_fixedcov</tt><big>(</big><em>workload_from</em>, <em>kernels</em>, <em>fixedcov</em>, <em>workload_to</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/workload.html#add_fixedcov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.workload.add_fixedcov" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lumos.model.workload.</code><code class="descname">add_fixedcov</code><span class="sig-paren">(</span><em>workload_from</em>, <em>kernels</em>, <em>fixedcov</em>, <em>workload_to</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/workload.html#add_fixedcov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.workload.add_fixedcov" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
 <dt id="lumos.model.workload.build">
-<tt class="descclassname">lumos.model.workload.</tt><tt class="descname">build</tt><big>(</big><em>app_num</em>, <em>kernels</em>, <em>cov_dist</em>, <em>cov_param1</em>, <em>cov_param2</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/workload.html#build"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.workload.build" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lumos.model.workload.</code><code class="descname">build</code><span class="sig-paren">(</span><em>app_num</em>, <em>kernels</em>, <em>cov_dist</em>, <em>cov_param1</em>, <em>cov_param2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/workload.html#build"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.workload.build" title="Permalink to this definition">¶</a></dt>
 <dd><p>Build a workload composed of applications with the specified
 kernels coverage following a specified distribution.</p>
 <dl class="docutils">
@@ -1912,7 +961,7 @@ param1 is the minimum range, and param2 is the maximum range.</dd>
 
 <dl class="function">
 <dt id="lumos.model.workload.build_fixedcov">
-<tt class="descclassname">lumos.model.workload.</tt><tt class="descname">build_fixedcov</tt><big>(</big><em>app_num</em>, <em>kernels</em>, <em>cov</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/workload.html#build_fixedcov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.workload.build_fixedcov" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lumos.model.workload.</code><code class="descname">build_fixedcov</code><span class="sig-paren">(</span><em>app_num</em>, <em>kernels</em>, <em>cov</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/workload.html#build_fixedcov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.workload.build_fixedcov" title="Permalink to this definition">¶</a></dt>
 <dd><p>Build a workload composed of applications each of which includes a
 kernel with the given coverage. The selection of a kernel for an
 application follows the occur probability of that kernel.</p>
@@ -1939,40 +988,37 @@ application, e.g. 0.4</dd>
 
 <dl class="function">
 <dt id="lumos.model.workload.build_with_single_kernel">
-<tt class="descclassname">lumos.model.workload.</tt><tt class="descname">build_with_single_kernel</tt><big>(</big><em>kernels</em>, <em>cov_params</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/workload.html#build_with_single_kernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.workload.build_with_single_kernel" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lumos.model.workload.</code><code class="descname">build_with_single_kernel</code><span class="sig-paren">(</span><em>kernels</em>, <em>cov_params</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/workload.html#build_with_single_kernel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.workload.build_with_single_kernel" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-<dl class="function">
-<dt id="lumos.model.workload.dump">
-<tt class="descclassname">lumos.model.workload.</tt><tt class="descname">dump</tt><big>(</big><em>workload</em>, <em>fname='workload.cfg'</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/workload.html#dump"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.workload.dump" title="Permalink to this definition">¶</a></dt>
-<dd><p>Dump workload into a file</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Workload :</th><td class="field-body">&#64;todo</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Fname :</th><td class="field-body">&#64;todo</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">&#64;todo</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
 
 <dl class="function">
 <dt id="lumos.model.workload.dump_xml">
-<tt class="descclassname">lumos.model.workload.</tt><tt class="descname">dump_xml</tt><big>(</big><em>workload</em>, <em>fname='workload.xml'</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/workload.html#dump_xml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.workload.dump_xml" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">lumos.model.workload.</code><code class="descname">dump_xml</code><span class="sig-paren">(</span><em>workload</em>, <em>fname='workload.xml'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/workload.html#dump_xml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.workload.dump_xml" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="lumos.model.workload.load">
-<tt class="descclassname">lumos.model.workload.</tt><tt class="descname">load</tt><big>(</big><em>fname='workload.cfg'</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/workload.html#load"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.workload.load" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="lumos.model.workload.load_from_xml">
+<code class="descclassname">lumos.model.workload.</code><code class="descname">load_from_xml</code><span class="sig-paren">(</span><em>kernels</em>, <em>fname='workload.xml'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/workload.html#load_from_xml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.workload.load_from_xml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a workload (a set of applications) from an XML file</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>fname (filepath):</dt>
+<dd>The XML file to be loaded</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd><dl class="first last docutils">
+<dt>workload (dict):</dt>
+<dd>A dict of applications this workload contains, indexed by application name</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="function">
-<dt id="lumos.model.workload.load_xml">
-<tt class="descclassname">lumos.model.workload.</tt><tt class="descname">load_xml</tt><big>(</big><em>fname='workload.xml'</em><big>)</big><a class="reference internal" href="../_modules/lumos/model/workload.html#load_xml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.workload.load_xml" title="Permalink to this definition">¶</a></dt>
+<dt id="lumos.model.workload.load_workload">
+<code class="descclassname">lumos.model.workload.</code><code class="descname">load_workload</code><span class="sig-paren">(</span><em>kernels</em>, <em>fname='workload.xml'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model/workload.html#load_workload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.workload.load_workload" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load a workload from an XML file</p>
 <dl class="docutils">
 <dt>Args:</dt>
@@ -1983,39 +1029,83 @@ application, e.g. 0.4</dd>
 </dd>
 <dt>Returns:</dt>
 <dd><dl class="first last docutils">
-<dt>workload (list):</dt>
-<dd>A list of applications this workload contains.</dd>
+<dt>workload (dict):</dt>
+<dd>A dict of applications this workload contains, indexed by application name</dd>
 </dl>
 </dd>
 </dl>
 </dd></dl>
 
 </div>
+<div class="section" id="module-lumos.model">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-lumos.model" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="lumos.model.Budget">
+<em class="property">class </em><code class="descclassname">lumos.model.</code><code class="descname">Budget</code><span class="sig-paren">(</span><em>area=0</em>, <em>power=0</em>, <em>bw=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/lumos/model.html#Budget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#lumos.model.Budget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="http://docs.python.org/library/functions.html#object" title="(in Python v2.7)"><code class="xref py py-class docutils literal"><span class="pre">object</span></code></a></p>
+<p>Physical constraints for a system, including area, power, and memory bandwidth</p>
+<dl class="attribute">
+<dt id="lumos.model.Budget.area">
+<code class="descname">area</code><a class="headerlink" href="#lumos.model.Budget.area" title="Permalink to this definition">¶</a></dt>
+<dd><p>Total area of a system, in mili-meters (mm^2)</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lumos.model.Budget.bw">
+<code class="descname">bw</code><a class="headerlink" href="#lumos.model.Budget.bw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Total available memory bandwidth of a system, in GBytes/S.</p>
+<p><cite>bw</cite> is in a form of python dict indexed by technology nodes, which looks like:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="p">{</span><span class="mi">45</span><span class="p">:</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">32</span><span class="p">:</span> <span class="mi">198</span><span class="p">,</span>
+ <span class="mi">22</span><span class="p">:</span> <span class="mi">234</span><span class="p">,</span> <span class="mi">16</span><span class="p">:</span> <span class="mi">252</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="lumos.model.Budget.power">
+<code class="descname">power</code><a class="headerlink" href="#lumos.model.Budget.power" title="Permalink to this definition">¶</a></dt>
+<dd><p>Total TDP of a system, in watts (W)</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="data">
+<dt id="lumos.model.Sys_L">
+<code class="descclassname">lumos.model.</code><code class="descname">Sys_L</code><em class="property"> = &lt;lumos.model.Budget object&gt;</em><a class="headerlink" href="#lumos.model.Sys_L" title="Permalink to this definition">¶</a></dt>
+<dd><p>A predefined budget for large system, similar to SPARC T4</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="lumos.model.Sys_M">
+<code class="descclassname">lumos.model.</code><code class="descname">Sys_M</code><em class="property"> = &lt;lumos.model.Budget object&gt;</em><a class="headerlink" href="#lumos.model.Sys_M" title="Permalink to this definition">¶</a></dt>
+<dd><p>A predefined budget for medium system, similar to Xeon processor</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="lumos.model.Sys_S">
+<code class="descclassname">lumos.model.</code><code class="descname">Sys_S</code><em class="property"> = &lt;lumos.model.Budget object&gt;</em><a class="headerlink" href="#lumos.model.Sys_S" title="Permalink to this definition">¶</a></dt>
+<dd><p>A predefined budget for small system, similar to Core2 processor</p>
+</dd></dl>
+
+</div>
 </div>
 
 
-          </div>
-        </div>
-      </div>
-      <div class="clearer"></div>
     </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="../index.html">Lumos home</a>&nbsp;|</li>
-        <li><a href="../contents.html">Documentation</a> &raquo;</li>
- 
-      </ul>
-    </div>
-    <div class="footer">
-        &copy; Copyright 2013, Liang Wang.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
-    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2013, Liang Wang.<br/>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.<br/>
+    </p>
+  </div>
+</footer>
   </body>
 </html>

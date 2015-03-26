@@ -1,6 +1,4 @@
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -9,8 +7,11 @@
     
     <title>lumos.model.workload &mdash; Lumos 0.1 documentation</title>
     
-    <link rel="stylesheet" href="../../../_static/lumos.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/bootstrap-3.2.0/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/bootstrap-3.2.0/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/bootstrap-sphinx.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -24,104 +25,104 @@
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../_static/bootstrap-sphinx.js"></script>
     <link rel="top" title="Lumos 0.1 documentation" href="../../../index.html" />
-    <link rel="up" title="Module code" href="../../index.html" />
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
-          rel='stylesheet' type='text/css'>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
- 
-    <style type="text/css">
-      table.right { float: right; margin-left: 20px; }
-      table.right td { border: 1px solid #ccc; }
-      
-    </style>
-    <script type="text/javascript">
-      // intelligent scrolling of the sidebar content
-      $(window).scroll(function() {
-        var sb = $('.sphinxsidebarwrapper');
-        var win = $(window);
-        var sbh = sb.height();
-        var offset = $('.sphinxsidebar').position()['top'];
-        var wintop = win.scrollTop();
-        var winbot = wintop + win.innerHeight();
-        var curtop = sb.position()['top'];
-        var curbot = curtop + sbh;
-        // does sidebar fit in window?
-        if (sbh < win.innerHeight()) {
-          // yes: easy case -- always keep at the top
-          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
-                                $(document).height() - sbh - 200]));
-        } else {
-          // no: only scroll if top/bottom edge of sidebar is at
-          // top/bottom edge of window
-          if (curtop > wintop && curbot > winbot) {
-            sb.css('top', $u.max([wintop - offset - 10, 0]));
-          } else if (curtop < wintop && curbot < winbot) {
-            sb.css('top', $u.min([winbot - sbh - offset - 20,
-                                  $(document).height() - sbh - 200]));
-          }
-        }
-      });
-    </script>
+    <link rel="up" title="lumos.model" href="../model.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
 
   </head>
-  <body>
-<div class="pageheader">
-  <div>
-    <a href="../../../index.html">
-      <img src="../../../_static/lumos.png" alt="LUMOS" />
-    </a>
-  </div>
-</div>
+  <body role="document">
 
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="../../../index.html">Lumos home</a>&nbsp;|</li>
-        <li><a href="../../../contents.html">Documentation</a> &raquo;</li>
-
-          <li><a href="../../index.html" accesskey="U">Module code</a> &raquo;</li> 
-      </ul>
-    </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../index.html">
+          Lumos</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
       </div>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body">
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
             
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="simple">
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
   <h1>Source code for lumos.model.workload</h1><div class="highlight"><pre>
 <span class="c">#!/usr/bin/env python</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">application</span>
-<span class="kn">from</span> <span class="nn">application</span> <span class="kn">import</span> <span class="n">App</span>
-<span class="kn">import</span> <span class="nn">kernel</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">application</span>
+<span class="c"># from .application import App</span>
+<span class="kn">from</span> <span class="nn">.application</span> <span class="kn">import</span> <span class="n">Application</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">kernel</span>
 <span class="kn">import</span> <span class="nn">scipy.stats</span>
-<span class="kn">import</span> <span class="nn">ConfigParser</span>
-<span class="c">#import xml.etree.ElementTree as ET</span>
+<span class="c"># import ConfigParser</span>
+<span class="c"># import xml.etree.ElementTree as ET</span>
 <span class="kn">from</span> <span class="nn">lxml</span> <span class="kn">import</span> <span class="n">etree</span>
 
 
@@ -216,27 +217,27 @@
 
     <span class="k">return</span> <span class="n">workload</span>
 
-</div>
-<div class="viewcode-block" id="dump"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.workload.dump">[docs]</a><span class="k">def</span> <span class="nf">dump</span><span class="p">(</span><span class="n">workload</span><span class="p">,</span> <span class="n">fname</span><span class="o">=</span><span class="s">&#39;workload.cfg&#39;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Dump workload into a file</span>
 
-<span class="sd">    :workload: @todo</span>
-<span class="sd">    :fname: @todo</span>
-<span class="sd">    :returns: @todo</span>
+<span class="c"># def dump(workload, fname=&#39;workload.cfg&#39;):</span>
+<span class="c">#     &quot;&quot;&quot;Dump workload into a file</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">cfg</span> <span class="o">=</span> <span class="n">ConfigParser</span><span class="o">.</span><span class="n">RawConfigParser</span><span class="p">()</span>
-    <span class="n">app_num</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">workload</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">app_num</span><span class="p">):</span>
-        <span class="n">app</span> <span class="o">=</span> <span class="n">workload</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-        <span class="n">cfg</span><span class="o">.</span><span class="n">add_section</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
-        <span class="n">kernels</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">kernels</span>
-        <span class="n">kernel_config</span> <span class="o">=</span> <span class="s">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span> <span class="p">[</span> <span class="s">&#39;</span><span class="si">%s</span><span class="s">:</span><span class="si">%.3e</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">kid</span><span class="p">,</span> <span class="n">kernels</span><span class="p">[</span><span class="n">kid</span><span class="p">])</span> <span class="k">for</span> <span class="n">kid</span> <span class="ow">in</span> <span class="n">kernels</span><span class="p">]</span> <span class="p">)</span>
-        <span class="n">cfg</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&#39;f_parallel&#39;</span><span class="p">,</span> <span class="n">app</span><span class="o">.</span><span class="n">f</span><span class="p">)</span>
-        <span class="n">cfg</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s">&#39;kernel_config&#39;</span><span class="p">,</span> <span class="n">kernel_config</span><span class="p">)</span>
+<span class="c">#     :workload: @todo</span>
+<span class="c">#     :fname: @todo</span>
+<span class="c">#     :returns: @todo</span>
 
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="s">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
-        <span class="n">cfg</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="c">#     &quot;&quot;&quot;</span>
+<span class="c">#     cfg = ConfigParser.RawConfigParser()</span>
+<span class="c">#     app_num = len(workload)</span>
+<span class="c">#     for idx in xrange(app_num):</span>
+<span class="c">#         app = workload[idx]</span>
+<span class="c">#         cfg.add_section(app.name)</span>
+<span class="c">#         kernels = app.kernels</span>
+<span class="c">#         kernel_config = &#39;,&#39;.join( [ &#39;%s:%.3e&#39; % (kid, kernels[kid]) for kid in kernels] )</span>
+<span class="c">#         cfg.set(app.name, &#39;f_parallel&#39;, app.f)</span>
+<span class="c">#         cfg.set(app.name, &#39;kernel_config&#39;, kernel_config)</span>
+
+<span class="c">#     with open(fname, &#39;wb&#39;) as f:</span>
+<span class="c">#         cfg.write(f)</span>
 
 </div>
 <div class="viewcode-block" id="dump_xml"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.workload.dump_xml">[docs]</a><span class="k">def</span> <span class="nf">dump_xml</span><span class="p">(</span><span class="n">workload</span><span class="p">,</span> <span class="n">fname</span><span class="o">=</span><span class="s">&#39;workload.xml&#39;</span><span class="p">):</span>
@@ -258,28 +259,59 @@
 
     <span class="n">tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">ElementTree</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
     <span class="n">tree</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="n">pretty_print</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="c"># def load(fname=&#39;workload.cfg&#39;):</span>
+<span class="c">#     cfg = ConfigParser.RawConfigParser()</span>
+<span class="c">#     cfg.read(fname)</span>
+<span class="c">#     worklord = []</span>
+<span class="c">#     for sec in cfg.sections():</span>
+<span class="c">#         app_name = sec</span>
+<span class="c">#         app_f = float(cfg.get(sec, &#39;f_parallel&#39;))</span>
+<span class="c">#         app = App(f=app_f, name=app_name)</span>
+<span class="c">#         kernel_config = cfg.get(sec, &#39;kernel_config&#39;)</span>
+<span class="c">#         for kcfg in kernel_config.split(&#39;,&#39;):</span>
+<span class="c">#             kcfg_tmp = kcfg.split(&#39;:&#39;)</span>
+<span class="c">#             kid = kcfg_tmp[0]</span>
+<span class="c">#             cov = float(kcfg_tmp[1])</span>
+<span class="c">#             app.reg_kernel(kid, cov)</span>
+<span class="c">#             workload.append(app)</span>
+
+<span class="c">#     return workload</span>
+
 </div>
-<div class="viewcode-block" id="load"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.workload.load">[docs]</a><span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="n">fname</span><span class="o">=</span><span class="s">&#39;workload.cfg&#39;</span><span class="p">):</span>
-    <span class="n">cfg</span> <span class="o">=</span> <span class="n">ConfigParser</span><span class="o">.</span><span class="n">RawConfigParser</span><span class="p">()</span>
-    <span class="n">cfg</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
-    <span class="n">worklord</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">sec</span> <span class="ow">in</span> <span class="n">cfg</span><span class="o">.</span><span class="n">sections</span><span class="p">():</span>
-        <span class="n">app_name</span> <span class="o">=</span> <span class="n">sec</span>
-        <span class="n">app_f</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sec</span><span class="p">,</span> <span class="s">&#39;f_parallel&#39;</span><span class="p">))</span>
-        <span class="n">app</span> <span class="o">=</span> <span class="n">App</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="n">app_f</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">app_name</span><span class="p">)</span>
-        <span class="n">kernel_config</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">sec</span><span class="p">,</span> <span class="s">&#39;kernel_config&#39;</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">kcfg</span> <span class="ow">in</span> <span class="n">kernel_config</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">):</span>
-            <span class="n">kcfg_tmp</span> <span class="o">=</span> <span class="n">kcfg</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;:&#39;</span><span class="p">)</span>
-            <span class="n">kid</span> <span class="o">=</span> <span class="n">kcfg_tmp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">cov</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">kcfg_tmp</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">app</span><span class="o">.</span><span class="n">reg_kernel</span><span class="p">(</span><span class="n">kid</span><span class="p">,</span> <span class="n">cov</span><span class="p">)</span>
-            <span class="n">workload</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+<div class="viewcode-block" id="load_from_xml"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.workload.load_from_xml">[docs]</a><span class="k">def</span> <span class="nf">load_from_xml</span><span class="p">(</span><span class="n">kernels</span><span class="p">,</span> <span class="n">fname</span><span class="o">=</span><span class="s">&#39;workload.xml&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load a workload (a set of applications) from an XML file</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">       fname (filepath):</span>
+<span class="sd">          The XML file to be loaded</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">       workload (dict):</span>
+<span class="sd">          A dict of applications this workload contains, indexed by application name</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">workload</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">app_root</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s">&#39;app&#39;</span><span class="p">):</span>
+        <span class="n">app_name</span> <span class="o">=</span> <span class="n">app_root</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span>
+
+        <span class="n">ele</span> <span class="o">=</span> <span class="n">app_root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;f_parallel&#39;</span><span class="p">)</span>
+        <span class="n">f_parallel</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ele</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+        <span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="n">f_parallel</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">app_name</span><span class="p">)</span>
+
+        <span class="n">kcfg_root</span> <span class="o">=</span> <span class="n">app_root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;kernel_config&#39;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k_ele</span> <span class="ow">in</span> <span class="n">kcfg_root</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s">&#39;kernel&#39;</span><span class="p">):</span>
+            <span class="n">kid</span> <span class="o">=</span> <span class="n">k_ele</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span>
+            <span class="n">kernel</span> <span class="o">=</span> <span class="n">kernels</span><span class="p">[</span><span class="n">kid</span><span class="p">]</span>
+            <span class="n">cov</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">k_ele</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;cov&#39;</span><span class="p">))</span>
+            <span class="n">app</span><span class="o">.</span><span class="n">add_kernel</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span> <span class="n">cov</span><span class="p">)</span>
+
+        <span class="n">workload</span><span class="p">[</span><span class="n">app_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">app</span>
 
     <span class="k">return</span> <span class="n">workload</span>
 
-
 </div>
-<div class="viewcode-block" id="load_xml"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.workload.load_xml">[docs]</a><span class="k">def</span> <span class="nf">load_xml</span><span class="p">(</span><span class="n">fname</span><span class="o">=</span><span class="s">&#39;workload.xml&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="load_workload"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.workload.load_workload">[docs]</a><span class="k">def</span> <span class="nf">load_workload</span><span class="p">(</span><span class="n">kernels</span><span class="p">,</span> <span class="n">fname</span><span class="o">=</span><span class="s">&#39;workload.xml&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Load a workload from an XML file</span>
 
@@ -288,27 +320,60 @@
 <span class="sd">          The XML file to be loaded</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">       workload (list):</span>
-<span class="sd">          A list of applications this workload contains.</span>
+<span class="sd">       workload (dict):</span>
+<span class="sd">          A dict of applications this workload contains, indexed by application name</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">workload</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">workload</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
     <span class="n">tree</span> <span class="o">=</span> <span class="n">etree</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">app_root</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s">&#39;app&#39;</span><span class="p">):</span>
         <span class="n">app_name</span> <span class="o">=</span> <span class="n">app_root</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span>
 
         <span class="n">ele</span> <span class="o">=</span> <span class="n">app_root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;f_parallel&#39;</span><span class="p">)</span>
         <span class="n">f_parallel</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ele</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
-        <span class="n">app</span> <span class="o">=</span> <span class="n">App</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="n">f_parallel</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">app_name</span><span class="p">)</span>
+        <span class="n">app</span> <span class="o">=</span> <span class="n">Application</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="n">f_parallel</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">app_name</span><span class="p">)</span>
 
         <span class="n">kcfg_root</span> <span class="o">=</span> <span class="n">app_root</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;kernel_config&#39;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">k_ele</span> <span class="ow">in</span> <span class="n">kcfg_root</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s">&#39;kernel&#39;</span><span class="p">):</span>
             <span class="n">kid</span> <span class="o">=</span> <span class="n">k_ele</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">)</span>
+            <span class="n">kernel</span> <span class="o">=</span> <span class="n">kernels</span><span class="p">[</span><span class="n">kid</span><span class="p">]</span>
             <span class="n">cov</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">k_ele</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;cov&#39;</span><span class="p">))</span>
-            <span class="n">app</span><span class="o">.</span><span class="n">reg_kernel</span><span class="p">(</span><span class="n">kid</span><span class="p">,</span> <span class="n">cov</span><span class="p">)</span>
+            <span class="n">app</span><span class="o">.</span><span class="n">add_kernel</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span> <span class="n">cov</span><span class="p">)</span>
 
-        <span class="n">workload</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+        <span class="n">workload</span><span class="p">[</span><span class="n">app_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">app</span>
 
     <span class="k">return</span> <span class="n">workload</span>
+
+
+<span class="c"># def load_xml(fname=&#39;workload.xml&#39;):</span>
+<span class="c">#     &quot;&quot;&quot;</span>
+<span class="c">#     Load a workload from an XML file</span>
+
+<span class="c">#     Args:</span>
+<span class="c">#        fname (str):</span>
+<span class="c">#           The XML file to be loaded</span>
+
+<span class="c">#     Returns:</span>
+<span class="c">#        workload (list):</span>
+<span class="c">#           A list of applications this workload contains.</span>
+<span class="c">#     &quot;&quot;&quot;</span>
+<span class="c">#     workload = []</span>
+<span class="c">#     tree = etree.parse(fname)</span>
+<span class="c">#     for app_root in tree.iter(&#39;app&#39;):</span>
+<span class="c">#         app_name = app_root.get(&#39;name&#39;)</span>
+
+<span class="c">#         ele = app_root.find(&#39;f_parallel&#39;)</span>
+<span class="c">#         f_parallel = float(ele.text)</span>
+<span class="c">#         app = App(f=f_parallel, name=app_name)</span>
+
+<span class="c">#         kcfg_root = app_root.find(&#39;kernel_config&#39;)</span>
+<span class="c">#         for k_ele in kcfg_root.iter(&#39;kernel&#39;):</span>
+<span class="c">#             kid = k_ele.get(&#39;name&#39;)</span>
+<span class="c">#             cov = float(k_ele.get(&#39;cov&#39;))</span>
+<span class="c">#             app.reg_kernel(kid, cov)</span>
+
+<span class="c">#         workload.append(app)</span>
+
+<span class="c">#     return workload</span>
 </div>
 <div class="viewcode-block" id="add_fixedcov"><a class="viewcode-back" href="../../../apidoc/lumos.model.html#lumos.model.workload.add_fixedcov">[docs]</a><span class="k">def</span> <span class="nf">add_fixedcov</span><span class="p">(</span><span class="n">workload_from</span><span class="p">,</span> <span class="n">kernels</span><span class="p">,</span> <span class="n">fixedcov</span><span class="p">,</span> <span class="n">workload_to</span><span class="p">):</span>
     <span class="k">if</span> <span class="s">&#39;fixedcov&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kernels</span><span class="p">:</span>
@@ -348,29 +413,21 @@
     <span class="c">#dump_xml(workload, fname=&#39;workload2.xml&#39;)</span>
 </pre></div>
 
-          </div>
-        </div>
-      </div>
-      <div class="clearer"></div>
     </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../../../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../../../py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="../../../index.html">Lumos home</a>&nbsp;|</li>
-        <li><a href="../../../contents.html">Documentation</a> &raquo;</li>
-
-          <li><a href="../../index.html" >Module code</a> &raquo;</li> 
-      </ul>
-    </div>
-    <div class="footer">
-        &copy; Copyright 2013, Liang Wang.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
-    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2013, Liang Wang.<br/>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.<br/>
+    </p>
+  </div>
+</footer>
   </body>
 </html>

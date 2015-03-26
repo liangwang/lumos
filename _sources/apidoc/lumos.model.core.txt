@@ -1,0 +1,46 @@
+lumos.model.core package
+========================
+
+Submodules
+----------
+
+lumos.model.core.io_cmos module
+-------------------------------
+
+.. automodule:: lumos.model.core.io_cmos
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+lumos.model.core.io_tfet module
+-------------------------------
+
+.. automodule:: lumos.model.core.io_tfet
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+lumos.model.core.o3_cmos module
+-------------------------------
+
+.. automodule:: lumos.model.core.o3_cmos
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+lumos.model.core.o3_tfet module
+-------------------------------
+
+.. automodule:: lumos.model.core.o3_tfet
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: lumos.model.core
+    :members:
+    :undoc-members:
+    :show-inheritance:

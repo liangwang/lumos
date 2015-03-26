@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>lumos.model &mdash; Lumos 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/bootstrap-3.2.0/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/bootstrap-3.2.0/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="Lumos 0.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body role="document">
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          Lumos</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="simple">
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <h1>Source code for lumos.model</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+
+<div class="viewcode-block" id="Budget"><a class="viewcode-back" href="../../apidoc/lumos.model.html#lumos.model.Budget">[docs]</a><span class="k">class</span> <span class="nc">Budget</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Physical constraints for a system, including area, power, and memory bandwidth</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">area</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bw</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_area</span> <span class="o">=</span> <span class="n">area</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_power</span> <span class="o">=</span> <span class="n">power</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bw</span> <span class="o">=</span> <span class="n">bw</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">area</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Total area of a system, in mili-meters (mm^2)&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_area</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">power</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Total TDP of a system, in watts (W)&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_power</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">bw</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Total available memory bandwidth of a system, in GBytes/S.</span>
+
+<span class="sd">        `bw` is in a form of python dict indexed by technology nodes, which looks like::</span>
+
+<span class="sd">          {45: 180, 32: 198,</span>
+<span class="sd">           22: 234, 16: 252}</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bw</span>
+
+
+<span class="c"># Predifined budgets</span>
+
+<span class="c">#: A predefined budget for large system, similar to SPARC T4</span></div>
+<span class="n">Sys_L</span> <span class="o">=</span> <span class="n">Budget</span><span class="p">(</span><span class="n">area</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>
+        <span class="n">bw</span> <span class="o">=</span> <span class="p">{</span><span class="mi">45</span><span class="p">:</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">32</span><span class="p">:</span> <span class="mi">198</span><span class="p">,</span>
+            <span class="mi">22</span><span class="p">:</span> <span class="mi">234</span><span class="p">,</span> <span class="mi">16</span><span class="p">:</span> <span class="mi">252</span><span class="p">})</span>
+
+<span class="c">#: A predefined budget for medium system, similar to Xeon processor</span>
+<span class="n">Sys_M</span> <span class="o">=</span> <span class="n">Budget</span><span class="p">(</span><span class="n">area</span><span class="o">=</span><span class="mi">130</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="mi">65</span><span class="p">,</span>
+        <span class="n">bw</span> <span class="o">=</span> <span class="p">{</span><span class="mi">45</span><span class="p">:</span> <span class="mi">117</span><span class="p">,</span> <span class="mi">32</span><span class="p">:</span> <span class="mi">129</span><span class="p">,</span>
+            <span class="mi">22</span><span class="p">:</span> <span class="mi">152</span><span class="p">,</span> <span class="mi">16</span><span class="p">:</span> <span class="mi">164</span><span class="p">})</span>
+
+<span class="c">#: A predefined budget for small system, similar to Core2 processor</span>
+<span class="n">Sys_S</span> <span class="o">=</span> <span class="n">Budget</span><span class="p">(</span><span class="n">area</span><span class="o">=</span><span class="mi">107</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="mi">33</span><span class="p">,</span>
+        <span class="n">bw</span> <span class="o">=</span> <span class="p">{</span><span class="mi">45</span><span class="p">:</span> <span class="mi">96</span><span class="p">,</span> <span class="mi">32</span><span class="p">:</span> <span class="mi">106</span><span class="p">,</span>
+            <span class="mi">22</span><span class="p">:</span> <span class="mi">125</span><span class="p">,</span> <span class="mi">16</span><span class="p">:</span> <span class="mi">135</span><span class="p">})</span>
+
+<span class="n">LargeWithIdealBW</span> <span class="o">=</span> <span class="n">Budget</span><span class="p">(</span><span class="n">area</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span>
+        <span class="n">bw</span> <span class="o">=</span> <span class="p">{</span><span class="mi">45</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">32</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+            <span class="mi">22</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">16</span><span class="p">:</span> <span class="mi">1000</span><span class="p">})</span>
+
+<span class="kn">from</span> <span class="nn">.application</span> <span class="kn">import</span> <span class="n">Application</span><span class="p">,</span> <span class="n">AppDAG</span>
+<span class="kn">from</span> <span class="nn">.tech</span> <span class="kn">import</span> <span class="n">CMOSTechModel</span><span class="p">,</span> <span class="n">TFETTechModel</span>
+<span class="kn">from</span> <span class="nn">.core</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">.kernel</span> <span class="kn">import</span> <span class="n">KernelParam</span><span class="p">,</span> <span class="n">Kernel</span><span class="p">,</span> <span class="n">KernelError</span>
+<span class="kn">from</span> <span class="nn">.asacc</span> <span class="kn">import</span> <span class="n">ASAcc</span>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2013, Liang Wang.<br/>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+lumos.analysis package
+======================
+
+Submodules
+----------
+
+lumos.analysis.argparser module
+-------------------------------
+
+.. automodule:: lumos.analysis.argparser
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: lumos.analysis
+    :members:
+    :undoc-members:
+    :show-inheritance:

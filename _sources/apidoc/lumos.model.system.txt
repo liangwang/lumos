@@ -1,0 +1,54 @@
+lumos.model.system package
+==========================
+
+Submodules
+----------
+
+lumos.model.system.het module
+-----------------------------
+
+.. automodule:: lumos.model.system.het
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+lumos.model.system.hetero module
+--------------------------------
+
+.. automodule:: lumos.model.system.hetero
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+lumos.model.system.hom module
+-----------------------------
+
+.. automodule:: lumos.model.system.hom
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+lumos.model.system.homo module
+------------------------------
+
+.. automodule:: lumos.model.system.homo
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+lumos.model.system.mpsoc module
+-------------------------------
+
+.. automodule:: lumos.model.system.mpsoc
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: lumos.model.system
+    :members:
+    :undoc-members:
+    :show-inheritance:

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>lumos.model.tech.tfet &mdash; Lumos 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/bootstrap-3.2.0/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/bootstrap-3.2.0/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../../../_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="Lumos 0.1 documentation" href="../../../../index.html" />
+    <link rel="up" title="lumos.model.tech" href="../tech.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body role="document">
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../index.html">
+          Lumos</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="simple">
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <h1>Source code for lumos.model.tech.tfet</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+
+<span class="kn">from</span> <span class="nn">lumos</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">TechModelError</span><span class="p">,</span> <span class="n">BaseTechModel</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">homoTFET30nm</span> <span class="k">as</span> <span class="n">tfet_30nm</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">homoTFET60nm</span> <span class="k">as</span> <span class="n">tfet_60nm</span>
+
+<span class="n">_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&#39;TFETTechModel&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">:</span>
+    <span class="n">_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="TFETTechModel"><a class="viewcode-back" href="../../../../apidoc/lumos.model.tech.tfet.html#lumos.model.tech.tfet.TFETTechModel">[docs]</a><span class="k">class</span> <span class="nc">TFETTechModel</span><span class="p">(</span><span class="n">BaseTechModel</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">model_name</span> <span class="o">==</span> <span class="s">&#39;homoTFET30nm&#39;</span><span class="p">:</span>
+            <span class="n">tech</span> <span class="o">=</span> <span class="n">tfet_30nm</span>
+        <span class="k">elif</span> <span class="n">model_name</span> <span class="o">==</span> <span class="s">&#39;homoTFET60nm&#39;</span><span class="p">:</span>
+            <span class="n">tech</span> <span class="o">=</span> <span class="n">tfet_60nm</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TechModelError</span><span class="p">(</span><span class="s">&#39;Unknown model name: {0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model_name</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_freq_dict</span> <span class="o">=</span> <span class="n">tech</span><span class="o">.</span><span class="n">freq_dict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_power_dict</span> <span class="o">=</span> <span class="n">tech</span><span class="o">.</span><span class="n">dynamic_power_dict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_static_power_dict</span> <span class="o">=</span> <span class="n">tech</span><span class="o">.</span><span class="n">static_power_dict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vnom_dict</span> <span class="o">=</span> <span class="n">tech</span><span class="o">.</span><span class="n">vnom_dict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">area_scale</span> <span class="o">=</span> <span class="n">tech</span><span class="o">.</span><span class="n">area_scale</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dynamic_power_scale</span> <span class="o">=</span> <span class="n">tech</span><span class="o">.</span><span class="n">dp_scale</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">static_power_scale</span> <span class="o">=</span> <span class="n">tech</span><span class="o">.</span><span class="n">sp_scale</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fnom_scale</span> <span class="o">=</span> <span class="n">tech</span><span class="o">.</span><span class="n">fnom_scale</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">perf_scale</span> <span class="o">=</span> <span class="n">tech</span><span class="o">.</span><span class="n">perf_scale</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">TFETTechModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">model_name</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TFETTechModel.dynamic_power"><a class="viewcode-back" href="../../../../apidoc/lumos.model.tech.tfet.html#lumos.model.tech.tfet.TFETTechModel.dynamic_power">[docs]</a>    <span class="k">def</span> <span class="nf">dynamic_power</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tech</span><span class="p">,</span> <span class="n">vdd_mv</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">vdd_scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_power_dict</span><span class="p">[</span><span class="n">tech</span><span class="p">][</span><span class="n">vdd_mv</span><span class="p">]</span> <span class="o">/</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">_dynamic_power_dict</span><span class="p">[</span><span class="n">tech</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">vnom</span><span class="p">(</span><span class="n">tech</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TechModelError</span><span class="p">(</span><span class="s">&#39;No dynamic power for Vdd: {0}mV at {1}nm&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vdd_mv</span><span class="p">,</span> <span class="n">tech</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">vdd_scale</span>
+</div>
+<div class="viewcode-block" id="TFETTechModel.static_power"><a class="viewcode-back" href="../../../../apidoc/lumos.model.tech.tfet.html#lumos.model.tech.tfet.TFETTechModel.static_power">[docs]</a>    <span class="k">def</span> <span class="nf">static_power</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tech</span><span class="p">,</span> <span class="n">vdd_mv</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">vdd_scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_static_power_dict</span><span class="p">[</span><span class="n">tech</span><span class="p">][</span><span class="n">vdd_mv</span><span class="p">]</span> <span class="o">/</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">_static_power_dict</span><span class="p">[</span><span class="n">tech</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">vnom</span><span class="p">(</span><span class="n">tech</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TechModelError</span><span class="p">(</span><span class="s">&#39;No static power for Vdd: {0}mV at {1}nm&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vdd_mv</span><span class="p">,</span> <span class="n">tech</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">vdd_scale</span>
+</div>
+<div class="viewcode-block" id="TFETTechModel.power"><a class="viewcode-back" href="../../../../apidoc/lumos.model.tech.tfet.html#lumos.model.tech.tfet.TFETTechModel.power">[docs]</a>    <span class="k">def</span> <span class="nf">power</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tech</span><span class="p">,</span> <span class="n">vdd_mv</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="TFETTechModel.freq"><a class="viewcode-back" href="../../../../apidoc/lumos.model.tech.tfet.html#lumos.model.tech.tfet.TFETTechModel.freq">[docs]</a>    <span class="k">def</span> <span class="nf">freq</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tech</span><span class="p">,</span> <span class="n">vdd_mv</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">vdd_scale</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_freq_dict</span><span class="p">[</span><span class="n">tech</span><span class="p">][</span><span class="n">vdd_mv</span><span class="p">]</span> <span class="o">/</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">_freq_dict</span><span class="p">[</span><span class="n">tech</span><span class="p">][</span><span class="bp">self</span><span class="o">.</span><span class="n">vnom</span><span class="p">(</span><span class="n">tech</span><span class="p">)]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">TechModelError</span><span class="p">(</span><span class="s">&#39;No freq for Vdd: {0}mV at {1}nm&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vdd_mv</span><span class="p">,</span> <span class="n">tech</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">vdd_scale</span>
+</div>
+<div class="viewcode-block" id="TFETTechModel.vnom"><a class="viewcode-back" href="../../../../apidoc/lumos.model.tech.tfet.html#lumos.model.tech.tfet.TFETTechModel.vnom">[docs]</a>    <span class="k">def</span> <span class="nf">vnom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tech</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">vnom_dict</span><span class="p">[</span><span class="n">tech</span><span class="p">]</span>
+</div>
+<div class="viewcode-block" id="TFETTechModel.vmin"><a class="viewcode-back" href="../../../../apidoc/lumos.model.tech.tfet.html#lumos.model.tech.tfet.TFETTechModel.vmin">[docs]</a>    <span class="k">def</span> <span class="nf">vmin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tech</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vmin</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_vmin</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_freq_dict</span><span class="p">[</span><span class="n">tech</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TechModelError</span><span class="p">(</span><span class="s">&#39;No freq for tech node at {0}nm&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tech</span><span class="p">))</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vmin</span>
+</div>
+<div class="viewcode-block" id="TFETTechModel.vmax"><a class="viewcode-back" href="../../../../apidoc/lumos.model.tech.tfet.html#lumos.model.tech.tfet.TFETTechModel.vmax">[docs]</a>    <span class="k">def</span> <span class="nf">vmax</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tech</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vmax</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_vmax</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_freq_dict</span><span class="p">[</span><span class="n">tech</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">TechModelError</span><span class="p">(</span><span class="s">&#39;No freq for tech node at {0}nm&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tech</span><span class="p">))</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vmax</span></div></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2013, Liang Wang.<br/>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

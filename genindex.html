@@ -1,8 +1,5 @@
 
-
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -11,12 +8,15 @@
     
     <title>Index &mdash; Lumos 0.1 documentation</title>
     
-    <link rel="stylesheet" href="_static/lumos.css" type="text/css" />
+    <link rel="stylesheet" href="_static/basic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-3.2.0/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-3.2.0/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="_static/bootstrap-sphinx.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '',
+        URL_ROOT:    './',
         VERSION:     '0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
@@ -26,96 +26,93 @@
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="_static/bootstrap-sphinx.js"></script>
     <link rel="top" title="Lumos 0.1 documentation" href="index.html" />
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700'
-          rel='stylesheet' type='text/css'>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
- 
-    <style type="text/css">
-      table.right { float: right; margin-left: 20px; }
-      table.right td { border: 1px solid #ccc; }
-      
-    </style>
-    <script type="text/javascript">
-      // intelligent scrolling of the sidebar content
-      $(window).scroll(function() {
-        var sb = $('.sphinxsidebarwrapper');
-        var win = $(window);
-        var sbh = sb.height();
-        var offset = $('.sphinxsidebar').position()['top'];
-        var wintop = win.scrollTop();
-        var winbot = wintop + win.innerHeight();
-        var curtop = sb.position()['top'];
-        var curbot = curtop + sbh;
-        // does sidebar fit in window?
-        if (sbh < win.innerHeight()) {
-          // yes: easy case -- always keep at the top
-          sb.css('top', $u.min([$u.max([0, wintop - offset - 10]),
-                                $(document).height() - sbh - 200]));
-        } else {
-          // no: only scroll if top/bottom edge of sidebar is at
-          // top/bottom edge of window
-          if (curtop > wintop && curbot > winbot) {
-            sb.css('top', $u.max([wintop - offset - 10, 0]));
-          } else if (curtop < wintop && curbot < winbot) {
-            sb.css('top', $u.min([winbot - sbh - offset - 20,
-                                  $(document).height() - sbh - 200]));
-          }
-        }
-      });
-    </script>
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
 
   </head>
-  <body>
-<div class="pageheader">
-  <div>
-    <a href="index.html">
-      <img src="_static/lumos.png" alt="LUMOS" />
-    </a>
-  </div>
-</div>
+  <body role="document">
 
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="#" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="index.html">Lumos home</a>&nbsp;|</li>
-        <li><a href="contents.html">Documentation</a> &raquo;</li>
- 
-      </ul>
-    </div>
-      <div class="sphinxsidebar">
-        <div class="sphinxsidebarwrapper">
-
-   
-
-<div id="searchbox" style="display: none">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          Lumos</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
       </div>
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body">
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
             
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="simple">
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
 
 <h1 id="index">Index</h1>
 
@@ -124,6 +121,7 @@
  | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
  | <a href="#H"><strong>H</strong></a>
@@ -145,11 +143,11 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.core.AbstractCore">AbstractCore (class in lumos.model.core)</a>
+  <dt><a href="apidoc/lumos.analysis.html#lumos.analysis.argparser.LumosArgumentParser.add_argument">add_argument() (lumos.analysis.argparser.LumosArgumentParser method)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.chip.Unit.add_delay">add_delay() (lumos.model.chip.Unit method)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.application.AppDAG.add_dependence">add_dependence() (lumos.model.application.AppDAG method)</a>
   </dt>
 
       
@@ -157,186 +155,48 @@
   </dt>
 
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.chip.Chip.add_tmap">add_tmap() (lumos.model.chip.Chip method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.chip.Chip.add_vthmap">add_vthmap() (lumos.model.chip.Chip method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_deriv.anal">anal() (in module lumos.analyses.dimsi_deriv)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.core.analyze">analyze() (in module lumos.analyses.core)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.application.AppDAG.add_kernel">add_kernel() (lumos.model.application.AppDAG method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicdual_mt.ASICDual.analyze">(lumos.analyses.asicdual_mt.ASICDual method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicinc_mt.ASICInc.analyze">(lumos.analyses.asicinc_mt.ASICInc method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.ASICOpt.analyze">(lumos.analyses.asicopt_mt.ASICOpt method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.FPGASensitivity.analyze">(lumos.analyses.asicopt_mt.FPGASensitivity method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.FixedArea.analyze">(lumos.analyses.asicopt_mt.FixedArea method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicquad_mt.ASICQuad.analyze">(lumos.analyses.asicquad_mt.ASICQuad method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asictriple_mt.ASICTriple.analyze">(lumos.analyses.asictriple_mt.ASICTriple method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.diminc_mt.DimInc.analyze">(lumos.analyses.diminc_mt.DimInc method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.DimsiFPGA.analyze">(lumos.analyses.dimsi_fpga_mt.DimsiFPGA method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.FPGASensitivity.analyze">(lumos.analyses.dimsi_fpga_mt.FPGASensitivity method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.FixedArea.analyze">(lumos.analyses.dimsi_fpga_mt.FixedArea method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICAnalysis.analyze">(lumos.analyses.dist_ucore_mt.ASICAnalysis method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICDual.analyze">(lumos.analyses.dist_ucore_mt.ASICDual method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICQuad.analyze">(lumos.analyses.dist_ucore_mt.ASICQuad method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICSingle.analyze">(lumos.analyses.dist_ucore_mt.ASICSingle method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICTriple.analyze">(lumos.analyses.dist_ucore_mt.ASICTriple method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.FPGAAnalysis.analyze">(lumos.analyses.dist_ucore_mt.FPGAAnalysis method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.FPGAFixedArea.analyze">(lumos.analyses.dist_ucore_mt.FPGAFixedArea method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.FPGAFixedArea2.analyze">(lumos.analyses.dist_ucore_mt.FPGAFixedArea2 method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.Hybrid.analyze">(lumos.analyses.dist_ucore_mt.Hybrid method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.Dasi2012Analysis.analyze">(lumos.analyses.final.Dasi2012Analysis method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.ParallelismAnalysis.analyze">(lumos.analyses.final.ParallelismAnalysis method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.PenaltyAdjustAnalysis.analyze">(lumos.analyses.final.PenaltyAdjustAnalysis method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.VariationImpactAnalysis.analyze">(lumos.analyses.final.VariationImpactAnalysis method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.fpgainc_mt.FPGAInc.analyze">(lumos.analyses.fpgainc_mt.FPGAInc method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.fpgainc_mt.FPGAOpt.analyze">(lumos.analyses.fpgainc_mt.FPGAOpt method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.heterosys_example.HeterosysExample.analyze">(lumos.analyses.heterosys_example.HeterosysExample method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.homosys_example.HomosysExample.analyze">(lumos.analyses.homosys_example.HomosysExample method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.ioo3.IOO3.analyze">(lumos.analyses.ioo3.IOO3 method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.o3sel.IOO3.analyze">(lumos.analyses.o3sel.IOO3 method)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.application.Application.add_kernel">(lumos.model.application.Application method)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.ParallelismAnalysis.analyze_darkdim">analyze_darkdim() (lumos.analyses.final.ParallelismAnalysis method)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.kernel.Kernel.add_kernel_param">add_kernel_param() (lumos.model.kernel.Kernel method)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.ParallelismAnalysis.analyze_hplp">analyze_hplp() (lumos.analyses.final.ParallelismAnalysis method)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.ucore.AppAccelerator">AppAccelerator (class in lumos.model.ucore)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="apidoc/lumos.model.html#lumos.model.application.AppDAG">AppDAG (class in lumos.model.application)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.MainAnalyzer.analyze_var_penalty">analyze_var_penalty() (lumos.analyses.final.MainAnalyzer method)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.application.Application">Application (class in lumos.model.application)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.application.App">App (class in lumos.model.application)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.application.ApplicationError">ApplicationError</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.application.AppBS">AppBS (class in lumos.model.application)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.application.AppFFT64">AppFFT64 (class in lumos.model.application)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.application.AppMMM">AppMMM (class in lumos.model.application)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.core.AbstractCore.area">area (lumos.model.core.AbstractCore attribute)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.asacc.ASAcc.area">area (lumos.model.asacc.ASAcc attribute)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.model.html#lumos.model.fedcore.FedCore.area">(lumos.model.fedcore.FedCore attribute)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.Budget.area">(lumos.model.Budget attribute)</a>
   </dt>
 
         
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.Base.area">(lumos.model.tech.Base attribute)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.Scale.area">(lumos.model.tech.Scale attribute)</a>
+  <dt><a href="apidoc/lumos.model.core.html#lumos.model.core.BaseCore.area">(lumos.model.core.BaseCore attribute)</a>
   </dt>
 
         
@@ -345,105 +205,11 @@
 
       </dl></dd>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.ucore.ASIC">ASIC (class in lumos.model.ucore)</a>
-  </dt>
-
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICAnalysis">ASICAnalysis (class in lumos.analyses.dist_ucore_mt)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.asacc.ASAcc">ASAcc (class in lumos.model.asacc)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICAnalysis.Worker">ASICAnalysis.Worker (class in lumos.analyses.dist_ucore_mt)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicdual_mt.ASICDual">ASICDual (class in lumos.analyses.asicdual_mt)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICDual">(class in lumos.analyses.dist_ucore_mt)</a>
-  </dt>
-
-      </dl></dd>
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicdual_mt.ASICDual.Worker">ASICDual.Worker (class in lumos.analyses.asicdual_mt)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICDual.Worker">(class in lumos.analyses.dist_ucore_mt)</a>
-  </dt>
-
-      </dl></dd>
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicinc_mt.ASICInc">ASICInc (class in lumos.analyses.asicinc_mt)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicinc_mt.ASICInc.Worker">ASICInc.Worker (class in lumos.analyses.asicinc_mt)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.ASICOpt">ASICOpt (class in lumos.analyses.asicopt_mt)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.ASICOpt.Worker">ASICOpt.Worker (class in lumos.analyses.asicopt_mt)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicquad_mt.ASICQuad">ASICQuad (class in lumos.analyses.asicquad_mt)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICQuad">(class in lumos.analyses.dist_ucore_mt)</a>
-  </dt>
-
-      </dl></dd>
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicquad_mt.ASICQuad.Worker">ASICQuad.Worker (class in lumos.analyses.asicquad_mt)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICQuad.Worker">(class in lumos.analyses.dist_ucore_mt)</a>
-  </dt>
-
-      </dl></dd>
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICSingle">ASICSingle (class in lumos.analyses.dist_ucore_mt)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICSingle.Worker">ASICSingle.Worker (class in lumos.analyses.dist_ucore_mt)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asictriple_mt.ASICTriple">ASICTriple (class in lumos.analyses.asictriple_mt)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICTriple">(class in lumos.analyses.dist_ucore_mt)</a>
-  </dt>
-
-      </dl></dd>
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asictriple_mt.ASICTriple.Worker">ASICTriple.Worker (class in lumos.analyses.asictriple_mt)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICTriple.Worker">(class in lumos.analyses.dist_ucore_mt)</a>
-  </dt>
-
-      </dl></dd>
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.AsymSys">AsymSys (class in lumos.model.system)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.asacc.ASAccError">ASAccError</a>
   </dt>
 
   </dl></td>
@@ -453,67 +219,35 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.core.IOCore.bandwidth">bandwidth() (lumos.model.core.IOCore method)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.asacc.ASAcc.bandwidth">bandwidth() (lumos.model.asacc.ASAcc method)</a>
   </dt>
 
       <dd><dl>
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.ucore.ASIC.bandwidth">(lumos.model.ucore.ASIC method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.ucore.FPGA.bandwidth">(lumos.model.ucore.FPGA method)</a>
-  </dt>
-
         
   <dt><a href="apidoc/lumos.model.html#lumos.model.ucore.UCore.bandwidth">(lumos.model.ucore.UCore method)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.Base">Base (class in lumos.model.tech)</a>
+  <dt><a href="apidoc/lumos.model.core.html#lumos.model.core.BaseCore">BaseCore (class in lumos.model.core)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.analysis.BaseAnalysis">BaseAnalysis (class in lumos.analyses.analysis)</a>
+  <dt><a href="apidoc/lumos.model.core.html#lumos.model.core.BaseCoreError">BaseCoreError</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.budget.Budget">Budget (class in lumos.model.budget)</a>
+  <dt><a href="apidoc/lumos.model.tech.html#lumos.model.tech.BaseTechModel">BaseTechModel (class in lumos.model.tech)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.application.build">build() (in module lumos.model.application)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.Budget">Budget (class in lumos.model)</a>
   </dt>
 
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.workload.build">(in module lumos.model.workload)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.System.build">(lumos.model.system.System method)</a>
-  </dt>
-
-      </dl></dd>
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICDual.build_app">build_app() (lumos.analyses.dist_ucore_mt.ASICDual method)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICSingle.build_app">(lumos.analyses.dist_ucore_mt.ASICSingle method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICTriple.build_app">(lumos.analyses.dist_ucore_mt.ASICTriple method)</a>
-  </dt>
-
-      </dl></dd>
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.chip.Chip.build_chip">build_chip() (lumos.model.chip.Chip method)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.workload.build">build() (in module lumos.model.workload)</a>
   </dt>
 
       
@@ -521,82 +255,16 @@
   </dt>
 
       
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicdual_mt.build_optparser">build_optparser() (in module lumos.analyses.asicdual_mt)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicinc_mt.build_optparser">(in module lumos.analyses.asicinc_mt)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.build_optparser">(in module lumos.analyses.asicopt_mt)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicquad_mt.build_optparser">(in module lumos.analyses.asicquad_mt)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asictriple_mt.build_optparser">(in module lumos.analyses.asictriple_mt)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.diminc_mt.build_optparser">(in module lumos.analyses.diminc_mt)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.build_optparser">(in module lumos.analyses.dimsi_fpga_mt)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.build_optparser">(in module lumos.analyses.dist_ucore_mt)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.fpgainc_mt.build_optparser">(in module lumos.analyses.fpgainc_mt)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.heterosys_example.build_optparser">(in module lumos.analyses.heterosys_example)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.ioo3.build_optparser">(in module lumos.analyses.ioo3)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.o3sel.build_optparser">(in module lumos.analyses.o3sel)</a>
-  </dt>
-
-      </dl></dd>
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.application.build_single">build_single() (in module lumos.model.application)</a>
-  </dt>
-
-      
   <dt><a href="apidoc/lumos.model.html#lumos.model.workload.build_with_single_kernel">build_with_single_kernel() (in module lumos.model.workload)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.build_workload">build_workload() (in module lumos.analyses.dist_ucore_mt)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.Budget.bw">bw (lumos.model.Budget attribute)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICDual.build_workload">(lumos.analyses.dist_ucore_mt.ASICDual method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICSingle.build_workload">(lumos.analyses.dist_ucore_mt.ASICSingle method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICTriple.build_workload">(lumos.analyses.dist_ucore_mt.ASICTriple method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.FPGAFixedArea2.build_workload">(lumos.analyses.dist_ucore_mt.FPGAFixedArea2 method)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.kernel.KernelParam.bw">(lumos.model.kernel.KernelParam attribute)</a>
   </dt>
 
       </dl></dd>
@@ -607,45 +275,31 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.chip.Chip">Chip (class in lumos.model.chip)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.mpsoc.MPSoC.change_asic_vdd">change_asic_vdd() (lumos.model.system.mpsoc.MPSoC method)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.core.AbstractCore.config">config() (lumos.model.core.AbstractCore method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.mpsoc.MPSoC.change_serial_core_vdd">change_serial_core_vdd() (lumos.model.system.mpsoc.MPSoC method)</a>
   </dt>
 
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.fedcore.FedCore.config">(lumos.model.fedcore.FedCore method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.freq.PTMScale2.config">(lumos.model.freq.PTMScale2 method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.freq.PTMScaleMC.config">(lumos.model.freq.PTMScaleMC method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.ucore.ASIC.config">(lumos.model.ucore.ASIC method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.ucore.FPGA.config">(lumos.model.ucore.FPGA method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.ucore.UCore.config">(lumos.model.ucore.UCore method)</a>
-  </dt>
-
-      </dl></dd>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.kernel.create_fixednorm">create_fixednorm() (in module lumos.model.kernel)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.mpsoc.MPSoC.change_tput_core_vdd">change_tput_core_vdd() (lumos.model.system.mpsoc.MPSoC method)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.tech.cmos.html#lumos.model.tech.cmos.CMOSTechModel">CMOSTechModel (class in lumos.model.tech.cmos)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.html#lumos.model.ucore.UCore.config">config() (lumos.model.ucore.UCore method)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="apidoc/lumos.model.html#lumos.model.kernel.create_fixednorm">create_fixednorm() (in module lumos.model.kernel)</a>
+  </dt>
+
       
   <dt><a href="apidoc/lumos.model.html#lumos.model.kernel.create_fixednorm_xml">create_fixednorm_xml() (in module lumos.model.kernel)</a>
   </dt>
@@ -658,6 +312,16 @@
   <dt><a href="apidoc/lumos.model.html#lumos.model.kernel.create_randnorm_xml">create_randnorm_xml() (in module lumos.model.kernel)</a>
   </dt>
 
+      
+  <dt><a href="apidoc/lumos.model.core.html#lumos.model.core.BaseCore.ctype">ctype (lumos.model.core.BaseCore attribute)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="apidoc/lumos.model.html#lumos.model.ucore.UCore.ctype">(lumos.model.ucore.UCore attribute)</a>
+  </dt>
+
+      </dl></dd>
   </dl></td>
 </tr></table>
 
@@ -665,57 +329,51 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.Dasi2012Analysis">Dasi2012Analysis (class in lumos.analyses.final)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.het.HetSys.del_all_asics">del_all_asics() (lumos.model.system.het.HetSys method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.mpsoc.MPSoC.del_all_asics">(lumos.model.system.mpsoc.MPSoC method)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.het.HetSys.del_asic">del_asic() (lumos.model.system.het.HetSys method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.hetero.HeterogSys.del_asic">(lumos.model.system.hetero.HeterogSys method)</a>
+  </dt>
+
+        
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.mpsoc.MPSoC.del_asic">(lumos.model.system.mpsoc.MPSoC method)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.hetero.HeterogSys.del_asics">del_asics() (lumos.model.system.hetero.HeterogSys method)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.HeterogSys.del_asic">del_asic() (lumos.model.system.HeterogSys method)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.kernel.Kernel.del_kernel_param">del_kernel_param() (lumos.model.kernel.Kernel method)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.HeterogSys.del_asics">del_asics() (lumos.model.system.HeterogSys method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.het.HetSys.del_target_asics">del_target_asics() (lumos.model.system.het.HetSys method)</a>
   </dt>
 
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.diminc_mt.DimInc">DimInc (class in lumos.analyses.diminc_mt)</a>
+      <dd><dl>
+        
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.mpsoc.MPSoC.del_target_asics">(lumos.model.system.mpsoc.MPSoC method)</a>
   </dt>
 
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.diminc_mt.DimInc.Worker">DimInc.Worker (class in lumos.analyses.diminc_mt)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.DimsiFPGA">DimsiFPGA (class in lumos.analyses.dimsi_fpga_mt)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.DimsiFPGA.Worker">DimsiFPGA.Worker (class in lumos.analyses.dimsi_fpga_mt)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.analysis.BaseAnalysis.do">do() (lumos.analyses.analysis.BaseAnalysis method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.MainAnalyzer.do_darkdim">do_darkdim() (lumos.analyses.final.MainAnalyzer method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.kernel.do_generate">do_generate() (in module lumos.model.kernel)</a>
-  </dt>
-
+      </dl></dd>
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.MainAnalyzer.do_hplp">do_hplp() (lumos.analyses.final.MainAnalyzer method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.MainAnalyzer.do_ntc">do_ntc() (lumos.analyses.final.MainAnalyzer method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.MainAnalyzer.do_sysconf">do_sysconf() (lumos.analyses.final.MainAnalyzer method)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.kernel.do_generate">do_generate() (in module lumos.model.kernel)</a>
   </dt>
 
       
@@ -723,45 +381,37 @@
   </dt>
 
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.core.AbstractCore.dp">dp (lumos.model.core.AbstractCore attribute)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.asacc.ASAcc.dp">dp (lumos.model.asacc.ASAcc attribute)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.Base.dp">(lumos.model.tech.Base attribute)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.LPBase.dp">(lumos.model.tech.LPBase attribute)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.PTMScale.dp">(lumos.model.tech.PTMScale attribute)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.ProjScale.dp">(lumos.model.tech.ProjScale attribute)</a>
+  <dt><a href="apidoc/lumos.model.core.html#lumos.model.core.BaseCore.dp">(lumos.model.core.BaseCore attribute)</a>
   </dt>
 
       </dl></dd>
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.core.AbstractCore.dp0">dp0 (lumos.model.core.AbstractCore attribute)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.workload.dump">dump() (in module lumos.model.workload)</a>
-  </dt>
-
       
   <dt><a href="apidoc/lumos.model.html#lumos.model.workload.dump_xml">dump_xml() (in module lumos.model.workload)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.core.AbstractCore.dvfs_by_factor">dvfs_by_factor() (lumos.model.core.AbstractCore method)</a>
+  <dt><a href="apidoc/lumos.model.tech.cmos.html#lumos.model.tech.cmos.CMOSTechModel.dynamic_power">dynamic_power() (lumos.model.tech.cmos.CMOSTechModel method)</a>
   </dt>
 
+      <dd><dl>
+        
+  <dt><a href="apidoc/lumos.model.tech.tfet.html#lumos.model.tech.tfet.TFETTechModel.dynamic_power">(lumos.model.tech.tfet.TFETTechModel method)</a>
+  </dt>
+
+      </dl></dd>
+  </dl></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.core.AbstractCore.dvfs_by_volt">dvfs_by_volt() (lumos.model.core.AbstractCore method)</a>
+  <dt><a href="apidoc/lumos.analysis.html#lumos.analysis.argparser.LumosArgumentParser.epilog">epilog (lumos.analysis.argparser.LumosArgumentParser attribute)</a>
   </dt>
 
   </dl></td>
@@ -771,122 +421,18 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.core.AbstractCore.f0">f0 (lumos.model.core.AbstractCore attribute)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.fedcore.FedCore">FedCore (class in lumos.model.fedcore)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.FixedArea">FixedArea (class in lumos.analyses.asicopt_mt)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.FixedArea">(class in lumos.analyses.dimsi_fpga_mt)</a>
-  </dt>
-
-      </dl></dd>
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.FixedArea.Worker">FixedArea.Worker (class in lumos.analyses.asicopt_mt)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.FixedArea.Worker">(class in lumos.analyses.dimsi_fpga_mt)</a>
-  </dt>
-
-      </dl></dd>
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.ucore.FPGA">FPGA (class in lumos.model.ucore)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.FPGAAnalysis">FPGAAnalysis (class in lumos.analyses.dist_ucore_mt)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.FPGAAnalysis.Worker">FPGAAnalysis.Worker (class in lumos.analyses.dist_ucore_mt)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.FPGAFixedArea">FPGAFixedArea (class in lumos.analyses.dist_ucore_mt)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.FPGAFixedArea.Worker">FPGAFixedArea.Worker (class in lumos.analyses.dist_ucore_mt)</a>
+  <dt><a href="apidoc/lumos.model.core.html#lumos.model.core.BaseCore.freq">freq (lumos.model.core.BaseCore attribute)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.FPGAFixedArea2">FPGAFixedArea2 (class in lumos.analyses.dist_ucore_mt)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.FPGAFixedArea2.Worker">FPGAFixedArea2.Worker (class in lumos.analyses.dist_ucore_mt)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.fpgainc_mt.FPGAInc">FPGAInc (class in lumos.analyses.fpgainc_mt)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.fpgainc_mt.FPGAInc.Worker">FPGAInc.Worker (class in lumos.analyses.fpgainc_mt)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.fpgainc_mt.FPGAOpt">FPGAOpt (class in lumos.analyses.fpgainc_mt)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.fpgainc_mt.FPGAOpt.Worker">FPGAOpt.Worker (class in lumos.analyses.fpgainc_mt)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.FPGASensitivity">FPGASensitivity (class in lumos.analyses.asicopt_mt)</a>
+  <dt><a href="apidoc/lumos.model.tech.cmos.html#lumos.model.tech.cmos.CMOSTechModel.freq">freq() (lumos.model.tech.cmos.CMOSTechModel method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.FPGASensitivity">(class in lumos.analyses.dimsi_fpga_mt)</a>
-  </dt>
-
-      </dl></dd>
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.FPGASensitivity.Worker">FPGASensitivity.Worker (class in lumos.analyses.asicopt_mt)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.FPGASensitivity.Worker">(class in lumos.analyses.dimsi_fpga_mt)</a>
-  </dt>
-
-      </dl></dd>
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.core.AbstractCore.freq">freq (lumos.model.core.AbstractCore attribute)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.Base.freq">(lumos.model.tech.Base attribute)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.LPBase.freq">(lumos.model.tech.LPBase attribute)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.PTMScale.freq">(lumos.model.tech.PTMScale attribute)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.ProjScale.freq">(lumos.model.tech.ProjScale attribute)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.Scale.freq">(lumos.model.tech.Scale attribute)</a>
+  <dt><a href="apidoc/lumos.model.tech.tfet.html#lumos.model.tech.tfet.TFETTechModel.freq">(lumos.model.tech.tfet.TFETTechModel method)</a>
   </dt>
 
       </dl></dd>
@@ -897,81 +443,97 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.freq.gen_interp">gen_interp() (in module lumos.model.freq)</a>
-  </dt>
-
-      
   <dt><a href="apidoc/lumos.model.html#lumos.model.kernel.gen_kernel_gauss">gen_kernel_gauss() (in module lumos.model.kernel)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.HomogSys.get_core_num">get_core_num() (lumos.model.system.HomogSys method)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.kernel.Kernel.get_all_accs">get_all_accs() (lumos.model.kernel.Kernel method)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.application.App.get_cov">get_cov() (lumos.model.application.App method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.chip.Unit.get_delay">get_delay() (lumos.model.chip.Unit method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.freq.PTMScale2.get_freq">get_freq() (lumos.model.freq.PTMScale2 method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.het.HetSys.get_all_asics">get_all_asics() (lumos.model.system.het.HetSys method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.model.html#lumos.model.freq.PTMScaleMC.get_freq">(lumos.model.freq.PTMScaleMC method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.mpsoc.MPSoC.get_all_asics">(lumos.model.system.mpsoc.MPSoC method)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.freq.PTMScale2.get_freqs">get_freqs() (lumos.model.freq.PTMScale2 method)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.application.Application.get_all_kernels">get_all_kernels() (lumos.model.application.Application method)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.hom.HomSys.get_core_num">get_core_num() (lumos.model.system.hom.HomSys method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.model.html#lumos.model.freq.PTMScaleMC.get_freqs">(lumos.model.freq.PTMScaleMC method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.homo.HomogSys.get_core_num">(lumos.model.system.homo.HomogSys method)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="apidoc/lumos.model.html#lumos.model.application.Application.get_cov">get_cov() (lumos.model.application.Application method)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.html#lumos.model.application.AppDAG.get_kernel">get_kernel() (lumos.model.application.AppDAG method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="apidoc/lumos.model.html#lumos.model.application.Application.get_kernel">(lumos.model.application.Application method)</a>
   </dt>
 
       </dl></dd>
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.kernel.get_kernel">get_kernel() (in module lumos.model.kernel)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.kernel.Kernel.get_kernel_param">get_kernel_param() (lumos.model.kernel.Kernel method)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.het.HetSys.get_perf">get_perf() (lumos.model.system.het.HetSys method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.model.html#lumos.model.application.App.get_kernel">(lumos.model.application.App method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.hetero.HeterogSys.get_perf">(lumos.model.system.hetero.HeterogSys method)</a>
+  </dt>
+
+        
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.mpsoc.MPSoC.get_perf">(lumos.model.system.mpsoc.MPSoC method)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.application.App.get_kids">get_kids() (lumos.model.application.App method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.mpsoc.MPSoC.get_perf_appdag">get_perf_appdag() (lumos.model.system.mpsoc.MPSoC method)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.freq.PTMScaleMC.get_penalties">get_penalties() (lumos.model.freq.PTMScaleMC method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.freq.PTMScaleMC.get_penalty">get_penalty() (lumos.model.freq.PTMScaleMC method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.AsymSys.get_perf">get_perf() (lumos.model.system.AsymSys method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.het.HetSys.get_supported_kernels">get_supported_kernels() (lumos.model.system.het.HetSys method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.HeterogSys.get_perf">(lumos.model.system.HeterogSys method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.mpsoc.MPSoC.get_supported_kernels">(lumos.model.system.mpsoc.MPSoC method)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.System.get_speedup">get_speedup() (lumos.model.system.System method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.het.HetSys.get_target_asics">get_target_asics() (lumos.model.system.het.HetSys method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.mpsoc.MPSoC.get_target_asics">(lumos.model.system.mpsoc.MPSoC method)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="apidoc/lumos.model.html#lumos.model.ucore.GPAccelerator">GPAccelerator (class in lumos.model.ucore)</a>
   </dt>
 
   </dl></td>
@@ -981,37 +543,21 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.application.App.has_kernels">has_kernels() (lumos.model.application.App method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.hetero.HeterogSys">HeterogSys (class in lumos.model.system.hetero)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.HeterogSys">HeterogSys (class in lumos.model.system)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.heterosys_example.HeterosysExample">HeterosysExample (class in lumos.analyses.heterosys_example)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.heterosys_example.HeterosysExample.Worker">HeterosysExample.Worker (class in lumos.analyses.heterosys_example)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.het.HetSys">HetSys (class in lumos.model.system.het)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.HomogSys">HomogSys (class in lumos.model.system)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.homo.HomogSys">HomogSys (class in lumos.model.system.homo)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.homosys_example.HomosysExample">HomosysExample (class in lumos.analyses.homosys_example)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.Hybrid">Hybrid (class in lumos.analyses.dist_ucore_mt)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.Hybrid.Worker">Hybrid.Worker (class in lumos.analyses.dist_ucore_mt)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.hom.HomSys">HomSys (class in lumos.model.system.hom)</a>
   </dt>
 
   </dl></td>
@@ -1021,18 +567,36 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.core.IOCore">IOCore (class in lumos.model.core)</a>
-  </dt>
-
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.ioo3.IOO3">IOO3 (class in lumos.analyses.ioo3)</a>
+  <dt><a href="apidoc/lumos.model.core.html#lumos.model.core.BaseCore.init">init() (lumos.model.core.BaseCore method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.o3sel.IOO3">(class in lumos.analyses.o3sel)</a>
+  <dt><a href="apidoc/lumos.model.core.html#lumos.model.core.io_cmos.IOCore.init">(lumos.model.core.io_cmos.IOCore method)</a>
+  </dt>
+
+        
+  <dt><a href="apidoc/lumos.model.core.html#lumos.model.core.io_tfet.IOCore.init">(lumos.model.core.io_tfet.IOCore method)</a>
+  </dt>
+
+        
+  <dt><a href="apidoc/lumos.model.core.html#lumos.model.core.o3_cmos.O3Core.init">(lumos.model.core.o3_cmos.O3Core method)</a>
+  </dt>
+
+        
+  <dt><a href="apidoc/lumos.model.core.html#lumos.model.core.o3_tfet.O3Core.init">(lumos.model.core.o3_tfet.O3Core method)</a>
+  </dt>
+
+      </dl></dd>
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="apidoc/lumos.model.core.html#lumos.model.core.io_cmos.IOCore">IOCore (class in lumos.model.core.io_cmos)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="apidoc/lumos.model.core.html#lumos.model.core.io_tfet.IOCore">(class in lumos.model.core.io_tfet)</a>
   </dt>
 
       </dl></dd>
@@ -1046,6 +610,30 @@
   <dt><a href="apidoc/lumos.model.html#lumos.model.kernel.Kernel">Kernel (class in lumos.model.kernel)</a>
   </dt>
 
+      
+  <dt><a href="apidoc/lumos.model.html#lumos.model.kernel.KernelError">KernelError</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="apidoc/lumos.model.html#lumos.model.kernel.KernelParam">KernelParam (class in lumos.model.kernel)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.html#lumos.model.asacc.ASAcc.kid">kid (lumos.model.asacc.ASAcc attribute)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="apidoc/lumos.model.html#lumos.model.kernel.Kernel.kid">(lumos.model.kernel.Kernel attribute)</a>
+  </dt>
+
+        
+  <dt><a href="apidoc/lumos.model.html#lumos.model.ucore.AppAccelerator.kid">(lumos.model.ucore.AppAccelerator attribute)</a>
+  </dt>
+
+      </dl></dd>
   </dl></td>
 </tr></table>
 
@@ -1053,12 +641,38 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
+  <dt><a href="apidoc/lumos.model.html#lumos.model.plot.line_plot">line_plot() (in module lumos.model.plot)</a>
+  </dt>
+
+      
   <dt><a href="apidoc/lumos.model.html#lumos.model.kernel.load">load() (in module lumos.model.kernel)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.html#lumos.model.kernel.load_from_xml">load_from_xml() (in module lumos.model.kernel)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.model.html#lumos.model.workload.load">(in module lumos.model.workload)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.workload.load_from_xml">(in module lumos.model.workload)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="apidoc/lumos.unittests.html#lumos.unittests.test_mpsoc.load_kernel">load_kernel() (in module lumos.unittests.test_mpsoc)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.html#lumos.model.kernel.load_kernels">load_kernels() (in module lumos.model.kernel)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.html#lumos.model.workload.load_workload">load_workload() (in module lumos.model.workload)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="apidoc/lumos.unittests.html#lumos.unittests.test_mpsoc.load_workload">(in module lumos.unittests.test_mpsoc)</a>
   </dt>
 
       </dl></dd>
@@ -1066,84 +680,16 @@
   <dt><a href="apidoc/lumos.model.html#lumos.model.kernel.load_xml">load_xml() (in module lumos.model.kernel)</a>
   </dt>
 
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.workload.load_xml">(in module lumos.model.workload)</a>
-  </dt>
-
-      </dl></dd>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.LPBase">LPBase (class in lumos.model.tech)</a>
+  <dt><a href="apidoc/lumos.html#module-lumos">lumos (module)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.analyses.html#module-lumos.analyses.analysis">lumos.analyses.analysis (module)</a>
+  <dt><a href="apidoc/lumos.analysis.html#module-lumos.analysis">lumos.analysis (module)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.analyses.html#module-lumos.analyses.asicdual_mt">lumos.analyses.asicdual_mt (module)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#module-lumos.analyses.asicinc_mt">lumos.analyses.asicinc_mt (module)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#module-lumos.analyses.asicopt_mt">lumos.analyses.asicopt_mt (module)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#module-lumos.analyses.asicquad_mt">lumos.analyses.asicquad_mt (module)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#module-lumos.analyses.asictriple_mt">lumos.analyses.asictriple_mt (module)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#module-lumos.analyses.core">lumos.analyses.core (module)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#module-lumos.analyses.diminc_mt">lumos.analyses.diminc_mt (module)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#module-lumos.analyses.dimsi_deriv">lumos.analyses.dimsi_deriv (module)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#module-lumos.analyses.dimsi_fpga_mt">lumos.analyses.dimsi_fpga_mt (module)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#module-lumos.analyses.dist_ucore_mt">lumos.analyses.dist_ucore_mt (module)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#module-lumos.analyses.final">lumos.analyses.final (module)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#module-lumos.analyses.fpgainc_mt">lumos.analyses.fpgainc_mt (module)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#module-lumos.analyses.heterosys_example">lumos.analyses.heterosys_example (module)</a>
-  </dt>
-
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
-      
-  <dt><a href="apidoc/lumos.analyses.html#module-lumos.analyses.homosys_example">lumos.analyses.homosys_example (module)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#module-lumos.analyses.ioo3">lumos.analyses.ioo3 (module)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#module-lumos.analyses.o3sel">lumos.analyses.o3sel (module)</a>
+  <dt><a href="apidoc/lumos.analysis.html#module-lumos.analysis.argparser">lumos.analysis.argparser (module)</a>
   </dt>
 
       
@@ -1155,23 +701,27 @@
   </dt>
 
       
-  <dt><a href="apidoc/lumos.model.html#module-lumos.model.budget">lumos.model.budget (module)</a>
+  <dt><a href="apidoc/lumos.model.html#module-lumos.model.asacc">lumos.model.asacc (module)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.model.html#module-lumos.model.chip">lumos.model.chip (module)</a>
+  <dt><a href="apidoc/lumos.model.core.html#module-lumos.model.core">lumos.model.core (module)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.model.html#module-lumos.model.core">lumos.model.core (module)</a>
+  <dt><a href="apidoc/lumos.model.core.html#module-lumos.model.core.io_cmos">lumos.model.core.io_cmos (module)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.model.html#module-lumos.model.fedcore">lumos.model.fedcore (module)</a>
+  <dt><a href="apidoc/lumos.model.core.html#module-lumos.model.core.io_tfet">lumos.model.core.io_tfet (module)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.model.html#module-lumos.model.freq">lumos.model.freq (module)</a>
+  <dt><a href="apidoc/lumos.model.core.html#module-lumos.model.core.o3_cmos">lumos.model.core.o3_cmos (module)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.core.html#module-lumos.model.core.o3_tfet">lumos.model.core.o3_tfet (module)</a>
   </dt>
 
       
@@ -1179,11 +729,69 @@
   </dt>
 
       
-  <dt><a href="apidoc/lumos.model.html#module-lumos.model.system">lumos.model.system (module)</a>
+  <dt><a href="apidoc/lumos.model.html#module-lumos.model.misc">lumos.model.misc (module)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.model.html#module-lumos.model.tech">lumos.model.tech (module)</a>
+  <dt><a href="apidoc/lumos.model.html#module-lumos.model.plot">lumos.model.plot (module)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.system.html#module-lumos.model.system">lumos.model.system (module)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.system.html#module-lumos.model.system.het">lumos.model.system.het (module)</a>
+  </dt>
+
+  </dl></td>
+  <td style="width: 33%" valign="top"><dl>
+      
+  <dt><a href="apidoc/lumos.model.system.html#module-lumos.model.system.hetero">lumos.model.system.hetero (module)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.system.html#module-lumos.model.system.hom">lumos.model.system.hom (module)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.system.html#module-lumos.model.system.homo">lumos.model.system.homo (module)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.system.html#module-lumos.model.system.mpsoc">lumos.model.system.mpsoc (module)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.tech.html#module-lumos.model.tech">lumos.model.tech (module)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.tech.cmos.html#module-lumos.model.tech.cmos">lumos.model.tech.cmos (module)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.tech.cmos.hp.html#module-lumos.model.tech.cmos.hp">lumos.model.tech.cmos.hp (module)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.tech.cmos.lp.html#module-lumos.model.tech.cmos.lp">lumos.model.tech.cmos.lp (module)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.tech.tfet.html#module-lumos.model.tech.tfet">lumos.model.tech.tfet (module)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.tech.tfet.homoTFET30nm.html#module-lumos.model.tech.tfet.homoTFET30nm">lumos.model.tech.tfet.homoTFET30nm (module)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.tech.tfet.homoTFET60nm.html#module-lumos.model.tech.tfet.homoTFET60nm">lumos.model.tech.tfet.homoTFET60nm (module)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.tech.tfet.html#module-lumos.model.tech.tfet.tfet_interp">lumos.model.tech.tfet.tfet_interp (module)</a>
   </dt>
 
       
@@ -1198,6 +806,38 @@
   <dt><a href="apidoc/lumos.html#module-lumos.settings">lumos.settings (module)</a>
   </dt>
 
+      
+  <dt><a href="apidoc/lumos.unittests.html#module-lumos.unittests">lumos.unittests (module)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.unittests.html#module-lumos.unittests.test_acc">lumos.unittests.test_acc (module)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.unittests.html#module-lumos.unittests.test_homogsys">lumos.unittests.test_homogsys (module)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.unittests.html#module-lumos.unittests.test_mpsoc">lumos.unittests.test_mpsoc (module)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.unittests.html#module-lumos.unittests.test_ptmnew_app">lumos.unittests.test_ptmnew_app (module)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.analysis.html#lumos.analysis.LumosAnalysisError">LumosAnalysisError</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.analysis.html#lumos.analysis.argparser.LumosArgumentParser">LumosArgumentParser (class in lumos.analysis.argparser)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.analysis.html#lumos.analysis.argparser.LumosNumlist">LumosNumlist() (in module lumos.analysis.argparser)</a>
+  </dt>
+
   </dl></td>
 </tr></table>
 
@@ -1205,81 +845,21 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicdual_mt.main">main() (in module lumos.analyses.asicdual_mt)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicinc_mt.main">(in module lumos.analyses.asicinc_mt)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.main">(in module lumos.analyses.asicopt_mt)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicquad_mt.main">(in module lumos.analyses.asicquad_mt)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asictriple_mt.main">(in module lumos.analyses.asictriple_mt)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.diminc_mt.main">(in module lumos.analyses.diminc_mt)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.main">(in module lumos.analyses.dimsi_fpga_mt)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.main">(in module lumos.analyses.dist_ucore_mt)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.main">(in module lumos.analyses.final)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.fpgainc_mt.main">(in module lumos.analyses.fpgainc_mt)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.ioo3.main">(in module lumos.analyses.ioo3)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.o3sel.main">(in module lumos.analyses.o3sel)</a>
-  </dt>
-
-      </dl></dd>
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.MainAnalyzer">MainAnalyzer (class in lumos.analyses.final)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.misc.make_ws_dirs">make_ws_dirs() (in module lumos.model.misc)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.analysis.make_ws_dirs">make_ws_dirs() (in module lumos.analyses.analysis)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.misc.mk_dir">mk_dir() (in module lumos.model.misc)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.core.AbstractCore.mech">mech (lumos.model.core.AbstractCore attribute)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.mpsoc.MPSoC">MPSoC (class in lumos.model.system.mpsoc)</a>
   </dt>
 
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.Scale.mech">(lumos.model.tech.Scale attribute)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.ucore.UCore.mech">(lumos.model.ucore.UCore attribute)</a>
-  </dt>
-
-      </dl></dd>
       
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.analysis.mk_dir">mk_dir() (in module lumos.analyses.analysis)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.mpsoc.MPSoCError">MPSoCError</a>
   </dt>
 
   </dl></td>
@@ -1289,27 +869,7 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.application.AppBS.name">name (lumos.model.application.AppBS attribute)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.application.AppFFT64.name">(lumos.model.application.AppFFT64 attribute)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.application.AppMMM.name">(lumos.model.application.AppMMM attribute)</a>
-  </dt>
-
-      </dl></dd>
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.MainAnalyzer.ntc_speedup">ntc_speedup() (lumos.analyses.final.MainAnalyzer method)</a>
-  </dt>
-
-  </dl></td>
-  <td style="width: 33%" valign="top"><dl>
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.MainAnalyzer.ntc_vmin">ntc_vmin() (lumos.analyses.final.MainAnalyzer method)</a>
+  <dt><a href="apidoc/lumos.model.tech.html#lumos.model.tech.BaseTechModel.name">name (lumos.model.tech.BaseTechModel attribute)</a>
   </dt>
 
   </dl></td>
@@ -1319,82 +879,24 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.core.O3Core">O3Core (class in lumos.model.core)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.HomogSys.opt_core_num">opt_core_num() (lumos.model.system.HomogSys method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.FixedArea.OPT_FPGA_AREA_MAX">OPT_FPGA_AREA_MAX (lumos.analyses.asicopt_mt.FixedArea attribute)</a>
+  <dt><a href="apidoc/lumos.model.core.html#lumos.model.core.o3_cmos.O3Core">O3Core (class in lumos.model.core.o3_cmos)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.FixedArea.OPT_FPGA_AREA_MAX">(lumos.analyses.dimsi_fpga_mt.FixedArea attribute)</a>
+  <dt><a href="apidoc/lumos.model.core.html#lumos.model.core.o3_tfet.O3Core">(class in lumos.model.core.o3_tfet)</a>
   </dt>
 
       </dl></dd>
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.FixedArea.OPT_FPGA_AREA_MIN">OPT_FPGA_AREA_MIN (lumos.analyses.asicopt_mt.FixedArea attribute)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.hom.HomSys.opt_core_num">opt_core_num() (lumos.model.system.hom.HomSys method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.FixedArea.OPT_FPGA_AREA_MIN">(lumos.analyses.dimsi_fpga_mt.FixedArea attribute)</a>
-  </dt>
-
-      </dl></dd>
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicdual_mt.option_override">option_override() (in module lumos.analyses.asicdual_mt)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicinc_mt.option_override">(in module lumos.analyses.asicinc_mt)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.option_override">(in module lumos.analyses.asicopt_mt)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicquad_mt.option_override">(in module lumos.analyses.asicquad_mt)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asictriple_mt.option_override">(in module lumos.analyses.asictriple_mt)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.diminc_mt.option_override">(in module lumos.analyses.diminc_mt)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.option_override">(in module lumos.analyses.dimsi_fpga_mt)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.option_override">(in module lumos.analyses.dist_ucore_mt)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.fpgainc_mt.option_override">(in module lumos.analyses.fpgainc_mt)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.heterosys_example.option_override">(in module lumos.analyses.heterosys_example)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.ioo3.option_override">(in module lumos.analyses.ioo3)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.o3sel.option_override">(in module lumos.analyses.o3sel)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.homo.HomogSys.opt_core_num">(lumos.model.system.homo.HomogSys method)</a>
   </dt>
 
       </dl></dd>
@@ -1405,34 +907,34 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.ParallelismAnalysis">ParallelismAnalysis (class in lumos.analyses.final)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.kernel.KernelParam.PARAMS">PARAMS (lumos.model.kernel.KernelParam attribute)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.analysis.parse_bw">parse_bw() (in module lumos.analyses.analysis)</a>
+  <dt><a href="apidoc/lumos.analysis.html#lumos.analysis.argparser.LumosArgumentParser.parse_args">parse_args() (lumos.analysis.argparser.LumosArgumentParser method)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.PenaltyAdjustAnalysis">PenaltyAdjustAnalysis (class in lumos.analyses.final)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.misc.parse_bw">parse_bw() (in module lumos.model.misc)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.core.AbstractCore.perf">perf (lumos.model.core.AbstractCore attribute)</a>
+  <dt><a href="apidoc/lumos.model.core.html#lumos.model.core.BaseCore.perf">perf (lumos.model.core.BaseCore attribute)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.model.html#lumos.model.fedcore.FedCore.perf">(lumos.model.fedcore.FedCore attribute)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.kernel.KernelParam.perf">(lumos.model.kernel.KernelParam attribute)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.ucore.ASIC.perf">perf() (lumos.model.ucore.ASIC method)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.asacc.ASAcc.perf">perf() (lumos.model.asacc.ASAcc method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.model.html#lumos.model.ucore.FPGA.perf">(lumos.model.ucore.FPGA method)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.ucore.AppAccelerator.perf">(lumos.model.ucore.AppAccelerator method)</a>
   </dt>
 
         
@@ -1441,336 +943,86 @@
 
       </dl></dd>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.core.AbstractCore.perf0">perf0 (lumos.model.core.AbstractCore attribute)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.HomogSys.perf_by_cnum">perf_by_cnum() (lumos.model.system.HomogSys method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.HomogSys.perf_by_dark">perf_by_dark() (lumos.model.system.HomogSys method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.HomogSys.perf_by_vdd">perf_by_vdd() (lumos.model.system.HomogSys method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.HomogSys.perf_by_vfs">perf_by_vfs() (lumos.model.system.HomogSys method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_deriv.plot">plot() (in module lumos.analyses.dimsi_deriv)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.hom.HomSys.perf_by_cnum">perf_by_cnum() (lumos.model.system.hom.HomSys method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicdual_mt.ASICDual.plot">(lumos.analyses.asicdual_mt.ASICDual method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicinc_mt.ASICInc.plot">(lumos.analyses.asicinc_mt.ASICInc method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.ASICOpt.plot">(lumos.analyses.asicopt_mt.ASICOpt method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.FPGASensitivity.plot">(lumos.analyses.asicopt_mt.FPGASensitivity method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.FixedArea.plot">(lumos.analyses.asicopt_mt.FixedArea method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicquad_mt.ASICQuad.plot">(lumos.analyses.asicquad_mt.ASICQuad method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asictriple_mt.ASICTriple.plot">(lumos.analyses.asictriple_mt.ASICTriple method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.diminc_mt.DimInc.plot">(lumos.analyses.diminc_mt.DimInc method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.DimsiFPGA.plot">(lumos.analyses.dimsi_fpga_mt.DimsiFPGA method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.FPGASensitivity.plot">(lumos.analyses.dimsi_fpga_mt.FPGASensitivity method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.FixedArea.plot">(lumos.analyses.dimsi_fpga_mt.FixedArea method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICAnalysis.plot">(lumos.analyses.dist_ucore_mt.ASICAnalysis method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICDual.plot">(lumos.analyses.dist_ucore_mt.ASICDual method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICQuad.plot">(lumos.analyses.dist_ucore_mt.ASICQuad method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICSingle.plot">(lumos.analyses.dist_ucore_mt.ASICSingle method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICTriple.plot">(lumos.analyses.dist_ucore_mt.ASICTriple method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.FPGAAnalysis.plot">(lumos.analyses.dist_ucore_mt.FPGAAnalysis method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.FPGAFixedArea.plot">(lumos.analyses.dist_ucore_mt.FPGAFixedArea method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.FPGAFixedArea2.plot">(lumos.analyses.dist_ucore_mt.FPGAFixedArea2 method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.Hybrid.plot">(lumos.analyses.dist_ucore_mt.Hybrid method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.Dasi2012Analysis.plot">(lumos.analyses.final.Dasi2012Analysis method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.ParallelismAnalysis.plot">(lumos.analyses.final.ParallelismAnalysis method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.PenaltyAdjustAnalysis.plot">(lumos.analyses.final.PenaltyAdjustAnalysis method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.VariationImpactAnalysis.plot">(lumos.analyses.final.VariationImpactAnalysis method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.fpgainc_mt.FPGAInc.plot">(lumos.analyses.fpgainc_mt.FPGAInc method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.fpgainc_mt.FPGAOpt.plot">(lumos.analyses.fpgainc_mt.FPGAOpt method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.heterosys_example.HeterosysExample.plot">(lumos.analyses.heterosys_example.HeterosysExample method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.homosys_example.HomosysExample.plot">(lumos.analyses.homosys_example.HomosysExample method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.ioo3.IOO3.plot">(lumos.analyses.ioo3.IOO3 method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.o3sel.IOO3.plot">(lumos.analyses.o3sel.IOO3 method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.homo.HomogSys.perf_by_cnum">(lumos.model.system.homo.HomogSys method)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.ASICOpt.plot_alt_asic">plot_alt_asic() (lumos.analyses.asicopt_mt.ASICOpt method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.ASICOpt.plot_alt_twinx">plot_alt_twinx() (lumos.analyses.asicopt_mt.ASICOpt method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.MainAnalyzer.plot_darkdim">plot_darkdim() (lumos.analyses.final.MainAnalyzer method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.hom.HomSys.perf_by_dark">perf_by_dark() (lumos.model.system.hom.HomSys method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.ParallelismAnalysis.plot_darkdim">(lumos.analyses.final.ParallelismAnalysis method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.homo.HomogSys.perf_by_dark">(lumos.model.system.homo.HomogSys method)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.analysis.plot_data">plot_data() (in module lumos.analyses.analysis)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.analysis.plot_data_nomarker">plot_data_nomarker() (in module lumos.analyses.analysis)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicinc_mt.ASICInc.plot_derivative">plot_derivative() (lumos.analyses.asicinc_mt.ASICInc method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.hom.HomSys.perf_by_vdd">perf_by_vdd() (lumos.model.system.hom.HomSys method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.diminc_mt.DimInc.plot_derivative">(lumos.analyses.diminc_mt.DimInc method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.DimsiFPGA.plot_derivative">(lumos.analyses.dimsi_fpga_mt.DimsiFPGA method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.fpgainc_mt.FPGAInc.plot_derivative">(lumos.analyses.fpgainc_mt.FPGAInc method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.fpgainc_mt.FPGAOpt.plot_derivative">(lumos.analyses.fpgainc_mt.FPGAOpt method)</a>
-  </dt>
-
-      </dl></dd>
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.analysis.plot_errbar">plot_errbar() (in module lumos.analyses.analysis)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.core.plot_freq">plot_freq() (in module lumos.analyses.core)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.MainAnalyzer.plot_hplp">plot_hplp() (lumos.analyses.final.MainAnalyzer method)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.ParallelismAnalysis.plot_hplp">(lumos.analyses.final.ParallelismAnalysis method)</a>
-  </dt>
-
-      </dl></dd>
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.ioo3.IOO3.plot_o3_sel">plot_o3_sel() (lumos.analyses.ioo3.IOO3 method)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.o3sel.IOO3.plot_o3_sel">(lumos.analyses.o3sel.IOO3 method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.homo.HomogSys.perf_by_vdd">(lumos.model.system.homo.HomogSys method)</a>
   </dt>
 
       </dl></dd>
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.core.plot_power">plot_power() (in module lumos.analyses.core)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.plot.plot_data">plot_data() (in module lumos.model.plot)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.ioo3.IOO3.plot_relative">plot_relative() (lumos.analyses.ioo3.IOO3 method)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.plot.plot_data_nomarker">plot_data_nomarker() (in module lumos.model.plot)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.FixedArea.plot_scatter">plot_scatter() (lumos.analyses.asicopt_mt.FixedArea method)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.plot.plot_errbar">plot_errbar() (in module lumos.model.plot)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.html#lumos.model.plot.plot_series">plot_series() (in module lumos.model.plot)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.html#lumos.model.plot.plot_series2">plot_series2() (in module lumos.model.plot)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.html#lumos.model.plot.plot_twinx">plot_twinx() (in module lumos.model.plot)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.html#lumos.model.asacc.ASAcc.power">power (lumos.model.asacc.ASAcc attribute)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.FixedArea.plot_scatter">(lumos.analyses.dimsi_fpga_mt.FixedArea method)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.Budget.power">(lumos.model.Budget attribute)</a>
+  </dt>
+
+        
+  <dt><a href="apidoc/lumos.model.core.html#lumos.model.core.BaseCore.power">(lumos.model.core.BaseCore attribute)</a>
+  </dt>
+
+        
+  <dt><a href="apidoc/lumos.model.html#lumos.model.kernel.KernelParam.power">(lumos.model.kernel.KernelParam attribute)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.FPGASensitivity.plot_scatter_and_pie">plot_scatter_and_pie() (lumos.analyses.asicopt_mt.FPGASensitivity method)</a>
+  <dt><a href="apidoc/lumos.model.tech.cmos.html#lumos.model.tech.cmos.CMOSTechModel.power">power() (lumos.model.tech.cmos.CMOSTechModel method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.DimsiFPGA.plot_scatter_and_pie">(lumos.analyses.dimsi_fpga_mt.DimsiFPGA method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.FPGASensitivity.plot_scatter_and_pie">(lumos.analyses.dimsi_fpga_mt.FPGASensitivity method)</a>
-  </dt>
-
-      </dl></dd>
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.analysis.plot_series">plot_series() (in module lumos.analyses.analysis)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.ioo3.IOO3.plot_series">(lumos.analyses.ioo3.IOO3 method)</a>
-  </dt>
-
-      </dl></dd>
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.analysis.plot_series2">plot_series2() (in module lumos.analyses.analysis)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicinc_mt.ASICInc.plot_speedup">plot_speedup() (lumos.analyses.asicinc_mt.ASICInc method)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.ASICOpt.plot_speedup">(lumos.analyses.asicopt_mt.ASICOpt method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.diminc_mt.DimInc.plot_speedup">(lumos.analyses.diminc_mt.DimInc method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.DimsiFPGA.plot_speedup">(lumos.analyses.dimsi_fpga_mt.DimsiFPGA method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.fpgainc_mt.FPGAInc.plot_speedup">(lumos.analyses.fpgainc_mt.FPGAInc method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.fpgainc_mt.FPGAOpt.plot_speedup">(lumos.analyses.fpgainc_mt.FPGAOpt method)</a>
-  </dt>
-
-      </dl></dd>
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.FPGASensitivity.plot_stack">plot_stack() (lumos.analyses.asicopt_mt.FPGASensitivity method)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.FPGASensitivity.plot_stack">(lumos.analyses.dimsi_fpga_mt.FPGASensitivity method)</a>
-  </dt>
-
-      </dl></dd>
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.MainAnalyzer.plot_sysconf">plot_sysconf() (lumos.analyses.final.MainAnalyzer method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.analysis.plot_twinx">plot_twinx() (in module lumos.analyses.analysis)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.core.AbstractCore.power">power (lumos.model.core.AbstractCore attribute)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.Scale.power">(lumos.model.tech.Scale attribute)</a>
-  </dt>
-
-      </dl></dd>
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.ucore.ASIC.power">power() (lumos.model.ucore.ASIC method)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.ucore.FPGA.power">(lumos.model.ucore.FPGA method)</a>
+  <dt><a href="apidoc/lumos.model.tech.tfet.html#lumos.model.tech.tfet.TFETTechModel.power">(lumos.model.tech.tfet.TFETTechModel method)</a>
   </dt>
 
         
@@ -1778,132 +1030,6 @@
   </dt>
 
       </dl></dd>
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.freq.preproc_sim_data">preproc_sim_data() (in module lumos.model.freq)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.System.probe">probe() (lumos.model.system.System method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.System.probe2">probe2() (lumos.model.system.System method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.System.PROBE_PRECISION">PROBE_PRECISION (lumos.model.system.System attribute)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicdual_mt.ASICDual.Worker.process">process() (lumos.analyses.asicdual_mt.ASICDual.Worker method)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicinc_mt.ASICInc.Worker.process">(lumos.analyses.asicinc_mt.ASICInc.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.ASICOpt.Worker.process">(lumos.analyses.asicopt_mt.ASICOpt.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.FPGASensitivity.Worker.process">(lumos.analyses.asicopt_mt.FPGASensitivity.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.FixedArea.Worker.process">(lumos.analyses.asicopt_mt.FixedArea.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicquad_mt.ASICQuad.Worker.process">(lumos.analyses.asicquad_mt.ASICQuad.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asictriple_mt.ASICTriple.Worker.process">(lumos.analyses.asictriple_mt.ASICTriple.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.diminc_mt.DimInc.Worker.process">(lumos.analyses.diminc_mt.DimInc.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.DimsiFPGA.Worker.process">(lumos.analyses.dimsi_fpga_mt.DimsiFPGA.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.FPGASensitivity.Worker.process">(lumos.analyses.dimsi_fpga_mt.FPGASensitivity.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.FixedArea.Worker.process">(lumos.analyses.dimsi_fpga_mt.FixedArea.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICAnalysis.Worker.process">(lumos.analyses.dist_ucore_mt.ASICAnalysis.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICDual.Worker.process">(lumos.analyses.dist_ucore_mt.ASICDual.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICQuad.Worker.process">(lumos.analyses.dist_ucore_mt.ASICQuad.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICSingle.Worker.process">(lumos.analyses.dist_ucore_mt.ASICSingle.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICTriple.Worker.process">(lumos.analyses.dist_ucore_mt.ASICTriple.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.FPGAAnalysis.Worker.process">(lumos.analyses.dist_ucore_mt.FPGAAnalysis.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.FPGAFixedArea.Worker.process">(lumos.analyses.dist_ucore_mt.FPGAFixedArea.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.FPGAFixedArea2.Worker.process">(lumos.analyses.dist_ucore_mt.FPGAFixedArea2.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.Hybrid.Worker.process">(lumos.analyses.dist_ucore_mt.Hybrid.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.fpgainc_mt.FPGAInc.Worker.process">(lumos.analyses.fpgainc_mt.FPGAInc.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.fpgainc_mt.FPGAOpt.Worker.process">(lumos.analyses.fpgainc_mt.FPGAOpt.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.heterosys_example.HeterosysExample.Worker.process">(lumos.analyses.heterosys_example.HeterosysExample.Worker method)</a>
-  </dt>
-
-      </dl></dd>
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.ProjScale">ProjScale (class in lumos.model.tech)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.PTMScale">PTMScale (class in lumos.model.tech)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.freq.PTMScale2">PTMScale2 (class in lumos.model.freq)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.freq.PTMScaleMC">PTMScaleMC (class in lumos.model.freq)</a>
-  </dt>
-
   </dl></td>
 </tr></table>
 
@@ -1918,166 +1044,26 @@
   <dt><a href="apidoc/lumos.model.html#lumos.model.application.random_uc_cov">random_uc_cov() (in module lumos.model.application)</a>
   </dt>
 
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICAnalysis.random_uc_cov">(lumos.analyses.dist_ucore_mt.ASICAnalysis method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICDual.random_uc_cov">(lumos.analyses.dist_ucore_mt.ASICDual method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICSingle.random_uc_cov">(lumos.analyses.dist_ucore_mt.ASICSingle method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICTriple.random_uc_cov">(lumos.analyses.dist_ucore_mt.ASICTriple method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.FPGAAnalysis.random_uc_cov">(lumos.analyses.dist_ucore_mt.FPGAAnalysis method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.FPGAFixedArea.random_uc_cov">(lumos.analyses.dist_ucore_mt.FPGAFixedArea method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.FPGAFixedArea2.random_uc_cov">(lumos.analyses.dist_ucore_mt.FPGAFixedArea2 method)</a>
-  </dt>
-
-      </dl></dd>
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICAnalysis.random_uc_perf">random_uc_perf() (lumos.analyses.dist_ucore_mt.ASICAnalysis method)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.FPGAAnalysis.random_uc_perf">(lumos.analyses.dist_ucore_mt.FPGAAnalysis method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.FPGAFixedArea.random_uc_perf">(lumos.analyses.dist_ucore_mt.FPGAFixedArea method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.FPGAFixedArea2.random_uc_perf">(lumos.analyses.dist_ucore_mt.FPGAFixedArea2 method)</a>
-  </dt>
-
-      </dl></dd>
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.freq.readMCData">readMCData() (in module lumos.model.freq)</a>
-  </dt>
-
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.freq.readNormData">readNormData() (in module lumos.model.freq)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.HeterogSys.realloc_gpacc">realloc_gpacc() (lumos.model.system.HeterogSys method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.application.App.reg_kernel">reg_kernel() (lumos.model.application.App method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicdual_mt.ASICDual.Worker.run">run() (lumos.analyses.asicdual_mt.ASICDual.Worker method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.het.HetSys.realloc_gpacc">realloc_gpacc() (lumos.model.system.het.HetSys method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicinc_mt.ASICInc.Worker.run">(lumos.analyses.asicinc_mt.ASICInc.Worker method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.hetero.HeterogSys.realloc_gpacc">(lumos.model.system.hetero.HeterogSys method)</a>
   </dt>
 
         
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.ASICOpt.Worker.run">(lumos.analyses.asicopt_mt.ASICOpt.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.FPGASensitivity.Worker.run">(lumos.analyses.asicopt_mt.FPGASensitivity.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicopt_mt.FixedArea.Worker.run">(lumos.analyses.asicopt_mt.FixedArea.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicquad_mt.ASICQuad.Worker.run">(lumos.analyses.asicquad_mt.ASICQuad.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asictriple_mt.ASICTriple.Worker.run">(lumos.analyses.asictriple_mt.ASICTriple.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.diminc_mt.DimInc.Worker.run">(lumos.analyses.diminc_mt.DimInc.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.DimsiFPGA.Worker.run">(lumos.analyses.dimsi_fpga_mt.DimsiFPGA.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.FPGASensitivity.Worker.run">(lumos.analyses.dimsi_fpga_mt.FPGASensitivity.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dimsi_fpga_mt.FixedArea.Worker.run">(lumos.analyses.dimsi_fpga_mt.FixedArea.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICAnalysis.Worker.run">(lumos.analyses.dist_ucore_mt.ASICAnalysis.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICDual.Worker.run">(lumos.analyses.dist_ucore_mt.ASICDual.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICQuad.Worker.run">(lumos.analyses.dist_ucore_mt.ASICQuad.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICSingle.Worker.run">(lumos.analyses.dist_ucore_mt.ASICSingle.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.ASICTriple.Worker.run">(lumos.analyses.dist_ucore_mt.ASICTriple.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.FPGAAnalysis.Worker.run">(lumos.analyses.dist_ucore_mt.FPGAAnalysis.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.FPGAFixedArea.Worker.run">(lumos.analyses.dist_ucore_mt.FPGAFixedArea.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.FPGAFixedArea2.Worker.run">(lumos.analyses.dist_ucore_mt.FPGAFixedArea2.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.Hybrid.Worker.run">(lumos.analyses.dist_ucore_mt.Hybrid.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.fpgainc_mt.FPGAInc.Worker.run">(lumos.analyses.fpgainc_mt.FPGAInc.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.fpgainc_mt.FPGAOpt.Worker.run">(lumos.analyses.fpgainc_mt.FPGAOpt.Worker method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.heterosys_example.HeterosysExample.Worker.run">(lumos.analyses.heterosys_example.HeterosysExample.Worker method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.mpsoc.MPSoC.realloc_gpacc">(lumos.model.system.mpsoc.MPSoC method)</a>
   </dt>
 
       </dl></dd>
+      
+  <dt><a href="apidoc/lumos.model.html#lumos.model.kernel.reg_kernels">reg_kernels() (in module lumos.model.kernel)</a>
+  </dt>
+
   </dl></td>
 </tr></table>
 
@@ -2085,171 +1071,127 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.Scale">Scale (class in lumos.model.tech)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.core.AbstractCore.scale_with_vlist">scale_with_vlist() (lumos.model.core.AbstractCore method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.HeterogSys.set_asic">set_asic() (lumos.model.system.HeterogSys method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.core.AbstractCore.set_base">set_base() (lumos.model.core.AbstractCore method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.AsymSys.set_core_prop">set_core_prop() (lumos.model.system.AsymSys method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.het.HetSys.set_asic">set_asic() (lumos.model.system.het.HetSys method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.HomogSys.set_core_prop">(lumos.model.system.HomogSys method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.hetero.HeterogSys.set_asic">(lumos.model.system.hetero.HeterogSys method)</a>
   </dt>
 
         
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.System.set_core_prop">(lumos.model.system.System method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.mpsoc.MPSoC.set_asic">(lumos.model.system.mpsoc.MPSoC method)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.AsymSys.set_core_pv">set_core_pv() (lumos.model.system.AsymSys method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.hom.HomSys.set_core_prop">set_core_prop() (lumos.model.system.hom.HomSys method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.HeterogSys.set_core_pv">(lumos.model.system.HeterogSys method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.homo.HomogSys.set_core_prop">(lumos.model.system.homo.HomogSys method)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.application.App.set_cov">set_cov() (lumos.model.application.App method)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.application.Application.set_cov">set_cov() (lumos.model.application.Application method)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.AsymSys.set_mech">set_mech() (lumos.model.system.AsymSys method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.hom.HomSys.set_sys_prop">set_sys_prop() (lumos.model.system.hom.HomSys method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.HeterogSys.set_mech">(lumos.model.system.HeterogSys method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.homo.HomogSys.set_sys_prop">(lumos.model.system.homo.HomogSys method)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.chip.Unit.set_prop">set_prop() (lumos.model.chip.Unit method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.Dasi2012Analysis.set_sys">set_sys() (lumos.analyses.final.Dasi2012Analysis method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.het.HetSys.set_tech">set_tech() (lumos.model.system.het.HetSys method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.ParallelismAnalysis.set_sys">(lumos.analyses.final.ParallelismAnalysis method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.hetero.HeterogSys.set_tech">(lumos.model.system.hetero.HeterogSys method)</a>
   </dt>
 
         
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.PenaltyAdjustAnalysis.set_sys">(lumos.analyses.final.PenaltyAdjustAnalysis method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.homosys_example.HomosysExample.set_sys">(lumos.analyses.homosys_example.HomosysExample method)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.mpsoc.MPSoC.set_tech">(lumos.model.system.mpsoc.MPSoC method)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.AsymSys.set_sys_prop">set_sys_prop() (lumos.model.system.AsymSys method)</a>
+  <dt><a href="apidoc/lumos.unittests.html#lumos.unittests.test_acc.TestAccelerator.setUp">setUp() (lumos.unittests.test_acc.TestAccelerator method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.HomogSys.set_sys_prop">(lumos.model.system.HomogSys method)</a>
+  <dt><a href="apidoc/lumos.unittests.html#lumos.unittests.test_homogsys.TestHomogSys.setUp">(lumos.unittests.test_homogsys.TestHomogSys method)</a>
   </dt>
 
         
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.System.set_sys_prop">(lumos.model.system.System method)</a>
+  <dt><a href="apidoc/lumos.unittests.html#lumos.unittests.test_mpsoc.TestMPSoC.setUp">(lumos.unittests.test_mpsoc.TestMPSoC method)</a>
+  </dt>
+
+        
+  <dt><a href="apidoc/lumos.unittests.html#lumos.unittests.test_ptmnew_app.TestApp.setUp">(lumos.unittests.test_ptmnew_app.TestApp method)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.VariationImpactAnalysis.set_tech">set_tech() (lumos.analyses.final.VariationImpactAnalysis method)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.asacc.ASAcc.sp">sp (lumos.model.asacc.ASAcc attribute)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.AsymSys.set_tech">(lumos.model.system.AsymSys method)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.HeterogSys.set_tech">(lumos.model.system.HeterogSys method)</a>
+  <dt><a href="apidoc/lumos.model.core.html#lumos.model.core.BaseCore.sp">(lumos.model.core.BaseCore attribute)</a>
   </dt>
 
       </dl></dd>
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.AsymSys.set_ucore_prop">set_ucore_prop() (lumos.model.system.AsymSys method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.AsymSys.set_ucore_type">set_ucore_type() (lumos.model.system.AsymSys method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.chip.Unit.set_vdd">set_vdd() (lumos.model.chip.Unit method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.chip.Unit.set_vth">set_vth() (lumos.model.chip.Unit method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.core.AbstractCore.sp">sp (lumos.model.core.AbstractCore attribute)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.hom.HomSys.speedup_by_vfslist">speedup_by_vfslist() (lumos.model.system.hom.HomSys method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.Base.sp">(lumos.model.tech.Base attribute)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.LPBase.sp">(lumos.model.tech.LPBase attribute)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.PTMScale.sp">(lumos.model.tech.PTMScale attribute)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.ProjScale.sp">(lumos.model.tech.ProjScale attribute)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.homo.HomogSys.speedup_by_vfslist">(lumos.model.system.homo.HomogSys method)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.core.AbstractCore.sp0">sp0 (lumos.model.core.AbstractCore attribute)</a>
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.hom.HomSys.speedup_by_vlist">speedup_by_vlist() (lumos.model.system.hom.HomSys method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="apidoc/lumos.model.system.html#lumos.model.system.homo.HomogSys.speedup_by_vlist">(lumos.model.system.homo.HomogSys method)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="apidoc/lumos.model.tech.cmos.html#lumos.model.tech.cmos.CMOSTechModel.static_power">static_power() (lumos.model.tech.cmos.CMOSTechModel method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="apidoc/lumos.model.tech.tfet.html#lumos.model.tech.tfet.TFETTechModel.static_power">(lumos.model.tech.tfet.TFETTechModel method)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="apidoc/lumos.model.html#lumos.model.Sys_L">Sys_L (in module lumos.model)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.HomogSys.speedup_by_vfslist">speedup_by_vfslist() (lumos.model.system.HomogSys method)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.Sys_M">Sys_M (in module lumos.model)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.HomogSys.speedup_by_vlist">speedup_by_vlist() (lumos.model.system.HomogSys method)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.speedup_by_vmin">speedup_by_vmin() (in module lumos.analyses.final)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.speedup_by_vper">speedup_by_vper() (in module lumos.analyses.final)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.System">System (class in lumos.model.system)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.Sys_S">Sys_S (in module lumos.model)</a>
   </dt>
 
   </dl></td>
@@ -2259,16 +1201,16 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.application.App.tag_update">tag_update() (lumos.model.application.App method)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.application.Application.tag_update">tag_update() (lumos.model.application.Application method)</a>
   </dt>
 
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.core.AbstractCore.tech">tech (lumos.model.core.AbstractCore attribute)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.asacc.ASAcc.tech">tech (lumos.model.asacc.ASAcc attribute)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.Scale.tech">(lumos.model.tech.Scale attribute)</a>
+  <dt><a href="apidoc/lumos.model.core.html#lumos.model.core.BaseCore.tech">(lumos.model.core.BaseCore attribute)</a>
   </dt>
 
         
@@ -2276,30 +1218,56 @@
   </dt>
 
       </dl></dd>
+      
+  <dt><a href="apidoc/lumos.model.html#lumos.model.asacc.ASAcc.tech_model">tech_model (lumos.model.asacc.ASAcc attribute)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.tech.html#lumos.model.tech.TechModelError">TechModelError</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.unittests.html#lumos.unittests.test_mpsoc.TestMPSoC.test_acc">test_acc() (lumos.unittests.test_mpsoc.TestMPSoC method)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.unittests.html#lumos.unittests.test_acc.TestAccelerator.test_acc_vdd_scale">test_acc_vdd_scale() (lumos.unittests.test_acc.TestAccelerator method)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.unittests.html#lumos.unittests.test_homogsys.TestHomogSys.test_perf_by_cnum">test_perf_by_cnum() (lumos.unittests.test_homogsys.TestHomogSys method)</a>
+  </dt>
+
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.analysis.try_update">try_update() (in module lumos.analyses.analysis)</a>
+  <dt><a href="apidoc/lumos.unittests.html#lumos.unittests.test_ptmnew_app.TestApp.test_tag">test_tag() (lumos.unittests.test_ptmnew_app.TestApp method)</a>
   </dt>
 
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asicdual_mt.try_update">(in module lumos.analyses.asicdual_mt)</a>
+      
+  <dt><a href="apidoc/lumos.unittests.html#lumos.unittests.test_acc.TestAccelerator">TestAccelerator (class in lumos.unittests.test_acc)</a>
   </dt>
 
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.asictriple_mt.try_update">(in module lumos.analyses.asictriple_mt)</a>
+      
+  <dt><a href="apidoc/lumos.unittests.html#lumos.unittests.test_ptmnew_app.TestApp">TestApp (class in lumos.unittests.test_ptmnew_app)</a>
   </dt>
 
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.dist_ucore_mt.try_update">(in module lumos.analyses.dist_ucore_mt)</a>
+      
+  <dt><a href="apidoc/lumos.unittests.html#lumos.unittests.test_homogsys.TestHomogSys">TestHomogSys (class in lumos.unittests.test_homogsys)</a>
   </dt>
 
-        
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.heterosys_example.try_update">(in module lumos.analyses.heterosys_example)</a>
+      
+  <dt><a href="apidoc/lumos.unittests.html#lumos.unittests.test_mpsoc.TestMPSoC">TestMPSoC (class in lumos.unittests.test_mpsoc)</a>
   </dt>
 
-      </dl></dd>
+      
+  <dt><a href="apidoc/lumos.model.tech.tfet.html#lumos.model.tech.tfet.TFETTechModel">TFETTechModel (class in lumos.model.tech.tfet)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.html#lumos.model.misc.try_update">try_update() (in module lumos.model.misc)</a>
+  </dt>
+
   </dl></td>
 </tr></table>
 
@@ -2310,24 +1278,10 @@
   <dt><a href="apidoc/lumos.model.html#lumos.model.ucore.UCore">UCore (class in lumos.model.ucore)</a>
   </dt>
 
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.AsymSys.ucore_alloc">ucore_alloc() (lumos.model.system.AsymSys method)</a>
-  </dt>
-
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.application.UCoreParam">UCoreParam (class in lumos.model.application)</a>
-  </dt>
-
-      <dd><dl>
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.kernel.UCoreParam">(class in lumos.model.kernel)</a>
-  </dt>
-
-      </dl></dd>
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.chip.Unit">Unit (class in lumos.model.chip)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.ucore.UCoreError">UCoreError</a>
   </dt>
 
   </dl></td>
@@ -2337,72 +1291,56 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.core.AbstractCore.v0">v0 (lumos.model.core.AbstractCore attribute)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.analyses.html#lumos.analyses.final.VariationImpactAnalysis">VariationImpactAnalysis (class in lumos.analyses.final)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.core.AbstractCore.vdd">vdd (lumos.model.core.AbstractCore attribute)</a>
+  <dt><a href="apidoc/lumos.model.html#lumos.model.asacc.ASAcc.vdd">vdd (lumos.model.asacc.ASAcc attribute)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.Base.vdd">(lumos.model.tech.Base attribute)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.PTMScale.vdd">(lumos.model.tech.PTMScale attribute)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.ProjScale.vdd">(lumos.model.tech.ProjScale attribute)</a>
-  </dt>
-
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.Scale.vdd">(lumos.model.tech.Scale attribute)</a>
+  <dt><a href="apidoc/lumos.model.core.html#lumos.model.core.BaseCore.vdd">(lumos.model.core.BaseCore attribute)</a>
   </dt>
 
       </dl></dd>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.core.AbstractCore.vsf_max">vsf_max (lumos.model.core.AbstractCore attribute)</a>
+  <dt><a href="apidoc/lumos.model.core.html#lumos.model.core.BaseCore.vmax">vmax (lumos.model.core.BaseCore attribute)</a>
+  </dt>
+
+      
+  <dt><a href="apidoc/lumos.model.tech.cmos.html#lumos.model.tech.cmos.CMOSTechModel.vmax">vmax() (lumos.model.tech.cmos.CMOSTechModel method)</a>
+  </dt>
+
+      <dd><dl>
+        
+  <dt><a href="apidoc/lumos.model.tech.tfet.html#lumos.model.tech.tfet.TFETTechModel.vmax">(lumos.model.tech.tfet.TFETTechModel method)</a>
+  </dt>
+
+      </dl></dd>
+      
+  <dt><a href="apidoc/lumos.model.core.html#lumos.model.core.BaseCore.vmin">vmin (lumos.model.core.BaseCore attribute)</a>
   </dt>
 
   </dl></td>
   <td style="width: 33%" valign="top"><dl>
       
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.System.VSF_MAX">VSF_MAX (lumos.model.system.System attribute)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.core.AbstractCore.vsf_min">vsf_min (lumos.model.core.AbstractCore attribute)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.system.System.VSF_MIN">VSF_MIN (lumos.model.system.System attribute)</a>
-  </dt>
-
-      
-  <dt><a href="apidoc/lumos.model.html#lumos.model.core.AbstractCore.vt">vt (lumos.model.core.AbstractCore attribute)</a>
+  <dt><a href="apidoc/lumos.model.tech.cmos.html#lumos.model.tech.cmos.CMOSTechModel.vmin">vmin() (lumos.model.tech.cmos.CMOSTechModel method)</a>
   </dt>
 
       <dd><dl>
         
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.Base.vt">(lumos.model.tech.Base attribute)</a>
+  <dt><a href="apidoc/lumos.model.tech.tfet.html#lumos.model.tech.tfet.TFETTechModel.vmin">(lumos.model.tech.tfet.TFETTechModel method)</a>
   </dt>
 
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.PTMScale.vt">(lumos.model.tech.PTMScale attribute)</a>
+      </dl></dd>
+      
+  <dt><a href="apidoc/lumos.model.core.html#lumos.model.core.BaseCore.vnom">vnom (lumos.model.core.BaseCore attribute)</a>
   </dt>
 
-        
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.ProjScale.vt">(lumos.model.tech.ProjScale attribute)</a>
+      
+  <dt><a href="apidoc/lumos.model.tech.cmos.html#lumos.model.tech.cmos.CMOSTechModel.vnom">vnom() (lumos.model.tech.cmos.CMOSTechModel method)</a>
   </dt>
 
+      <dd><dl>
         
-  <dt><a href="apidoc/lumos.model.html#lumos.model.tech.Scale.vt">(lumos.model.tech.Scale attribute)</a>
+  <dt><a href="apidoc/lumos.model.tech.tfet.html#lumos.model.tech.tfet.TFETTechModel.vnom">(lumos.model.tech.tfet.TFETTechModel method)</a>
   </dt>
 
       </dl></dd>
@@ -2411,28 +1349,21 @@
 
 
 
-          </div>
-        </div>
-      </div>
-      <div class="clearer"></div>
     </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="#" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="py-modindex.html" title="Python Module Index"
-             >modules</a> |</li>
-        <li><a href="index.html">Lumos home</a>&nbsp;|</li>
-        <li><a href="contents.html">Documentation</a> &raquo;</li>
- 
-      </ul>
-    </div>
-    <div class="footer">
-        &copy; Copyright 2013, Liang Wang.
-      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
-    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2013, Liang Wang.<br/>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.<br/>
+    </p>
+  </div>
+</footer>
   </body>
 </html>

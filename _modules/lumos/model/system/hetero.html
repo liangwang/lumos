@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>lumos.model.system.hetero &mdash; Lumos 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/bootstrap-3.2.0/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/bootstrap-3.2.0/css/bootstrap-theme.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../../../_static/bootstrap-3.2.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../../../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="Lumos 0.1 documentation" href="../../../../index.html" />
+    <link rel="up" title="lumos.model" href="../../model.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body role="document">
+
+  <div id="navbar" class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../../../index.html">
+          Lumos</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.1</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul class="simple">
+</ul>
+</ul>
+</li>
+              
+                <li class="dropdown">
+  <a role="button"
+     id="dLabelLocalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="#">Page <b class="caret"></b></a>
+  <ul class="dropdown-menu localtoc"
+      role="menu"
+      aria-labelledby="dLabelLocalToc"></ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+              <li class="hidden-sm"></li>
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      
+  <h1>Source code for lumos.model.system.hetero</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">..core</span> <span class="kn">import</span> <span class="n">IOCore_CMOS</span> <span class="k">as</span> <span class="n">IOCore</span>
+<span class="kn">from</span> <span class="nn">..core.io_cmos</span> <span class="kn">import</span> <span class="n">PERF_BASE</span>
+<span class="kn">from</span> <span class="nn">..ucore</span> <span class="kn">import</span> <span class="n">UCore</span>
+<span class="kn">from</span> <span class="nn">lumos</span> <span class="kn">import</span> <span class="n">settings</span>
+
+<span class="n">VMIN</span> <span class="o">=</span> <span class="mi">300</span>
+<span class="n">VMAX</span> <span class="o">=</span> <span class="mi">1100</span>
+<span class="n">VSF_MAX</span> <span class="o">=</span> <span class="mf">1.3</span>  <span class="c"># maxium vdd is 1.3 * vdd_nominal</span>
+<span class="n">V_PRECISION</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c"># 1mV</span>
+
+
+<span class="n">_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&#39;HeterogSys&#39;</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">settings</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">:</span>
+    <span class="n">_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">_logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="HeterogSys"><a class="viewcode-back" href="../../../../apidoc/lumos.model.system.html#lumos.model.system.hetero.HeterogSys">[docs]</a><span class="k">class</span> <span class="nc">HeterogSys</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class models a heterogeneous many core system composed of</span>
+<span class="sd">    regular cores and accelerators such as dedicated ASICs,</span>
+<span class="sd">    reconfigurable logic (FPGA), and GPGPUs. composed by regular</span>
+<span class="sd">    cores, accelerators such as ASICs, FPGA, and GPU.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">       budget (:class:`~lumos.model.budget.Budget`):</span>
+<span class="sd">          The budget of the system (area and power). Possible values are</span>
+<span class="sd">          :class:`~lumos.model.budget.SysSmall`,</span>
+<span class="sd">          :class:`~lumos.model.budget.SysMedium`, and</span>
+<span class="sd">          :class:`~lumos.model.budget.SysLarge`.</span>
+<span class="sd">       tech (num):</span>
+<span class="sd">          Technology node of the system, possible values are 45, 32, 22, 16.</span>
+<span class="sd">       serial_core (core):</span>
+<span class="sd">          The core for serial part of the program. It could be</span>
+<span class="sd">          :class:`~lumos.model.core.IOCore`,</span>
+<span class="sd">          :class:`~lumos.model.core.O3Core`, or</span>
+<span class="sd">          :class:`~lumos.model.fedcore.FedCore`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">budget</span><span class="p">,</span> <span class="n">tech</span><span class="p">,</span> <span class="n">serial_core</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">tput_core</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sys_area</span> <span class="o">=</span> <span class="n">budget</span><span class="o">.</span><span class="n">area</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sys_power</span> <span class="o">=</span> <span class="n">budget</span><span class="o">.</span><span class="n">power</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sys_bw</span> <span class="o">=</span> <span class="n">budget</span><span class="o">.</span><span class="n">bw</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tech</span> <span class="o">=</span> <span class="n">tech</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sys_bandwidth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sys_bw</span><span class="p">[</span><span class="n">tech</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">asic_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gp_acc</span> <span class="o">=</span> <span class="n">UCore</span><span class="p">(</span><span class="s">&#39;fpga&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">use_gpacc</span> <span class="o">=</span> <span class="bp">False</span>
+
+        <span class="k">if</span> <span class="n">tput_core</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">thru_core</span> <span class="o">=</span> <span class="n">tput_core</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">thru_core</span> <span class="o">=</span> <span class="n">IOCore</span><span class="p">(</span><span class="n">tech</span><span class="o">=</span><span class="n">tech</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s">&#39;hp&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dim_perf</span> <span class="o">=</span> <span class="bp">None</span>
+
+        <span class="k">if</span> <span class="n">serial_core</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">serial_core</span> <span class="o">=</span> <span class="n">serial_core</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">thru_core_area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sys_area</span> <span class="o">-</span> <span class="n">serial_core</span><span class="o">.</span><span class="n">area</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">serial_core</span> <span class="o">=</span> <span class="n">IOCore</span><span class="p">(</span><span class="n">tech</span><span class="o">=</span><span class="n">tech</span><span class="p">,</span> <span class="n">model_name</span><span class="o">=</span><span class="s">&#39;hp&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">thru_core_area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sys_area</span>
+
+        <span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Serial core: {0}, area: {1}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">serial_core</span><span class="o">.</span><span class="n">ctype</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">serial_core</span><span class="o">.</span><span class="n">area</span><span class="p">))</span>
+        <span class="n">thru_cnum</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thru_core_area</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">thru_core</span><span class="o">.</span><span class="n">area</span><span class="p">)</span>
+        <span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Tput core: {0}, area: {1}, cnum: {2}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thru_core</span><span class="o">.</span><span class="n">ctype</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">thru_core</span><span class="o">.</span><span class="n">area</span><span class="p">,</span> <span class="n">thru_cnum</span><span class="p">))</span>
+
+<div class="viewcode-block" id="HeterogSys.set_asic"><a class="viewcode-back" href="../../../../apidoc/lumos.model.system.html#lumos.model.system.hetero.HeterogSys.set_asic">[docs]</a>    <span class="k">def</span> <span class="nf">set_asic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kid</span><span class="p">,</span> <span class="n">area_ratio</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the ASIC accelerator&#39;s area</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">           kid (str):</span>
+<span class="sd">              The ID of the kernel that the ASIC is targeted for.</span>
+<span class="sd">           area_ratio (num):</span>
+<span class="sd">              The new area ratio of the ASIC to be set.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">           Bool to indicate whether successfully set the area.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sys_area</span> <span class="o">*</span> <span class="n">area_ratio</span>
+
+        <span class="k">if</span> <span class="n">kid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">asic_dict</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thru_core_area</span> <span class="o">&lt;</span> <span class="n">area</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;not enough area for this ASIC </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">kid</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">thru_core_area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thru_core_area</span> <span class="o">-</span> <span class="n">area</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">asic_dict</span><span class="p">[</span><span class="n">kid</span><span class="p">]</span> <span class="o">=</span> <span class="n">UCore</span><span class="p">(</span><span class="n">uid</span><span class="o">=</span><span class="s">&#39;asic{0}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">kid</span><span class="p">),</span> <span class="n">area</span><span class="o">=</span><span class="n">area</span><span class="p">,</span> <span class="n">tech</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tech</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">dim_perf</span> <span class="o">=</span> <span class="bp">None</span> <span class="c"># need to update dim_perf later</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">asic_core</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">asic_dict</span><span class="p">[</span><span class="n">kid</span><span class="p">]</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thru_core_area</span> <span class="o">+</span> <span class="n">asic_core</span><span class="o">.</span><span class="n">area</span> <span class="o">&lt;</span> <span class="n">area</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;not enough area for this ASIC </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="n">kid</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">False</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">thru_core_area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thru_core_area</span> <span class="o">+</span> <span class="n">asic_core</span><span class="o">.</span><span class="n">area</span> <span class="o">-</span> <span class="n">area</span>
+            <span class="n">asic_core</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">area</span><span class="o">=</span><span class="n">area</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">dim_perf</span> <span class="o">=</span> <span class="bp">None</span> <span class="c"># need to update dim_perf later</span>
+            <span class="k">return</span> <span class="bp">True</span>
+
+</div>
+<div class="viewcode-block" id="HeterogSys.del_asic"><a class="viewcode-back" href="../../../../apidoc/lumos.model.system.html#lumos.model.system.hetero.HeterogSys.del_asic">[docs]</a>    <span class="k">def</span> <span class="nf">del_asic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">kid</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove an ASIC accelerator from the system, free its area to other</span>
+<span class="sd">        computing components. By default, the freed area is allocated to</span>
+<span class="sd">        throughput cores.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">           kid (str):</span>
+<span class="sd">              The ID of kernel which the ASIC is targeted for.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">           Bool indicating successful deletion</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">kid</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">asic_dict</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;kernel </span><span class="si">%s</span><span class="s"> has not been registered&#39;</span> <span class="o">%</span> <span class="n">kid</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+        <span class="n">asic_core</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">asic_dict</span><span class="p">[</span><span class="n">kid</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thru_core_area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thru_core_area</span> <span class="o">+</span> <span class="n">asic_core</span><span class="o">.</span><span class="n">area</span>
+
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">asic_dict</span><span class="p">[</span><span class="n">kid</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dim_perf</span> <span class="o">=</span> <span class="bp">None</span> <span class="c"># need ot update dim_perf later</span>
+        <span class="k">return</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="HeterogSys.del_asics"><a class="viewcode-back" href="../../../../apidoc/lumos.model.system.html#lumos.model.system.hetero.HeterogSys.del_asics">[docs]</a>    <span class="k">def</span> <span class="nf">del_asics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Remove all ASIC accelerators in the system.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">kid</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">asic_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">del_asic</span><span class="p">(</span><span class="n">kid</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="HeterogSys.realloc_gpacc"><a class="viewcode-back" href="../../../../apidoc/lumos.model.system.html#lumos.model.system.hetero.HeterogSys.realloc_gpacc">[docs]</a>    <span class="k">def</span> <span class="nf">realloc_gpacc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">area_ratio</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adjust the area of a general-purpose accelerator. Currently, only FPGA</span>
+<span class="sd">        is supported.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">           area_ratio (num):</span>
+<span class="sd">              The new area to be adjusted</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">           Bool indicating a successful update.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sys_area</span> <span class="o">*</span> <span class="n">area_ratio</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thru_core_area</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">gp_acc</span><span class="o">.</span><span class="n">area</span> <span class="o">&lt;</span> <span class="n">area</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&#39;not enough area for this GP accelerator&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">thru_core_area</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thru_core_area</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">gp_acc</span><span class="o">.</span><span class="n">area</span> <span class="o">-</span> <span class="n">area</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gp_acc</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">area</span><span class="o">=</span><span class="n">area</span><span class="p">,</span> <span class="n">tech</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tech</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dim_perf</span> <span class="o">=</span> <span class="bp">None</span> <span class="c"># need to update dim_perf later</span>
+        <span class="k">return</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="HeterogSys.set_tech"><a class="viewcode-back" href="../../../../apidoc/lumos.model.system.html#lumos.model.system.hetero.HeterogSys.set_tech">[docs]</a>    <span class="k">def</span> <span class="nf">set_tech</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tech</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the technology node of all cores and ucores.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">           tech (num):</span>
+<span class="sd">              The technology node.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">           N/A</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thru_core</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">tech</span><span class="o">=</span><span class="n">tech</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">serial_core</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">tech</span><span class="o">=</span><span class="n">tech</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gp_acc</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">tech</span><span class="o">=</span><span class="n">tech</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">asic_dict</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">asic_dict</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">config</span><span class="p">(</span><span class="n">tech</span><span class="o">=</span><span class="n">tech</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tech</span> <span class="o">=</span> <span class="n">tech</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sys_bandwidth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sys_bw</span><span class="p">[</span><span class="n">tech</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dim_perf</span> <span class="o">=</span> <span class="bp">None</span> <span class="c"># need to update dim_perf later</span>
+
+</div>
+    <span class="k">def</span> <span class="nf">_dim_perf_cnum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cnum</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=</span><span class="n">VMIN</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the performance of Dim silicon with given active number of cores</span>
+
+<span class="sd">        :cnum: @todo</span>
+<span class="sd">        :app: @todo</span>
+<span class="sd">        :returns: @todo</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">core</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thru_core</span>
+
+        <span class="n">cnum_max</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thru_core_area</span> <span class="o">/</span> <span class="n">core</span><span class="o">.</span><span class="n">area</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">cnum</span> <span class="o">&gt;</span> <span class="n">cnum_max</span> <span class="ow">or</span> <span class="n">cnum</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">None</span>
+
+        <span class="n">cpower</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thru_core_power</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">cnum</span><span class="p">)</span>
+        <span class="n">VMIN</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">vmin</span>
+        <span class="n">VMAX</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">vmax</span>
+
+        <span class="k">if</span> <span class="n">vmin</span> <span class="o">&gt;</span> <span class="n">VMIN</span><span class="p">:</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">vdd</span> <span class="o">=</span> <span class="n">vmin</span>
+            <span class="k">if</span> <span class="n">core</span><span class="o">.</span><span class="n">power</span> <span class="o">&gt;</span> <span class="n">cpower</span><span class="p">:</span>
+                <span class="n">active_cnum</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thru_core_area</span> <span class="o">/</span> <span class="n">core</span><span class="o">.</span><span class="n">area</span><span class="p">),</span>
+                                  <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">core_power</span> <span class="o">/</span> <span class="n">core</span><span class="o">.</span><span class="n">power</span><span class="p">))</span>
+
+                <span class="n">perf</span> <span class="o">=</span> <span class="n">active_cnum</span> <span class="o">*</span> <span class="n">core</span><span class="o">.</span><span class="n">perf</span>
+                <span class="k">return</span> <span class="p">{</span><span class="s">&#39;perf&#39;</span><span class="p">:</span> <span class="n">perf</span> <span class="o">/</span> <span class="n">PERF_BASE</span><span class="p">,</span>
+                        <span class="s">&#39;vdd&#39;</span><span class="p">:</span> <span class="n">vmin</span><span class="p">,</span>
+                        <span class="s">&#39;cnum&#39;</span><span class="p">:</span> <span class="n">active_cnum</span><span class="p">,</span>
+                        <span class="s">&#39;util&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">active_cnum</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">cnum_max</span><span class="p">)}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">vmin</span> <span class="o">=</span> <span class="n">VMIN</span>
+
+        <span class="n">vl</span> <span class="o">=</span> <span class="n">vmin</span>
+        <span class="n">vr</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">core</span><span class="o">.</span><span class="n">vnom</span> <span class="o">*</span> <span class="n">VSF_MAX</span><span class="p">,</span> <span class="n">core</span><span class="o">.</span><span class="n">vmax</span><span class="p">)</span>
+        <span class="n">vm</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">vl</span> <span class="o">+</span> <span class="n">vr</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="k">while</span> <span class="p">(</span><span class="n">vr</span> <span class="o">-</span> <span class="n">vl</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">V_PRECISION</span><span class="p">:</span>
+            <span class="n">vm</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">vl</span> <span class="o">+</span> <span class="n">vr</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">vdd</span> <span class="o">=</span> <span class="n">vm</span>
+
+            <span class="k">if</span> <span class="n">core</span><span class="o">.</span><span class="n">power</span> <span class="o">&gt;</span> <span class="n">cpower</span><span class="p">:</span>
+                <span class="n">vl</span> <span class="o">=</span> <span class="n">vl</span>
+                <span class="n">vr</span> <span class="o">=</span> <span class="n">vm</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">vl</span> <span class="o">=</span> <span class="n">vm</span>
+                <span class="n">vr</span> <span class="o">=</span> <span class="n">vr</span>
+
+        <span class="n">core</span><span class="o">.</span><span class="n">vdd</span> <span class="o">=</span> <span class="n">vr</span>
+        <span class="n">rpower</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">power</span>
+
+        <span class="k">if</span> <span class="n">rpower</span> <span class="o">&lt;=</span> <span class="n">cpower</span><span class="p">:</span>
+            <span class="n">rperf</span> <span class="o">=</span> <span class="n">cnum</span> <span class="o">*</span> <span class="n">core</span><span class="o">.</span><span class="n">perf</span>
+            <span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Optimal Vdd for tput_core: {0}mV&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vr</span><span class="p">))</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s">&#39;perf&#39;</span><span class="p">:</span> <span class="n">rperf</span> <span class="o">/</span> <span class="n">PERF_BASE</span><span class="p">,</span>
+                    <span class="s">&#39;vdd&#39;</span><span class="p">:</span> <span class="n">vr</span><span class="p">,</span>
+                    <span class="s">&#39;cnum&#39;</span><span class="p">:</span> <span class="n">cnum</span><span class="p">,</span>
+                    <span class="s">&#39;util&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">cnum</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">cnum_max</span><span class="p">)}</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">core</span><span class="o">.</span><span class="n">vd</span> <span class="o">=</span> <span class="n">vl</span>
+            <span class="n">lperf</span> <span class="o">=</span> <span class="n">cnum</span> <span class="o">*</span> <span class="n">core</span><span class="o">.</span><span class="n">perf</span>
+            <span class="n">_logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Optimal Vdd for tput_core: {0}mV&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">vr</span><span class="p">))</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s">&#39;perf&#39;</span><span class="p">:</span> <span class="n">lperf</span> <span class="o">/</span> <span class="n">PERF_BASE</span><span class="p">,</span>
+                    <span class="s">&#39;vdd&#39;</span><span class="p">:</span> <span class="n">vl</span><span class="p">,</span>
+                    <span class="s">&#39;cnum&#39;</span><span class="p">:</span> <span class="n">cnum</span><span class="p">,</span>
+                    <span class="s">&#39;util&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">cnum</span><span class="p">)</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">cnum_max</span><span class="p">)}</span>
+
+    <span class="k">def</span> <span class="nf">_dim_perf_opt</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the performance of Dim silicon subsystem</span>
+
+<span class="sd">        :returns: @todo</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">core</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">thru_core</span>
+        <span class="n">cnum_max</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">thru_core_area</span> <span class="o">/</span> <span class="n">core</span><span class="o">.</span><span class="n">area</span><span class="p">)</span>
+        <span class="n">cnum_list</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">cnum_max</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">perf</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">cnum</span> <span class="ow">in</span> <span class="n">cnum_list</span><span class="p">:</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dim_perf_cnum</span><span class="p">(</span><span class="n">cnum</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s">&#39;cnum&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">cnum</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s">&#39;perf&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">perf</span><span class="p">:</span>
+                <span class="n">perf</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s">&#39;perf&#39;</span><span class="p">]</span>
+                <span class="n">vdd</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s">&#39;vdd&#39;</span><span class="p">]</span>
+                <span class="n">util</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="s">&#39;util&#39;</span><span class="p">]</span>
+                <span class="n">opt_cnum</span> <span class="o">=</span> <span class="n">cnum</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;cnum&#39;</span><span class="p">:</span> <span class="n">opt_cnum</span><span class="p">,</span>
+                <span class="s">&#39;vdd&#39;</span><span class="p">:</span> <span class="n">vdd</span><span class="p">,</span>
+                <span class="s">&#39;util&#39;</span><span class="p">:</span> <span class="n">util</span><span class="p">,</span>
+                <span class="s">&#39;perf&#39;</span><span class="p">:</span> <span class="n">perf</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="nf">_calc_dim_perf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thru_core_power</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">thru_core_power</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">thru_core_power</span> <span class="o">=</span> <span class="n">thru_core_power</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">thru_core_power</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sys_power</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dim_perf_opt</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">dim_perf</span> <span class="o">=</span> <span class="n">ret</span><span class="p">[</span><span class="s">&#39;perf&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">opt_cnum</span> <span class="o">=</span> <span class="n">ret</span><span class="p">[</span><span class="s">&#39;cnum&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">opt_vdd</span> <span class="o">=</span> <span class="n">ret</span><span class="p">[</span><span class="s">&#39;vdd&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="HeterogSys.get_perf"><a class="viewcode-back" href="../../../../apidoc/lumos.model.system.html#lumos.model.system.hetero.HeterogSys.get_perf">[docs]</a>    <span class="k">def</span> <span class="nf">get_perf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the optimal performance fo the system. It uses accelerators to execute</span>
+<span class="sd">        kernels if available. Otherwise, kernels are executed and accelerated by</span>
+<span class="sd">        throughput cores. The system will try to find the optimal number of throughput</span>
+<span class="sd">        cores to be active to achieve the best overall throughput.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">           app (:class:`~lumos.model.application.Application`):</span>
+<span class="sd">              The targeted application.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">          dict: results wrapped in a python dict with three keys:</span>
+
+<span class="sd">          perf (float):</span>
+<span class="sd">            Relative performance, also should be the optimal with the given</span>
+<span class="sd">            system configuration.</span>
+<span class="sd">          cnum (int):</span>
+<span class="sd">            The number of active cores for the optimal configuration.</span>
+<span class="sd">          vdd (float):</span>
+<span class="sd">            The supply voltage of throughput cores when executing parallel part</span>
+<span class="sd">            of the application.</span>
+
+<span class="sd">          For example, a results dict::</span>
+
+<span class="sd">            {</span>
+<span class="sd">              &#39;perf&#39;: 123.4,</span>
+<span class="sd">              &#39;cnum&#39;: 12,</span>
+<span class="sd">              &#39;vdd&#39;: 800,</span>
+<span class="sd">            }</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c">#thru_core = self.thru_core</span>
+        <span class="n">serial_core</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">serial_core</span>
+        <span class="n">gp_acc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gp_acc</span>
+
+        <span class="n">asics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">asic_dict</span>
+
+        <span class="n">serial_core</span><span class="o">.</span><span class="n">vdd</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">serial_core</span><span class="o">.</span><span class="n">vnom</span> <span class="o">*</span> <span class="n">VSF_MAX</span><span class="p">,</span> <span class="n">serial_core</span><span class="o">.</span><span class="n">vmax</span><span class="p">)</span>
+        <span class="n">serial_perf</span> <span class="o">=</span> <span class="n">serial_core</span><span class="o">.</span><span class="n">perf</span> <span class="o">/</span> <span class="n">PERF_BASE</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim_perf</span><span class="p">:</span>
+            <span class="c"># need to update dim_perf</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">thru_core_power</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sys_power</span>
+            <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dim_perf_opt</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dim_perf</span> <span class="o">=</span> <span class="n">ret</span><span class="p">[</span><span class="s">&#39;perf&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">opt_cnum</span> <span class="o">=</span> <span class="n">ret</span><span class="p">[</span><span class="s">&#39;cnum&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">opt_vdd</span> <span class="o">=</span> <span class="n">ret</span><span class="p">[</span><span class="s">&#39;vdd&#39;</span><span class="p">]</span>
+
+        <span class="n">dim_perf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim_perf</span>
+        <span class="n">perf</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">app</span><span class="o">.</span><span class="n">f</span><span class="p">)</span> <span class="o">/</span> <span class="n">serial_perf</span> <span class="o">+</span> <span class="n">app</span><span class="o">.</span><span class="n">f_noacc</span> <span class="o">/</span> <span class="n">dim_perf</span>
+
+        <span class="k">for</span> <span class="n">kernel</span> <span class="ow">in</span> <span class="n">app</span><span class="o">.</span><span class="n">kernels</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">use_gpacc</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">kernel</span> <span class="ow">in</span> <span class="n">asics</span><span class="p">:</span>
+                    <span class="n">acc</span> <span class="o">=</span> <span class="n">asics</span><span class="p">[</span><span class="n">kernel</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">acc</span> <span class="o">=</span> <span class="bp">None</span>
+
+                <span class="k">if</span> <span class="n">acc</span> <span class="ow">and</span> <span class="n">acc</span><span class="o">.</span><span class="n">area</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">perf</span> <span class="o">=</span> <span class="n">perf</span> <span class="o">+</span> <span class="n">app</span><span class="o">.</span><span class="n">kernels</span><span class="p">[</span><span class="n">kernel</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">acc</span><span class="o">.</span><span class="n">perf</span><span class="p">(</span><span class="n">power</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sys_power</span><span class="p">,</span> <span class="n">bandwidth</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sys_bandwidth</span><span class="p">)</span> <span class="o">/</span> <span class="n">PERF_BASE</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">perf</span> <span class="o">=</span> <span class="n">perf</span> <span class="o">+</span> <span class="n">app</span><span class="o">.</span><span class="n">kernels</span><span class="p">[</span><span class="n">kernel</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">gp_acc</span><span class="o">.</span><span class="n">perf</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sys_power</span><span class="p">,</span> <span class="n">bandwidth</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sys_bandwidth</span><span class="p">)</span> <span class="o">/</span> <span class="n">PERF_BASE</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">kernel</span> <span class="ow">in</span> <span class="n">asics</span><span class="p">:</span>
+                    <span class="n">acc</span> <span class="o">=</span> <span class="n">asics</span><span class="p">[</span><span class="n">kernel</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">acc</span> <span class="o">=</span> <span class="bp">None</span>
+
+                <span class="k">if</span> <span class="n">acc</span> <span class="ow">and</span> <span class="n">acc</span><span class="o">.</span><span class="n">area</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">perf</span> <span class="o">=</span> <span class="n">perf</span> <span class="o">+</span> <span class="n">app</span><span class="o">.</span><span class="n">kernels</span><span class="p">[</span><span class="n">kernel</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">acc</span><span class="o">.</span><span class="n">perf</span><span class="p">(</span><span class="n">kernel</span><span class="p">,</span> <span class="n">power</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sys_power</span><span class="p">,</span> <span class="n">bandwidth</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sys_bandwidth</span><span class="p">)</span> <span class="o">/</span> <span class="n">PERF_BASE</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">perf</span> <span class="o">=</span> <span class="n">perf</span> <span class="o">+</span> <span class="n">app</span><span class="o">.</span><span class="n">kernels</span><span class="p">[</span><span class="n">kernel</span><span class="p">]</span> <span class="o">/</span> <span class="n">dim_perf</span>
+
+        <span class="k">return</span> <span class="p">{</span><span class="s">&#39;perf&#39;</span><span class="p">:</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">perf</span><span class="p">,</span>
+                <span class="s">&#39;cnum&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">opt_cnum</span><span class="p">,</span>
+                <span class="s">&#39;vdd&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">opt_vdd</span><span class="p">}</span>
+</pre></div></div></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2013, Liang Wang.<br/>
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.3.1.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
