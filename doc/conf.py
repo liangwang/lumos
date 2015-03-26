@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
 # Lumos documentation build configuration file, created by
@@ -11,9 +12,11 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys, os
-on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
+import sys
+import os
+import shlex
+on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -28,7 +31,20 @@ sys.path.append(os.path.abspath('..'))
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.intersphinx', 'sphinx.ext.todo', 'sphinx.ext.coverage', 'sphinx.ext.mathjax', 'sphinx.ext.ifconfig', 'sphinx.ext.viewcode']
+extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.doctest',
+    'sphinx.ext.intersphinx',
+    'sphinx.ext.todo',
+    'sphinx.ext.coverage',
+    'sphinx.ext.mathjax',
+    'sphinx.ext.ifconfig',
+    'sphinx.ext.viewcode',
+    'numpydoc',
+    'sphinx.ext.autosummary'
+]
+numpydoc_show_class_members = False
+# extensions = ['sphinx.ext.autodoc', 'sphinx.ext.intersphinx', 'sphinx.ext.todo', 'sphinx.ext.coverage', 'sphinx.ext.mathjax', 'sphinx.ext.ifconfig', 'sphinx.ext.viewcode', 'sphinx.ext.napoleon']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -45,6 +61,7 @@ master_doc = 'index'
 # General information about the project.
 project = u'Lumos'
 copyright = u'2013, Liang Wang'
+author = 'Liang Wang'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -89,6 +106,9 @@ pygments_style = 'sphinx'
 # A list of ignored prefixes for module index sorting.
 modindex_common_prefix = ['lumos.']
 
+# If true, `todo` and `todoList` produce output, else they produce nothing.
+todo_include_todos = True
+
 
 # -- Options for HTML output ---------------------------------------------------
 
@@ -98,15 +118,28 @@ modindex_common_prefix = ['lumos.']
 if on_rtd:
     html_theme = 'default'
 else:
-    html_theme = 'lumos'
+    # import sphinx_rtd_theme
+    # html_theme = 'sphinx_rtd_theme'
+    # html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+
+    # html_theme = 'alabaster'
+
+    # html_theme = 'lumos'
+    # Add any paths that contain custom themes here, relative to this directory.
+    # html_theme_path = ['_themes']
+
+    html_theme = 'bootstrap'
+    import sphinx_bootstrap_theme
+    html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
+    thml_theme_options = {
+        'bootswatch_theme': 'flatly',
+    }
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
 #html_theme_options = {}
 
-# Add any paths that contain custom themes here, relative to this directory.
-html_theme_path = ['_themes']
 
 # The name for this set of Sphinx documents.  If None, it defaults to
 # "<project> v<release> documentation".
