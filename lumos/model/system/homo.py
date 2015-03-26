@@ -3,7 +3,7 @@
 import logging
 from ..core import IOCore_CMOS as IOCore, O3Core_CMOS as O3Core
 from ..core.io_cmos import PERF_BASE
-from ..application import App
+# from ..application import App
 
 VMIN = 300
 VMAX = 1100
@@ -87,7 +87,7 @@ class HomogSys(object):
         return int(self.area / core.area)
 
 
-    def perf_by_vdd(self, vdd, app=App(f=0.99)):
+    def perf_by_vdd(self, vdd, app):
         """
         Get the relative performance of the system for a given application, after
         scaling the supply voltage by the given value.
@@ -95,19 +95,29 @@ class HomogSys(object):
         Args:
            vdd (num):
               The voltage to be scaled to.
-           app (:class:`~lumos.model.application.App`):
+           app (:class:`~lumos.model.application.Application`):
               The targeted application.
 
         Returns:
-           perf (num):
-              The relatvie performance.
-           active (num):
-              The number of active cores. If it less than the number of
-              available cores, then it turns to be a dark silicon configuration.
-           core (num):
-              The number of available cores on system.
-           util (num):
-              The utilization of the system at given supply voltage.
+          dict: results wrapped in a python dict with three keys:
+
+          perf (float):
+            Relative performance, also should be the optimal with the given
+            system configuration.
+          cnum (int):
+            The number of active cores for the optimal configuration.
+          vdd (float):
+            The supply voltage of throughput cores when executing parallel part
+            of the application.
+
+          For example, a results dict::
+
+            {
+              'perf': 123.4,
+              'cnum': 12,
+              'vdd': 800,
+            }
+
         """
         core = self.core
         f = app.f
@@ -127,33 +137,36 @@ class HomogSys(object):
                 'core' : core_num,
                 'util': util}
 
-    def perf_by_cnum(self, cnum, app=App(f=0.99), vmin=None):
+    def perf_by_cnum(self, cnum, app, vmin=None):
         """
         Get the relative performance of the system for a given application, with a
         given constraint on the number of active cores.
 
         Args:
-           cnum (num):
-              The number of core required to be active.
-           app (:class:`~lumos.model.application.App`):
-              The targeted application.
-           vmin (num):
-              An optional argument to specify the lowest boundary which supply
-              voltage can be scaled down.
+          cnum (num):
+            The number of core required to be active.
+          app (:class:`~lumos.model.application.Application`):
+            The targeted application.
+          vmin (num):
+            An optional argument to specify the lowest boundary which supply
+            voltage can be scaled down.
 
         Returns:
-           perf (num):
-              The relatvie performance.
-           vdd (num):
-              The supply voltage of the optimal configuration under core number
-              constraint.
-           freq (num):
-              The frequency with the optimal configuration under core number
-              constraint.
-           cnum (num):
-              The actual number of active cores, if the requried number can not be met.
-           util (num):
-              The utilization of the system at the optimal configuraiton.
+          dict: results wrapped in a python dict with three keys:
+
+          perf (num):
+            The relatvie performance.
+          vdd (num):
+            The supply voltage of the optimal configuration under core number
+            constraint.
+          freq (num):
+            The frequency with the optimal configuration under core number
+            constraint.
+          cnum (num):
+            The actual number of active cores, if the requried number can not be met.
+          util (num):
+            The utilization of the system at the optimal configuraiton.
+
         """
 
         core = self.core
@@ -246,7 +259,7 @@ class HomogSys(object):
 
 
 
-    def speedup_by_vfslist(self, vfs_list, app=App(f=0.99)):
+    def speedup_by_vfslist(self, vfs_list, app):
         core = self.core
 
         #para_ratio = 0.99
@@ -287,7 +300,7 @@ class HomogSys(object):
 
         return (speedup_list,util_list)
 
-    def speedup_by_vlist(self, v_list, app=App(f=0.99)):
+    def speedup_by_vlist(self, v_list, app):
         core = self.core
 
         #para_ratio = 0.99
@@ -328,7 +341,7 @@ class HomogSys(object):
 
         return (speedup_list,util_list)
 
-    def opt_core_num(self, app=App(f=0.99), vmin=VMIN):
+    def opt_core_num(self, app, vmin=VMIN):
 
         cnum_max = self.get_core_num()
         cnumList = range(1, cnum_max+1)
@@ -352,7 +365,7 @@ class HomogSys(object):
                 'perf': perf}
 
 
-    def perf_by_dark(self, app=App(f=0.99)):
+    def perf_by_dark(self, app):
         core = self.core
         f = app.f
 

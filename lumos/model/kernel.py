@@ -16,27 +16,28 @@ else:
 ASIC_PERF_RATIO = 5
 
 
-class UCoreParam(object):
-    PARAMS = ('miu', 'phi', 'bw')
-
-    def __init__(self, miu=0.001, phi=0.001, bw=0.001):
-        object.__setattr__(self, '_miu', miu)
-        object.__setattr__(self, '_phi', phi)
+# miu -> perf
+# phi -> power
+class KernelParam(object):
+    PARAMS = ('perf', 'power', 'bw')
+    def __init__(self, perf=0.001, power=0.001, bw=0.001):
+        object.__setattr__(self, '_perf', perf)
+        object.__setattr__(self, '_power', power)
         object.__setattr__(self, '_bw', bw)
 
     @property
-    def miu(self):
-        return self._miu
-    @miu.setter
-    def miu(self, miu):
-        object.__setattr__(self, '_miu', miu)
+    def perf(self):
+        return self._perf
+    @perf.setter
+    def perf(self, perf):
+        object.__setattr__(self, '_perf', perf)
 
     @property
-    def phi(self):
-        return self._phi
-    @phi.setter
-    def phi(self, phi):
-        object.__setattr__(self, '_phi', phi)
+    def power(self):
+        return self._power
+    @power.setter
+    def power(self, power):
+        object.__setattr__(self, '_power', power)
 
     @property
     def bw(self):
@@ -46,8 +47,8 @@ class UCoreParam(object):
         object.__setattr__(self, '_bw', bw)
 
     def __str__(self):
-        return '[{0}] miu: {1}, phi: {2}, bw: {3}'.format(
-            self.__repr__(), self._miu, self._phi, self._bw)
+        return '[{0}] perf: {1}, power: {2}, bw: {3}'.format(
+            self.__repr__(), self._perf, self._power, self._bw)
 
     def __setattr__(self, name, value):
         if hasattr(self, '_'+name):
@@ -62,9 +63,11 @@ class KernelError(Exception):
 
 
 class Kernel(object):
-    def __init__(self, kid):
+    def __init__(self, kid, parallel_factor=0):
         self._kid = kid
-        self._accelerators = dict()
+        self._kernel_params = dict()
+        self.is_serial = is_serial
+        self.parallel_factor = parallel_factor
 
     def __str__(self):
         return '{0}: {1}'.format(self.__repr__(), self._kid)
@@ -73,84 +76,84 @@ class Kernel(object):
     def kid(self):
         return self._kid
 
-    def add_acc(self, acc_id, ucore_param):
-        self._accelerators[acc_id] = ucore_param
+    def add_kernel_param(self, acc_id, kernel_param):
+        self._kernel_params[acc_id] = kernel_param
 
-    def del_acc(self, acc_id):
+    def del_kernel_param(self, acc_id):
         try:
-            del self._accelerators[acc_id]
+            del self._kernel_params[acc_id]
         except KeyError:
             _logger.warning('No accelerator named {0} available'.format(acc_id))
 
-    def get_acc(self, acc_id):
+    def get_kernel_param(self, acc_id):
         try:
-            return self._accelerators[acc_id]
+            return self._kernel_params[acc_id]
         except KeyError:
-            raise KernelError('Kernel {0} does not have accelerator {1}'.format(
+            raise KernelError('Kernel {0} does not register accelerator {1}'.format(
                 self._kid, acc_id))
 
-    def list_all_accs(self):
-        return self._accelerators.keys()
+    def get_all_accs(self):
+        return self._kernel_params.keys()
 
 
-kernel_pool = {
-    'MMM': {
-        'GPU': UCoreParam(miu=3.41, phi=0.74, bw=0.725),
-        'FPGA': UCoreParam(miu=0.75, phi=0.31, bw=0.325),
-        'ASIC': UCoreParam(miu=27.4, phi=0.79, bw=3.62),
-        'O3CPU': UCoreParam(miu=1, phi=1, bw=0.216),
-        'IO': UCoreParam(miu=1, phi=1, bw=0.16),
-    },
-    'BS': {
-        'GPU': UCoreParam(miu=17.0, phi=0.57, bw=5.85),
-        'FPGA': UCoreParam(miu=5.68, phi=0.26, bw=3.975),
-        'ASIC': UCoreParam(miu=482, phi=4.75, bw=66.249),
-        'O3CPU': UCoreParam(miu=1, phi=1, bw=0.35),
-        'IO': UCoreParam(miu=1, phi=1, bw=0.26),
-    },
-    'FFT': {
-        'GPU': UCoreParam(miu=2.42, phi=0.59, bw=1),
-        'FPGA': UCoreParam(miu=2.81, phi=0.29, bw=1),
-        'ASIC': UCoreParam(miu=733, phi=5.34, bw=1),
-        'O3CPU': UCoreParam(miu=1, phi=1, bw=1),
-        'IO': UCoreParam(miu=1, phi=1, bw=1),
-    },
-    'fpgaeff1': {
-        'GPU': UCoreParam(miu=3.41, phi=0.74, bw=0.725),
-        'FPGA': UCoreParam(miu=20, phi=0.5, bw=2),
-        'ASIC': UCoreParam(miu=27.4, phi=0.79, bw=3.62),
-        'O3CPU': UCoreParam(miu=1, phi=1, bw=0.216),
-        'IO': UCoreParam(miu=1, phi=1, bw=0.16),
-    },
-    'fpgaeff2': {
-        'GPU': UCoreParam(miu=3.41, phi=0.74, bw=0.725),
-        'FPGA': UCoreParam(miu=40, phi=2.5, bw=20),
-        'ASIC': UCoreParam(miu=87.4, phi=2.79, bw=30.62),
-        'O3CPU': UCoreParam(miu=1, phi=1, bw=0.216),
-        'IO': UCoreParam(miu=1, phi=1, bw=0.16),
-    },
-    'asiceff1': {
-        'GPU': UCoreParam(miu=17.0, phi=0.57, bw=5.85),
-        'FPGA': UCoreParam(miu=20, phi=2, bw=8),
-        'ASIC': UCoreParam(miu=482, phi=4.75, bw=66.249),
-        'O3CPU': UCoreParam(miu=1, phi=1, bw=0.35),
-        'IO': UCoreParam(miu=1, phi=1, bw=0.26),
-    },
-}
+# kernel_pool = {
+#     'MMM': {
+#         'GPU': KernelParam(perf=3.41, power=0.74, bw=0.725),
+#         'FPGA': KernelParam(perf=0.75, power=0.31, bw=0.325),
+#         'ASIC': KernelParam(perf=27.4, power=0.79, bw=3.62),
+#         'O3CPU': KernelParam(perf=1, power=1, bw=0.216),
+#         'IO': KernelParam(perf=1, power=1, bw=0.16),
+#     },
+#     'BS': {
+#         'GPU': KernelParam(perf=17.0, power=0.57, bw=5.85),
+#         'FPGA': KernelParam(perf=5.68, power=0.26, bw=3.975),
+#         'ASIC': KernelParam(perf=482, power=4.75, bw=66.249),
+#         'O3CPU': KernelParam(perf=1, power=1, bw=0.35),
+#         'IO': KernelParam(perf=1, power=1, bw=0.26),
+#     },
+#     'FFT': {
+#         'GPU': KernelParam(perf=2.42, power=0.59, bw=1),
+#         'FPGA': KernelParam(perf=2.81, power=0.29, bw=1),
+#         'ASIC': KernelParam(perf=733, power=5.34, bw=1),
+#         'O3CPU': KernelParam(perf=1, power=1, bw=1),
+#         'IO': KernelParam(perf=1, power=1, bw=1),
+#     },
+#     'fpgaeff1': {
+#         'GPU': KernelParam(perf=3.41, power=0.74, bw=0.725),
+#         'FPGA': KernelParam(perf=20, power=0.5, bw=2),
+#         'ASIC': KernelParam(perf=27.4, power=0.79, bw=3.62),
+#         'O3CPU': KernelParam(perf=1, power=1, bw=0.216),
+#         'IO': KernelParam(perf=1, power=1, bw=0.16),
+#     },
+#     'fpgaeff2': {
+#         'GPU': KernelParam(perf=3.41, power=0.74, bw=0.725),
+#         'FPGA': KernelParam(perf=40, power=2.5, bw=20),
+#         'ASIC': KernelParam(perf=87.4, power=2.79, bw=30.62),
+#         'O3CPU': KernelParam(perf=1, power=1, bw=0.216),
+#         'IO': KernelParam(perf=1, power=1, bw=0.16),
+#     },
+#     'asiceff1': {
+#         'GPU': KernelParam(perf=17.0, power=0.57, bw=5.85),
+#         'FPGA': KernelParam(perf=20, power=2, bw=8),
+#         'ASIC': KernelParam(perf=482, power=4.75, bw=66.249),
+#         'O3CPU': KernelParam(perf=1, power=1, bw=0.35),
+#         'IO': KernelParam(perf=1, power=1, bw=0.26),
+#     },
+# }
 
 
-def get_kernel(kid):
-    """get kernel by kid
+# def get_kernel(kid):
+#     """get kernel by kid
 
-    :kid: @todo
-    :returns: kernel dict if kid existed in kernel_pool,
-              None, if kid is not find
+#     :kid: @todo
+#     :returns: kernel dict if kid existed in kernel_pool,
+#               None, if kid is not find
 
-    """
-    if kid in kernel_pool:
-        return kernel_pool[kid]
-    else:
-        return None
+#     """
+#     if kid in kernel_pool:
+#         return kernel_pool[kid]
+#     else:
+#         return None
 
 
 def gen_kernel_gauss(mean, std, num=None):
@@ -160,23 +163,23 @@ def gen_kernel_gauss(mean, std, num=None):
         probs = scipy.stats.norm.pdf(rvs, mean, std)
         id = 0
         for rv,prob in zip(rvs, probs):
-            ken_gauss['gauss%d' % id ] = {'FPGA': UCoreParam(miu=rv),
+            ken_gauss['gauss%d' % id ] = {'FPGA': KernelParam(perf=rv),
                                         'prob': prob}
             id = id + 1
 
         #for id in xrange(num):
-            #uc_miu = random.gauss(mean,std)
-            #while not uc_miu > 0:
-                #uc_miu = random.gauss(mean, std)
-            #prob = gauss_pdf(uc_miu, mean, std)
-            #ken_gauss['gauss%d' % id ] = {'FPGA': UCoreParam(miu=uc_miu),
+            #uc_perf = random.gauss(mean,std)
+            #while not uc_perf > 0:
+                #uc_perf = random.gauss(mean, std)
+            #prob = gauss_pdf(uc_perf, mean, std)
+            #ken_gauss['gauss%d' % id ] = {'FPGA': KernelParam(perf=uc_perf),
                                         #'prob': prob}
 
     else:
         rv = scipy.stats.norm.rvs(mean, std)
         prob = scipy.stats.norm.pdf(rv, mean, std)
         id = len(kernel_pool)+1
-        ken_gauss['gauss%d' % id] = {'FPGA': UCoreParam(miu=rv),
+        ken_gauss['gauss%d' % id] = {'FPGA': KernelParam(perf=rv),
                                                      'prob': prob}
 
     kernel_pool.update(ken_gauss)
@@ -212,8 +215,8 @@ def create_fixednorm(dist_params, fname='fixednorm.cfg', size=100, kid_prefix='f
     cfg = configparser.RawConfigParser()
     for kernel,perf,prob in zip(kernels, rvs, probs):
         cfg.add_section(kernel)
-        cfg.set(kernel, 'fpga_miu', perf/ASIC_PERF_RATIO)
-        cfg.set(kernel, 'asic_miu', perf)
+        cfg.set(kernel, 'fpga_perf', perf/ASIC_PERF_RATIO)
+        cfg.set(kernel, 'asic_perf', perf)
         cfg.set(kernel, 'occur', prob)
 
     with open(fname, 'wb') as f:
@@ -231,17 +234,17 @@ def create_randnorm(dist_params,fname='norm.cfg', size=100, kid_prefix='randnorm
 
     """
 
-    miu = dist_params['mean']
+    perf = dist_params['mean']
     sigma = dist_params['std']
-    rvs = numpy.random.normal(miu, sigma, size)
-    probs = scipy.stats.norm.pdf(rvs, miu, sigma)
+    rvs = numpy.random.normal(perf, sigma, size)
+    probs = scipy.stats.norm.pdf(rvs, perf, sigma)
     ids = numpy.arange(size)
     cfg = configparser.RawConfigParser()
     for rv, prob,kid in zip(rvs, probs, ids):
         kname = 'norm%03d'% kid
         cfg.add_section(kname)
-        cfg.set(kname, 'fpga_miu', rv)
-        cfg.set(kname, 'asic_miu', rv*ASIC_PERF_RATIO)
+        cfg.set(kname, 'fpga_perf', rv)
+        cfg.set(kname, 'asic_perf', rv*ASIC_PERF_RATIO)
         cfg.set(kname, 'occur', prob)
 
     with open(fname, 'wb') as f:
@@ -298,10 +301,10 @@ def create_fixednorm_xml(dist_params, fname='fixednorm.xml', size=100,
         k_root.set('name', kernel)
 
         fpga_root = etree.SubElement(k_root, 'fpga')
-        fpga_root.set('miu', '%.3e'% (perf/ASIC_PERF_RATIO))
+        fpga_root.set('perf', '%.3e'% (perf/ASIC_PERF_RATIO))
 
         asic_root = etree.SubElement(k_root, 'asic')
-        asic_root.set('miu', '%.3e'%perf)
+        asic_root.set('perf', '%.3e'%perf)
 
         ele = etree.SubElement(k_root, 'occur')
         ele.text = '%.3e' % prob
@@ -337,13 +340,13 @@ def create_randnorm_xml(dist_params,fname='randnorm.xml', size=100,
 
     """
 
-    miu = dist_params['mean']
+    perf = dist_params['mean']
     sigma = dist_params['std']
-    rvs = numpy.random.normal(miu, sigma, size*2)
+    rvs = numpy.random.normal(perf, sigma, size*2)
     rvs_positive = [ rv for rv in rvs if rv > 0][:size]
     rvs = rvs_positive
 
-    probs = scipy.stats.norm.pdf(rvs, miu, sigma)
+    probs = scipy.stats.norm.pdf(rvs, perf, sigma)
     ids = numpy.arange(size)
     kernels = ['_gen_%s_%03d' % (kid_prefix, idx) for idx in xrange(size)]
 
@@ -353,10 +356,10 @@ def create_randnorm_xml(dist_params,fname='randnorm.xml', size=100,
         k_root.set('name', kernel)
 
         fpga_root = etree.SubElement(k_root, 'fpga')
-        fpga_root.set('miu', '%.3e'% (perf/ASIC_PERF_RATIO))
+        fpga_root.set('perf', '%.3e'% (perf/ASIC_PERF_RATIO))
 
         asic_root = etree.SubElement(k_root, 'asic')
-        asic_root.set('miu', '%.3e'% (perf))
+        asic_root.set('perf', '%.3e'% (perf))
 
         ele = etree.SubElement(k_root, 'occur')
         ele.text = '%.3e' % prob
@@ -369,12 +372,12 @@ def load(fname='norm.cfg'):
     cfg = configparser.RawConfigParser()
     cfg.read(fname)
     for sec in cfg.sections():
-        fpga_miu = float(cfg.get(sec, 'fpga_miu'))
-        asic_miu = float(cfg.get(sec, 'asic_miu'))
+        fpga_perf = float(cfg.get(sec, 'fpga_perf'))
+        asic_perf = float(cfg.get(sec, 'asic_perf'))
         prob = float(cfg.get(sec, 'occur'))
         kernel_pool[sec] = {
-                'FPGA': UCoreParam(miu=fpga_miu),
-                'ASIC': UCoreParam(miu=asic_miu),
+                'FPGA': KernelParam(perf=fpga_perf),
+                'ASIC': KernelParam(perf=asic_perf),
                 'occur': prob
                 }
 
@@ -417,8 +420,8 @@ def load_xml(fname='norm.xml'):
         accelerator_root = k_root.find('accelerator')
         for ele in accelerator_root.getchildren():
             uid = ele.tag
-            miu = float(ele.get('miu'))
-            kernel_pool[k_name][uid] = UCoreParam(miu=miu)
+            perf = float(ele.get('perf'))
+            kernel_pool[k_name][uid] = KernelParam(perf=perf)
 
         ele = k_root.find('occur')
         prob = float(ele.text)
@@ -452,15 +455,15 @@ def load_kernels(fname='norm.xml'):
         accelerator_root = k_root.find('accelerator')
         for ele in accelerator_root.getchildren():
             acc_id = ele.tag
-            ucore_param = UCoreParam()
+            kernel_param = KernelParam()
             for attr, val in ele.items():
                 try:
-                    setattr(ucore_param, attr, float(val))
+                    setattr(kernel_param, attr, float(val))
                 except (ValueError, TypeError):
                     raise KernelError(
                         'Error decoding Ucore parameters, attr: {0}, val: {1}, '
                         'val is not a float')
-            k.add_acc(acc_id, ucore_param)
+            k.add_acc(acc_id, kernel_param)
 
         kernels[k_name] = k
     return kernels
@@ -515,7 +518,7 @@ def load_from_xml(fname='norm.xml'):
         accelerator_root = k_root.find('accelerator')
         for ele in accelerator_root.getchildren():
             acc_id = ele.tag
-            ucore_param = UCoreParam()
+            ucore_param = KernelParam()
             for attr,val in ele.items():
                 try:
                     setattr(ucore_param, attr, float(val))

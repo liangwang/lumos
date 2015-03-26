@@ -7,7 +7,7 @@ import numpy as np
 import csv
 from scipy.interpolate import InterpolatedUnivariateSpline as IUSpline
 import scipy.interpolate
-import cPickle as pickle
+import pickle
 import matplotlib.pyplot as plt
 
 
@@ -18,7 +18,7 @@ SIM_RESULT_DIR = os.path.join(os.path.dirname(__file__), ttype)
 
 ifn = joinpath(SIM_RESULT_DIR, '%s_%s_%d.data' % (ckt, ttype, tech))
 
-with open(ifn, 'rb') as f:
+with open(ifn, 'r') as f:
     freader = csv.reader(f, delimiter='\t')
 
     vdd_list = []

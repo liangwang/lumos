@@ -10,20 +10,23 @@ class Budget:
 
     @property
     def area(self):
-        """Total area of a system, in mili-meters (mm^2)"""
+        """ Total area of a system, in mili-meters (mm^2)"""
         return self._area
 
     @property
     def power(self):
-        """Total TDP of a system, in watts (W)"""
+        """ Total TDP of a system, in watts (W)"""
         return self._power
 
     @property
     def bw(self):
-        """Total available memory bandwidth of a system, in GBytes/S. `bw` is in a form of python dict indexed by technology nodes, which looks like::
+        """ Total available memory bandwidth of a system, in GBytes/S.
 
-        {45: 180, 32: 198,
-         22: 234, 16: 252}
+        `bw` is in a form of python dict indexed by technology nodes, which looks like::
+
+          {45: 180, 32: 198,
+           22: 234, 16: 252}
+
         """
         return self._bw
 
@@ -49,8 +52,8 @@ LargeWithIdealBW = Budget(area=200, power=120,
         bw = {45: 1000, 32: 1000,
             22: 1000, 16: 1000})
 
-from .application import App
+from .application import Application, AppDAG
 from .tech import CMOSTechModel, TFETTechModel
 from .core import *
-from .kernel import UCoreParam, Kernel, KernelError
-from .accelerator import Accelerator
+from .kernel import KernelParam, Kernel, KernelError
+from .asacc import ASAcc

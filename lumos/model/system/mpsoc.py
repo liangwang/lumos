@@ -7,7 +7,7 @@ Multi-core, heterogeneous system-on-chip (MPSoC)
 import logging
 from ..core import IOCore_CMOS as IOCore, O3Core_CMOS as O3Core
 from ..core.io_cmos import PERF_BASE
-from ..accelerator import Accelerator
+from .. import ASAcc as Accelerator
 # from ..application import Application
 from ..tech import CMOSTechModel, TFETTechModel
 from lumos import settings
@@ -25,42 +25,57 @@ class MPSoCError(Exception):
     pass
 
 
-class MPSoC(object):
+class MPSoC():
     """
     This class models a heterogeneous many core system composed of
     regular cores and accelerators such as dedicated ASICs,
     reconfigurable logic (FPGA), and GPGPUs. composed by regular
     cores, accelerators such as ASICs, FPGA, and GPU.
 
-    Args:
-       budget (:class:`~lumos.model.budget.Budget`):
-          The budget of the system (area and power). Possible values are
-          :class:`~lumos.model.budget.SysSmall`,
-          :class:`~lumos.model.budget.SysMedium`, and
-          :class:`~lumos.model.budget.SysLarge`.
-       tech (num):
-          Technology node of the system, possible values are 45, 32, 22, 16.
-       serial_core (core):
-          The core for serial part of the program. It could be
-          :class:`~lumos.model.core.IOCore`,
-          :class:`~lumos.model.core.O3Core`, or
-          :class:`~lumos.model.fedcore.FedCore`.
+    Parameters
+    ----------
+    budget : :class:`~lumos.model.Budget`
+      The budget of the system (area and power). Possible values are
+      :class:`~lumos.model.Sys_S`, :class:`~lumos.model.Sys_M`, and
+      :class:`~lumos.model.Sys_L`.
+    tech : int
+      Technology node of the system, possible values are 45, 32, 22, 16.
+    serial_core : :class:`~lumos.model.BaseCore`
+      The core for serial part of the program. It could be
+      :class:`~lumos.model.IOCore`, :class:`~lumos.model.O3Core`, or
+      :class:`~lumos.model.FedCore`.
+    tput_core : :class:`~lumos.model.BaseCore`
+      The core for throughput (parallel) part of the program, similar to
+      serial_core
+
+    Attributes
+    ----------
+    sys_area : float
+      system area budget, in mm^2
+    sys_pwoer : float
+      system power budget, in watt
+    sys_bandwidth : float
+      memory bandwidth budget of the system, in GB/s
+    tech : int
+      technology node
+    kernel_asic_table : dict
+      An index table storing supported ASIC Ucores for a kernel. Indexed by kid,
+      each entry is a list of ASIC's IDs (acc_id) that support the corresponding
+      kernel.
+    asic_dict : dict
+      stores all ASIC Ucore object, indexed by ASIC's IDs (acc_id)
 
     """
     def __init__(self, budget, tech, serial_core=None, tput_core=None):
         self.sys_area = budget.area
         self.sys_power = budget.power
-        self.sys_bw = budget.bw
+        self._sys_bw = budget.bw
 
         self.tech = tech
         self.sys_bandwidth = self.sys_bw[tech]
 
-        # stores all ASIC Ucore object, indexed by ASIC's IDs (acc_id)
         self.asic_dict = dict()
 
-        # An index table storing supported ASIC Ucores for a kernel.
-        # Indexed by kid, each entry is a list of ASIC's IDs (acc_id)
-        # that support the corresponding kernel.
         self.kernel_asic_table = dict()
 
         if tput_core:
@@ -85,33 +100,30 @@ class MPSoC(object):
         self.use_gpacc = False
 
     def set_asic(self, ker_obj, acc_id, area_ratio, tech_model):
-        """
-        Set the ASIC accelerator's area
+        """ Set the ASIC accelerator's area
 
-        Args:
-           ker_obj (class Kernel):
-              The kernel object that the ASIC is targeted for.
-           acc_id (str):
-              The ID of the acceleartor.
-           area_ratio (num):
-              The new area ratio of the ASIC to be set.
+        Parameters
+        ----------
+        ker_obj : :class:`~lumos.model.Kernel`
+           The kernel object that the ASIC is targeted for.
+        acc_id : str
+           The ID of the acceleartor.
+        area_ratio : float
+           The new area ratio of the ASIC to be set.
 
-        Returns:
-           Bool to indicate whether successfully set the area.
+        Raises
+        ------
+        MPSoCError
+          The ASIC area is larger than available system area
+
         """
         area = self.sys_area * area_ratio
         kid = ker_obj.kid
 
-        # if 'TFET' in tech_model_name:
-        #     tech_model = TFETTechModel(tech_model_name)
-        # else:
-        #     tech_model = CMOSTechModel(tech_model_name)
-
         if acc_id not in self.asic_dict:
             # add a new ASIC accelerator
             if self.thru_core_area < area:
-                _logger.error('not enough area for this ASIC %s' % kid)
-                return False
+                raise MPSoCError('not enough area for this ASIC %s' % kid)
             self.thru_core_area = self.thru_core_area - area
             asic_ucore = Accelerator(acc_id=acc_id, ker_obj=ker_obj, area=area,
                                      tech=self.tech, tech_model=tech_model)
@@ -124,32 +136,32 @@ class MPSoC(object):
             asic_core = self.asic_dict[acc_id]
 
             if self.thru_core_area + asic_core.area < area:
-                _logger.error('not enough area for this ASIC %s' % kid)
-                return False
+                raise MPSoCError('not enough area for this ASIC %s' % kid)
 
             self.thru_core_area = self.thru_core_area + asic_core.area - area
             asic_core.area=area
 
         # need to update dim_perf later
         self.dim_perf = None
-        return True
 
     def del_asic(self, acc_id):
-        """
-        Remove an ASIC accelerator from the system, free its area to other
+        """ Remove an ASIC accelerator from the system, free its area to other
         computing components. By default, the freed area is allocated to
         throughput cores.
 
-        Args:
-           acc_id (str):
-              The ID of the ASIC to be removed
+        Parameters
+        ----------
+        acc_id : str
+          The ID of the ASIC to be removed
 
-        Returns:
-           Bool indicating successful deletion
+        Raises
+        ------
+        MPSoCError
+          acc_id is not registered with the system
+
         """
         if acc_id not in self.asic_dict:
-            _logger.error('kernel %s has not been registered' % acc_id)
-            return False
+            raise MPSoCError('kernel %s has not been registered' % acc_id)
 
         asic_core = self.asic_dict[acc_id]
 
@@ -161,7 +173,6 @@ class MPSoC(object):
 
         # need ot update dim_perf later
         self.dim_perf = None
-        return True
 
     def get_all_asics(self):
         return self.asic_dict.keys()
@@ -185,46 +196,44 @@ class MPSoC(object):
         return self.kernel_asic_table.keys()
 
     def del_all_asics(self):
-        """
-        Remove all ASIC accelerators in the system.
+        """ Remove all ASIC accelerators in the system.
         """
         for kid in self.asic_dict:
             self.del_asic(kid)
 
     def realloc_gpacc(self, area_ratio):
-        """
-        Adjust the area of a general-purpose accelerator. Currently, only FPGA
-        is supported.
+        """ Adjust the area of a general-purpose accelerator.
 
-        Args:
-           area_ratio (num):
-              The new area to be adjusted
+        Currently, only FPGA is supported.
 
-        Returns:
-           Bool indicating a successful update.
+        Parameters
+        ----------
+        area_ratio : float
+          The new area to be adjusted
+
+        Raises
+        ------
+        MPSoCError
+          area is larger than available system area
 
         """
         area = self.sys_area * area_ratio
         if self.thru_core_area + self.gp_acc.area < area:
-            _logger.error('not enough area for this GP accelerator')
-            return False
+            raise MPSoCError('not enough area for this GP accelerator')
 
         self.thru_core_area = self.thru_core_area + self.gp_acc.area - area
         self.gp_acc.config(area=area, tech=self.tech)
         # need to update dim_perf later
         self.dim_perf = None
-        return True
 
     def set_tech(self, tech):
-        """
-        Set the technology node of all cores and ucores.
+        """ Set the technology node of all cores and ucores.
 
-        Args:
-           tech (num):
-              The technology node.
+        Parameters
+        ----------
+        tech : num
+          The technology node.
 
-        Returns:
-           N/A
         """
         self.thru_core.config(tech=tech)
         if self.serial_core:
@@ -242,11 +251,33 @@ class MPSoC(object):
         self.dim_perf = None
 
     def _dim_perf_cnum(self, cnum, vmin=None):
-        """Get the performance of Dim silicon with given active number of cores
+        """Get the performance by given the active number of cores.
 
-        :cnum: @todo
-        :app: @todo
-        :returns: @todo
+        Given number of multi-cores (potentially) running at lower supply voltage.
+
+        Parameters
+        ----------
+        cnum : int
+          The number of active cores
+        vmin : float, optional
+          The minimum voltage of cores
+
+        Returns
+        -------
+        dict
+          results wrapped in a python dict with three keys:
+
+          perf (num):
+            The relatvie performance.
+          active (num):
+            The number of active cores. If it less than the number of
+            available cores, then it turns to be a dark silicon configuration.
+          vdd (num):
+            The supply voltage of cores for the best performance
+          core (num):
+            The number of available cores on system.
+          util (num):
+            The utilization of the system at given supply voltage.
 
         """
         core = self.thru_core
@@ -315,9 +346,22 @@ class MPSoC(object):
                     'util': float(100 * cnum) / float(cnum_max)}
 
     def _dim_perf_opt(self):
-        """Get the performance of Dim silicon subsystem
+        """Get the optimal performance of multicore running at lower supply voltage
 
-        :returns: @todo
+        Returns
+        -------
+        dict
+          results wrapped in a python dict with three keys:
+
+          perf (num):
+            The relatvie performance.
+          vdd (num):
+            The supply voltage of the optimal configuration under core number
+            constraint.
+          cnum (num):
+            The actual number of active cores, if the requried number can not be met.
+          util (num):
+            The utilization of the system at the optimal configuraiton.
 
         """
         core = self.thru_core
@@ -352,6 +396,23 @@ class MPSoC(object):
         self.opt_cnum = ret['cnum']
         self.opt_vdd = ret['vdd']
 
+    def get_perf_appdag(self, appdag):
+        """Get the performance of the system, on an
+        :class:`~lumos.model.AppDAG` application.
+
+        Parameters
+        ----------
+        appdag : :class:`~lumos.model.AppDAG`
+          The target application
+
+        Returns
+        -------
+        float
+          relative performance in terms of latency.
+
+        """
+        pass
+
     def get_perf(self, app):
         """Get the optimal performance fo the system.
 
@@ -360,21 +421,34 @@ class MPSoC(object):
         system will try to find the optimal number of throughput cores
         to be active to achieve the best overall throughput.
 
-        Args:
-           app (:class:`~lumos.model.application.App`):
-              The targeted application.
+        Parameters
+        ----------
+        app : :class:`~lumos.model.Application`
+          The targeted application.
 
-        Returns:
-           perf (num):
-              Relative performance, also should be the optimal with the given
-              system configuration.
-           cnum (num):
-              The number of active cores for the optimal configuration.
-           vdd (num):
-              The supply voltage of throughput cores when executing parallel part
-              of the application.
+        Returns
+        -------
+        dict
+          results wrapped in a python dict with three keys:
+
+          perf (float):
+            Relative performance, also should be the optimal with the given
+            system configuration.
+          cnum (int):
+            The number of active cores for the optimal configuration.
+          vdd (float):
+            The supply voltage of throughput cores when executing parallel part
+            of the application.
+
+          For example, a results dict::
+
+            {
+              'perf': 123.4,
+              'cnum': 12,
+              'vdd': 800,
+            }
+
         """
-
         if self.serial_core:
             serial_core = self.serial_core
         else:
@@ -434,7 +508,6 @@ class MPSoC(object):
                     perf = perf + app.kernels_coverage[kid] / (acc_perf / PERF_BASE)
                 else:
                     perf = perf + app.kernels_coverage[kid] / dim_perf
-
 
         return {'perf': 1 / perf,
                 'cnum': self.opt_cnum,

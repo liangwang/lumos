@@ -5,13 +5,15 @@ from configobj import ConfigObj
 import os
 
 def LumosNumlist(string):
-    """ LumosNumlist is a number list specified in following ways:
+    """ Parse a number list
 
-    1. enumeration: 1,2,3,4
-    2. range: 1:5 -> 1,2,3,4,5
-    3. range with step: 1:5:2 -> 1,3,5
-    4. a mix of the above three, the mix should keep the orders, so 1,2,3:10,12:20:2,30 is legitimate, while
-       1,2,3,1:10 is not.
+    LumosNumlist is a number list specified in following ways:
+
+      1. enumeration: 1,2,3,4
+      2. range: 1:5 -> 1,2,3,4,5
+      3. range with step: 1:5:2 -> 1,3,5
+      4. a mix of the above three, the mix should keep the orders, so
+         1,2,3:10,12:20:2,30 is legitimate, while 1,2,3,1:10 is not.
 
     """
     num_list = []

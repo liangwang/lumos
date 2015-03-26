@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
 import logging
-from ..core import IOCore_CMOS as IOCore, O3Core_CMOS as O3Core
+from ..core import IOCore_CMOS as IOCore
 from ..core.io_cmos import PERF_BASE
 from ..ucore import UCore
-from ..application import App
+from lumos import settings
 
 VMIN = 300
 VMAX = 1100
@@ -12,12 +12,12 @@ VSF_MAX = 1.3  # maxium vdd is 1.3 * vdd_nominal
 V_PRECISION = 1  # 1mV
 
 
-from lumos import settings
 _logger = logging.getLogger('HeterogSys')
 if settings.DEBUG:
     _logger.setLevel(logging.DEBUG)
 else:
     _logger.setLevel(logging.INFO)
+
 
 class HeterogSys(object):
     """
@@ -303,18 +303,28 @@ class HeterogSys(object):
         cores to be active to achieve the best overall throughput.
 
         Args:
-           app (:class:`~lumos.model.application.App`):
+           app (:class:`~lumos.model.application.Application`):
               The targeted application.
 
         Returns:
-           perf (num):
-              Relative performance, also should be the optimal with the given
-              system configuration.
-           cnum (num):
-              The number of active cores for the optimal configuration.
-           vdd (num):
-              The supply voltage of throughput cores when executing parallel part
-              of the application.
+          dict: results wrapped in a python dict with three keys:
+
+          perf (float):
+            Relative performance, also should be the optimal with the given
+            system configuration.
+          cnum (int):
+            The number of active cores for the optimal configuration.
+          vdd (float):
+            The supply voltage of throughput cores when executing parallel part
+            of the application.
+
+          For example, a results dict::
+
+            {
+              'perf': 123.4,
+              'cnum': 12,
+              'vdd': 800,
+            }
 
         """
         #thru_core = self.thru_core

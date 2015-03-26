@@ -84,6 +84,7 @@ class HetSys(object):
 
         Returns:
            Bool to indicate whether successfully set the area.
+
         """
         area = self.sys_area * area_ratio
         kid = ker_obj.kid
@@ -342,14 +343,24 @@ class HetSys(object):
               The targeted application.
 
         Returns:
-           perf (num):
-              Relative performance, also should be the optimal with the given
-              system configuration.
-           cnum (num):
-              The number of active cores for the optimal configuration.
-           vdd (num):
-              The supply voltage of throughput cores when executing parallel part
-              of the application.
+          dict: results wrapped in a python dict with three keys:
+
+          perf (float):
+            Relative performance, also should be the optimal with the given
+            system configuration.
+          cnum (int):
+            The number of active cores for the optimal configuration.
+          vdd (float):
+            The supply voltage of throughput cores when executing parallel part
+            of the application.
+
+          For example, a results dict::
+
+            {
+              'perf': 123.4,
+              'cnum': 12,
+              'vdd': 800,
+            }
 
         """
         #thru_core = self.thru_core

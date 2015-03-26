@@ -4,8 +4,8 @@ import sys
 import os
 from lumos.model.system import MPSoC
 from lumos.model.application import Application
-from lumos.model.kernel import Kernel, UCoreParam
-from lumos.model.tech import CMOSTechModel
+from lumos.model import Kernel, KernelParam
+from lumos.model import CMOSTechModel
 from lumos.model import Sys_L
 from lumos.model import IOCore_CMOS as IOCore
 import unittest
@@ -33,7 +33,7 @@ def load_kernel(fname='norm.xml'):
         accelerator_root = k_root.find('accelerator')
         for ele in accelerator_root.getchildren():
             acc_id = ele.tag
-            ucore_param = UCoreParam()
+            ucore_param = KernelParam()
             for attr, val in ele.items():
                 try:
                     setattr(ucore_param, attr, float(val))
