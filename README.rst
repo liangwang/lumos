@@ -8,6 +8,6 @@ hosted at `readthedocs.org <lumos.rtfd.org>`_.
 License
 -------
 
-.. include:: LICENSE
+.. include:: ./LICENSE
    :literal:
 
