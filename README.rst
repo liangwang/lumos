@@ -1,9 +1,13 @@
-=========================================================================
-Lumos: An analytical model for homogeneous/heterogeneous many-core system
+Lumos
 =========================================================================
 
-About
-=====
+Lumos is an analytical modeling framework of many-core processor system composed
+of cores, hardware accelerators (e.g. FPGA, ASICs). A detailed document is
+hosted at `readthedoc.org <lumos.rtd.org>`_.
 
-An analytical model studying the performance of many-core system under die-area
-and power constraints. See document in `doc` for more details.
+License
+-------
+
+.. include:: ../LICENSE
+   :literal:
+
