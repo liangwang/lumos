@@ -1,0 +1,80 @@
+#!/usr/bin/env python
+"""Models reconfigurable hardware accelerators (RLAcc).
+
+The model parameters are similar to u-core described in Chung's paper:
+
+    *Sing-Chip Heterogenerous Computing: Does the Future Include Custom Logic,
+    FPGAs, and GPGPUs?*, Eric S. Chung, et al., MICRO'10
+
+"""
+
+import sys
+from lumos import settings
+from .core.io_cmos import PERF_BASE
+
+import logging
+_logger = logging.getLogger('RLAcc')
+if settings.LUMOS_DEBUG:
+    _logger.setLevel(logging.DEBUG)
+else:
+    _logger.setLevel(logging.INFO)
+
+try:
+    MAXINT = sys.maxint
+except AttributeError:
+    MAXINT = sys.maxsize
+
+
+BCE_PARAMS_DICT = {
+    # CMOS-HP
+    'cmos-hp': {
+        # area of core i7-960, core only
+        'area': 24.125,
+        # SPECfp2006 of Core i7-960
+        'perf': 43.5,
+        # extracted from Core i7-960's TDP, 130W/4=32.5,
+        # then subtract un-core components, e.g. LLC, MCs
+        'dp': 20,
+        'sp': 0,
+        # technology nodes for BCE characteristics
+        'tech': 45,
+        # FIXME: adjust to more realistic values, currently not used
+        'bw': 1,
+        },
+    # TFET-homo60nm
+    'homoTFET60nm': {
+        'area': 24.125/4,
+        'perf': 43.5*1.21/1.65,
+        'dp': 20*0.206/2.965,
+        'sp': 0,
+        'tech': 22,
+        'bw': 1,
+        },
+    # TFET-homo30nm
+    'homoTFET30nm': {
+        'area': 24.125/4,
+        'perf': 43.5*1.21/1.65,
+        'dp': 20*0.206/2.965,
+        'sp': 0,
+        'tech': 22,
+        'bw': 1,
+        },
+    # FinFET-hp
+    'finfet-hp': {
+        # area of core i7-960, core only
+        'area': 24.125/4,
+        # SPECfp2006 of Core i7-960
+        'perf': 43.5*1.21,
+        # extracted from Core i7-960's TDP, 130W/4=32.5,
+        # then subtract un-core components, e.g. LLC, MCs
+        'dp': 20*0.206,
+        'sp': 0,
+        # technology nodes for BCE characteristics
+        'tech': 20,
+        # FIXME: adjust to more realistic values, currently not used
+        'bw': 1,
+        },
+    }
+
+
+

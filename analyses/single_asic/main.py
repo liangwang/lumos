@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 
-from lumos.model.ptm_new.system import HetSys
-from lumos.model.ptm_new.application import Application
-from lumos.model.ptm_new.core import *
-from lumos.model.ptm_new.budget import *
-from lumos.model.ptm_new.kernel import UCoreParam, Kernel
-from lumos.model.ptm_new.plot import plot_data, plot_twinx, plot_series, plot_series2
-from lumos.model.ptm_new.misc import try_update, parse_bw, make_ws_dirs, mk_dir
+from lumos.model.system import HetSys
+from lumos.model.application import Application
+from lumos.model.core import *
+from lumos.model.budget import *
+from lumos.model.kernel import KernelParam, Kernel
+from lumos.model.plot import plot_data, plot_twinx, plot_series, plot_series2
+from lumos.model.misc import try_update, parse_bw, make_ws_dirs, mk_dir
 
 from lxml import etree
 import csv
@@ -96,7 +96,7 @@ def load_kernel(fname='norm.xml'):
         accelerator_root = k_root.find('accelerator')
         for ele in accelerator_root.getchildren():
             acc_id = ele.tag
-            ucore_param = UCoreParam()
+            ucore_param = KernelParam()
             for attr,val in ele.items():
                 try:
                     setattr(ucore_param, attr, float(val))
@@ -105,7 +105,7 @@ def load_kernel(fname='norm.xml'):
                 except TypeError as te:
                     print te
 
-            k.add_acc(acc_id, ucore_param)
+            k.add_kernel_param(acc_id, ucore_param)
 
         kernels[k_name] = k
     return kernels

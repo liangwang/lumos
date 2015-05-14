@@ -3,7 +3,7 @@
 import logging
 from ..core import IOCore_CMOS as IOCore, O3Core_CMOS as O3Core
 from ..core.io_cmos import PERF_BASE
-from ..application import Application
+# from ..application import SimpleApplication
 
 VMIN = 300
 VMAX = 1100
@@ -13,10 +13,11 @@ V_PRECISION = 1  # 1mV
 
 from lumos import settings
 _logger = logging.getLogger('HomogSys')
-if settings.DEBUG:
+if settings.LUMOS_DEBUG:
     _logger.setLevel(logging.DEBUG)
 else:
     _logger.setLevel(logging.INFO)
+
 
 class HomSys(object):
     """
@@ -95,7 +96,7 @@ class HomSys(object):
         Args:
            vdd (num):
               The voltage to be scaled to.
-           app (:class:`~lumos.model.application.Application`):
+           app (:class:`~lumos.model.application.SimpleApplication`):
               The targeted application.
 
         Returns:
@@ -138,7 +139,7 @@ class HomSys(object):
         Args:
           cnum (num):
             The number of core required to be active.
-          app (:class:`~lumos.model.Application`):
+          app (:class:`~lumos.model.SimpleApplication`):
             The targeted application.
           vmin (num):
             An optional argument to specify the lowest boundary which supply

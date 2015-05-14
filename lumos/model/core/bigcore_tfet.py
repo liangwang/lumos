@@ -5,22 +5,25 @@ an abstract base class AbstractCore, as IOCore and O3Core for an
 in-order core and an out-of-order core respectively.
 """
 
-from .base import BaseCore
 from ..tech import get_model
+from .base import BaseCore
 
-# from: http://www.spec.org/cpu2006/results/res2010q1/cpu2006-20100215-09685.html
-# SPECfp2006 * (3.7/3.3) (freq scaling factor)
-PERF_BASE = 28.48
-DYNAMIC_POWER_BASE = 19.83  # Watts
-STATIC_POWER_BASE = 5.34    # Watts
-AREA_BASE = 26.48           # mm^2
-FREQ_BASE = 3.7             # GHz
-TECH_BASE = 45              # nm
+# from: http://www.spec.org/cpu2006/results/res2009q3/cpu2006-20090721-08251.html
+# SPECfp_rate2006 / 8(cores) / 2 (threads) * (4.2/1.58) (freq scaling factor) * 1.4 ( 1/0.7, tech_node scaling factor)
+#PERF_BASE = 15.92
+# adjust to federation
+PERF_BASE = 105/1.65
+DYNAMIC_POWER_BASE = 10.625/2.965
+STATIC_POWER_BASE = 0
+AREA_BASE = 22.125
+FREQ_BASE = 2.4/1.65
+TECH_BASE = 22
 
 
-class O3Core(BaseCore):
-    def __init__(self, tech_node, tech_variant='hp'):
-        tech_model = get_model('cmos', tech_variant)
+class BigCore(BaseCore):
+    def __init__(self, tech_node, tech_variant='homo30nm'):
+        tech_model = get_model('tfet', tech_variant)
+
         if tech_node == TECH_BASE:
             self._area = AREA_BASE
             self._perf0 = PERF_BASE
@@ -42,4 +45,4 @@ class O3Core(BaseCore):
             self._f0 = (FREQ_BASE * tech_model.fnom_scale[tech_node] /
                         tech_model.fnom_scale[TECH_BASE])
 
-        super(O3Core, self).__init__(tech_node, tech_model, 'O3Core_CMOS')
+        super(BigCore, self).__init__(tech_node, tech_model, 'O3Core_TFET')

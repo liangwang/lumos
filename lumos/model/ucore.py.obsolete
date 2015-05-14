@@ -72,10 +72,11 @@ class UCore(object):
         self._bw0 = BCE_BW * self._tech_model.fnom_scale[tech] / self._tech_model.fnom_scale[BCE_TECH]
 
     def perf(self, kernel, power=None, bandwidth=None):
-        uparam = kernel.get_acc(self._uid)
+        # uparam = kernel.get_acc(self._uid)
+        uparam = kernel[self._uid]
 
         if power:
-            area_p = (power / self._p0 / uparam.phi) * self._a0
+            area_p = (power / self._p0 / uparam.power) * self._a0
         else:
             area_p = sys.maxint
 
@@ -86,7 +87,7 @@ class UCore(object):
 
         area_eff = min(area_p, area_b, self._area)
 
-        return self._perf0 * (area_eff / self._a0) * uparam.miu
+        return self._perf0 * (area_eff / self._a0) * uparam.perf
 
 
     def power(self, app):
@@ -96,7 +97,7 @@ class UCore(object):
         :returns: @todo
 
         """
-        return self._p0 * (self._area/self._a0) * app[self._uid].phi
+        return self._p0 * (self._area/self._a0) * app[self._uid].power
 
     def bandwidth(self, app):
         """Calculate the bandwith consumed by the ucore

@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 import logging
 from . import application
-# from .application import App
-from .application import Application
+from .application import SimpleApplication as Application
 from . import kernel
 import scipy.stats
 # import ConfigParser
@@ -157,7 +156,7 @@ def dump_xml(workload, fname='workload.xml'):
 #             kcfg_tmp = kcfg.split(':')
 #             kid = kcfg_tmp[0]
 #             cov = float(kcfg_tmp[1])
-#             app.reg_kernel(kid, cov)
+#             app.add_kernel(kid, cov)
 #             workload.append(app)
 
 #     return workload
@@ -228,36 +227,36 @@ def load_workload(kernels, fname='workload.xml'):
     return workload
 
 
-# def load_xml(fname='workload.xml'):
-#     """
-#     Load a workload from an XML file
+def load_xml(fname='workload.xml'):
+    """
+    Load a workload from an XML file
 
-#     Args:
-#        fname (str):
-#           The XML file to be loaded
+    Args:
+       fname (str):
+          The XML file to be loaded
 
-#     Returns:
-#        workload (list):
-#           A list of applications this workload contains.
-#     """
-#     workload = []
-#     tree = etree.parse(fname)
-#     for app_root in tree.iter('app'):
-#         app_name = app_root.get('name')
+    Returns:
+       workload (list):
+          A list of applications this workload contains.
+    """
+    workload = []
+    tree = etree.parse(fname)
+    for app_root in tree.iter('app'):
+        app_name = app_root.get('name')
 
-#         ele = app_root.find('f_parallel')
-#         f_parallel = float(ele.text)
-#         app = App(f=f_parallel, name=app_name)
+        ele = app_root.find('f_parallel')
+        f_parallel = float(ele.text)
+        app = Application(f=f_parallel, name=app_name)
 
-#         kcfg_root = app_root.find('kernel_config')
-#         for k_ele in kcfg_root.iter('kernel'):
-#             kid = k_ele.get('name')
-#             cov = float(k_ele.get('cov'))
-#             app.reg_kernel(kid, cov)
+        kcfg_root = app_root.find('kernel_config')
+        for k_ele in kcfg_root.iter('kernel'):
+            kid = k_ele.get('name')
+            cov = float(k_ele.get('cov'))
+            app.add_kernel(kid, cov)
 
-#         workload.append(app)
+        workload.append(app)
 
-#     return workload
+    return workload
 
 def add_fixedcov(workload_from, kernels, fixedcov, workload_to):
     if 'fixedcov' not in kernels:
@@ -266,7 +265,7 @@ def add_fixedcov(workload_from, kernels, fixedcov, workload_to):
     workload = load_xml(workload_from)
 
     for app in workload:
-        app.reg_kernel('fixedcov', fixedcov*0.01)
+        app.add_kernel('fixedcov', fixedcov*0.01)
 
     dump_xml(workload, workload_to)
 

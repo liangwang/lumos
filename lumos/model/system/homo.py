@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import logging
-from ..core import IOCore_CMOS as IOCore, O3Core_CMOS as O3Core
+from ..core import get_coreclass
 from ..core.io_cmos import PERF_BASE
 # from ..application import App
 
@@ -13,7 +13,7 @@ V_PRECISION = 1  # 1mV
 
 from lumos import settings
 _logger = logging.getLogger('HomogSys')
-if settings.DEBUG:
+if settings.LUMOS_DEBUG:
     _logger.setLevel(logging.DEBUG)
 else:
     _logger.setLevel(logging.INFO)
@@ -41,7 +41,8 @@ class HomogSys(object):
         else:
             self.power = 0
 
-        self.core = IOCore(tech=45, model_name='hp')
+        CoreClass = get_coreclass('io-cmos')
+        self.core = CoreClass(tech_node=45, tech_variant='hp')
 
     def set_core_prop(self, **kwargs):
         """
@@ -127,7 +128,7 @@ class HomogSys(object):
 
         core.vdd = vdd
         active_num = min(int(self.area / core.area),
-                         int(self.power / core.power))
+                         int(self.power / core.power(vdd)))
 
         perf = 1/ ((1 - f) / sperf + f / (active_num * core.perf))
         core_num = int(self.area / core.area)
@@ -142,30 +143,32 @@ class HomogSys(object):
         Get the relative performance of the system for a given application, with a
         given constraint on the number of active cores.
 
-        Args:
-          cnum (num):
-            The number of core required to be active.
-          app (:class:`~lumos.model.application.Application`):
-            The targeted application.
-          vmin (num):
-            An optional argument to specify the lowest boundary which supply
-            voltage can be scaled down.
+        Parameters
+        ----------
+        cnum: num
+          The number of core required to be active.
+        app: :class:`~lumos.model.application.Application`
+          The targeted application.
+        vmin: num
+          An optional argument to specify the lowest boundary which supply
+          voltage can be scaled down.
 
-        Returns:
-          dict: results wrapped in a python dict with three keys:
+        Returns
+        -------
+        dict: results wrapped in a python dict with three keys:
 
-          perf (num):
-            The relatvie performance.
-          vdd (num):
-            The supply voltage of the optimal configuration under core number
-            constraint.
-          freq (num):
-            The frequency with the optimal configuration under core number
-            constraint.
-          cnum (num):
-            The actual number of active cores, if the requried number can not be met.
-          util (num):
-            The utilization of the system at the optimal configuraiton.
+        perf : num
+          The relatvie performance.
+        vdd : num
+          The supply voltage of the optimal configuration under core number
+          constraint.
+        freq : num
+          The frequency with the optimal configuration under core number
+          constraint.
+        cnum : num
+          The actual number of active cores, if the requried number can not be met.
+        util : num
+          The utilization of the system at the optimal configuraiton.
 
         """
 
@@ -181,46 +184,43 @@ class HomogSys(object):
         _logger.debug('Per-core power budget: {0}'.format(cpower))
 
         # Serial performance is achieved by the highest vdd
-        core.vdd = min(int(core.vnom*VSF_MAX), core.vmax)
-        sperf = core.perf
+        sperf = core.perf_by_vdd(core.vmax)
 
         if not vmin:
             vmin = core.vmin
 
         # Check whether vmin can meet the power requirement
         if vmin >= core.vmin:
-            core.vdd = vmin
-            if core.power > cpower:
+            if core.power(vmin) > cpower:
                 # Either vmin is too high or active_cnum is too large
                 # so that the system could not meet the power budget even
                 # with the minimum vdd. Return the active core number with vmin
                 # Users can capture the exception by comparing the active_cnum
                 # and the returned active_cnum
                 active_cnum = min(int(self.area/core.area),
-                                 int(self.power/core.power))
+                                  int(self.power/core.power(vmin)))
 
-                perf = 1/((1-f)/sperf + f/(active_cnum*core.perf))
+                perf = 1/((1-f)/sperf + f/(active_cnum*core.perf_by_vdd(vmin)))
                 util = float(100*active_cnum)/float(cnum)
                 _logger.debug('vmin is too high or active_cnum is too large')
                 return {'perf': perf/PERF_BASE,
                         'vdd': vmin,
                         'cnum': active_cnum,
-                        'freq': core.freq,
+                        'freq': core.freq(vmin),
                         'util': util}
         else:
             vmin = core.vmin
 
 
         vl = vmin
-        vr = min(int(core.vnom * VSF_MAX), core.vmax)
+        vr = core.vmax
         vm = int((vl+vr)/2)
 
         while (vr-vl)>V_PRECISION:
             vm = int((vl+vr)/2)
-            core.vdd = vm
 
-            _logger.debug('[Core]\t:vl: {0}mV, vr: {1}mV, vm: {2}mV, freq: {3}, power: {4}, area: {5}'.format(vl, vr, vm, core.freq, core.power, core.area))
-            if core.power > cpower:
+            _logger.debug('[Core]\t:vl: {0}mV, vr: {1}mV, vm: {2}mV, freq: {3}, power: {4}, area: {5}'.format(vl, vr, vm, core.freq(vm), core.power(vm), core.area))
+            if core.power(vm) > cpower:
                 vl = vl
                 vr = vm
             else:
@@ -229,18 +229,17 @@ class HomogSys(object):
 
         _logger.debug('End of bin-search, vl: {0}mV, vr: {1}mV'.format(vl, vr))
         core.vdd = vl
-        lpower = core.power
-        lfreq = core.freq
+        lpower = core.power(vl)
+        lfreq = core.freq(vl)
         lcnum = min(int(self.area/core.area),
                     int(self.power/lpower))
-        lperf = 1/((1-f)/sperf + f/(cnum*core.perf))
+        lperf = 1/((1-f)/sperf + f/(cnum*core.perf_by_vdd(vl)))
 
-        core.vdd = vr
-        rpower = core.power
-        rfreq = core.freq
+        rpower = core.power(vr)
+        rfreq = core.freq(vr)
         rcnum = min(int(self.area/core.area),
                     int(self.power/rpower))
-        rperf = 1/((1-f)/sperf + f/(cnum*core.perf))
+        rperf = 1/((1-f)/sperf + f/(cnum*core.perf_by_vdd(vr)))
 
         if rpower <= cpower:
             # right bound meets the power constraint
@@ -260,6 +259,7 @@ class HomogSys(object):
 
 
     def speedup_by_vfslist(self, vfs_list, app):
+        raise NotImplementedError()
         core = self.core
 
         #para_ratio = 0.99
@@ -283,7 +283,7 @@ class HomogSys(object):
         for vfs in vfs_list:
             # FIXME: dvfs_by_volt for future technology
             core.dvfs_by_factor(vfs)
-            active_num = min(self.area/core.area, self.power/core.power)
+            active_num = min(self.area/core.area, self.power/core.power(vfs*core.vnom))
             #perf = 1/ ((1-f)/sperf + f/(active_num*core.perf0*core.freq))
             perf = 1/ ((1-f)/sperf + f/(active_num*core.perf))
             speedup_list.append(perf/PERF_BASE)
@@ -301,6 +301,7 @@ class HomogSys(object):
         return (speedup_list,util_list)
 
     def speedup_by_vlist(self, v_list, app):
+        raise NotImplementedError()
         core = self.core
 
         #para_ratio = 0.99
@@ -324,7 +325,7 @@ class HomogSys(object):
         for v in v_list:
             # FIXME: dvfs_by_volt for future technology
             core.dvfs_by_volt(v)
-            active_num = min(self.area/core.area, self.power/core.power)
+            active_num = min(self.area/core.area, self.power/core.power(v))
             #perf = 1/ ((1-f)/sperf + f/(active_num*core.perf0*core.freq))
             perf = 1/ ((1-f)/sperf + f/(active_num*core.perf))
             speedup_list.append(perf/PERF_BASE)
@@ -377,7 +378,7 @@ class HomogSys(object):
         vdd = core.v0 * VSF_MAX
 
         active_num = min(int(self.area/core.area),
-                         int(self.power/core.power))
+                         int(self.power/core.power(vdd)))
         #perf = 1/ ((1-f)/sperf + f/(active_num*core.perf0*core.freq))
         perf = 1/ ((1-f)/sperf + f/(active_num*core.perf))
         core_num = int(self.area/core.area)

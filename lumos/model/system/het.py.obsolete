@@ -4,13 +4,13 @@ import logging
 from ..core import IOCore_CMOS as IOCore, O3Core_CMOS as O3Core
 from ..core.io_cmos import PERF_BASE
 from ..ucore import UCore, AppAccelerator, GPAccelerator
-from ..application import Application
+from ..application import SimpleApplication
 
 V_PRECISION = 1  # 1mV
 
 from lumos import settings
 _logger = logging.getLogger('HetSys')
-if settings.DEBUG:
+if settings.LUMOS_DEBUG:
     _logger.setLevel(logging.DEBUG)
 else:
     _logger.setLevel(logging.INFO)

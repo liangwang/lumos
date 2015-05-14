@@ -1,15 +1,14 @@
 #!/usr/bin/env python
 import abc
 import logging
-import numpy.random
-import scipy.stats
 from igraph import Graph, IN as GRAPH_IN
+from lxml import etree
 
 _logger = logging.getLogger('Application')
 _logger.setLevel(logging.INFO)
 
 
-class AppDAGError(Exception):
+class ApplicationError(Exception):
     pass
 
 
@@ -30,23 +29,8 @@ class AppBase():
 
     @classmethod
     @abc.abstractmethod
-    def load_app_from_xml(cls, xmltree, kernels):
+    def load_from_xmltree(cls, xmltree, kernels):
         return
-
-
-def load_app_from_xml(xmltree, kernels):
-    type_ = xmltree.get('type')
-    if not type:
-        raise AppDAGError('No type attribute found in XML tree')
-
-    if type_ == 'linear':
-        return AppLinear.load_app_from_xml(xmltree, kernels)
-    elif type_ == 'dag':
-        return AppDAG.load_app_from_xml(xmltree, kernels)
-    elif type_ == 'spread':
-        return AppSpread.load_app_from_xml(xmltree, kernels)
-    else:
-        raise AppDAGError('Unknown app type {0}'.format(type_))
 
 
 class AppLinear(AppBase):
@@ -59,7 +43,7 @@ class AppLinear(AppBase):
         super(AppLinear, self).__init__(name, 'linear')
 
     @classmethod
-    def load_app_from_xmltree(cls, xmltree, kernels):
+    def load_from_xmltree(cls, xmltree, kernels):
         pass
 
 
@@ -67,8 +51,12 @@ class AppSpread(AppBase):
     def __init__(self, name):
         super(AppSpread, self).__init__(name, 'spread')
 
+    @classmethod
+    def load_from_xmltree(cls, xmltree, kernels):
+        pass
 
-class AppDAG(AppBase):
+
+class DAGApplication(AppBase):
     """An application modeled as a directed acyclic graph (DAG)
 
     An application is DAG of tasks/kernels. Kernels are referred by a
@@ -87,11 +75,11 @@ class AppDAG(AppBase):
         self._max_depth = -1
         self._num_kernels = 0
 
-        super(AppDAG, self).__init__(name, 'dag')
+        super(DAGApplication, self).__init__(name, 'dag')
 
     @classmethod
-    def load_apps_from_xmltree(cls, xmltree, kernels):
-        """load applications from an XML tree node
+    def load_from_xmltree(cls, xmltree, kernels):
+        """load an application from an XML tree node
 
         Parameters
         ----------
@@ -102,39 +90,31 @@ class AppDAG(AppBase):
 
         Returns
         -------
-        dict
-          application dict indexed by application's name
+        application
+          application object
         """
-        applications = dict()
-        for r_ in xmltree:
-            a = cls.load_app_from_xmltree(r_, kernels)
-            applications[a.name] = a
-        return applications
-
-    @classmethod
-    def load_app_from_xmltree(cls, xmltree, kernels):
         name = xmltree.get('name')
         if not name:
-            raise AppDAGError('No name attribute found in XML tree')
+            raise ApplicationError('No name attribute found in XML tree')
         a = cls(name)
 
         ks = xmltree.find('kernel_config')
         if ks is None:
-            raise AppDAGError('No kernel configs found in XML tree')
+            raise ApplicationError('No kernel configs found in XML tree')
 
         for ele in ks:
             val_ = ele.get('index')
             if not val_:
-                raise AppDAGError('No kernel index in kernel config')
+                raise ApplicationError('No kernel index in kernel config')
             node_id = int(val_)
 
             k_name = ele.get('name')
             if not k_name:
-                raise AppDAGError('no kernel name in kernel config')
+                raise ApplicationError('no kernel name in kernel config')
 
             val_ = ele.get('cov')
             if not val_:
-                raise AppDAGError('No kernel length in kernel config')
+                raise ApplicationError('No kernel length in kernel config')
             k_cov = float(val_)
 
             k_preds = ele.get('pred')
@@ -143,8 +123,8 @@ class AppDAG(AppBase):
 
             kernel_idx = a._add_kernel(kernels[k_name], k_cov)
             if kernel_idx != node_id:
-                raise AppDAGError(
-                    "kernel index mismatch with AppDAG.add_kernel."
+                raise ApplicationError(
+                    "kernel index mismatch with DAGApplication.add_kernel."
                     " Probably because the kernel is not specified in order in the XML tree.")
             if k_preds != 'None':
                 preds = [int(i) for i in k_preds.split(',')]
@@ -307,7 +287,7 @@ class AppDAG(AppBase):
         try:
             return self._depth_sorted
         except AttributeError:
-            raise AppDAGError('App not initiliazed properly')
+            raise ApplicationError('App not initiliazed properly')
 
     def get_speedup(self, speedup_dict):
         """Get the speedup of an application by given a speedup vector of each kernel.
@@ -344,11 +324,7 @@ class AppDAG(AppBase):
         return self._baseline_runtime / app_runtime
 
 
-class ApplicationError(Exception):
-    pass
-
-
-class SimpleApplication(object):
+class SimpleApplication(AppBase):
     """ A simple application is an abstract program partitioned into serial and
     parallel portions.
 
@@ -384,12 +360,40 @@ class SimpleApplication(object):
 
         self.m = m
 
-        self.name = name
-
         self.kernels = dict()
         self.kernels_coverage = dict()
 
         self.tag = self.tag_update()
+
+        super(SimpleApplication, self).__init__(name, 'simple')
+
+    @classmethod
+    def load_from_xmltree(cls, xmltree, kernels):
+        name = xmltree.get('name')
+        if not name:
+            raise ApplicationError("No name in app config")
+
+        ele = xmltree.find('f_parallel')
+        parallel_factor = float(ele.text)
+
+        a_ = cls(f=parallel_factor, name=name)
+
+        ks = xmltree.find('kernel_config')
+        if ks is None:
+            raise ApplicationError('No kernel config')
+
+        for ele in ks:
+            kname = ele.get('name')
+            if not kname:
+                raise ApplicationError('No name for kernel')
+
+            val_ = ele.get('cov')
+            if not val_:
+                raise ApplicationError('No covreage for kernel')
+            k_cov = float(val_)
+            a_.add_kernel(kernels[kname], k_cov)
+
+        return a_
 
     def __repr__(self):
         return self.tag
@@ -448,13 +452,12 @@ class SimpleApplication(object):
 
         Raises
         ------
-        ApplicationError
-          the given coverage (cov) is larger than the overall parallel ratio
-
+        ApplicationError:
+          the given coverage (cov) is larger than the overall parallel ratio, or
+          the kernel with 'name' is not registered with the application.
         """
         if name not in self.kernels:
-            _logger.error('Kernel %s has not been registerd' % name)
-            return False
+            raise ApplicationError('Kernel %s has not been registerd' % name)
 
         cov_old = self.kernels_coverage[name]
 
@@ -483,3 +486,27 @@ class SimpleApplication(object):
 
     def get_kernel(self, name):
         return self.kernels[name]
+
+
+def load_suite_xmltree(xmltree, kernels):
+    type_ = xmltree.get('type')
+    if not type_:
+        type_ = 'simple'
+
+    applications = dict()
+    if type_ == 'simple':
+        for r_ in xmltree.findall('app'):
+            a = SimpleApplication.load_from_xmltree(r_, kernels)
+            applications[a.name] = a
+    elif type_ == 'dag':
+        for r_ in xmltree.findall('app'):
+            a = DAGApplication.load_from_xmltree(r_, kernels)
+            applications[a.name] = a
+    else:
+        raise ApplicationError('Unknown app type {0}'.format(type_))
+    return applications
+
+
+def load_suite_xmlfile(xmlfile, kernels):
+    tree_root = etree.parse(xmlfile)
+    return load_suite_xmltree(tree_root.getroot(), kernels)

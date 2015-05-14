@@ -1,0 +1,66 @@
+<workload>
+  <!-- kernels -->
+  <kernels>
+    <kernel name="ker0" parallel_factor="0">
+      <accelerator>
+        <fpga perf="10" />
+        <asic_5x perf="51" />
+        <asic_10x perf="101" />
+        <asic_50x perf="501" />
+      </accelerator>
+    </kernel>
+    <kernel name="ker1" parallel_factor="0.9">
+      <accelerator>
+        <fpga perf="11" />
+        <asic_5x perf="52" />
+        <asic_10x perf="102" />
+        <asic_50x perf="502" />
+      </accelerator>
+    </kernel>
+    <kernel name="ker2" parallel_factor="0.9">
+      <accelerator>
+        <fpga perf="12" />
+        <asic_5x perf="53" />
+        <asic_10x perf="103" />
+        <asic_50x perf="503" />
+      </accelerator>
+    </kernel>
+    <kernel name="ker3" parallel_factor="0.9">
+      <accelerator>
+        <fpga perf="13" />
+        <asic_5x perf="54" />
+        <asic_10x perf="104" />
+        <asic_50x perf="504" />
+      </accelerator>
+    </kernel>
+    <kernel name="ker4" parallel_factor="0.9">
+      <accelerator>
+        <fpga perf="14" />
+        <asic_5x perf="55" />
+        <asic_10x perf="105" />
+        <asic_50x perf="505" />
+      </accelerator>
+    </kernel>
+    <kernel name="ker5" parallel_factor="0">
+      <accelerator>
+        <fpga perf="15" />
+        <asic_5x perf="56" />
+        <asic_10x perf="106" />
+        <asic_50x perf="506" />
+      </accelerator>
+    </kernel>
+  </kernels>
+  <!-- applications -->
+  <apps type='dag'>
+    <app name="app_dag0">
+      <kernel_config>
+        <kernel index="0" name="ker0" cov="0.1" pred="None"/>
+        <kernel index="1" name="ker1" cov="0.2" pred="0"/>
+        <kernel index="2" name="ker2" cov="0.2" pred="0"/>
+        <kernel index="3" name="ker3" cov="0.2" pred="0"/>
+        <kernel index="4" name="ker4" cov="0.2" pred="0"/>
+        <kernel index="5" name="ker5" cov="0.2" pred="1,2,3,4"/>
+      </kernel_config>
+    </app>
+  </apps>
+</workload>

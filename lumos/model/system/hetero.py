@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 
 import logging
-from ..core import IOCore_CMOS as IOCore
+from .budget import Sys_L
+from .. import tech as techmodel
+from .. import core
 from ..core.io_cmos import PERF_BASE
-from ..ucore import UCore
+# from ..ucore import UCore
+from ..acc import ASAcc, RLAcc
 from lumos import settings
 
 VMIN = 300
@@ -13,13 +16,38 @@ V_PRECISION = 1  # 1mV
 
 
 _logger = logging.getLogger('HeterogSys')
-if settings.DEBUG:
+if settings.LUMOS_DEBUG:
     _logger.setLevel(logging.DEBUG)
 else:
     _logger.setLevel(logging.INFO)
 
 
-class HeterogSys(object):
+class SysConfig():
+    def __init__(self):
+        self.tech = 16
+        self.budget = Sys_L
+
+        self.serial_core_type = None
+        self.serial_core_tech_variant = 'hp'
+        self.thru_core_as_serial = True
+        self.thru_core_type = 'io-cmos'
+        self.thru_core_tech_variant = 'hp'
+
+        self.asacc_tech_model = 'cmos'
+        self.asacc_tech_variant = 'hp'
+        # asacc_config = {(ker_id, acc_id): (area_ratio, tech_model)}
+        self.asacc_config = dict()
+
+        self.rlacc_tech_model = 'cmos'
+        self.rlacc_tech_variant = 'hp'
+        self.rlacc_id = 'fpga'
+        self.rlacc_area_ratio = 0
+
+    def add_asacc(self, ker_id, acc_id, area_ratio):
+        self.asacc_config[(ker_id, acc_id)] = area_ratio
+
+
+class HeterogSys():
     """
     This class models a heterogeneous many core system composed of
     regular cores and accelerators such as dedicated ASICs,
@@ -41,153 +69,76 @@ class HeterogSys(object):
           :class:`~lumos.model.fedcore.FedCore`.
 
     """
-    def __init__(self, budget, tech, serial_core=None, tput_core=None):
-        self.sys_area = budget.area
-        self.sys_power = budget.power
-        self.sys_bw = budget.bw
+    def __init__(self, sysconfig, kernels):
+        self.sys_area = sysconfig.budget.area
+        self.sys_power = sysconfig.budget.power
+        self.sys_bw = sysconfig.budget.bw
 
-        self.tech = tech
-        self.sys_bandwidth = self.sys_bw[tech]
+        self.tech = sysconfig.tech
+        self.sys_bandwidth = self.sys_bw[self.tech]
 
-        self.asic_dict = {}
-        self.gp_acc = UCore('fpga')
-        self.use_gpacc = False
+        available_area = self.sys_area
+        self.asic_dict = dict()
+        asacc_techmodel = techmodel.get_model(sysconfig.asacc_tech_model,
+                                              sysconfig.asacc_tech_variant)
+        for (key_, area_ratio) in sysconfig.asacc_config.items():
+            ker_id, acc_id = key_
+            ko = kernels[ker_id]
+            asacc_area = self.sys_area * area_ratio
+            asacc = ASAcc(acc_id, ko, asacc_area, self.tech, asacc_techmodel)
+            if ker_id not in self.asic_dict:
+                self.asic_dict[ker_id] = dict()
+            self.asic_dict[ker_id][acc_id] = asacc
+            available_area -= asacc_area
 
-        if tput_core:
-            self.thru_core = tput_core
+        if sysconfig.rlacc_area_ratio:
+            self.use_rlacc = True
+            rlacc_area = sysconfig.rlacc_area_ratio * self.sys_area
+            rlacc_techmodel = techmodel.get_model(sysconfig.rlacc_tech_model,
+                                                  sysconfig.rlacc_tech_variant)
+            self.rlacc = RLAcc(sysconfig.rlacc_id, rlacc_area, self.tech, rlacc_techmodel)
+            available_area -= rlacc_area
         else:
-            self.thru_core = IOCore(tech=tech, model_name='hp')
+            self.use_rlacc = False
+            self.rlacc = None
 
-        self.dim_perf = None
+        CoreClass = core.get_coreclass(sysconfig.thru_core_type)
+        self.thru_core = CoreClass(self.tech, sysconfig.thru_core_tech_variant)
 
-        if serial_core:
-            self.serial_core = serial_core
-            self.thru_core_area = self.sys_area - serial_core.area
+        if not sysconfig.thru_core_as_serial:
+            CoreClass = core.get_coreclass(sysconfig.serial_core_type)
+            self.serial_core = CoreClass(self.tech, sysconfig.serial_core_tech_variant)
+            available_area -= self.serial_core.area
         else:
-            self.serial_core = IOCore(tech=tech, model_name='hp')
-            self.thru_core_area = self.sys_area
+            self.serial_core = self.thru_core
 
-        _logger.debug('Serial core: {0}, area: {1}'.format(self.serial_core.ctype, self.serial_core.area))
-        thru_cnum = int(self.thru_core_area / self.thru_core.area)
-        _logger.debug('Tput core: {0}, area: {1}, cnum: {2}'.format(self.thru_core.ctype, self.thru_core.area, thru_cnum))
+        self.thru_core_area = available_area
+        self.thru_core_num = int(self.thru_core_area / self.thru_core.area)
 
-    def set_asic(self, kid, area_ratio):
-        """
-        Set the ASIC accelerator's area
+        self.thru_core_power = self.sys_power
+        ret = self._dim_perf_opt()
+        self.dim_perf = ret['perf']
+        self.opt_cnum = ret['cnum']
+        self.opt_vdd = ret['vdd']
 
-        Args:
-           kid (str):
-              The ID of the kernel that the ASIC is targeted for.
-           area_ratio (num):
-              The new area ratio of the ASIC to be set.
+        _logger.debug('Serial core: {0}, area: {1}'.format(
+            self.serial_core.ctype, self.serial_core.area))
+        _logger.debug('thru core: {0}, area: {1}, cnum: {2}'.format(
+            self.thru_core.ctype, self.thru_core.area, self.thru_core_num))
 
-        Returns:
-           Bool to indicate whether successfully set the area.
-        """
-        area = self.sys_area * area_ratio
-
-        if kid not in self.asic_dict:
-            if self.thru_core_area < area:
-                logging.error('not enough area for this ASIC %s' % kid)
-                return False
-            self.thru_core_area = self.thru_core_area - area
-            self.asic_dict[kid] = UCore(uid='asic{0}'.format(kid), area=area, tech=self.tech)
-
-            self.dim_perf = None # need to update dim_perf later
+    def has_asacc(self, kid):
+        if kid in self.asic_dict:
             return True
         else:
-            asic_core = self.asic_dict[kid]
-
-            if self.thru_core_area + asic_core.area < area:
-                logging.error('not enough area for this ASIC %s' % kid)
-                return False
-
-            self.thru_core_area = self.thru_core_area + asic_core.area - area
-            asic_core.config(area=area)
-
-            self.dim_perf = None # need to update dim_perf later
-            return True
-
-
-    def del_asic(self, kid):
-        """
-        Remove an ASIC accelerator from the system, free its area to other
-        computing components. By default, the freed area is allocated to
-        throughput cores.
-
-        Args:
-           kid (str):
-              The ID of kernel which the ASIC is targeted for.
-
-        Returns:
-           Bool indicating successful deletion
-        """
-        if kid not in self.asic_dict:
-            logging.error('kernel %s has not been registered' % kid)
             return False
 
-        asic_core = self.asic_dict[kid]
-        self.thru_core_area = self.thru_core_area + asic_core.area
+    def get_asacc_list(self, kid):
+        try:
+            asacc_dict = self.asic_dict[kid]
+        except KeyError:
+            return None
 
-        del self.asic_dict[kid]
-
-        self.dim_perf = None # need ot update dim_perf later
-        return True
-
-    def del_asics(self):
-        """
-        Remove all ASIC accelerators in the system.
-        """
-        for kid in self.asic_dict.keys():
-            self.del_asic(kid)
-
-    def realloc_gpacc(self, area_ratio):
-        """
-        Adjust the area of a general-purpose accelerator. Currently, only FPGA
-        is supported.
-
-        Args:
-           area_ratio (num):
-              The new area to be adjusted
-
-        Returns:
-           Bool indicating a successful update.
-
-        """
-        area = self.sys_area * area_ratio
-        if self.thru_core_area + self.gp_acc.area < area:
-            logging.error('not enough area for this GP accelerator')
-            return False
-
-        self.thru_core_area = self.thru_core_area + self.gp_acc.area - area
-        self.gp_acc.config(area=area, tech=self.tech)
-
-        self.dim_perf = None # need to update dim_perf later
-        return True
-
-    def set_tech(self, tech):
-        """
-        Set the technology node of all cores and ucores.
-
-        Args:
-           tech (num):
-              The technology node.
-
-        Returns:
-           N/A
-        """
-        self.thru_core.config(tech=tech)
-        self.serial_core.config(tech=tech)
-        self.gp_acc.config(tech=tech)
-
-        for k in self.asic_dict:
-            self.asic_dict[k].config(tech=tech)
-
-        self.tech = tech
-        self.sys_bandwidth = self.sys_bw[tech]
-
-        self.dim_perf = None # need to update dim_perf later
-
+        return [asacc for asacc in asacc_dict.values()]
 
     def _dim_perf_cnum(self, cnum, vmin=VMIN):
         """Get the performance of Dim silicon with given active number of cores
@@ -209,12 +160,11 @@ class HeterogSys(object):
         VMAX = core.vmax
 
         if vmin > VMIN:
-            core.vdd = vmin
-            if core.power > cpower:
+            if core.power(vmin) > cpower:
                 active_cnum = min(int(self.thru_core_area / core.area),
-                                  int(self.core_power / core.power))
+                                  int(self.core_power / core.power(vmin)))
 
-                perf = active_cnum * core.perf
+                perf = active_cnum * core.perf_by_vdd(vmin)
                 return {'perf': perf / PERF_BASE,
                         'vdd': vmin,
                         'cnum': active_cnum,
@@ -228,21 +178,18 @@ class HeterogSys(object):
 
         while (vr - vl) > V_PRECISION:
             vm = int((vl + vr) / 2)
-            core.vdd = vm
-
-            if core.power > cpower:
+            if core.power(vm) > cpower:
                 vl = vl
                 vr = vm
             else:
                 vl = vm
                 vr = vr
 
-        core.vdd = vr
-        rpower = core.power
+        rpower = core.power(vr)
 
         if rpower <= cpower:
-            rperf = cnum * core.perf
-            _logger.debug('Optimal Vdd for tput_core: {0}mV'.format(vr))
+            rperf = cnum * core.perf_by_vdd(vr)
+            _logger.debug('Optimal Vdd for thru_core: {0}mV'.format(vr))
             return {'perf': rperf / PERF_BASE,
                     'vdd': vr,
                     'cnum': cnum,
@@ -250,8 +197,8 @@ class HeterogSys(object):
 
         else:
             core.vd = vl
-            lperf = cnum * core.perf
-            _logger.debug('Optimal Vdd for tput_core: {0}mV'.format(vr))
+            lperf = cnum * core.perf_by_vdd(vl)
+            _logger.debug('Optimal Vdd for thru_core: {0}mV'.format(vr))
             return {'perf': lperf / PERF_BASE,
                     'vdd': vl,
                     'cnum': cnum,
@@ -296,84 +243,65 @@ class HeterogSys(object):
         self.opt_vdd = ret['vdd']
 
     def get_perf(self, app):
-        """
-        Get the optimal performance fo the system. It uses accelerators to execute
+        """ Get the optimal performance fo the system. It uses accelerators to execute
         kernels if available. Otherwise, kernels are executed and accelerated by
         throughput cores. The system will try to find the optimal number of throughput
         cores to be active to achieve the best overall throughput.
 
-        Args:
-           app (:class:`~lumos.model.application.Application`):
-              The targeted application.
+        Parameters
+        ----------
+        app: :class:`~lumos.model.application.SimpleApplication`
+           The targeted application.
 
-        Returns:
-          dict: results wrapped in a python dict with three keys:
+        Returns
+        -------
+        dict: results wrapped in a python dict with three keys:
 
-          perf (float):
-            Relative performance, also should be the optimal with the given
-            system configuration.
-          cnum (int):
-            The number of active cores for the optimal configuration.
-          vdd (float):
-            The supply voltage of throughput cores when executing parallel part
-            of the application.
+        perf :float
+          Relative performance, also should be the optimal with the given
+          system configuration.
+        cnum :int
+          The number of active cores for the optimal configuration.
+        vdd :float
+          The supply voltage of throughput cores when executing parallel part
+          of the application.
 
-          For example, a results dict::
+        For example, a results dict::
 
-            {
-              'perf': 123.4,
-              'cnum': 12,
-              'vdd': 800,
-            }
-
+          {
+            'perf': 123.4,
+            'cnum': 12,
+            'vdd': 800,
+          }
         """
-        #thru_core = self.thru_core
+        _logger.debug('Get perf on app {0}'.format(app.name))
         serial_core = self.serial_core
-        gp_acc = self.gp_acc
-
-        asics = self.asic_dict
+        rlacc = self.rlacc
 
         serial_core.vdd = min(serial_core.vnom * VSF_MAX, serial_core.vmax)
-        serial_perf = serial_core.perf / PERF_BASE
-
-        if not self.dim_perf:
-            # need to update dim_perf
-            self.thru_core_power = self.sys_power
-            ret = self._dim_perf_opt()
-            self.dim_perf = ret['perf']
-            self.opt_cnum = ret['cnum']
-            self.opt_vdd = ret['vdd']
+        serial_perf = serial_core.perf_by_vdd(serial_core.vnom) / PERF_BASE
 
         dim_perf = self.dim_perf
         perf = (1 - app.f) / serial_perf + app.f_noacc / dim_perf
 
-        for kernel in app.kernels:
-            if self.use_gpacc:
-                if kernel in asics:
-                    acc = asics[kernel]
+        for kid in app.get_all_kernels():
+            cov = app.get_cov(kid)
+            if self.use_rlacc:
+                if self.has_asacc(kid):
+                    asacc = self.get_asacc_list(kid)[0]
+                    perf = perf + cov / (asacc.perf(
+                        power=self.sys_power, bandwidth=self.sys_bandwidth) / PERF_BASE)
                 else:
-                    acc = None
-
-                if acc and acc.area > 0:
-                    perf = perf + app.kernels[kernel] / (acc.perf(power=self.sys_power, bandwidth=self.sys_bandwidth) / PERF_BASE)
-                else:
-                    perf = perf + app.kernels[kernel] / (gp_acc.perf(kernel, power=self.sys_power, bandwidth=self.sys_bandwidth) / PERF_BASE)
+                    perf = perf + cov / (rlacc.perf(
+                        app.get_kernel(kid), power=self.sys_power, bandwidth=self.sys_bandwidth) / PERF_BASE)
             else:
-                if kernel in asics:
-                    acc = asics[kernel]
+                if self.has_asacc(kid):
+                    asacc = self.get_asacc_list(kid)[0]
+                    perf = perf + cov / (asacc.perf(
+                        power=self.sys_power, bandwidth=self.sys_bandwidth) / PERF_BASE)
                 else:
-                    acc = None
-
-                if acc and acc.area > 0:
-                    perf = perf + app.kernels[kernel] / (acc.perf(kernel, power=self.sys_power, bandwidth=self.sys_bandwidth) / PERF_BASE)
-                else:
-                    perf = perf + app.kernels[kernel] / dim_perf
+                    perf = perf + cov / dim_perf
 
         return {'perf': 1 / perf,
                 'cnum': self.opt_cnum,
                 'vdd': self.opt_vdd}
-
-
-
-
-

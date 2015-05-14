@@ -10,6 +10,7 @@
 .. toctree::
    :maxdepth: 2
 
+
 Introduction
 ============
 
@@ -71,6 +72,13 @@ you have met the requirement for extra python packages:
   <http://lxml.de/index.html#download>`_. Lumos has been tested on
   lxml-2.3.2.
 
+* python-igraph
+
+  This package is required to model directed acyclic graph based
+  application model. It can be installed using ``pip`` as::
+
+    pip install python-igraph
+
 Now it is ready to go. Since it is purely pythonic, Lumos does not
 need any compilation steps (technically speaking, the interpreter will
 "compile" all python scripts to accelerate execution, but this is all
@@ -94,6 +102,77 @@ transparent to users). Just follow these steps:
 
 Now the plots for this sample analysis should be ready to check out in
 ``$LUMOS_HOME/analyses/core/figures``.
+
+Model
+=====
+
+The model includes technology model, cores, accelerators, and applications.
+
+Technology
+----------
+
+.. highlight:: python
+   
+The supported technology libraries are:
+
++---------+-------------+---------------+
+|TechName | TechVariant | Mnemonic      |
++=========+=============+===============+
+|         |    hp       |  cmos-hp      |
+|  cmos   +-------------+---------------+
+|         |    lp       |  cmos-lp      |
++---------+-------------+---------------+
+|         |    hp       |  finfet-hp    |
+|  finfet +-------------+---------------+
+|         |    lp       |  finfet-lp    |
++---------+-------------+---------------+
+|         |  homo30nm   |  tfet-homo30nm|
+|  tfet   +-------------+---------------+
+|         |  homo60nm   |  tfet-homo60nm|
++---------+-------------+---------------+
+
+Lumos provides a factory generator to retrieve supported technologies by the
+name and variant of a technology model::
+
+  from lumos.model.tech import get_model
+  techmodel = get_model('cmos', 'hp')
+
+Core
+----
+Supported cores are:
+
+
++--------------------+-------------+
+|Core type           |  Mnemonic   |
++====================+=============+
+| IOCore_CMOS        |    io-cmos  |
++--------------------+-------------+
+| O3Core_CMOS        |    o3-cmos  |
++--------------------+-------------+
+| IOCore_TFET        |    io-tfet  |
++--------------------+-------------+
+| O3Core_TFET        |    o3-tfet  |
++--------------------+-------------+
+| SmallCore_TFET     |  small-tfet |
++--------------------+-------------+
+| BigCore_TFET       |  big-tfet   |
++--------------------+-------------+
+| SmallCore_FinFET   | small-finfet|
++--------------------+-------------+
+| BigCore_FinFET     |  big-finfet |
++--------------------+-------------+
+
+Lumos provides a factory generator to retrieve classes for cores by mnemonics::
+
+  from lumos.model.core import get_coreclass
+  IOCore_CMOS = get_coreclass('io-cmos')
+
+Accelerators
+------------
+
+Application
+-----------
+
 
 Analysis
 ========

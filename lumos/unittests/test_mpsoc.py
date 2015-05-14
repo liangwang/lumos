@@ -1,99 +1,46 @@
 #!/usr/bin/env python
 
-import sys
 import os
-from lumos.model.system import MPSoC
-from lumos.model.application import Application
-from lumos.model import Kernel, KernelParam
-from lumos.model import CMOSTechModel
-from lumos.model import Sys_L
-from lumos.model import IOCore_CMOS as IOCore
+from lumos.model.misc import load_kernels_and_apps
+from lumos.model.system.mpsoc import MPSoC
+from lumos.model.system.budget import Sys_L
+from lumos.model.tech import get_model
+from lumos.model.core import get_coreclass
 import unittest
-from lxml import etree
-
-
-def load_kernel(fname='norm.xml'):
-    """
-    Load kernels from an XML file.
-
-    Args:
-       fname (str):
-          The file to be loaded
-
-    Returns:
-       kernels (list):
-          A sorted (by name) list of kernels that have been loaded.
-    """
-    tree = etree.parse(fname)
-    kernels = dict()
-    for k_root in tree.iter('kernel'):
-        k_name = k_root.get('name')
-        k = Kernel(k_name)
-
-        accelerator_root = k_root.find('accelerator')
-        for ele in accelerator_root.getchildren():
-            acc_id = ele.tag
-            ucore_param = KernelParam()
-            for attr, val in ele.items():
-                try:
-                    setattr(ucore_param, attr, float(val))
-                except ValueError:
-                    print('(attr, val): {0}, {1}, val is not a float'.format(attr, val))
-                except TypeError as te:
-                    print(te)
-
-            k.add_acc(acc_id, ucore_param)
-
-        kernels[k_name] = k
-    return kernels
-
-
-def load_workload(kernels, fname='workload.xml'):
-    """
-    Load a workload from an XML file
-
-    Args:
-       fname (str):
-          The XML file to be loaded
-
-    Returns:
-       workload (dict):
-          A dict of applications this workload contains, indexed by application name
-    """
-    workload = dict()
-    tree = etree.parse(fname)
-    for app_root in tree.iter('app'):
-        app_name = app_root.get('name')
-
-        ele = app_root.find('f_parallel')
-        f_parallel = float(ele.text)
-        app = Application(f=f_parallel, name=app_name)
-
-        kcfg_root = app_root.find('kernel_config')
-        for k_ele in kcfg_root.iter('kernel'):
-            kid = k_ele.get('name')
-            kernel = kernels[kid]
-            cov = float(k_ele.get('cov'))
-            app.add_kernel(kernel, cov)
-
-        workload[app_name] = app
-
-    return workload
 
 
 class TestMPSoC(unittest.TestCase):
     def setUp(self):
+
+        self.ks_, self.as_ = load_kernels_and_apps(
+            os.path.join(os.path.dirname(__file__), 'appdag.xml'))
+
+    def test_appdag_speedup_serial(self):
         budget = Sys_L
         tech = 22
-        tput_core = IOCore(tech=22)
-        self.sys = MPSoC(budget, tech, tput_core=tput_core)
-        self.kernels = load_kernel(
-            os.path.join(os.path.abspath(os.path.dirname(__file__)), 'kernels.xml'))
-        self.workload = load_workload(self.kernels,
-            os.path.join(os.path.abspath(os.path.dirname(__file__)), 'apps.xml'))
+        CoreClass = get_coreclass('io-cmos')
+        tput_core = CoreClass(tech_node=22, tech_variant='hp')
+        sys = MPSoC(budget, tech, tput_core=tput_core)
+        app = self.as_['app_dag0']
+        ker_obj = self.ks_['ker3']
+        tech_model = get_model('cmos', 'hp')
+        sys.add_asic(ker_obj, 'asic_5x', 0.1, tech_model)
+        self.assertAlmostEqual(sys.get_speedup_appdag_serial(app), 3.561031891466)
 
-    def test_acc(self):
-        app = self.workload['app_f100_c10']
-        ker_obj = self.kernels['ker']
-        self.sys.set_asic(ker_obj, 'asic_5x', 0.1, CMOSTechModel('hp'))
-        self.assertAlmostEqual(self.sys.get_perf(app)['perf'], 117.84259499)
+    def test_appdag_speedup_parallel(self):
+        budget = Sys_L
+        tech = 22
+        CoreClass = get_coreclass('io-cmos')
+        tput_core = CoreClass(tech_node=22, tech_variant='hp')
+        sys = MPSoC(budget, tech, tput_core=tput_core)
+        app = self.as_['app_dag0']
+        tech_model = get_model('cmos', 'hp')
+        ker_obj = self.ks_['ker1']
+        sys.add_asic(ker_obj, 'asic_5x', 0.1, tech_model)
+        ker_obj = self.ks_['ker2']
+        sys.add_asic(ker_obj, 'asic_5x', 0.1, tech_model)
+        ker_obj = self.ks_['ker3']
+        sys.add_asic(ker_obj, 'asic_5x', 0.1, tech_model)
+        ker_obj = self.ks_['ker4']
+        sys.add_asic(ker_obj, 'asic_5x', 0.1, tech_model)
+        self.assertAlmostEqual(sys.get_speedup_appdag_parallel_greedy(app), 3.91827844296)

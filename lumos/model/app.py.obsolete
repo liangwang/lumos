@@ -1,0 +1,426 @@
+#!/usr/bin/env python
+import logging
+import numpy.random
+import scipy.stats
+from collections import deque
+from igraph import Graph, OUT as GRAPH_OUT, IN as GRAPH_IN
+
+_logger = logging.getLogger('Application')
+_logger.setLevel(logging.INFO)
+
+
+# miu -> perf
+# phi -> power
+class KernelParam(object):
+    PARAMS = ('perf', 'power', 'bw')
+    def __init__(self, perf=0.001, power=0.001, bw=0.001):
+        object.__setattr__(self, '_perf', perf)
+        object.__setattr__(self, '_power', power)
+        object.__setattr__(self, '_bw', bw)
+
+    @property
+    def perf(self):
+        return self._perf
+    @perf.setter
+    def perf(self, perf):
+        object.__setattr__(self, '_perf', perf)
+
+    @property
+    def power(self):
+        return self._power
+    @power.setter
+    def power(self, power):
+        object.__setattr__(self, '_power', power)
+
+    @property
+    def bw(self):
+        return self._bw
+    @bw.setter
+    def bw(self, bw):
+        object.__setattr__(self, '_bw', bw)
+
+    def __str__(self):
+        return '[{0}] perf: {1}, power: {2}, bw: {3}'.format(
+            self.__repr__(), self._perf, self._power, self._bw)
+
+    def __setattr__(self, name, value):
+        if hasattr(self, '_'+name):
+            object.__setattr__(self, name, value)
+        else:
+            raise TypeError('{0} has no member of {1}'.format(
+                self.__class__.__name__, name))
+
+
+class KernelError(Exception):
+    pass
+
+
+class Kernel(object):
+    def __init__(self, kid, parallel_factor=0):
+        self._kid = kid
+        self._kernel_params = dict()
+
+        self.parallel_factor = parallel_factor
+        if parallel_factor:
+            self.is_serial = True
+        else:
+            self.is_serial = False
+
+    def __str__(self):
+        return '{0}: {1}'.format(self.__repr__(), self._kid)
+
+    @property
+    def kid(self):
+        return self._kid
+
+    def add_kernel_param(self, acc_id, kernel_param):
+        self._kernel_params[acc_id] = kernel_param
+
+    def del_kernel_param(self, acc_id):
+        try:
+            del self._kernel_params[acc_id]
+        except KeyError:
+            _logger.warning('No accelerator named {0} available'.format(acc_id))
+
+    def get_kernel_param(self, acc_id):
+        try:
+            return self._kernel_params[acc_id]
+        except KeyError:
+            raise KernelError('Kernel {0} does not register accelerator {1}'.format(
+                self._kid, acc_id))
+
+    def get_all_accs(self):
+        return self._kernel_params.keys()
+
+
+class AppDAGError(Exception):
+    pass
+
+
+class AppDAG():
+    """An application modeled as a directed acyclic graph (DAG)
+
+    An application is DAG of tasks/kernels. Kernels are referred by a
+    handler, called `kernel index`. Internally, the kernel index is the
+    node index in the DAG (represented using `igraph` library).
+
+    Attributes
+    ----------
+    name : str, read-only
+      The name of an application
+"""
+    def __init__(self, name):
+        self._name = name
+        self._g = Graph(directed=True)
+        self._kernels = dict()
+        self._length = dict()
+        self._max_depth = None
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def depth(self):
+        return self._max_depth
+
+    def get_kernel_length(self, kernel_idx):
+        """Get the length of a kernel, indicated by kernel_idx
+
+        Parameters
+        ----------
+        kernel_idx : int
+          The kernel index.
+
+        Returns
+        -------
+        float
+          the length of the kernel
+        """
+        return self._length[kernel_idx]
+
+    def add_kernel(self, kerobj, len_):
+        """Add a kernel into application.
+
+        Parameters
+        ----------
+        kerobj : :class:`~lumos.model.Kernel`
+          The kernel object to be added
+        len_ : float
+          The run length of a kernel executed on a single base line core
+          (BCE).
+
+        Returns
+        -------
+        int
+          kernel index
+        """
+        kernel_idx = self._g.vcount()
+        self._g.add_vertex(name=kerobj.name, depth=0)
+        self._kernels[kernel_idx] = kerobj
+        self._length[kernel_idx] = len_
+        return kernel_idx
+
+    def add_dependence(self, from_, to_):
+        """Add kernel dependence between two kernels.
+
+        Parameters
+        ----------
+        from\_, to\_: kernel index
+          Precedent kernel (from\_) and the dependent kernel (to\_)
+          expressed by kernel index
+        """
+        self._g.add_edge(from_, to_)
+        self.vs[to_]['depth'] = max(self.vs[from_]['depth'] + 1,
+                                    selv.vs[to_]['depth'])
+        self._max_depth = max(self.vs[to_]['depth'], self._max_depth)
+
+    def get_kernel(self, kernel_idx):
+        """Get the kernel object
+
+        Parameters
+        ----------
+        kernel_idx : int
+          The kernel index
+
+        Returns
+        -------
+        :class:`~lumos.model.Kernel`
+          The kernel object.
+        """
+        return self._kernels[kernel_idx]
+
+    def get_kernel_depth(self, kernel_idx):
+        return self._g.vs[kernel_idx]['depth']
+
+    def get_all_kernel_depth(self):
+        return self._g.vs['depth']
+
+    def kernels_topo_sort(self):
+        """sort kernels in a topological order.
+
+        Returns
+        -------
+        list
+          kernel indexes in a topological sort order
+        """
+        return self._g.topological_sorting()
+
+    def get_precedent_kernel(self, kernel_idx):
+        """Get the precedent (pre-requisite) kernels.
+
+        Returns
+        -------
+        list
+          A list of kernel indexes that precedent the given kernel. None
+          if no precedent kernels exist, e.g. the starting kernel.
+        """
+        return self._g.neighbors(kernel_idx, mode=GRAPH_IN)
+
+    def kernels_depth_sort(self):
+        """sort kernels by their depth.
+
+        Returns
+        -------
+        dict
+          kernel indexes grouped by its depth in the DAG. An example output looks
+          like::
+
+            {
+               0: [0,1],
+               1: [2,3,4],
+               2: [5,6],
+             }
+        """
+        return [self._g.vs.select(depth_eq=d_) for d_ in range(self._max_depth)]
+        # depth_table = [0 for v in self._g.vs]
+        # visited_flags = [False for v in self._g.vs]
+        # nodes_to_visit = deque([node.index for node in self._g.vs.select(_indegree=0)])
+
+        # while nodes_to_visit:
+        #     n_ = nodes_to_visit.popleft()
+        #     visited_flags[n_] = True
+        #     depth = depth_table[n_]
+        #     node = self._g.vs[n_]
+        #     for v_ in self._g.neighbors(node, mode=GRAPH_OUT):
+        #         depth_table[v_] = max(depth_table[v_], depth+1)
+        #         if not visited_flags[v_]:
+        #             nodes_to_visit.append(v_)
+
+        # depth_dict = dict()
+        # for n_, d_ in enumerate(depth_table):
+        #     if d_ not in depth_dict:
+        #         depth_dict[d_] = [n_]
+        #     else:
+        #         depth_dict[d_].append(n_)
+
+        # return depth_dict
+
+    def get_speedup(self, speedup_dict):
+        """Get the speedup of an application by given a speedup vector of each kernel.
+
+        Parameters
+        ----------
+        speedup_dict : dict
+          provides speedup indexed by kernel index, an example of
+          speedup_dict would be::
+
+            {
+              0: 1.2, # kernel 0 has speedup of 1.2x, or a run time of 1/1.2
+              1: 0.8, # kernel 1 has speedup of 0.8x, and this is actually a slowdown
+            }
+
+          kernels not specified will be assumed to have a speedup of 1x,
+          e.g. not speedup
+        """
+        speedups = [speedup_dict[idx_] if idx_ in speedup_dict else 1 for idx in self._g.vs.indices]
+
+        for su in speedups:
+            pass
+
+
+
+def random_uc_cov(dist, param1, param2):
+    """randomly generate kernel coverage that follows the specified distribution
+
+    Parameters
+    ----------
+    dist : str
+      the name of the distribution, currently, only support the following three
+
+      - 'norm': normal distribution (Gaussian)
+      - 'lognorm': log-normal distribution
+      - 'uniform': uniform distribution
+
+    param1, param2 : float
+      The statistical parameters for the distribution. When dist is 'norm' or
+      'lognorm', param1 represents the mean, param2 represents the standard
+      deviation (std). When dist is 'uniform', param1, param2 represent the lower
+      and upper bound of the distribution
+
+    Returns
+    -------
+    float
+      the generated random coverage. 0 will be return instead if there are any
+      errors
+
+    """
+    if dist == 'norm':
+        mean = param1
+        std = param2
+        r = scipy.stats.norm.rvs(mean, std)
+        while r < 0:
+            r = scipy.stats.norm.rvs(mean, std)
+    elif dist == 'lognorm':
+        mean = param1
+        std = param2
+        r = numpy.random.lognormal(mean, std)
+    elif dist == 'uniform':
+        rmin = param1
+        rmax = param2
+        r = numpy.random.uniform(rmin, rmax)
+        while r < 0:
+            r = numpy.random.uniform(rmin, rmax)
+    else:
+        loggging.error('Unknown distribution for coverage: %s' % dist)
+        r = 0
+
+    return r
+
+
+def random_kernel_cov(cov_params):
+    dist = cov_params['dist']
+
+    if dist == 'norm':
+        mean = cov_params['mean']
+        std = cov_params['std']
+        r = scipy.stats.norm.rvs(mean, std)
+        while r < 0:
+            r = scipy.stats.norm.rvs(mean, std)
+    elif dist == 'lognorm':
+        mean = cov_params['mean']
+        std = cov_params['std']
+        r = numpy.random.lognormal(mean, std)
+    elif dist == 'uniform':
+        rmin = cov_params['min']
+        rmax = cov_params['max']
+        r = numpy.random.uniform(rmin, rmax)
+        while r < 0:
+            r = numpy.random.uniform(rmin, rmax)
+    else:
+        _logger.error('Unknown distribution for coverage: %s' % dist)
+        r = 0
+
+    return r
+
+
+import lxml.etree as etree
+
+def load_appdag_suite(xmlfile):
+    """Load kernels and applications from an XML file.
+
+    Parameters
+    ----------
+    xmlfile : filepath
+      The file to be loaded, in XML format. The suite includes two
+      section: kernels and applications.
+
+    Returns
+    -------
+    kernels : dict
+      A dict of (kernel_name, kernel_object) pair, indexed by kernel's name.
+    applications : dict
+      A dict of (application_name, applicatin_object) pair, indexed by
+      application's name.
+
+    Raises
+    ------
+    KernelError: if parameters is not float
+
+    """
+    tree = etree.parse(xmlfile)
+
+    kernels = dict()
+    applications = dict()
+    ktree = tree.find('kernels')
+    atree = tree.find('apps')
+    for k_root in ktree.iter('kernel'):
+        k_name = k_root.get('name')
+        k = Kernel(k_name)
+
+        accelerator_root = k_root.find('accelerator')
+        for ele in accelerator_root.getchildren():
+            acc_id = ele.tag
+            kernel_param = KernelParam()
+            for attr, val in ele.items():
+                try:
+                    setattr(kernel_param, attr, float(val))
+                except TypeError as e:
+                    raise e
+                except ValueError:
+                    raise KernelError(
+                        'Error decoding Ucore parameters, attr: {0}, val: {1}, '
+                        'val is not a float'.format(attr, val))
+            k.add_kernel_param(acc_id, kernel_param)
+
+        kernels[k_name] = k
+
+    for a_root in atree.iter('app'):
+        a_name = a_root.get('name')
+        a = AppDAG(a_name)
+        ks = a_root.find('kernel_config')
+        for ele in ks.getchildren():
+            node_id = int(ele.get('index'))
+            k_name = ele.get('name')
+            k_cov = ele.get('cov')
+            k_preds = ele.get('pred')
+            kernel_idx = a.add_kernel(kernels[k_name], k_cov)
+            if kernel_idx != node_id:
+                raise AppDAGError("Kernel index mismatch after AppDAG.add_kernel. Probably because the kernel is not specified in order in the xml file.")
+            if k_preds != 'None':
+                preds = [int(i) for i in k_preds.split(',')]
+                for _ in preds:
+                    a.add_dependence(_, node_id)
+        applications[a_name] = a
+
+    return kernels, applications

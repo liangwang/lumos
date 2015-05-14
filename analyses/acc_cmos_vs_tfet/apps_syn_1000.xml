@@ -1,4 +1,4 @@
-<workload>
+<apps>
   <app name="app0">
     <f_parallel>1.000e+00</f_parallel>
     <kernel_config>
@@ -2741,4 +2741,4 @@
       <kernel name="_gen_fixednorm_004" cov="2.361e-01"/>
     </kernel_config>
   </app>
-</workload>
+</apps>
