@@ -17,3 +17,4 @@ data.old/
 cacti/obj_opt/
 lumos/_cacti.so
 *.ipynb
+cacti/cacti_wrap.cc
