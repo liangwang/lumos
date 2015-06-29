@@ -731,8 +731,6 @@ const uca_org_t cacti_interface(const std::string & infile_name)
   if (g_ip->print_input_args) 
     g_ip->display_ip();
 
-  g_ip->display_ip("parse_from_file.txt");
-
   init_tech_params(g_ip->F_sz_um, false);
   Wire winit; // Do not delete this line. It initializes wires.
 
