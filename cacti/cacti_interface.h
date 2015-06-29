@@ -114,6 +114,7 @@ class InputParameter
 
     bool error_checking();  // return false if the input parameters are problematic
     void display_ip();
+    void dump_input_parameter(const std::string &);
 
     unsigned int cache_sz;  // in bytes
     unsigned int line_sz;
@@ -314,10 +315,11 @@ class uca_org_t
 };
 
 
-uca_org_t cacti_interface(const std::string & infile_name);
+const uca_org_t cacti_interface(const std::string & infile_name);
+const uca_org_t cacti_solve(const std::string & infile_name);
 
 
-uca_org_t cacti_interface(
+const uca_org_t cacti_interface(
     int cache_size,
     int line_size,
     int associativity,
@@ -371,7 +373,63 @@ uca_org_t cacti_interface(
     int nuca_dev_func_area,
     int nuca_dev_func_cycle_time,
     int REPEATERS_IN_HTREE_SEGMENTS_in,//TODO for now only wires with repeaters are supported
-    int p_input); 
+    int p_input);
+
+const uca_org_t cacti_interface(
+    int cache_size,
+    int line_size,
+    int associativity,
+    int rw_ports,
+    int excl_read_ports,
+    int excl_write_ports,
+    int single_ended_read_ports,
+    int banks,
+    double tech_node,
+    int page_sz,
+    int burst_length,
+    int pre_width,
+    int output_width,
+    int specific_tag,
+    int tag_width,
+    int access_mode, //0 normal, 1 seq, 2 fast
+    int cache, //scratch ram or cache
+    int main_mem,
+    int obj_func_delay,
+    int obj_func_dynamic_power,
+    int obj_func_leakage_power,
+    int obj_func_area,
+    int obj_func_cycle_time,
+    int dev_func_delay,
+    int dev_func_dynamic_power,
+    int dev_func_leakage_power,
+    int dev_func_area,
+    int dev_func_cycle_time,
+    int ed_ed2_none, // 0 - ED, 1 - ED^2, 2 - use weight and deviate
+    int temp,
+    int wt, //0 - default(search across everything), 1 - global, 2 - 5% delay penalty, 3 - 10%, 4 - 20 %, 5 - 30%, 6 - low-swing 
+    int data_arr_ram_cell_tech_flavor_in, 
+    int data_arr_peri_global_tech_flavor_in, 
+    int tag_arr_ram_cell_tech_flavor_in,
+    int tag_arr_peri_global_tech_flavor_in,
+    int interconnect_projection_type_in, // 0 - aggressive, 1 - normal
+    int wire_inside_mat_type_in, 
+    int wire_outside_mat_type_in, 
+    int is_nuca, // 0 - UCA, 1 - NUCA
+    int core_count,
+    int cache_level, // 0 - L2, 1 - L3
+    int nuca_bank_count,
+    int nuca_obj_func_delay,
+    int nuca_obj_func_dynamic_power,
+    int nuca_obj_func_leakage_power,
+    int nuca_obj_func_area,
+    int nuca_obj_func_cycle_time,
+    int nuca_dev_func_delay,
+    int nuca_dev_func_dynamic_power,
+    int nuca_dev_func_leakage_power,
+    int nuca_dev_func_area,
+    int nuca_dev_func_cycle_time,
+    int REPEATERS_IN_HTREE_SEGMENTS_in,//TODO for now only wires with repeaters are supported
+    int p_input);
 
 
 class mem_array

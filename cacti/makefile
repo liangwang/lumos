@@ -5,8 +5,8 @@ TARGET = cacti
 all: lumos_install
 
 lumos_install: opt
-	/bin/cp obj_opt/_cacti.so ../lumos/
-	/bin/cp cacti.py ../lumos/
+	/bin/cp obj_opt/_cacti.so ../lumos/model/mem
+	/bin/cp cacti.py ../lumos/model/mem
 
 dbg: $(TARGET).mk obj_dbg
 	@$(MAKE) TAG=dbg -C . -f $(TARGET).mk

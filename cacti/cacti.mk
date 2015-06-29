@@ -45,4 +45,4 @@ cacti_wrap.cc : cacti.i
 	swig -c++ -python -o $@ cacti.i
 
 clean:
-	-rm -f cacti_wrap.cc
+	-rm -f cacti_wrap.cc cacti.py

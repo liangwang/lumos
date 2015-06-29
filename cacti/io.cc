@@ -580,6 +580,94 @@ InputParameter::display_ip()
 }
 
 
+void InputParameter::dump_input_parameter(const std::string &ofs_name)
+{
+  std::ofstream ofs(ofs_name.c_str());
+  ofs<<"cash_sz:"<<cache_sz<<std::endl;  // in bytes
+  ofs<<"line_sz:"<<line_sz<<std::endl;
+  ofs<<"assoc:"<<assoc<<std::endl;
+  ofs<<"nbanks:"<<nbanks<<std::endl;
+  ofs<<"out_w:"<<out_w<<std::endl;// == nr_bits_out
+  ofs<<"specific_tag:"<<specific_tag<<std::endl;
+  ofs<<"tag_w:"<<tag_w<<std::endl;
+  ofs<<"access_mode:"<<access_mode<<std::endl;
+  ofs<<"obj_func_dyn_energy:"<<obj_func_dyn_energy<<std::endl;
+  ofs<<"obj_func_dyn_power:"<<obj_func_dyn_power<<std::endl;
+  ofs<<"obj_func_leak_power:"<<obj_func_leak_power<<std::endl;
+  ofs<<"obj_func_cycle_time:"<<obj_func_cycle_t<<std::endl;
+  ofs<<"F_sz_nm:"<<F_sz_nm<<std::endl;          // feature size in nm
+  ofs<<"F_sz_um:"<<F_sz_um<<std::endl;          // feature size in um
+  ofs<<"num_rw_ports:"<<num_rw_ports<<std::endl;
+  ofs<<"num_rd_ports:"<<num_rd_ports<<std::endl;
+  ofs<<"num_wr_ports:"<<num_wr_ports<<std::endl;
+  ofs<<"num_se_rd_ports:"<<num_se_rd_ports<<std::endl;  // number of single ended read ports
+  ofs<<"is_main_mem:"<<is_main_mem<<std::endl;
+  ofs<<"is_cache:"<<is_cache<<std::endl;
+  ofs<<"rpters_in_htree:"<<rpters_in_htree<<std::endl;  // if there are repeaters in htree segment
+  ofs<<"ver_htree_wires_over_array:"<<ver_htree_wires_over_array<<std::endl;
+  ofs<<"broadcast_addr_din_over_ver_htrees:"<<broadcast_addr_din_over_ver_htrees<<std::endl;
+  ofs<<"temp:"<<temp<<std::endl;
+  ofs<<"ram_cell_tech_type:"<<ram_cell_tech_type<<std::endl;
+  ofs<<"peri_global_tech_type:"<<peri_global_tech_type<<std::endl;
+  ofs<<"data_arr_ram_cell_tech_type:"<<data_arr_ram_cell_tech_type<<std::endl;
+  ofs<<"data_arr_peri_global_tech_type:"<<data_arr_peri_global_tech_type<<std::endl;
+  ofs<<"tag_arr_ram_cell_tech_type:"<<tag_arr_ram_cell_tech_type<<std::endl;
+  ofs<<"tag_arr_peri_global_tech_type:"<<tag_arr_peri_global_tech_type<<std::endl;
+  ofs<<"burst_len:"<<burst_len<<std::endl;
+  ofs<<"int_prefetch_w:"<<int_prefetch_w<<std::endl;
+  ofs<<"page_sz_bits:"<<page_sz_bits<<std::endl;
+  ofs<<"ic_proj_type:"<<ic_proj_type<<std::endl;      // interconnect_projection_type
+  ofs<<"wire_is_mat_type:"<<wire_is_mat_type<<std::endl;  // wire_inside_mat_type 
+  ofs<<"wire_os_mat_type:"<<wire_os_mat_type<<std::endl; // wire_outside_mat_type
+  ofs<<"force_wiretype:"<<force_wiretype<<std::endl; 
+  ofs<<"print_input_args:"<<print_input_args<<std::endl;
+  ofs<<"nuca_cache_sz:"<<nuca_cache_sz<<std::endl; // TODO
+  ofs<<"ndbl:"<<ndbl<<std::endl;
+  ofs<<"ndwl:"<<ndwl<<std::endl;
+  ofs<<"nspd:"<<nspd<<std::endl;
+  ofs<<"ndsam1:"<<ndsam1<<std::endl;
+  ofs<<"ndsam2:"<<ndsam2<<std::endl;
+  ofs<<"ndcm:"<<ndcm<<std::endl;
+  ofs<<"force_cache_config:"<<force_cache_config<<std::endl;
+  ofs<<"cache_level:"<<cache_level<<std::endl;
+  ofs<<"cores:"<<cores<<std::endl;
+  ofs<<"nuca_bank_count:"<<nuca_bank_count<<std::endl;
+  ofs<<"force_nuca_bank:"<<force_nuca_bank<<std::endl;
+  ofs<<"delay_wt:"<<delay_wt<<std::endl;
+  ofs<<"dynamic_power_wt:"<<dynamic_power_wt<<std::endl;
+  ofs<<"leakage_power_wt:"<<leakage_power_wt<<std::endl;
+  ofs<<"cycle_time_wt:"<<cycle_time_wt<<std::endl;
+  ofs<<"area_wt:"<<area_wt<<std::endl;
+  ofs<<"delay_wt_nuca:"<<delay_wt_nuca<<std::endl;
+  ofs<<"idynamic_power_wt_nuca:"<<dynamic_power_wt_nuca<<std::endl;
+  ofs<<"leakage_power_wt_nuca:"<<leakage_power_wt_nuca<<std::endl;
+  ofs<<"cycle_time_wt_nuca:"<<cycle_time_wt_nuca<<std::endl;
+  ofs<<"area_wt_nuca:"<<area_wt_nuca<<std::endl;
+  ofs<<"delay_dev:"<<delay_dev<<std::endl;
+  ofs<<"dynamice_power_dev:"<<dynamic_power_dev<<std::endl;
+  ofs<<"leakage_power_dev:"<<leakage_power_dev<<std::endl;
+  ofs<<"cycle_time_dev:"<<cycle_time_dev<<std::endl;
+  ofs<<"area_dev:"<<area_dev<<std::endl;
+  ofs<<"delay_dev_nuca:"<<delay_dev_nuca<<std::endl;
+  ofs<<"dynamic_power_dev_nuca:"<<dynamic_power_dev_nuca<<std::endl;
+  ofs<<"leakage_power_dev_nuca:"<<leakage_power_dev_nuca<<std::endl;
+  ofs<<"cycle_time_dev_nuca:"<<cycle_time_dev_nuca<<std::endl;
+  ofs<<"area_dev_nuca:"<<area_dev_nuca<<std::endl;
+  ofs<<"ed:"<<ed<<std::endl; //ED or ED2 optimization
+  ofs<<"nuca:"<<nuca<<std::endl;
+  ofs<<"fast_access:"<<fast_access<<std::endl;
+  ofs<<"block_sz:"<<block_sz<<std::endl;  // bytes
+  ofs<<"tag_assoc:"<<tag_assoc<<std::endl;
+  ofs<<"data_assoc:"<<data_assoc<<std::endl;
+  ofs<<"is_seq_acc:"<<is_seq_acc<<std::endl;
+  ofs<<"fully_assoc:"<<fully_assoc<<std::endl;
+  ofs<<"nsets:"<<nsets<<std::endl;  // == number_of_sets
+  ofs<<"print_details:"<<print_detail<<std::endl;
+  ofs<<"add_ecc_b_:"<<add_ecc_b_<<std::endl;
+  ofs<<"wire_type:"<<wt<<std::endl;
+  ofs.close();
+}
+
 
 powerComponents operator+(const powerComponents & x, const powerComponents & y)
 {
@@ -604,8 +692,33 @@ powerDef operator+(const powerDef & x, const powerDef & y)
 }
 
 
+const uca_org_t cacti_solve(const std::string & infile_name)
+{
 
-uca_org_t cacti_interface(const std::string & infile_name)
+  uca_org_t fin_res;
+  //  uca_org_t result;
+  fin_res.valid = false;
+
+  g_ip = new InputParameter();
+  g_ip->parse_cfg(infile_name);
+  if (g_ip->error_checking() == false) exit(0);
+
+  init_tech_params(g_ip->F_sz_um, false);
+  Wire winit; // Do not delete this line. It initializes wires.
+
+  if (g_ip->nuca == 1)
+    {
+      Nuca n(&g_tp.peri_global);
+      n.sim_nuca();
+    }
+  //  g_ip->display_ip();
+  solve(&fin_res);
+
+  delete (g_ip);
+  return fin_res;
+}
+
+const uca_org_t cacti_interface(const std::string & infile_name)
 {
 
   uca_org_t fin_res;
@@ -617,6 +730,8 @@ uca_org_t cacti_interface(const std::string & infile_name)
   if (g_ip->error_checking() == false) exit(0);
   if (g_ip->print_input_args) 
     g_ip->display_ip();
+
+  g_ip->display_ip("parse_from_file.txt");
 
   init_tech_params(g_ip->F_sz_um, false);
   Wire winit; // Do not delete this line. It initializes wires.
@@ -635,7 +750,7 @@ uca_org_t cacti_interface(const std::string & infile_name)
   return fin_res;
 }
 
-uca_org_t cacti_interface(
+const uca_org_t cacti_interface(
     int cache_size,
     int line_size,
     int associativity,
@@ -689,7 +804,7 @@ uca_org_t cacti_interface(
     int nuca_dev_func_area,
     int nuca_dev_func_cycle_time,
     int REPEATERS_IN_HTREE_SEGMENTS_in,//TODO for now only wires with repeaters are supported
-    int p_input) 
+    int p_input)
 {
   g_ip = new InputParameter();
   g_ip->add_ecc_b_ = true;
@@ -771,7 +886,7 @@ uca_org_t cacti_interface(
   g_ip->leakage_power_wt_nuca = nuca_obj_func_leakage_power;
   g_ip->area_wt_nuca = nuca_obj_func_area;
   g_ip->cycle_time_wt_nuca    = nuca_obj_func_cycle_time;
-  g_ip->delay_dev_nuca = dev_func_delay;
+  g_ip->delay_dev_nuca = nuca_dev_func_delay;
   g_ip->dynamic_power_dev_nuca = nuca_dev_func_dynamic_power;
   g_ip->leakage_power_dev_nuca = nuca_dev_func_leakage_power;
   g_ip->area_dev_nuca = nuca_dev_func_area;
@@ -799,9 +914,9 @@ uca_org_t cacti_interface(
   g_ip->print_detail = 1;
   g_ip->nuca = 0;
 
-  g_ip->wt = Global_5;
+  // g_ip->wt = Global_5;
   g_ip->force_cache_config = false;
-  g_ip->force_wiretype = false;
+  // g_ip->force_wiretype = false;
   g_ip->print_input_args = p_input;
 
 
@@ -828,6 +943,193 @@ uca_org_t cacti_interface(
 }
 
 
+const uca_org_t cacti_solve(
+    int cache_size,
+    int line_size,
+    int associativity,
+    int rw_ports,
+    int excl_read_ports,
+    int excl_write_ports,
+    int single_ended_read_ports,
+    int banks,
+    double tech_node, // in nm
+    int page_sz,
+    int burst_length,
+    int pre_width,
+    int output_width,
+    int specific_tag,
+    int tag_width,
+    int access_mode, //0 normal, 1 seq, 2 fast
+    int cache, //scratch ram or cache
+    int main_mem,
+    int obj_func_delay,
+    int obj_func_dynamic_power,
+    int obj_func_leakage_power,
+    int obj_func_area,
+    int obj_func_cycle_time,
+    int dev_func_delay,
+    int dev_func_dynamic_power,
+    int dev_func_leakage_power,
+    int dev_func_area,
+    int dev_func_cycle_time,
+    int ed_ed2_none, // 0 - ED, 1 - ED^2, 2 - use weight and deviate
+    int temp,
+    int wt, //0 - default(search across everything), 1 - global, 2 - 5% delay penalty, 3 - 10%, 4 - 20 %, 5 - 30%, 6 - low-swing 
+    int data_arr_ram_cell_tech_flavor_in, // 0-4
+    int data_arr_peri_global_tech_flavor_in, 
+    int tag_arr_ram_cell_tech_flavor_in,
+    int tag_arr_peri_global_tech_flavor_in,
+    int interconnect_projection_type_in, // 0 - aggressive, 1 - normal
+    int wire_inside_mat_type_in, 
+    int wire_outside_mat_type_in, 
+    int is_nuca, // 0 - UCA, 1 - NUCA
+    int core_count,
+    int cache_level, // 0 - L2, 1 - L3
+    int nuca_bank_count,
+    int nuca_obj_func_delay,
+    int nuca_obj_func_dynamic_power,
+    int nuca_obj_func_leakage_power,
+    int nuca_obj_func_area,
+    int nuca_obj_func_cycle_time,
+    int nuca_dev_func_delay,
+    int nuca_dev_func_dynamic_power,
+    int nuca_dev_func_leakage_power,
+    int nuca_dev_func_area,
+    int nuca_dev_func_cycle_time,
+    int REPEATERS_IN_HTREE_SEGMENTS_in,//TODO for now only wires with repeaters are supported
+    int p_input)
+{
+  g_ip = new InputParameter();
+  g_ip->add_ecc_b_ = true;
+
+  g_ip->data_arr_ram_cell_tech_type    = data_arr_ram_cell_tech_flavor_in;
+  g_ip->data_arr_peri_global_tech_type = data_arr_peri_global_tech_flavor_in;
+  g_ip->tag_arr_ram_cell_tech_type     = tag_arr_ram_cell_tech_flavor_in;
+  g_ip->tag_arr_peri_global_tech_type  = tag_arr_peri_global_tech_flavor_in;
+
+  g_ip->ic_proj_type     = interconnect_projection_type_in;
+  g_ip->wire_is_mat_type = wire_inside_mat_type_in;
+  g_ip->wire_os_mat_type = wire_outside_mat_type_in;
+  g_ip->burst_len        = burst_length;
+  g_ip->int_prefetch_w   = pre_width;
+  g_ip->page_sz_bits     = page_sz;
+
+  g_ip->cache_sz            = cache_size;
+  g_ip->line_sz             = line_size;
+  g_ip->assoc               = associativity;
+  g_ip->nbanks              = banks;
+  g_ip->out_w               = output_width;
+  g_ip->specific_tag        = specific_tag;
+  if (tag_width == 0) {
+    g_ip->tag_w = 42; 
+  }
+  else {
+    g_ip->tag_w               = tag_width;
+  }
+
+  g_ip->access_mode         = access_mode;
+  g_ip->delay_wt = obj_func_delay;
+  g_ip->dynamic_power_wt = obj_func_dynamic_power;
+  g_ip->leakage_power_wt = obj_func_leakage_power;
+  g_ip->area_wt = obj_func_area;
+  g_ip->cycle_time_wt    = obj_func_cycle_time;
+  g_ip->delay_dev = dev_func_delay;
+  g_ip->dynamic_power_dev = dev_func_dynamic_power;
+  g_ip->leakage_power_dev = dev_func_leakage_power;
+  g_ip->area_dev = dev_func_area;
+  g_ip->cycle_time_dev    = dev_func_cycle_time;
+  g_ip->ed = ed_ed2_none;
+
+  switch(wt) {
+    case (0):
+      g_ip->force_wiretype = 0;
+      g_ip->wt = Global;
+      break;
+    case (1):
+      g_ip->force_wiretype = 1;
+      g_ip->wt = Global;
+      break;
+    case (2):
+      g_ip->force_wiretype = 1;
+      g_ip->wt = Global_5;
+      break;
+    case (3):
+      g_ip->force_wiretype = 1;
+      g_ip->wt = Global_10;
+      break;
+    case (4):
+      g_ip->force_wiretype = 1;
+      g_ip->wt = Global_20;
+      break;
+    case (5):
+      g_ip->force_wiretype = 1;
+      g_ip->wt = Global_30;
+      break;
+    case (6):
+      g_ip->force_wiretype = 1;
+      g_ip->wt = Low_swing;
+      break;
+    default:
+      std::cout << "Unknown wire type!\n";
+      exit(0);
+  }
+
+  g_ip->delay_wt_nuca = nuca_obj_func_delay;
+  g_ip->dynamic_power_wt_nuca = nuca_obj_func_dynamic_power;
+  g_ip->leakage_power_wt_nuca = nuca_obj_func_leakage_power;
+  g_ip->area_wt_nuca = nuca_obj_func_area;
+  g_ip->cycle_time_wt_nuca    = nuca_obj_func_cycle_time;
+  g_ip->delay_dev_nuca = nuca_dev_func_delay;
+  g_ip->dynamic_power_dev_nuca = nuca_dev_func_dynamic_power;
+  g_ip->leakage_power_dev_nuca = nuca_dev_func_leakage_power;
+  g_ip->area_dev_nuca = nuca_dev_func_area;
+  g_ip->cycle_time_dev_nuca    = nuca_dev_func_cycle_time;
+  g_ip->nuca = is_nuca;
+  g_ip->nuca_bank_count = nuca_bank_count;
+  if(nuca_bank_count > 0) {
+    g_ip->force_nuca_bank = 1;
+  }
+  g_ip->cores = core_count;
+  g_ip->cache_level = cache_level;
+
+  g_ip->temp = temp;
+
+  g_ip->F_sz_nm         = tech_node;
+  g_ip->F_sz_um         = tech_node / 1000;
+  g_ip->is_main_mem     = (main_mem != 0) ? true : false;
+  g_ip->is_cache        = (cache != 0) ? true : false;
+  g_ip->rpters_in_htree = (REPEATERS_IN_HTREE_SEGMENTS_in != 0) ? true : false;
+
+  g_ip->num_rw_ports    = rw_ports;
+  g_ip->num_rd_ports    = excl_read_ports;
+  g_ip->num_wr_ports    = excl_write_ports;
+  g_ip->num_se_rd_ports = single_ended_read_ports;
+  g_ip->print_detail = 1;
+  g_ip->nuca = 0;
+
+  // g_ip->wt = Global_5;
+  g_ip->force_cache_config = false;
+  // g_ip->force_wiretype = false;
+  g_ip->print_input_args = p_input;
+
+
+  uca_org_t fin_res;
+  fin_res.valid = false;
+
+  if (g_ip->error_checking() == false) exit(0);
+  init_tech_params(g_ip->F_sz_um, false);
+  Wire winit; // Do not delete this line. It initializes wires.
+
+  if (g_ip->nuca == 1)
+  {
+    Nuca n(&g_tp.peri_global);
+    n.sim_nuca();
+  }
+  solve(&fin_res);
+
+  delete (g_ip);
+  return fin_res;
+}
 
 bool InputParameter::error_checking()
 {
