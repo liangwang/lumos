@@ -13,11 +13,17 @@ from lumos import settings
 from .core.io_cmos import PERF_BASE
 
 import logging
-_logger = logging.getLogger('Accelerator')
-if settings.LUMOS_DEBUG:
-    _logger.setLevel(logging.DEBUG)
-else:
-    _logger.setLevel(logging.INFO)
+_logger_asacc = logging.getLogger('ASAcc')
+_logger_asacc.setLevel(logging.INFO)
+if settings.LUMOS_DEBUG and (
+        'all' in settings.LUMOS_DEBUG or 'asacc' in settings.LUMOS_DEBUG):
+    _logger_asacc.setLevel(logging.DEBUG)
+
+_logger_rlacc = logging.getLogger('RLAcc')
+_logger_rlacc.setLevel(logging.INFO)
+if settings.LUMOS_DEBUG and (
+        'all' in settings.LUMOS_DEBUG or 'rlacc' in settings.LUMOS_DEBUG):
+    _logger_rlacc.setLevel(logging.DEBUG)
 
 try:
     MAXINT = sys.maxint
@@ -149,7 +155,7 @@ class ASAcc(object):
         kernel = self._ker_obj
         uparam = kernel.get_kernel_param(self._acc_id)
 
-        _logger.debug('power budget: {0}, acc power: {1}'.format(power, self.power))
+        _logger_asacc.debug('power budget: {0}, acc power: {1}'.format(power, self.power))
         if power:
             area_p = (power / self.power) * self.area
         else:
@@ -305,11 +311,13 @@ class RLAcc(object):
             self._bw0 = bw_base * tech_model.fnom_scale[tech] / \
                 tech_model.fnom_scale[tech_base]
         self._v0 = tech_model.vnom(tech)
+        _logger_rlacc.debug('a0: {0}, dp0: {1}, sp0: {2}, perf0: {3}'.format(
+            self._a0, self._dp0, self._sp0, self._perf0))
 
     def perf(self, ker_obj, power=None, bandwidth=None):
         uparam = ker_obj.get_kernel_param(self._acc_id)
 
-        _logger.debug('power budget: {0}, acc power: {1}'.format(power, self.power))
+        _logger_rlacc.debug('power budget: {0}, acc power: {1}'.format(power, self.power(ker_obj)))
         if power:
             area_p = (power / self.power(ker_obj)) * self.area
         else:
@@ -327,6 +335,7 @@ class RLAcc(object):
                        self._tech_model.freq(self._tech, self._tech_model.vnom(self._tech)))
         area_factor = self.area_eff / self._a0
         abs_perf = self._perf0 * area_factor * freq_factor * uparam.perf
+        _logger_rlacc.debug('RLAcc perf {0}'.format(abs_perf))
         return abs_perf
 
     def bandwidth(self, app):

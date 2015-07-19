@@ -13,12 +13,17 @@ from ..tech import get_model
 PERF_BASE = 23.3
 
 # per-core power -> 2.5W, assume 20% static power and 80% for dynamic power
-DYNAMIC_POWER_BASE = 2    # Watts
-STATIC_POWER_BASE = 0.5   # Watts
+# total power from io-cmos, which is 1.4W, then apply 20/80 distribution
+# to static/dynamic power
+DYNAMIC_POWER_BASE = 1.12    # Watts
+STATIC_POWER_BASE = 0.28   # Watts
+# DYNAMIC_POWER_BASE = 2    # Watts
+# STATIC_POWER_BASE = 0.5   # Watts
 
 # Die area size is not available as of <2015-05-09 Sat>
-# use the same area scaling factor from o3_cmos/io_cmos
-AREA_BASE = 6.392           # mm^2
+# sacled from io-cmos
+# AREA_BASE = 1.9125          # mm^2
+AREA_BASE = 6.392          # mm^2
 FREQ_BASE = 2.4             # GHz
 TECH_BASE = 20              # nm
 

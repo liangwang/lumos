@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+
 class Budget:
     """ Physical constraints for a system, including area, power, and memory bandwidth
     """

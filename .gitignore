@@ -56,7 +56,6 @@ docs/_build/
 # PyBuilder
 target/
 
-cacti.py
 tags
 *.pypkl
 outputs
@@ -69,7 +68,10 @@ apidoc
 releases
 doc/_build/
 data.old/
-cacti/obj_opt/
-lumos/_cacti.so
 *.ipynb
-cacti/cacti_wrap.cc
+
+# cacti stuff
+cacti
+cacti.py
+cacti_wrap.cc
+cacti-p/obj_opt

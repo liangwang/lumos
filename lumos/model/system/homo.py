@@ -123,14 +123,14 @@ class HomogSys(object):
         core = self.core
         f = app.f
 
-        core.vdd = min(core.vnom*VSF_MAX, core.vmax)
-        sperf=core.perf
+        vdd_max = min(core.vnom*VSF_MAX, core.vmax)
+        sperf=core.perf_by_vdd(vdd_max)
 
         core.vdd = vdd
         active_num = min(int(self.area / core.area),
                          int(self.power / core.power(vdd)))
 
-        perf = 1/ ((1 - f) / sperf + f / (active_num * core.perf))
+        perf = 1/ ((1 - f) / sperf + f / (active_num * core.perf_by_vdd(vdd)))
         core_num = int(self.area / core.area)
         util = float(100*active_num)/float(core_num)
         return {'perf': perf/PERF_BASE,
@@ -389,3 +389,71 @@ class HomogSys(object):
                 'util': util,
                 'vdd': vdd}
 
+from .budget import Sys_L
+class SysConfigDetailed():
+    def __init__(self):
+        self.tech = 22
+        self.core_type = 'io-cmos'
+        self.core_tech_variant = 'hp'
+        self.budget = Sys_L
+        self.delay_l1 = 3
+        self.delay_l2 = 20
+        self.delay_mem = 426
+        self.cache_sz_l1 = 65536
+        # self.cache_sz_l2 = 12582912
+        self.cache_sz_l2 = 33554432 # 32MB
+
+from lumos.model.mem import cache
+class HomoSysDetailed():
+    def __init__(self, sysconfig):
+        self.sys_area = sysconfig.budget.area
+        self.sys_power = sysconfig.budget.power
+        self.sys_bw = sysconfig.budget.bw
+
+        CoreClass = get_coreclass(sysconfig.core_type)
+        self.core = CoreClass(tech_node=sysconfig.tech, tech_variant=sysconfig.core_tech_variant) 
+        self.delay_l1 = sysconfig.delay_l1
+        self.delay_l2 = sysconfig.delay_l2
+        self.delay_mem = sysconfig.delay_mem
+        self.cache_sz_l1 = sysconfig.cache_sz_l1
+        cache_tech_type = '-'.join([sysconfig.core_type.split('-')[1], sysconfig.core_tech_variant] )
+        self.l1_traits = cache.CacheTraits(self.cache_sz_l1, cache_tech_type, sysconfig.tech)
+        self.cache_sz_l2 = sysconfig.cache_sz_l2
+        self.l2_traits = cache.CacheTraits(self.cache_sz_l2, cache_tech_type, sysconfig.tech)
+
+    def get_cnum(self, vdd):
+        core = self.core
+        core_power = core.power(vdd)
+        _logger.debug('core_power: {0}'.format(core_power))
+        l2_power = self.l2_traits.power
+        _logger.debug('l2_power: {0}'.format(l2_power))
+        l1_power = self.l1_traits.power
+        _logger.debug('l1_power: {0}'.format(l1_power))
+        cnum = min((self.sys_power-l2_power)/(core_power+l1_power), self.sys_area/core.area)
+        return int(cnum)
+
+    def perf(self, vdd, app, cnum=None):
+        if not cnum:
+            cnum = self.get_cnum(vdd)
+
+        _logger.debug('cnum: {0}'.format(cnum))
+        core = self.core
+        _logger.debug('freq: {0}'.format(core.freq(vdd)))
+        miss_l1 = min(1, app.miss_l1 * ((self.cache_sz_l1/(app.cache_sz_l1_nom)) ** (1-app.alpha_l1)))
+        miss_l2 = min(1, app.miss_l2 * ((self.cache_sz_l2/(cnum*app.cache_sz_l2_nom)) ** (1-app.alpha_l2)))
+        _logger.debug('l1_miss: {0}, l2_miss: {1}'.format(miss_l1, miss_l2))
+        t0 = ((1-miss_l1)*self.delay_l1 + miss_l1*(1-miss_l2)*self.delay_l2 +
+              miss_l1*miss_l2*self.delay_mem)
+        t = t0 * core.freq(vdd) / core.freq(core.vnom)
+        _logger.debug('t: {0}'.format(t))
+        eta = 1 / (1 + t * app.rm / app.cpi_exe)
+        _logger.debug('eta: {0}'.format(eta))
+        p_speedup = core.perf_by_vdd(vdd) * cnum * eta / PERF_BASE
+        _logger.debug('p_speedup: {0}'.format(p_speedup))
+
+        vdd_max = min(core.vnom * VSF_MAX, core.vmax)
+        s_speedup = core.perf_by_vdd(vdd_max) / PERF_BASE
+        _logger.debug('s_speedup: {0}'.format(s_speedup))
+
+        perf = 1 / ( (1-app.pf)/s_speedup + app.pf/p_speedup)
+        return perf

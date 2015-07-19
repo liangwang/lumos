@@ -16,10 +16,10 @@ V_PRECISION = 1  # 1mV
 
 
 _logger = logging.getLogger('HeterogSys')
+_logger.setLevel(logging.INFO)
 if settings.LUMOS_DEBUG:
-    _logger.setLevel(logging.DEBUG)
-else:
-    _logger.setLevel(logging.INFO)
+    if 'all' in settings.LUMOS_DEBUG or 'heterogsys' in settings.LUMOS_DEBUG:
+        _logger.setLevel(logging.DEBUG)
 
 
 class SysConfig():
@@ -189,7 +189,7 @@ class HeterogSys():
 
         if rpower <= cpower:
             rperf = cnum * core.perf_by_vdd(vr)
-            _logger.debug('Optimal Vdd for thru_core: {0}mV'.format(vr))
+            _logger.debug('_dim_perf_cnum: optimal vdd for {0} thru_cores: {1}mV'.format(cnum, vr))
             return {'perf': rperf / PERF_BASE,
                     'vdd': vr,
                     'cnum': cnum,
@@ -198,7 +198,7 @@ class HeterogSys():
         else:
             core.vd = vl
             lperf = cnum * core.perf_by_vdd(vl)
-            _logger.debug('Optimal Vdd for thru_core: {0}mV'.format(vr))
+            _logger.debug('_dim_perf_cnum: optimal vdd for {0} thru_core: {1}mV'.format(cnum, vr))
             return {'perf': lperf / PERF_BASE,
                     'vdd': vl,
                     'cnum': cnum,
@@ -278,30 +278,127 @@ class HeterogSys():
         serial_core = self.serial_core
         rlacc = self.rlacc
 
-        serial_core.vdd = min(serial_core.vnom * VSF_MAX, serial_core.vmax)
-        serial_perf = serial_core.perf_by_vdd(serial_core.vnom) / PERF_BASE
+        serial_perf = serial_core.perf_by_vdd(serial_core.vmax) / PERF_BASE
+        _logger.debug('serial_perf: {0}'.format(serial_perf))
 
         dim_perf = self.dim_perf
         perf = (1 - app.f) / serial_perf + app.f_noacc / dim_perf
+        _logger.debug('dim_perf: {0}'.format(dim_perf))
 
+        _logger.debug('perf: {0}'.format(perf))
         for kid in app.get_all_kernels():
             cov = app.get_cov(kid)
-            if self.use_rlacc:
-                if self.has_asacc(kid):
-                    asacc = self.get_asacc_list(kid)[0]
-                    perf = perf + cov / (asacc.perf(
-                        power=self.sys_power, bandwidth=self.sys_bandwidth) / PERF_BASE)
-                else:
-                    perf = perf + cov / (rlacc.perf(
-                        app.get_kernel(kid), power=self.sys_power, bandwidth=self.sys_bandwidth) / PERF_BASE)
+            _logger.debug('get_perf: kernel {0}, cov {1}'.format(kid, cov))
+            if self.has_asacc(kid):
+                asacc = self.get_asacc_list(kid)[0]
+                asacc_perf = asacc.perf(
+                    power=self.sys_power, bandwidth=self.sys_bandwidth) / PERF_BASE
+                perf = perf + cov / asacc_perf
+                _logger.debug('get_perf: ASAcc perf: {0}'.format(asacc_perf))
+            elif self.use_rlacc:
+                rlacc_perf = rlacc.perf(
+                    app.get_kernel(kid), power=self.sys_power, bandwidth=self.sys_bandwidth) / PERF_BASE
+                perf = perf + cov / rlacc_perf
+                _logger.debug('get_perf: RLAcc perf: {0}'.format(rlacc_perf))
             else:
-                if self.has_asacc(kid):
-                    asacc = self.get_asacc_list(kid)[0]
-                    perf = perf + cov / (asacc.perf(
-                        power=self.sys_power, bandwidth=self.sys_bandwidth) / PERF_BASE)
-                else:
-                    perf = perf + cov / dim_perf
+                perf = perf + cov / dim_perf
 
         return {'perf': 1 / perf,
                 'cnum': self.opt_cnum,
                 'vdd': self.opt_vdd}
+
+class SysConfigDetailed(SysConfig):
+    def __init__(self):
+        super().__init__()
+
+        if not self.thru_core_as_serial:
+            raise Exception('SysConfigDetailed requires thru_core_as_serial')
+
+        self.delay_l1 = 3
+        self.delay_l2 = 20
+        self.delay_mem = 426
+        self.cache_sz_l1 = 65536
+        # self.cache_sz_l2 = 12582912
+        self.cache_sz_l2 = 33554432 # 32MB
+
+class HomogSysDetailed(HomogSys):
+    def __init__(self, sysconfig, kernels):
+        super().__init__(sysconfig, kernels)
+
+        self.delay_l1 = sysconfig.delay_l1
+        self.delay_l2 = sysconfig.delay_l2
+        self.delay_mem = sysconfig.delay_mem
+        self.cache_sz_l1 = sysconfig.cache_sz_l1
+        cache_tech_type = '-'.join([sysconfig.thru_core_type.split('-')[1], sysconfig.thru_core_tech_variant] )
+        self.l1_traits = cache.CacheTraits(self.cache_sz_l1, cache_tech_type, sysconfig.tech)
+        self.cache_sz_l2 = sysconfig.cache_sz_l2
+        self.l2_traits = cache.CacheTraits(self.cache_sz_l2, cache_tech_type, sysconfig.tech)
+
+    def get_cnum(self, vdd):
+        core = self.thru_core
+        core_power = core.power(vdd)
+        l2_power = self.l2_traits.power
+        l1_power = self.l1_traits.power
+        cnum = min((self.sys_power-l2_power)/(core_power+l1_power), self.thru_core_area/core.area)
+        return int(cnum)
+
+    def get_perf(self, vdd, app, cnum=None):
+        """ Get the optimal performance fo the system. It uses accelerators to execute
+        kernels if available. Otherwise, kernels are executed and accelerated by
+        throughput cores. The system will try to find the optimal number of throughput
+        cores to be active to achieve the best overall throughput.
+
+        Parameters
+        ----------
+        vdd : int, in mV
+          the supply of throughput cores
+        app: :class:`~lumos.model.application.SimpleApplication`
+          The targeted application.
+        cnum : int
+          the number of throughput cores, if None, the number of throughput
+          cores will be determined by system power/area budget
+
+        Returns
+        -------
+        perf :float
+          Relative performance, also should be the optimal with the given
+          system configuration.
+        """
+        _logger.debug('Get perf on app {0}'.format(app.name))
+        serial_core = self.serial_core
+        rlacc = self.rlacc
+
+        vdd_max = min(core.vnom * VSF_MAX, core.vmax)
+        s_speedup = core.perf_by_vdd(vdd_max) / PERF_BASE
+        _logger.debug('serial_perf: {0}'.format(s_speedup))
+
+        if not cnum:
+            cnum = self.get_cnum(vdd)
+        miss_l1 = app.miss_l1 * ((self.cache_sz_l1/app.cache_sz_l1_nom) ** (1-app.alpha_l1))
+        miss_l2 = app.miss_l2 * ((self.cache_sz_l2/cnum/app.cache_sz_l2_nom) ** (1-app.alpha_l2))
+        t0 = ((1-miss_l1)*self.delay_l1 + miss_l1*(1-miss_l2)*self.delay_l2 +
+              miss_l1*miss_l2*self.delay_mem)
+        t = t0 * core.freq(vdd) / core.freq(core.vnom)
+        eta = 1 / (1 + t * app.rm / app.cpi_exe)
+        p_speedup = core.perf_by_vdd(vdd) * cnum * eta / PERF_BASE
+
+        perf = (1 - app.f) / s_speedup + app.f_noacc / p_speedup
+        _logger.debug('perf: {0}'.format(perf))
+        for kid in app.get_all_kernels():
+            cov = app.get_cov(kid)
+            _logger.debug('get_perf: kernel {0}, cov {1}'.format(kid, cov))
+            if self.has_asacc(kid):
+                asacc = self.get_asacc_list(kid)[0]
+                asacc_perf = asacc.perf(
+                    power=self.sys_power, bandwidth=self.sys_bandwidth) / PERF_BASE
+                perf = perf + cov / asacc_perf
+                _logger.debug('get_perf: ASAcc perf: {0}'.format(asacc_perf))
+            elif self.use_rlacc:
+                rlacc_perf = rlacc.perf(
+                    app.get_kernel(kid), power=self.sys_power, bandwidth=self.sys_bandwidth) / PERF_BASE
+                perf = perf + cov / rlacc_perf
+                _logger.debug('get_perf: RLAcc perf: {0}'.format(rlacc_perf))
+            else:
+                perf = perf + cov / p_speedup
+
+        return 1/perf

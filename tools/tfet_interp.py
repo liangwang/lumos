@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Preprocessing circuit simulation data
+from lumos.model.tech import get_model
 import os
 from os.path import join as joinpath
 import numpy as np
@@ -11,7 +11,7 @@ import pickle
 import matplotlib.pyplot as plt
 
 
-ckt = 'adder32'
+ckt = 'rca32'
 ttype = 'homoTFET30nm'
 tech = 22
 SIM_RESULT_DIR = os.path.join(os.path.dirname(__file__), ttype)

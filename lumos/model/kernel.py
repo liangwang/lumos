@@ -6,10 +6,10 @@ import logging
 from lumos import settings
 
 _logger = logging.getLogger('Kernel')
+_logger.setLevel(logging.INFO)
 if settings.LUMOS_DEBUG:
-    _logger.setLevel(logging.DEBUG)
-else:
-    _logger.setLevel(logging.INFO)
+    if 'all' in settings.LUMOS_DEBUG or 'kernel' in settings.LUMOS_DEBUG:
+        _logger.setLevel(logging.DEBUG)
 
 ASIC_PERF_RATIO = 5
 

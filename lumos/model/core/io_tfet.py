@@ -37,8 +37,6 @@ class IOCore(BaseCore):
                           tech_model.area_scale[TECH_BASE])
             self._perf0 = (PERF_BASE * tech_model.perf_scale[tech_node] /
                            tech_model.perf_scale[TECH_BASE])
-            self._f0 = (FREQ_BASE * tech_model.fnom_scale[tech_node] /
-                        tech_model.fnom_scale[TECH_BASE])
             self._dp0 = (DYNAMIC_POWER_BASE * tech_model.dynamic_power_scale[tech_node] /
                          tech_model.dynamic_power_scale[TECH_BASE])
             self._sp0 = (STATIC_POWER_BASE * tech_model.static_power_scale[tech_node] /

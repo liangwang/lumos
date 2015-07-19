@@ -365,7 +365,7 @@ class SimpleApplication(AppBase):
 
         self.tag = self.tag_update()
 
-        super(SimpleApplication, self).__init__(name, 'simple')
+        super().__init__(name, 'simple')
 
     @classmethod
     def load_from_xmltree(cls, xmltree, kernels):
@@ -488,6 +488,107 @@ class SimpleApplication(AppBase):
         return self.kernels[name]
 
 
+class DetailedApplication(AppBase):
+    def __init__(self, name):
+        super().__init__(name, 'detailed')
+        self.kernels = dict()
+        self.kernels_coverage = dict()
+
+    def add_kernel(self, kernel, cov):
+        """Register a kernel to be accelerated.
+
+        The kernel could be accelerated by certain ASIC, or more
+        generalized GPU/FPGA
+
+        Parameters
+        ----------
+        kernel : :class:`~lumos.model.kernel.Kernel`
+          The kernel object
+        cov : float
+          The coerage of the kernel, relative to the serial execution
+
+        Raises
+        ------
+        ApplicationError
+          the given coverage (cov) is larger than the overall parallel ratio
+
+        """
+        name = kernel.name
+        if name in self.kernels:
+            raise ApplicationError('Kernel {0} already exist'.format(name))
+
+        f_noacc = getattr(self, 'f_noacc', None)
+        if not f_noacc:
+            f_noacc = self.pf
+
+        if cov > f_noacc:
+            raise ApplicationError(
+                '[add_kernel]: cov of {0} is too large to exceed the overall '
+                'parallel ratio {1}'.format(cov, f_noacc))
+
+        self.kernels[name] = kernel
+        self.kernels_coverage[name] = cov
+        self.f_noacc = f_noacc - cov
+
+    def get_all_kernels(self):
+        """ Get all kernels within the application
+
+        Returns
+        -------
+        list
+          a list of names for all kernels within the application
+
+        """
+        return self.kernels.keys()
+
+    def get_cov(self, name):
+        return self.kernels_coverage[name]
+
+    def get_kernel(self, name):
+        return self.kernels[name]
+
+    @classmethod
+    def load_from_xmltree(cls, xmltree, kernels):
+        name = xmltree.get('name')
+        if not name:
+            raise ApplicationError("No name in app config")
+
+        a = cls(name)
+
+        ps = xmltree.find('perf_config')
+        if ps is None:
+            raise Exception('No performance configuration in {0}'.format(name))
+        else:
+            for ele in ps:
+                if ele.tag is etree.Comment:
+                    continue
+                setattr(a, ele.tag, float(ele.text))
+
+        ks = xmltree.find('kernel_config')
+        if ks is None:
+            _logger.warning('No kernel config in {0}'.format(name))
+        else:
+            for ele in ks:
+                kname = ele.get('name')
+                if not kname:
+                    raise Exception('No name for kernel {0} in app {1}'.format(
+                        kname, name))
+
+                val_ = ele.get('cov')
+                if not val_:
+                    raise Exception('No covreage for kernel {0} in app {1}'.format(
+                        kname, name))
+                k_cov = float(val_)
+                a_.add_kernel(kernels[kname], k_cov)
+
+        return a
+
+    @classmethod
+    def load_from_xmlfile(cls, xmlfile, kernels):
+        tree_root = etree.parse(xmlfile)
+        return cls.load_from_xmltree(tree_root.getroot(), kernels)
+
+
 def load_suite_xmltree(xmltree, kernels):
     type_ = xmltree.get('type')
     if not type_:
@@ -501,6 +602,10 @@ def load_suite_xmltree(xmltree, kernels):
     elif type_ == 'dag':
         for r_ in xmltree.findall('app'):
             a = DAGApplication.load_from_xmltree(r_, kernels)
+            applications[a.name] = a
+    elif type_ == 'detailed':
+        for r_ in xmltree.findall('app'):
+            a = DetailedApplication.load_from_xmltree(r_, kernels)
             applications[a.name] = a
     else:
         raise ApplicationError('Unknown app type {0}'.format(type_))

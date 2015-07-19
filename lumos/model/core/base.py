@@ -14,10 +14,10 @@ import math
 
 import logging
 _logger = logging.getLogger('BaseCore')
-if settings.LUMOS_DEBUG:
+_logger.setLevel(logging.INFO)
+if settings.LUMOS_DEBUG and (
+        'all' in settings.LUMOS_DEBUG or 'core' in settings.LUMOS_DEBUG):
     _logger.setLevel(logging.DEBUG)
-else:
-    _logger.setLevel(logging.INFO)
 
 
 class BaseCoreError(Exception):
@@ -39,6 +39,9 @@ class BaseCore(object):
                                   for v_ in self._vdd_list]) * self._dp0
         self._freq_list = np.array([self._tech_model.freq(self._tech, v_)
                                     for v_ in self._vdd_list]) * self._f0
+
+        _logger.debug('a0: {0}, dp0: {1}, sp0: {2}, perf0: {3}'.format(
+            self._area, self._dp0, self._sp0, self._perf0))
 
     def freq(self, vdd):
         if vdd < self.vmin or vdd > self.vmax:

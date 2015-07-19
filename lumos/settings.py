@@ -8,7 +8,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # set DEBUG to 'True' to enable verbose debug outputs
 # DEBUG = os.getenv('LUMOS_DEBUG', False)
-LUMOS_DEBUG = os.getenv('LUMOS_DEBUG', False)
+val = os.getenv('LUMOS_DEBUG', False)
+if val:
+    LUMOS_DEBUG = val.split(',')
+else:
+    LUMOS_DEBUG = ''
+
 
 LUMOS_HOME = os.getenv('LUMOS_HOME', BASE_DIR)
 
