@@ -1,9 +1,8 @@
 #!/usr/bin/env python
 
 import logging
-from ..core import get_coreclass
-from ..core.io_cmos import PERF_BASE
-# from ..application import App
+from ..core import BaseCore
+PERF_BASE = 12.92
 
 VMIN = 300
 VMAX = 1100
@@ -41,8 +40,7 @@ class HomogSys(object):
         else:
             self.power = 0
 
-        CoreClass = get_coreclass('io-cmos')
-        self.core = CoreClass(tech_node=45, tech_variant='hp')
+        self.core = BaseCore(45, 'cmos', 'hp', 'io')
 
     def set_core_prop(self, **kwargs):
         """
@@ -393,7 +391,8 @@ from .budget import Sys_L
 class SysConfigDetailed():
     def __init__(self):
         self.tech = 22
-        self.core_type = 'io-cmos'
+        self.core_type = 'io'
+        self.core_tech_name = 'cmos'
         self.core_tech_variant = 'hp'
         self.budget = Sys_L
         self.delay_l1 = 3
@@ -410,8 +409,8 @@ class HomoSysDetailed():
         self.sys_power = sysconfig.budget.power
         self.sys_bw = sysconfig.budget.bw
 
-        CoreClass = get_coreclass(sysconfig.core_type)
-        self.core = CoreClass(tech_node=sysconfig.tech, tech_variant=sysconfig.core_tech_variant) 
+        self.core = BaseCore(sysconfig.tech, sysconfig.core_tech_name,
+                             sysconfig.core_tech_variant, sysconfig.core_type)
         self.delay_l1 = sysconfig.delay_l1
         self.delay_l2 = sysconfig.delay_l2
         self.delay_mem = sysconfig.delay_mem

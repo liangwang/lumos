@@ -106,8 +106,6 @@ def load_kernels_and_apps(xmlfile):
     """
     tree = etree.parse(xmlfile)
 
-    # kernels = dict()
-    # applications = dict()
     ktree = tree.find('kernels')
     if ktree is None:
         print('No kernels')

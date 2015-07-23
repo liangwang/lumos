@@ -222,7 +222,7 @@ def _solve_cache(size):
 
 _size_to_bytes = {'b': 1, 'k': 1024, 'm': 1048576, 'g': 1073741824}
 def cache_sz_nom(cache_sz_str):
-    mo = re.match(r'([0-9]+)([BbKkMmGg])', size)
+    mo = re.match(r'([0-9]+)([BbKkMmGg])', cache_sz_str)
     if not mo:
         raise Exception('cache size not recognizable: {0}'.format(cache_sz_str))
     cache_size = int(mo.group(1))

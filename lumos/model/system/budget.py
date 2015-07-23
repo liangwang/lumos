@@ -35,21 +35,20 @@ class Budget:
 # Predifined budgets
 
 #: A predefined budget for large system, similar to SPARC T4
-Sys_L = Budget(area=200, power=120,
-               bw={45: 180, 32: 198,
-                   22: 234, 16: 252,
-               20:234, 14: 271})
+Sys_L = Budget(
+    area=200, power=120, bw={
+        45: 180, 32: 198, 22: 234, 16: 252, 20:234, 14: 271})
 
 #: A predefined budget for medium system, similar to Xeon processor
-Sys_M = Budget(area=130, power=65,
-               bw={45: 117, 32: 129,
-                   22: 152, 16: 164})
+Sys_M = Budget(
+    area=130, power=65, bw={
+        45: 117, 32: 129, 22: 152, 16: 164})
 
 #: A predefined budget for small system, similar to Core2 processor
-Sys_S = Budget(area=107, power=33,
-               bw={45: 96, 32: 106,
-                   22: 125, 16: 135})
+Sys_S = Budget(
+    area=107, power=33, bw={
+        45: 96, 32: 106, 22: 125, 16: 135})
 
-LargeWithIdealBW = Budget(area=200, power=120,
-                          bw={45: 1000, 32: 1000,
-                              22: 1000, 16: 1000})
+LargeWithIdealBW = Budget(
+    area=200, power=120, bw={
+        45: 1000, 32: 1000, 22: 1000, 16: 1000})

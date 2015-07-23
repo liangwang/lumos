@@ -75,3 +75,11 @@ cacti
 cacti.py
 cacti_wrap.cc
 cacti-p/obj_opt
+
+# generated figures
+*.png
+*.pdf
+
+# obsolete files
+*.obsolete
+*.old

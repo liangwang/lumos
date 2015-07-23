@@ -10,7 +10,8 @@ The model parameters are similar to u-core described in Chung's paper:
 
 import sys
 from lumos import settings
-from .core.io_cmos import PERF_BASE
+# from .core.io_cmos import PERF_BASE
+PERF_BASE = 12.92
 
 import logging
 _logger_asacc = logging.getLogger('ASAcc')

@@ -5,7 +5,7 @@ from lumos.model.misc import load_kernels_and_apps
 from lumos.model.system.mpsoc import MPSoC
 from lumos.model.system.budget import Sys_L
 from lumos.model.tech import get_model
-from lumos.model.core import get_coreclass
+from lumos.model.core import BaseCore
 import unittest
 
 
@@ -18,8 +18,7 @@ class TestMPSoC(unittest.TestCase):
     def test_appdag_speedup_serial(self):
         budget = Sys_L
         tech = 22
-        CoreClass = get_coreclass('io-cmos')
-        tput_core = CoreClass(tech_node=22, tech_variant='hp')
+        tput_core = BaseCore(22, 'cmos', 'hp', 'io')
         sys = MPSoC(budget, tech, tput_core=tput_core)
         app = self.as_['app_dag0']
         ker_obj = self.ks_['ker3']
@@ -30,8 +29,7 @@ class TestMPSoC(unittest.TestCase):
     def test_appdag_speedup_parallel(self):
         budget = Sys_L
         tech = 22
-        CoreClass = get_coreclass('io-cmos')
-        tput_core = CoreClass(tech_node=22, tech_variant='hp')
+        tput_core = BaseCore(22, 'cmos', 'hp', 'io')
         sys = MPSoC(budget, tech, tput_core=tput_core)
         app = self.as_['app_dag0']
         tech_model = get_model('cmos', 'hp')

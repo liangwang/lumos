@@ -5,8 +5,8 @@ Multi-core, heterogeneous system-on-chip (MPSoC)
 """
 
 import logging
-from ..core import get_coreclass
-from ..core.io_cmos import PERF_BASE
+from ..core import BaseCore
+PERF_BASE = 12.92
 from ..acc import ASAcc as Accelerator
 # from ..application import Application
 from lumos import settings
@@ -84,8 +84,7 @@ class MPSoC():
         if tput_core:
             self.thru_core = tput_core
         else:
-            CoreClass = get_coreclass('io-cmos')
-            self.thru_core = CoreClass(tech=tech, variant='hp')
+            self.thru_core = BaseCore(tech, 'cmos', 'hp', 'io')
 
         self.dim_perf = None
 
