@@ -11,6 +11,8 @@ before_install:
   - conda update --yes conda
   - sudo rm -rf /dev/shm
   - sudo ln -s /run/shm /dev/shm
+  - sudo -E apt-get -yq update > ~/apt-get-update.log 2>&1
+  - sudo -E apt-get -yq --no-install-suggests --no-install-recommends install swig
 
 # Install packages
 install:
