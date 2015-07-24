@@ -1,0 +1,204 @@
+<workload>
+  <kernels>
+    <!-- kernels performance are synthetic as of <2015-05-19 Tue>  -->
+    <kernel name="scan">
+      <accelerator>
+        <fpga perf="50"/>
+        <asic_scan perf="500"/>
+      </accelerator>
+    </kernel>
+    <kernel name="index">
+      <accelerator>
+        <fpga perf="40"/>
+        <asic_index perf="400"/>
+      </accelerator>
+    </kernel>
+    <kernel name="sort-join">
+      <accelerator>
+        <fpga perf="30"/>
+        <asic_sort-join perf="300"/>
+      </accelerator>
+    </kernel>
+  </kernels>
+  <apps type="simple">
+    <!-- This workload is for database domain, and extracted from Figure2(a) in
+         Kocberber's Micro'13 paper: Meet the Walkers: Accelerating Index
+         Traversals for In-Memory Databases -->
+    <app name="tpc-h-2">
+      <f_parallel>1.0</f_parallel>
+      <kernel_config>
+        <kernel cov="0.069" name="scan"/>
+        <kernel cov="0.431" name="index"/>
+      </kernel_config>
+    </app>
+    <app name="tpc-h-3">
+      <f_parallel>1.0</f_parallel>
+      <kernel_config>
+        <kernel cov="0.264" name="scan"/>
+        <kernel cov="0.181" name="index"/>
+      </kernel_config>
+    </app>
+    <app name="tpc-h-5">
+      <f_parallel>1.0</f_parallel>
+      <kernel_config>
+        <kernel cov="0.111" name="scan"/>
+        <kernel cov="0.264" name="sort-join"/>
+        <kernel cov="0.292" name="index"/>
+      </kernel_config>
+    </app>
+    <app name="tpc-h-7">
+      <f_parallel>1.0</f_parallel>
+      <kernel_config>
+        <kernel cov="0.167" name="scan"/>
+        <kernel cov="0.056" name="sort-join"/>
+        <kernel cov="0.306" name="index"/>
+      </kernel_config>
+    </app>
+    <app name="tpc-h-8">
+      <f_parallel>1.0</f_parallel>
+      <kernel_config>
+        <kernel cov="0.181" name="scan"/>
+        <kernel cov="0.389" name="sort-join"/>
+        <kernel cov="0.292" name="index"/>
+      </kernel_config>
+    </app>
+    <app name="tpc-h-9">
+      <f_parallel>1.0</f_parallel>
+      <kernel_config>
+        <kernel cov="0.097" name="scan"/>
+        <kernel cov="0.444" name="index"/>
+      </kernel_config>
+    </app>
+    <app name="tpc-h-11">
+      <f_parallel>1.0</f_parallel>
+      <kernel_config>
+        <kernel cov="0.028" name="scan"/>
+        <kernel cov="0.528" name="index"/>
+      </kernel_config>
+    </app>
+    <app name="tpc-h-13">
+      <f_parallel>1.0</f_parallel>
+      <kernel_config>
+        <kernel cov="0.056" name="scan"/>
+        <kernel cov="0.236" name="index"/>
+      </kernel_config>
+    </app>
+    <app name="tpc-h-14">
+      <f_parallel>1.0</f_parallel>
+      <kernel_config>
+        <kernel cov="0.264" name="scan"/>
+        <kernel cov="0.375" name="index"/>
+      </kernel_config>
+    </app>
+    <app name="tpc-h-15">
+      <f_parallel>1.0</f_parallel>
+      <kernel_config>
+        <kernel cov="0.097" name="scan"/>
+        <kernel cov="0.181" name="index"/>
+      </kernel_config>
+    </app>
+    <app name="tpc-h-17">
+      <f_parallel>1.0</f_parallel>
+      <kernel_config>
+        <kernel cov="0.944" name="index"/>
+      </kernel_config>
+    </app>
+    <app name="tpc-h-18">
+      <f_parallel>1.0</f_parallel>
+      <kernel_config>
+        <kernel cov="0.111" name="scan"/>
+        <kernel cov="0.125" name="sort-join"/>
+        <kernel cov="0.139" name="index"/>
+      </kernel_config>
+    </app>
+    <app name="tpc-h-19">
+      <f_parallel>1.0</f_parallel>
+      <kernel_config>
+        <kernel cov="0.014" name="scan"/>
+        <kernel cov="0.264" name="index"/>
+      </kernel_config>
+    </app>
+    <app name="tpc-h-20">
+      <f_parallel>1.0</f_parallel>
+      <kernel_config>
+        <kernel cov="0.417" name="scan"/>
+        <kernel cov="0.306" name="index"/>
+      </kernel_config>
+    </app>
+    <app name="tpc-h-21">
+      <f_parallel>1.0</f_parallel>
+      <kernel_config>
+        <kernel cov="0.222" name="scan"/>
+        <kernel cov="0.139" name="index"/>
+      </kernel_config>
+    </app>
+    <app name="tpc-h-22">
+      <f_parallel>1.0</f_parallel>
+      <kernel_config>
+        <kernel cov="0.472" name="index"/>
+      </kernel_config>
+    </app>
+    <app name="tpc-ds-5">
+      <f_parallel>1.0</f_parallel>
+      <kernel_config>
+        <kernel cov="0.028" name="scan"/>
+        <kernel cov="0.500" name="index"/>
+      </kernel_config>
+    </app>
+    <app name="tpc-ds-37">
+      <f_parallel>1.0</f_parallel>
+      <kernel_config>
+        <kernel cov="0.611" name="scan"/>
+        <kernel cov="0.292" name="index"/>
+      </kernel_config>
+    </app>
+    <app name="tpc-ds-40">
+      <f_parallel>1.0</f_parallel>
+      <kernel_config>
+        <kernel cov="0.056" name="scan"/>
+        <kernel cov="0.222" name="index"/>
+      </kernel_config>
+    </app>
+    <app name="tpc-ds-43">
+      <f_parallel>1.0</f_parallel>
+      <kernel_config>
+        <kernel cov="0.125" name="scan"/>
+        <kernel cov="0.278" name="index"/>
+      </kernel_config>
+    </app>
+    <app name="tpc-ds-46">
+      <f_parallel>1.0</f_parallel>
+      <kernel_config>
+        <kernel cov="0.097" name="scan"/>
+        <kernel cov="0.514" name="index"/>
+      </kernel_config>
+    </app>
+    <app name="tpc-ds-52">
+      <f_parallel>1.0</f_parallel>
+      <kernel_config>
+        <kernel cov="0.069" name="scan"/>
+        <kernel cov="0.764" name="index"/>
+      </kernel_config>
+    </app>
+    <app name="tpc-ds-64">
+      <f_parallel>1.0</f_parallel>
+      <kernel_config>
+        <kernel cov="0.014" name="scan"/>
+        <kernel cov="0.583" name="index"/>
+      </kernel_config>
+    </app>
+    <app name="tpc-ds-81">
+      <f_parallel>1.0</f_parallel>
+      <kernel_config>
+        <kernel cov="0.500" name="index"/>
+      </kernel_config>
+    </app>
+    <app name="tpc-ds-82">
+      <f_parallel>1.0</f_parallel>
+      <kernel_config>
+        <kernel cov="0.500" name="scan"/>
+        <kernel cov="0.417" name="index"/>
+      </kernel_config>
+    </app>
+  </apps>
+</workload>

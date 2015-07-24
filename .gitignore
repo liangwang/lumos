@@ -69,6 +69,7 @@ releases
 doc/_build/
 data.old/
 *.ipynb
+/analyses/
 
 # cacti stuff
 cacti

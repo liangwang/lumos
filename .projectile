@@ -1,0 +1,5 @@
++/lumos
+-*.pyc
+-*.ipynb
+-*.obsolete
+-__py_cache__
