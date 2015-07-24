@@ -127,7 +127,7 @@ CORE_PARAMS = {
         'FREQ_BASE': 2.4,             # GHz
         'TECH_BASE': 20,              # nm
     },
-    'bigcore-finfet-lstp': {
+    'bigcore-finfet-lp': {
         # @TODO: the same as bigcore-finfet-hp
         'PERF_BASE': 105,
         'DYNAMIC_POWER_BASE': 8.5,    # Watts
@@ -174,8 +174,8 @@ CORE_PARAMS = {
         'FREQ_BASE': 2.4,             # GHz
         'TECH_BASE': 20,              # nm
     },
-    'smallcore-finfet-lstp': {
-        # @TODO: the same as smallcore-finfet-lstp
+    'smallcore-finfet-lp': {
+        # @TODO: the same as smallcore-finfet-lp
         'PERF_BASE': 23.3,
         'DYNAMIC_POWER_BASE': 1.12,    # Watts
         'STATIC_POWER_BASE': 0.28,   # Watts

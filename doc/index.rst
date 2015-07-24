@@ -139,40 +139,41 @@ name and variant of a technology model::
 
 Core
 ----
-Supported cores are:
 
+To create an object for conventional cores, these four arguments have to be specified:
 
-+--------------------+-------------+
-|Core type           |  Mnemonic   |
-+====================+=============+
-| IOCore_CMOS        |    io-cmos  |
-+--------------------+-------------+
-| O3Core_CMOS        |    o3-cmos  |
-+--------------------+-------------+
-| IOCore_TFET        |    io-tfet  |
-+--------------------+-------------+
-| O3Core_TFET        |    o3-tfet  |
-+--------------------+-------------+
-| SmallCore_TFET     |  small-tfet |
-+--------------------+-------------+
-| BigCore_TFET       |  big-tfet   |
-+--------------------+-------------+
-| SmallCore_FinFET   | small-finfet|
-+--------------------+-------------+
-| BigCore_FinFET     |  big-finfet |
-+--------------------+-------------+
+- technology node (nm)
+- technology name
+- technology variant
+- core type
 
-Lumos provides a factory generator to retrieve classes for cores by mnemonics::
+For example, the following code snippet create an in-order core using CMOS technology with hp variant at 45nm::
 
-  from lumos.model.core import get_coreclass
-  IOCore_CMOS = get_coreclass('io-cmos')
+  from lumos.model.core import BaseCore
+  core = BaseCore(45, 'cmos', 'hp', 'io')
+
+All supported combinations are listed as follows:
+
++----------+--------------------+----------------------------+-------------------+
+| TechName | TechVariant        | CoreType                   | TechNode (nm)     |
++==========+====================+============================+===================+
+| cmos     | hp, lp             | io, o3                     | 45, 32, 22, 16    |
++----------+--------------------+----------------------------+-------------------+
+| finfet   | hp, lp             | smallcore, bigcore         | 20, 16, 14, 10, 7 |
++----------+--------------------+----------------------------+-------------------+
+| tfet     | homo30nm, homo60nm | io, o3, smallcore, bigcore | 22                |
++----------+--------------------+----------------------------+-------------------+
+
 
 Accelerators
 ------------
 
+To be edited
+
 Application
 -----------
 
+To be edited
 
 Analysis
 ========
