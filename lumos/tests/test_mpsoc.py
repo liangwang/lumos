@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import os
-from lumos.model.misc import load_kernels_and_apps
+from lumos.model.workload import load_kernels_and_apps
 from lumos.model.system.mpsoc import MPSoC
 from lumos.model.system.budget import Sys_L
 from lumos.model.tech import get_model

@@ -3,8 +3,6 @@
 import os
 from math import fabs
 from os.path import join as joinpath
-import lxml.etree as etree
-from . import kernel, application
 
 def mk_dir(parent,  dname):
     """
@@ -80,42 +78,3 @@ def approx_equal(a, b, tol=1e-9):
       True if the two numbers are approximately equal, False otherwise.
     """
     return fabs(a-b) <= max(fabs(a), fabs(b)) * tol
-
-
-def load_kernels_and_apps(xmlfile):
-    """Load kernels and applications from an XML file.
-
-    Parameters
-    ----------
-    xmlfile : filepath
-      The file to be loaded, in XML format. The suite includes two
-      section: kernels and applications.
-
-    Returns
-    -------
-    kernels : dict
-      A dict of (kernel_name, kernel_object) pair, indexed by kernel's name.
-    applications : dict
-      A dict of (application_name, applicatin_object) pair, indexed by
-      application's name.
-
-    Raises
-    ------
-    KernelError: if parameters is not float
-
-    """
-    tree = etree.parse(xmlfile)
-
-    ktree = tree.find('kernels')
-    if ktree is None:
-        print('No kernels')
-        return None, None
-    kernels = kernel.load_suite_xmltree(ktree)
-
-    atree = tree.find('apps')
-    if atree is None:
-        print('No applications')
-        return None, None
-    applications = application.load_suite_xmltree(atree, kernels)
-
-    return kernels, applications

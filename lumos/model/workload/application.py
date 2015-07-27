@@ -8,11 +8,11 @@ _logger = logging.getLogger('Application')
 _logger.setLevel(logging.INFO)
 
 
-class ApplicationError(Exception):
+class AppError(Exception):
     pass
 
 
-class AppBase():
+class BaseApp():
     __metaclass__ = abc.ABCMeta
 
     def __init__(self, name_, type_):
@@ -33,30 +33,30 @@ class AppBase():
         return
 
 
-class AppLinear(AppBase):
+class LinearApp(BaseApp):
     def __init__(self, name):
         self._name = name
         self._kernels = dict()
         self.length = dict()
         self._num_kernels = 0
 
-        super(AppLinear, self).__init__(name, 'linear')
+        super().__init__(name, 'linear')
 
     @classmethod
     def load_from_xmltree(cls, xmltree, kernels):
         pass
 
 
-class AppSpread(AppBase):
+class SpreadApp(BaseApp):
     def __init__(self, name):
-        super(AppSpread, self).__init__(name, 'spread')
+        super().__init__(name, 'spread')
 
     @classmethod
     def load_from_xmltree(cls, xmltree, kernels):
         pass
 
 
-class DAGApplication(AppBase):
+class DAGApp(BaseApp):
     """An application modeled as a directed acyclic graph (DAG)
 
     An application is DAG of tasks/kernels. Kernels are referred by a
@@ -75,7 +75,7 @@ class DAGApplication(AppBase):
         self._max_depth = -1
         self._num_kernels = 0
 
-        super(DAGApplication, self).__init__(name, 'dag')
+        super().__init__(name, 'dag')
 
     @classmethod
     def load_from_xmltree(cls, xmltree, kernels):
@@ -95,26 +95,26 @@ class DAGApplication(AppBase):
         """
         name = xmltree.get('name')
         if not name:
-            raise ApplicationError('No name attribute found in XML tree')
+            raise AppError('No name attribute found in XML tree')
         a = cls(name)
 
         ks = xmltree.find('kernel_config')
         if ks is None:
-            raise ApplicationError('No kernel configs found in XML tree')
+            raise AppError('No kernel configs found in XML tree')
 
         for ele in ks:
             val_ = ele.get('index')
             if not val_:
-                raise ApplicationError('No kernel index in kernel config')
+                raise AppError('No kernel index in kernel config')
             node_id = int(val_)
 
             k_name = ele.get('name')
             if not k_name:
-                raise ApplicationError('no kernel name in kernel config')
+                raise AppError('no kernel name in kernel config')
 
             val_ = ele.get('cov')
             if not val_:
-                raise ApplicationError('No kernel length in kernel config')
+                raise AppError('No kernel length in kernel config')
             k_cov = float(val_)
 
             k_preds = ele.get('pred')
@@ -123,7 +123,7 @@ class DAGApplication(AppBase):
 
             kernel_idx = a._add_kernel(kernels[k_name], k_cov)
             if kernel_idx != node_id:
-                raise ApplicationError(
+                raise AppError(
                     "kernel index mismatch with DAGApplication.add_kernel."
                     " Probably because the kernel is not specified in order in the XML tree.")
             if k_preds != 'None':
@@ -287,7 +287,7 @@ class DAGApplication(AppBase):
         try:
             return self._depth_sorted
         except AttributeError:
-            raise ApplicationError('App not initiliazed properly')
+            raise AppError('App not initiliazed properly')
 
     def get_speedup(self, speedup_dict):
         """Get the speedup of an application by given a speedup vector of each kernel.
@@ -324,7 +324,7 @@ class DAGApplication(AppBase):
         return self._baseline_runtime / app_runtime
 
 
-class SimpleApplication(AppBase):
+class SimpleApp(BaseApp):
     """ A simple application is an abstract program partitioned into serial and
     parallel portions.
 
@@ -371,7 +371,7 @@ class SimpleApplication(AppBase):
     def load_from_xmltree(cls, xmltree, kernels):
         name = xmltree.get('name')
         if not name:
-            raise ApplicationError("No name in app config")
+            raise AppError("No name in app config")
 
         ele = xmltree.find('f_parallel')
         parallel_factor = float(ele.text)
@@ -380,16 +380,16 @@ class SimpleApplication(AppBase):
 
         ks = xmltree.find('kernel_config')
         if ks is None:
-            raise ApplicationError('No kernel config')
+            raise AppError('No kernel config')
 
         for ele in ks:
             kname = ele.get('name')
             if not kname:
-                raise ApplicationError('No name for kernel')
+                raise AppError('No name for kernel')
 
             val_ = ele.get('cov')
             if not val_:
-                raise ApplicationError('No covreage for kernel')
+                raise AppError('No covreage for kernel')
             k_cov = float(val_)
             a_.add_kernel(kernels[kname], k_cov)
 
@@ -420,7 +420,7 @@ class SimpleApplication(AppBase):
 
         Raises
         ------
-        ApplicationError
+        AppError
           the given coverage (cov) is larger than the overall parallel ratio
 
         """
@@ -430,7 +430,7 @@ class SimpleApplication(AppBase):
             return False
 
         if cov > self.f_noacc:
-            raise ApplicationError(
+            raise AppError(
                 '[add_kernel]: cov of {0} is too large to exceed the overall '
                 'parallel ratio {1}'.format(cov, self.f_noacc))
 
@@ -452,17 +452,17 @@ class SimpleApplication(AppBase):
 
         Raises
         ------
-        ApplicationError:
+        AppError:
           the given coverage (cov) is larger than the overall parallel ratio, or
           the kernel with 'name' is not registered with the application.
         """
         if name not in self.kernels:
-            raise ApplicationError('Kernel %s has not been registerd' % name)
+            raise AppError('Kernel %s has not been registerd' % name)
 
         cov_old = self.kernels_coverage[name]
 
         if self.f_noacc + cov_old < cov:
-            raise ApplicationError('[set_cov]: cov of {0} is too large to exceed '
+            raise AppError('[set_cov]: cov of {0} is too large to exceed '
                                    'the overall parallel ratio'.format(name))
 
         self.kernels_coverage[name] = cov
@@ -488,7 +488,7 @@ class SimpleApplication(AppBase):
         return self.kernels[name]
 
 
-class DetailedApplication(AppBase):
+class DetailedApp(BaseApp):
     def __init__(self, name):
         super().__init__(name, 'detailed')
         self.kernels = dict()
@@ -509,20 +509,20 @@ class DetailedApplication(AppBase):
 
         Raises
         ------
-        ApplicationError
+        AppError
           the given coverage (cov) is larger than the overall parallel ratio
 
         """
         name = kernel.name
         if name in self.kernels:
-            raise ApplicationError('Kernel {0} already exist'.format(name))
+            raise AppError('Kernel {0} already exist'.format(name))
 
         f_noacc = getattr(self, 'f_noacc', None)
         if not f_noacc:
             f_noacc = self.pf
 
         if cov > f_noacc:
-            raise ApplicationError(
+            raise AppError(
                 '[add_kernel]: cov of {0} is too large to exceed the overall '
                 'parallel ratio {1}'.format(cov, f_noacc))
 
@@ -551,7 +551,7 @@ class DetailedApplication(AppBase):
     def load_from_xmltree(cls, xmltree, kernels):
         name = xmltree.get('name')
         if not name:
-            raise ApplicationError("No name in app config")
+            raise AppError("No name in app config")
 
         a = cls(name)
 
@@ -597,18 +597,18 @@ def load_suite_xmltree(xmltree, kernels):
     applications = dict()
     if type_ == 'simple':
         for r_ in xmltree.findall('app'):
-            a = SimpleApplication.load_from_xmltree(r_, kernels)
+            a = SimpleApp.load_from_xmltree(r_, kernels)
             applications[a.name] = a
     elif type_ == 'dag':
         for r_ in xmltree.findall('app'):
-            a = DAGApplication.load_from_xmltree(r_, kernels)
+            a = DAGApp.load_from_xmltree(r_, kernels)
             applications[a.name] = a
     elif type_ == 'detailed':
         for r_ in xmltree.findall('app'):
-            a = DetailedApplication.load_from_xmltree(r_, kernels)
+            a = DetailedApp.load_from_xmltree(r_, kernels)
             applications[a.name] = a
     else:
-        raise ApplicationError('Unknown app type {0}'.format(type_))
+        raise AppError('Unknown app type {0}'.format(type_))
     return applications
 
 

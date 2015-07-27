@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import unittest
-from lumos.model.misc import load_kernels_and_apps
+from lumos.model.workload import load_kernels_and_apps
 
 import os
 curdir = os.path.dirname(__file__)

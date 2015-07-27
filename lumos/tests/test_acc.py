@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from lumos.model.acc import ASAcc as Accelerator
-from lumos.model.kernel import Kernel, KernelParam
+from lumos.model.workload import Kernel, KernelParam
 from lumos.model.tech import get_model
 import unittest
 
