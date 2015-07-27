@@ -3,6 +3,8 @@ addons:
   apt:
     packages:
       - swig
+      - libigraph0
+      - libigraph0-dev
 language: python
 python:
   - 3.4
@@ -15,10 +17,6 @@ before_install:
   - export PATH=/home/travis/miniconda3/bin:$PATH
   - export PKG_CONFIG_PATH=/home/travis/miniconda3/lib/pkgconfig:$PKG_CONFIG_PATH
   - conda update --yes conda
-  # - sudo rm -rf /dev/shm
-  # - sudo ln -s /run/shm /dev/shm
-  # - sudo -E apt-get -yq update > ~/apt-get-update.log 2>&1
-  # - sudo -E apt-get -yq --no-install-suggests --no-install-recommends install swig
 
 # Install packages
 install:
