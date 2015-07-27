@@ -44,6 +44,7 @@ CORE_PARAMS = {
         'TECH_BASE': 45,            # nm
     },
     'o3-cmos-hp': {
+        # Core 2 Duo E8600
         # from: http://www.spec.org/cpu2006/results/res2010q1/cpu2006-20100215-09685.html
         # SPECfp2006 * (3.7/3.3) (freq scaling factor)
         'PERF_BASE': 28.48,
@@ -389,6 +390,10 @@ class BaseCore(object):
         if not self._tech:
             raise BaseCoreError('No technology node specified')
         return self._tech
+
+    @property
+    def perfnom(self):
+        return self._perf0
 
     @property
     def fnom(self):

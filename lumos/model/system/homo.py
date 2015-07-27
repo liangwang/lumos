@@ -415,7 +415,7 @@ class HomoSysDetailed():
         self.delay_l2 = sysconfig.delay_l2
         self.delay_mem = sysconfig.delay_mem
         self.cache_sz_l1 = sysconfig.cache_sz_l1
-        cache_tech_type = '-'.join([sysconfig.core_type.split('-')[1], sysconfig.core_tech_variant] )
+        cache_tech_type = '-'.join([sysconfig.core_tech_name, sysconfig.core_tech_variant] )
         self.l1_traits = cache.CacheTraits(self.cache_sz_l1, cache_tech_type, sysconfig.tech)
         self.cache_sz_l2 = sysconfig.cache_sz_l2
         self.l2_traits = cache.CacheTraits(self.cache_sz_l2, cache_tech_type, sysconfig.tech)
@@ -446,13 +446,17 @@ class HomoSysDetailed():
         t = t0 * core.freq(vdd) / core.freq(core.vnom)
         _logger.debug('t: {0}'.format(t))
         eta = 1 / (1 + t * app.rm / app.cpi_exe)
-        _logger.debug('eta: {0}'.format(eta))
-        p_speedup = core.perf_by_vdd(vdd) * cnum * eta / PERF_BASE
+        eta0 = 1 / (1+ t0 * app.rm / app.cpi_exe)
+        _logger.debug('eta: {0}, eta0: {1}'.format(eta, eta0))
+        _logger.debug('freq: {0}, freq0: {1}'.format(core.freq(vdd), core.fnom))
+        _logger.debug('vdd: {0}, v0: {1}'.format(vdd, core.vnom))
+        p_speedup = (core.freq(vdd)/core.fnom) * cnum * (eta/eta0)
         _logger.debug('p_speedup: {0}'.format(p_speedup))
 
         vdd_max = min(core.vnom * VSF_MAX, core.vmax)
-        s_speedup = core.perf_by_vdd(vdd_max) / PERF_BASE
+        s_speedup = core.freq(vdd_max) / PERF_BASE
+        s_speedup = 1
         _logger.debug('s_speedup: {0}'.format(s_speedup))
 
-        perf = 1 / ( (1-app.pf)/s_speedup + app.pf/p_speedup)
+        perf = core.perfnom / ( (1-app.pf)/s_speedup + app.pf/p_speedup)
         return perf

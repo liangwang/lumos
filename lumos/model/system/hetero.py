@@ -370,6 +370,7 @@ class HomogSysDetailed(HomogSys):
 
         vdd_max = min(core.vnom * VSF_MAX, core.vmax)
         s_speedup = core.perf_by_vdd(vdd_max) / PERF_BASE
+        s_speedup = 1
         _logger.debug('serial_perf: {0}'.format(s_speedup))
 
         if not cnum:
@@ -380,8 +381,10 @@ class HomogSysDetailed(HomogSys):
               miss_l1*miss_l2*self.delay_mem)
         t = t0 * core.freq(vdd) / core.freq(core.vnom)
         eta = 1 / (1 + t * app.rm / app.cpi_exe)
-        p_speedup = core.perf_by_vdd(vdd) * cnum * eta / PERF_BASE
+        eta0 = 1 / (1 + t0 * app.rm / app.cpi_exe)
+        p_speedup = (core.freq(vdd)/core.fnom) * cnum * (eta/eta0)
 
+        # @TODO: how to deal with accelerator's performance?
         perf = (1 - app.f) / s_speedup + app.f_noacc / p_speedup
         _logger.debug('perf: {0}'.format(perf))
         for kid in app.get_all_kernels():
