@@ -3,11 +3,13 @@
 import logging
 from .budget import Sys_L
 from .. import tech as techmodel
-from .. import core
-from ..core.io_cmos import PERF_BASE
+from ..core import BaseCore
+# from ..core.io_cmos import PERF_BASE
+PERF_BASE = 12.92
 # from ..ucore import UCore
 from ..acc import ASAcc, RLAcc
 from lumos import settings
+from lumos.model.mem import cache
 
 VMIN = 300
 VMAX = 1100
@@ -17,9 +19,14 @@ V_PRECISION = 1  # 1mV
 
 _logger = logging.getLogger('HeterogSys')
 _logger.setLevel(logging.INFO)
-if settings.LUMOS_DEBUG:
-    if 'all' in settings.LUMOS_DEBUG or 'heterogsys' in settings.LUMOS_DEBUG:
+debug_tag = settings.LUMOS_DEBUG
+if debug_tag:
+    if 'all' in debug_tag or 'heterogsys' in debug_tag:
         _logger.setLevel(logging.DEBUG)
+
+
+class HeterogSysError(Exception):
+    pass
 
 
 class SysConfig():
@@ -30,7 +37,8 @@ class SysConfig():
         self.serial_core_type = None
         self.serial_core_tech_variant = 'hp'
         self.thru_core_as_serial = True
-        self.thru_core_type = 'io-cmos'
+        self.thru_core_type = 'io'
+        self.thru_core_tech_name = 'cmos'
         self.thru_core_tech_variant = 'hp'
 
         self.asacc_tech_model = 'cmos'
@@ -102,8 +110,8 @@ class HeterogSys():
             self.use_rlacc = False
             self.rlacc = None
 
-        CoreClass = core.get_coreclass(sysconfig.thru_core_type)
-        self.thru_core = CoreClass(self.tech, sysconfig.thru_core_tech_variant)
+        self.thru_core = BaseCore(sysconfig.tech, sysconfig.thru_core_tech_name,
+                                  sysconfig.thru_core_tech_variant, sysconfig.thru_core_type)
 
         if not sysconfig.thru_core_as_serial:
             CoreClass = core.get_coreclass(sysconfig.serial_core_type)
@@ -321,7 +329,7 @@ class SysConfigDetailed(SysConfig):
         # self.cache_sz_l2 = 12582912
         self.cache_sz_l2 = 33554432 # 32MB
 
-class HomogSysDetailed(HomogSys):
+class HeterogSysDetailed(HeterogSys):
     def __init__(self, sysconfig, kernels):
         super().__init__(sysconfig, kernels)
 
@@ -329,7 +337,7 @@ class HomogSysDetailed(HomogSys):
         self.delay_l2 = sysconfig.delay_l2
         self.delay_mem = sysconfig.delay_mem
         self.cache_sz_l1 = sysconfig.cache_sz_l1
-        cache_tech_type = '-'.join([sysconfig.thru_core_type.split('-')[1], sysconfig.thru_core_tech_variant] )
+        cache_tech_type = '-'.join([sysconfig.thru_core_tech_name, sysconfig.thru_core_tech_variant])
         self.l1_traits = cache.CacheTraits(self.cache_sz_l1, cache_tech_type, sysconfig.tech)
         self.cache_sz_l2 = sysconfig.cache_sz_l2
         self.l2_traits = cache.CacheTraits(self.cache_sz_l2, cache_tech_type, sysconfig.tech)
@@ -364,44 +372,69 @@ class HomogSysDetailed(HomogSys):
           Relative performance, also should be the optimal with the given
           system configuration.
         """
+        if app.type != 'synthetic':
+            raise HeterogSysError('Requires a synthetic application')
+
         _logger.debug('Get perf on app {0}'.format(app.name))
         serial_core = self.serial_core
         rlacc = self.rlacc
 
-        vdd_max = min(core.vnom * VSF_MAX, core.vmax)
-        s_speedup = core.perf_by_vdd(vdd_max) / PERF_BASE
+        # vdd_max = min(serial_core.vnom * VSF_MAX, core.vmax)
+        # s_speedup = serial_core.perf_by_vdd(vdd_max) / PERF_BASE
         s_speedup = 1
         _logger.debug('serial_perf: {0}'.format(s_speedup))
 
         if not cnum:
             cnum = self.get_cnum(vdd)
-        miss_l1 = app.miss_l1 * ((self.cache_sz_l1/app.cache_sz_l1_nom) ** (1-app.alpha_l1))
-        miss_l2 = app.miss_l2 * ((self.cache_sz_l2/cnum/app.cache_sz_l2_nom) ** (1-app.alpha_l2))
-        t0 = ((1-miss_l1)*self.delay_l1 + miss_l1*(1-miss_l2)*self.delay_l2 +
-              miss_l1*miss_l2*self.delay_mem)
-        t = t0 * core.freq(vdd) / core.freq(core.vnom)
-        eta = 1 / (1 + t * app.rm / app.cpi_exe)
-        eta0 = 1 / (1 + t0 * app.rm / app.cpi_exe)
-        p_speedup = (core.freq(vdd)/core.fnom) * cnum * (eta/eta0)
+
+        core = self.thru_core
 
         # @TODO: how to deal with accelerator's performance?
-        perf = (1 - app.f) / s_speedup + app.f_noacc / p_speedup
-        _logger.debug('perf: {0}'.format(perf))
+        # perf = (1 - app.f) / s_speedup + app.f_noacc / p_speedup
+        # _logger.debug('perf: {0}'.format(perf))
+        cov, speedup = 1, 0
         for kid in app.get_all_kernels():
-            cov = app.get_cov(kid)
-            _logger.debug('get_perf: kernel {0}, cov {1}'.format(kid, cov))
+            kcov = app.get_cov(kid)
+            kobj = app.get_kernel(kid)
+            _logger.debug('get_perf: kernel {0}, cov {1}'.format(kid, kcov))
             if self.has_asacc(kid):
                 asacc = self.get_asacc_list(kid)[0]
-                asacc_perf = asacc.perf(
-                    power=self.sys_power, bandwidth=self.sys_bandwidth) / PERF_BASE
-                perf = perf + cov / asacc_perf
+                asacc_perf = asacc.perf(power=self.sys_power, bandwidth=self.sys_bandwidth)
+                asacc_speedup = asacc_perf / core.perfnom
+                speedup += kcov * asacc_speedup
                 _logger.debug('get_perf: ASAcc perf: {0}'.format(asacc_perf))
             elif self.use_rlacc:
-                rlacc_perf = rlacc.perf(
-                    app.get_kernel(kid), power=self.sys_power, bandwidth=self.sys_bandwidth) / PERF_BASE
-                perf = perf + cov / rlacc_perf
+                rlacc_perf = rlacc.perf(k, power=self.sys_power, bandwidth=self.sys_bandwidth)
+                rlacc_speedup = rlacc_perf / core.perfnom
+                speedup += kcov * rlacc_speedup
                 _logger.debug('get_perf: RLAcc perf: {0}'.format(rlacc_perf))
             else:
-                perf = perf + cov / p_speedup
+                miss_l1 = min(
+                    1, kobj.miss_l1 * ((self.cache_sz_l1/(kobj.cache_sz_l1_nom)) ** (1-kobj.alpha_l1)))
+                miss_l2 = min(
+                    1, kobj.miss_l2 * ((self.cache_sz_l2/(cnum*kobj.cache_sz_l2_nom)) ** (1-kobj.alpha_l2)))
 
-        return 1/perf
+                _logger.debug('l1_miss: {0}, l2_miss: {1}'.format(miss_l1, miss_l2))
+                t0 = ((1-miss_l1)*self.delay_l1 + miss_l1*(1-miss_l2)*self.delay_l2 +
+                      miss_l1*miss_l2*self.delay_mem)
+                t = t0 * core.freq(vdd) / core.freq(core.vnom)
+                _logger.debug('t: {0}'.format(t))
+                eta = 1 / (1 + t * kobj.rm / kobj.cpi_exe)
+                eta0 = 1 / (1 + t0 * kobj.rm / kobj.cpi_exe)
+                _logger.debug('eta: {0}, eta0: {1}'.format(eta, eta0))
+                _logger.debug('freq: {0}, freq0: {1}'.format(core.freq(vdd), core.fnom))
+                _logger.debug('vdd: {0}, v0: {1}'.format(vdd, core.vnom))
+                p_speedup = (core.freq(vdd)/core.fnom) * cnum * (eta/eta0)
+                _logger.debug('p_speedup: {0}'.format(p_speedup))
+
+                vdd_max = min(core.vnom * VSF_MAX, core.vmax)
+                s_speedup = 1
+                _logger.debug('s_speedup: {0}'.format(s_speedup))
+
+                speedup += kcov / ((1-kobj.pf + kobj.pf/p_speedup))
+            cov -= kcov
+
+        # non-kernels will not be speedup/accelerated
+        speedup += cov
+        perf = core.perfnom * speedup
+        return perf

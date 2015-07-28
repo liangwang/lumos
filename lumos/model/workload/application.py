@@ -3,9 +3,15 @@ import abc
 import logging
 from igraph import Graph, IN as GRAPH_IN
 from lxml import etree
+from lumos import settings
 
 _logger = logging.getLogger('Application')
 _logger.setLevel(logging.INFO)
+debug_tag = settings.LUMOS_DEBUG
+if debug_tag:
+    if 'all' in debug_tag or 'application' in debug_tag:
+        _logger.setLevel(logging.DEBUG)
+
 
 
 class AppError(Exception):
@@ -488,6 +494,98 @@ class SimpleApp(BaseApp):
         return self.kernels[name]
 
 
+class SyntheticApp(BaseApp):
+    def __init__(self, name):
+        """A synthetic application is composed of several kernels, where each
+        kernel can be accelerated by hardware accelerators or multi-core
+        parallelization. Each kernel must have detaled performance
+        characteristics.
+        """
+        super().__init__(name, 'synthetic')
+        self.kernels = dict()
+        self.kernels_coverage = {'__total_cov__': 0}
+
+    def add_kernel(self, kernel, cov):
+        """Register a kernel to be accelerated.
+
+        The kernel could be accelerated by certain ASIC, or more
+        generalized GPU/FPGA
+
+        Parameters
+        ----------
+        kernel : :class:`~lumos.model.kernel.Kernel`
+          The kernel object
+        cov : float
+          The coerage of the kernel, relative to the serial execution
+
+        Raises
+        ------
+        AppError
+          the given coverage (cov) is larger than the overall parallel ratio
+
+        """
+        name = kernel.name
+        if name in self.kernels:
+            raise AppError('Kernel {0} already exist'.format(name))
+
+        total_cov = self.kernels_coverage['__total_cov__']
+        if total_cov + cov > 1:
+            raise AppError(
+                'Total coverage exceed 1 after adding {0}, kernel not added'.format(kernel.name))
+        self.kernels[name] = kernel
+        self.kernels_coverage[name] = cov
+        self.kernels_coverage['__total_cov__'] = total_cov + cov
+
+    def get_all_kernels(self):
+        """ Get all kernels within the application
+
+        Returns
+        -------
+        list
+          a list of names for all kernels within the application
+
+        """
+        return self.kernels.keys()
+
+    def get_cov(self, name):
+        return self.kernels_coverage[name]
+
+    def get_kernel(self, name):
+        return self.kernels[name]
+
+    @classmethod
+    def load_from_xmltree(cls, xmltree, kernels):
+        name = xmltree.get('name')
+        if not name:
+            raise AppError("No name in app config")
+
+        a = cls(name)
+
+        ks = xmltree.find('kernel_config')
+        if ks is None:
+            _logger.warning('No kernel config in {0}'.format(name))
+        else:
+            for ele in ks:
+                kname = ele.get('name')
+                if not kname:
+                    raise Exception('No name for kernel {0} in app {1}'.format(
+                        kname, name))
+
+                val_ = ele.get('cov')
+                if not val_:
+                    raise Exception('No covreage for kernel {0} in app {1}'.format(
+                        kname, name))
+                k_cov = float(val_)
+                a.add_kernel(kernels[kname], k_cov)
+                _logger.debug('Add kernel {0}, cov {1}'.format(kname, k_cov))
+
+        return a
+
+    @classmethod
+    def load_from_xmlfile(cls, xmlfile, kernels):
+        tree_root = etree.parse(xmlfile)
+        return cls.load_from_xmltree(tree_root.getroot(), kernels)
+
 class DetailedApp(BaseApp):
     def __init__(self, name):
         super().__init__(name, 'detailed')
@@ -606,6 +704,10 @@ def load_suite_xmltree(xmltree, kernels):
     elif type_ == 'detailed':
         for r_ in xmltree.findall('app'):
             a = DetailedApp.load_from_xmltree(r_, kernels)
+            applications[a.name] = a
+    elif type_ == 'synthetic':
+        for r_ in xmltree.findall('app'):
+            a = SyntheticApp.load_from_xmltree(r_, kernels)
             applications[a.name] = a
     else:
         raise AppError('Unknown app type {0}'.format(type_))

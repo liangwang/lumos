@@ -65,11 +65,11 @@ class Kernel():
         self._name = name
         self._kernel_params = dict()
 
-        self.pf = parallel_factor
-        if parallel_factor:
-            self.is_serial = True
-        else:
-            self.is_serial = False
+        # self.pf = parallel_factor
+        # if parallel_factor:
+        #     self.is_serial = True
+        # else:
+        #     self.is_serial = False
 
     def __str__(self):
         return '{0}: {1}'.format(self.__repr__(), self._name)
@@ -88,22 +88,27 @@ class Kernel():
 
         k = cls(name, parallel_factor)
         acc_root = xmltree.find('accelerator')
-        if acc_root is None:
-            return k
+        if acc_root is not None:
+            for ele in acc_root:
+                acc_id = ele.tag
+                kernel_param = KernelParam()
+                for attr, val in ele.items():
+                    try:
+                        setattr(kernel_param, attr, float(val))
+                    except TypeError as e:
+                        raise e
+                    except ValueError:
+                        raise KernelError(
+                            'Error decoding Ucore parameters, attr: {0}, val: {1}, '
+                            'val is not a float'.format(attr, val))
+                k._add_kernel_param(acc_id, kernel_param)
 
-        for ele in acc_root:
-            acc_id = ele.tag
-            kernel_param = KernelParam()
-            for attr, val in ele.items():
-                try:
-                    setattr(kernel_param, attr, float(val))
-                except TypeError as e:
-                    raise e
-                except ValueError:
-                    raise KernelError(
-                        'Error decoding Ucore parameters, attr: {0}, val: {1}, '
-                        'val is not a float'.format(attr, val))
-            k._add_kernel_param(acc_id, kernel_param)
+        core_perf_root = xmltree.find('core_perf_config')
+        if core_perf_root is not None:
+            for ele in core_perf_root:
+                if ele.tag is etree.Comment:
+                    continue
+                setattr(k, ele.tag, float(ele.text))
         return k
 
     @property
@@ -123,6 +128,20 @@ class Kernel():
     def get_all_accs(self):
         return self._kernel_params.keys()
 
+    def is_serial(self):
+        """Whether the kernel can be accelerated via multi-core parallellization."""
+        pf = getattr(self, 'pf', None)
+        if not pf:
+            return True
+        else:
+            return False
+
+    def is_accelerable(self):
+        """Whether the kernel has any accelerator associated."""
+        if self._kernel_params:
+            return True
+        else:
+            return False
 
 def load_suite_xmltree(xmltree):
     kernels = dict()

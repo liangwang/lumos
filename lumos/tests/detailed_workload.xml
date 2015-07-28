@@ -1,0 +1,24 @@
+<workload>
+  <apps type="synthetic">
+    <app name="l1m0.005_l2m0.01_rm0.18_alpha0.5_cpi0.5">
+      <kernel_config>
+        <kernel cov="1" name="l1m0.005_l2m0.01_rm0.18_alpha0.5_cpi0.5"/>
+      </kernel_config>
+    </app>
+  </apps>
+  <kernels>
+    <kernel name="l1m0.005_l2m0.01_rm0.18_alpha0.5_cpi0.5">
+      <core_perf_config>
+        <cache_sz_l1_nom>65536</cache_sz_l1_nom>
+        <cache_sz_l2_nom>18874368</cache_sz_l2_nom>
+        <miss_l1>0.005</miss_l1>
+        <miss_l2>0.01</miss_l2>
+        <alpha_l1>5</alpha_l1>
+        <alpha_l2>0.5</alpha_l2>
+        <rm>0.18</rm>
+        <cpi_exe>0.5</cpi_exe>
+        <pf>1</pf>
+      </core_perf_config>
+    </kernel>
+  </kernels>
+</workload>

@@ -1,53 +1,71 @@
 <workload>
   <!-- kernels -->
   <kernels>
-    <kernel name="ker0" parallel_factor="0">
+    <kernel name="ker0">
       <accelerator>
         <fpga perf="10" />
         <asic_5x perf="51" />
         <asic_10x perf="101" />
         <asic_50x perf="501" />
       </accelerator>
+      <core_perf_config>
+        <pf>0</pf>
+      </core_perf_config>
     </kernel>
-    <kernel name="ker1" parallel_factor="0.9">
+    <kernel name="ker1">
       <accelerator>
         <fpga perf="11" />
         <asic_5x perf="52" />
         <asic_10x perf="102" />
         <asic_50x perf="502" />
       </accelerator>
+      <core_perf_config>
+        <pf>0.9</pf>
+      </core_perf_config>
     </kernel>
-    <kernel name="ker2" parallel_factor="0.9">
+    <kernel name="ker2">
       <accelerator>
         <fpga perf="12" />
         <asic_5x perf="53" />
         <asic_10x perf="103" />
         <asic_50x perf="503" />
       </accelerator>
+      <core_perf_config>
+        <pf>0.9</pf>
+      </core_perf_config>
     </kernel>
-    <kernel name="ker3" parallel_factor="0.9">
+    <kernel name="ker3">
       <accelerator>
         <fpga perf="13" />
         <asic_5x perf="54" />
         <asic_10x perf="104" />
         <asic_50x perf="504" />
       </accelerator>
+      <core_perf_config>
+        <pf>0.9</pf>
+      </core_perf_config>
     </kernel>
-    <kernel name="ker4" parallel_factor="0.9">
+    <kernel name="ker4">
       <accelerator>
         <fpga perf="14" />
         <asic_5x perf="55" />
         <asic_10x perf="105" />
         <asic_50x perf="505" />
       </accelerator>
+      <core_perf_config>
+        <pf>0.9</pf>
+      </core_perf_config>
     </kernel>
-    <kernel name="ker5" parallel_factor="0">
+    <kernel name="ker5">
       <accelerator>
         <fpga perf="15" />
         <asic_5x perf="56" />
         <asic_10x perf="106" />
         <asic_50x perf="506" />
       </accelerator>
+      <core_perf_config>
+        <pf>0</pf>
+      </core_perf_config>
     </kernel>
   </kernels>
   <!-- applications -->

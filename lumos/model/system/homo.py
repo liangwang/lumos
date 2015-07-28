@@ -12,10 +12,15 @@ V_PRECISION = 1  # 1mV
 
 from lumos import settings
 _logger = logging.getLogger('HomogSys')
+_logger.setLevel(logging.INFO)
 if settings.LUMOS_DEBUG:
-    _logger.setLevel(logging.DEBUG)
-else:
-    _logger.setLevel(logging.INFO)
+    if 'all' in settings.LUMOS_DEBUG or 'homogsys' in settings.LUMOS_DEBUG:
+        _logger.setLevel(logging.DEBUG)
+
+
+class HomogSysError(Exception):
+    pass
+
 
 class HomogSys(object):
     """
@@ -432,31 +437,49 @@ class HomoSysDetailed():
         return int(cnum)
 
     def perf(self, vdd, app, cnum=None):
+        if app.type != 'synthetic':
+            raise HomogSysError('Requires a synthetic application')
+
         if not cnum:
             cnum = self.get_cnum(vdd)
 
         _logger.debug('cnum: {0}'.format(cnum))
         core = self.core
         _logger.debug('freq: {0}'.format(core.freq(vdd)))
-        miss_l1 = min(1, app.miss_l1 * ((self.cache_sz_l1/(app.cache_sz_l1_nom)) ** (1-app.alpha_l1)))
-        miss_l2 = min(1, app.miss_l2 * ((self.cache_sz_l2/(cnum*app.cache_sz_l2_nom)) ** (1-app.alpha_l2)))
-        _logger.debug('l1_miss: {0}, l2_miss: {1}'.format(miss_l1, miss_l2))
-        t0 = ((1-miss_l1)*self.delay_l1 + miss_l1*(1-miss_l2)*self.delay_l2 +
-              miss_l1*miss_l2*self.delay_mem)
-        t = t0 * core.freq(vdd) / core.freq(core.vnom)
-        _logger.debug('t: {0}'.format(t))
-        eta = 1 / (1 + t * app.rm / app.cpi_exe)
-        eta0 = 1 / (1+ t0 * app.rm / app.cpi_exe)
-        _logger.debug('eta: {0}, eta0: {1}'.format(eta, eta0))
-        _logger.debug('freq: {0}, freq0: {1}'.format(core.freq(vdd), core.fnom))
-        _logger.debug('vdd: {0}, v0: {1}'.format(vdd, core.vnom))
-        p_speedup = (core.freq(vdd)/core.fnom) * cnum * (eta/eta0)
-        _logger.debug('p_speedup: {0}'.format(p_speedup))
+        cov = 1
+        speedup = 0
+        # kernels will be accelerated by multi-cores
+        for kid in app.get_all_kernels():
+            kcov = app.get_cov(kid)
+            kobj = app.get_kernel(kid)
 
-        vdd_max = min(core.vnom * VSF_MAX, core.vmax)
-        s_speedup = core.freq(vdd_max) / PERF_BASE
-        s_speedup = 1
-        _logger.debug('s_speedup: {0}'.format(s_speedup))
+            miss_l1 = min(
+                1, kobj.miss_l1 * ((self.cache_sz_l1/(kobj.cache_sz_l1_nom)) ** (1-kobj.alpha_l1)))
+            miss_l2 = min(
+                1, kobj.miss_l2 * ((self.cache_sz_l2/(cnum*kobj.cache_sz_l2_nom)) ** (1-kobj.alpha_l2)))
 
-        perf = core.perfnom / ( (1-app.pf)/s_speedup + app.pf/p_speedup)
+            _logger.debug('l1_miss: {0}, l2_miss: {1}'.format(miss_l1, miss_l2))
+            t0 = ((1-miss_l1)*self.delay_l1 + miss_l1*(1-miss_l2)*self.delay_l2 +
+                  miss_l1*miss_l2*self.delay_mem)
+            t = t0 * core.freq(vdd) / core.freq(core.vnom)
+            _logger.debug('t: {0}'.format(t))
+            eta = 1 / (1 + t * kobj.rm / kobj.cpi_exe)
+            eta0 = 1 / (1+ t0 * kobj.rm / kobj.cpi_exe)
+            _logger.debug('eta: {0}, eta0: {1}'.format(eta, eta0))
+            _logger.debug('freq: {0}, freq0: {1}'.format(core.freq(vdd), core.fnom))
+            _logger.debug('vdd: {0}, v0: {1}'.format(vdd, core.vnom))
+            p_speedup = (core.freq(vdd)/core.fnom) * cnum * (eta/eta0)
+            _logger.debug('p_speedup: {0}'.format(p_speedup))
+
+            vdd_max = min(core.vnom * VSF_MAX, core.vmax)
+            s_speedup = 1
+            _logger.debug('s_speedup: {0}'.format(s_speedup))
+
+            speedup += kcov / ((1-kobj.pf + kobj.pf/p_speedup))
+            cov -= kcov
+
+        # non-kernels will not be speedup
+        speedup += cov
+
+        perf = core.perfnom * speedup
         return perf
