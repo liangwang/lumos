@@ -408,7 +408,7 @@ class SysConfigDetailed():
         self.cache_sz_l2 = 33554432 # 32MB
 
 from lumos.model.mem import cache
-class HomoSysDetailed():
+class HomogSysDetailed():
     def __init__(self, sysconfig):
         self.sys_area = sysconfig.budget.area
         self.sys_power = sysconfig.budget.power
@@ -447,7 +447,7 @@ class HomoSysDetailed():
         core = self.core
         _logger.debug('freq: {0}'.format(core.freq(vdd)))
         cov = 1
-        speedup = 0
+        perf = 0
         # kernels will be accelerated by multi-cores
         for kid in app.get_all_kernels():
             kcov = app.get_cov(kid)
@@ -475,11 +475,11 @@ class HomoSysDetailed():
             s_speedup = 1
             _logger.debug('s_speedup: {0}'.format(s_speedup))
 
-            speedup += kcov / ((1-kobj.pf + kobj.pf/p_speedup))
+            perf += kcov * ((1-kobj.pf + kobj.pf/p_speedup))
             cov -= kcov
 
         # non-kernels will not be speedup
-        speedup += cov
+        perf += cov
 
-        perf = core.perfnom * speedup
-        return perf
+        abs_perf = core.perfnom / perf  # speedup = 1 / perf
+        return abs_perf

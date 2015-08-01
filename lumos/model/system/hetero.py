@@ -31,7 +31,7 @@ class HeterogSysError(Exception):
 
 class SysConfig():
     def __init__(self):
-        self.tech = 16
+        self.tech = 22
         self.budget = Sys_L
 
         self.serial_core_type = None
@@ -350,7 +350,7 @@ class HeterogSysDetailed(HeterogSys):
         cnum = min((self.sys_power-l2_power)/(core_power+l1_power), self.thru_core_area/core.area)
         return int(cnum)
 
-    def get_perf(self, vdd, app, cnum=None):
+    def perf(self, vdd, app, cnum=None):
         """ Get the optimal performance fo the system. It uses accelerators to execute
         kernels if available. Otherwise, kernels are executed and accelerated by
         throughput cores. The system will try to find the optimal number of throughput
@@ -401,12 +401,12 @@ class HeterogSysDetailed(HeterogSys):
                 asacc = self.get_asacc_list(kid)[0]
                 asacc_perf = asacc.perf(power=self.sys_power, bandwidth=self.sys_bandwidth)
                 asacc_speedup = asacc_perf / core.perfnom
-                speedup += kcov * asacc_speedup
+                speedup += kcov / asacc_speedup
                 _logger.debug('get_perf: ASAcc perf: {0}'.format(asacc_perf))
             elif self.use_rlacc:
                 rlacc_perf = rlacc.perf(k, power=self.sys_power, bandwidth=self.sys_bandwidth)
                 rlacc_speedup = rlacc_perf / core.perfnom
-                speedup += kcov * rlacc_speedup
+                speedup += kcov / rlacc_speedup
                 _logger.debug('get_perf: RLAcc perf: {0}'.format(rlacc_perf))
             else:
                 miss_l1 = min(
@@ -431,10 +431,12 @@ class HeterogSysDetailed(HeterogSys):
                 s_speedup = 1
                 _logger.debug('s_speedup: {0}'.format(s_speedup))
 
-                speedup += kcov / ((1-kobj.pf + kobj.pf/p_speedup))
+                speedup += kcov * ((1-kobj.pf + kobj.pf/p_speedup))
             cov -= kcov
+            _logger.debug('get_perf: speedup {0}'.format(speedup))
 
         # non-kernels will not be speedup/accelerated
         speedup += cov
-        perf = core.perfnom * speedup
+        _logger.debug('non-kernel: {0}'.format(cov))
+        perf = core.perfnom / speedup
         return perf

@@ -29,7 +29,7 @@ sys = HomoSysDetailed(sysconfig)
 from lumos.model.workload import load_kernels_and_apps
 
 
-# In[7]:
+# In[6]:
 
 ks, apps = load_kernels_and_apps('detailed_workload_syn.xml')
 

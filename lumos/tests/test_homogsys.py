@@ -5,7 +5,7 @@ from lumos.model.system.homo import HomogSys
 from lumos.model.workload import SimpleApp
 from lumos.model.core import BaseCore
 from lumos.model.workload import load_kernels_and_apps
-from lumos.model.system.homo import HomoSysDetailed, SysConfigDetailed
+from lumos.model.system.homo import HomogSysDetailed, SysConfigDetailed
 import unittest
 
 
@@ -26,7 +26,7 @@ class TestHomogSys(unittest.TestCase):
             os.path.join(os.path.dirname(__file__), 'detailed_workload.xml'))
         app = _as['l1m0.005_l2m0.01_rm0.18_alpha0.5_cpi0.5']
         sysconfig = SysConfigDetailed()
-        sys = HomoSysDetailed(sysconfig)
+        sys = HomogSysDetailed(sysconfig)
 
         # test perf score
         self.assertAlmostEqual(sys.perf(650, app), 1422.7337681)
