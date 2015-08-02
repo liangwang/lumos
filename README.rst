@@ -6,6 +6,9 @@ Lumos
 .. image:: https://requires.io/github/liangwang/lumos/requirements.svg?branch=master
    :target: https://requires.io/github/liangwang/lumos/requirements/?branch=master
    :alt: Requirements Status
+.. image:: https://coveralls.io/repos/liangwang/lumos/badge.svg?branch=master&service=github
+   :target: https://coveralls.io/github/liangwang/lumos?branch=master
+              
 
 Lumos is an analytical modeling framework of many-core processor system composed
 of cores, hardware accelerators (e.g. FPGA, ASICs). A detailed document is
