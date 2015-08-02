@@ -24,8 +24,11 @@ before_install:
 install:
   - conda install --yes numpy scipy matplotlib lxml nose configobj
   - pip install python-igraph
+  - pip install coveralls
   - make -C cacti-p
 
 # Run test
 script:
-  - nosetests
+  - nosetests --with-coverage --cover-package=lumos
+after_success:
+  - coveralls
