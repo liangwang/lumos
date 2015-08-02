@@ -3,6 +3,9 @@ Lumos
 
 .. image:: https://travis-ci.org/liangwang/lumos.svg?branch=master
    :target: https://travis-ci.org/liangwang/lumos
+.. image:: https://requires.io/github/liangwang/lumos/requirements.svg?branch=master
+   :target: https://requires.io/github/liangwang/lumos/requirements/?branch=master
+   :alt: Requirements Status
 
 Lumos is an analytical modeling framework of many-core processor system composed
 of cores, hardware accelerators (e.g. FPGA, ASICs). A detailed document is
