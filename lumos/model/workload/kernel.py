@@ -143,6 +143,12 @@ class Kernel():
         else:
             return False
 
+    def accelerated_by(self, acc_id):
+        if acc_id in self._kernel_params:
+            return True
+        else:
+            return False
+
 def load_suite_xmltree(xmltree):
     kernels = dict()
     # for r_ in xmltree.findall('kernel'):

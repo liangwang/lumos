@@ -529,7 +529,9 @@ class SyntheticApp(BaseApp):
             raise AppError('Kernel {0} already exist'.format(name))
 
         total_cov = self.kernels_coverage['__total_cov__']
-        if total_cov + cov > 1:
+
+        # with regard to float rounding
+        if total_cov + cov -1 > 1e-6:
             raise AppError(
                 'Total coverage exceed 1 after adding {0}, kernel not added'.format(kernel.name))
         self.kernels[name] = kernel
@@ -627,6 +629,7 @@ class DetailedApp(BaseApp):
         self.kernels[name] = kernel
         self.kernels_coverage[name] = cov
         self.f_noacc = f_noacc - cov
+        _logger.debug('f_noacc: {0}'.format(self.f_noacc))
 
     def get_all_kernels(self):
         """ Get all kernels within the application

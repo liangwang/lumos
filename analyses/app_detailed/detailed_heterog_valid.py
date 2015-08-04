@@ -17,6 +17,7 @@ from lumos.model.workload import load_kernels_and_apps
 
 sysconfig = SysConfigDetailed()
 sysconfig.tech = 22
+sysconfig.rlacc_area_ratio=0.2
 #sysconfig.delay_l1 = 0
 # sysconfig.budget = Budget(area=200, power=60)
 ks, apps = load_kernels_and_apps('../../workloads/sirius.xml')
@@ -31,6 +32,11 @@ sys = HeterogSysDetailed(sysconfig, ks)
 
 # for vdd in (500,550,600,650, 700, 750, 800):
 vdd = 650
-print(sys.get_perf(vdd, apps['synapp_0']))
+print(sys.perf(vdd, apps['synapp_0']))
 print(sys.thru_core.perfnom)
+
+
+# In[ ]:
+
+
 

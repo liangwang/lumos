@@ -140,6 +140,12 @@ class HeterogSys():
         else:
             return False
 
+    def has_rlacc(self):
+        if self.rlacc:
+            return True
+        else:
+            return False
+
     def get_asacc_list(self, kid):
         try:
             asacc_dict = self.asic_dict[kid]
@@ -350,7 +356,7 @@ class HeterogSysDetailed(HeterogSys):
         cnum = min((self.sys_power-l2_power)/(core_power+l1_power), self.thru_core_area/core.area)
         return int(cnum)
 
-    def perf(self, vdd, app, cnum=None):
+    def perf(self, vdd, app, cnum=None, disable_rlacc=False, disable_asacc=False):
         """ Get the optimal performance fo the system. It uses accelerators to execute
         kernels if available. Otherwise, kernels are executed and accelerated by
         throughput cores. The system will try to find the optimal number of throughput
@@ -364,7 +370,14 @@ class HeterogSysDetailed(HeterogSys):
           The targeted application.
         cnum : int
           the number of throughput cores, if None, the number of throughput
-          cores will be determined by system power/area budget
+          cores will be determined by system power/area budget. It is None by
+          default.
+        disable_rlacc: boolean, optional
+          Do not use RL accelerator even though it is available in the system.
+          Default is False, which will use RL accelerator by default.
+        disable_asacc: boolean, optional
+          Do not use ASIC accelerator even if it is available. By default, it is
+          False, and will try to use ASIC accelerator if available.
 
         Returns
         -------
@@ -397,14 +410,14 @@ class HeterogSysDetailed(HeterogSys):
             kcov = app.get_cov(kid)
             kobj = app.get_kernel(kid)
             _logger.debug('get_perf: kernel {0}, cov {1}'.format(kid, kcov))
-            if self.has_asacc(kid):
+            if not disable_asacc and self.has_asacc(kid):
                 asacc = self.get_asacc_list(kid)[0]
                 asacc_perf = asacc.perf(power=self.sys_power, bandwidth=self.sys_bandwidth)
                 asacc_speedup = asacc_perf / core.perfnom
                 speedup += kcov / asacc_speedup
                 _logger.debug('get_perf: ASAcc perf: {0}'.format(asacc_perf))
-            elif self.use_rlacc:
-                rlacc_perf = rlacc.perf(k, power=self.sys_power, bandwidth=self.sys_bandwidth)
+            elif not disable_rlacc and self.has_rlacc() and kobj.accelerated_by('fpga'):
+                rlacc_perf = rlacc.perf(kobj, power=self.sys_power, bandwidth=self.sys_bandwidth)
                 rlacc_speedup = rlacc_perf / core.perfnom
                 speedup += kcov / rlacc_speedup
                 _logger.debug('get_perf: RLAcc perf: {0}'.format(rlacc_perf))

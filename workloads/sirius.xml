@@ -143,6 +143,19 @@ Then scales FPGA speedup by certain performance ratio to get ASIC speedup.
         <pf>0.949</pf>
       </core_perf_config>
     </kernel>
+    <kernel name="coreonly">
+      <core_perf_config>
+        <cache_sz_l1_nom>65536</cache_sz_l1_nom>
+        <cache_sz_l2_nom>18874368</cache_sz_l2_nom>
+        <miss_l1>0.0158</miss_l1>
+        <miss_l2>0.931</miss_l2>
+        <alpha_l1>5</alpha_l1>
+        <alpha_l2>0.5</alpha_l2>
+        <rm>0.294</rm>
+        <cpi_exe>0.55</cpi_exe>
+        <pf>1</pf>
+      </core_perf_config>
+    </kernel>
   </kernels>
   <apps type="synthetic">
     <app name="synapp_0">
