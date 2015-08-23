@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 """
-Multi-core, heterogeneous system-on-chip (MPSoC)
+Multi-core, heterogeneous system-on-chip (MPSoC), and work with DAG-like
+application model.
 """
 
 import logging
