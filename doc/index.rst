@@ -52,6 +52,10 @@ Prepare python modules
   <http://www.numpy.org>`_ and `scipy <http://www.scipy.org>`_. Lumos
   has been tested on numpy-1.6.1 and scipy-0.9.0
 
+* pandas
+
+  This package is used to process technology model files.
+
 * matplotlib
 
   This package is required to generate plots for analyses. It is

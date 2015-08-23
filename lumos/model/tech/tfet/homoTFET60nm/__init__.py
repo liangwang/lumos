@@ -7,7 +7,7 @@ import logging
 import os
 from scipy.interpolate import interp1d as scipy_interp
 import numpy as np
-import csv
+import pandas as pd
 import glob
 try:
     import cPickle as pickle
@@ -56,7 +56,7 @@ for model_file in model_files:
 
     tech = _get_tech_node(model_file)
     pickle_file = os.path.join(
-        _MODEL_DIR, '{0}_{1}_{2}.pypkl'.format(
+        _MODEL_DIR, '{0}_{1}_{2}.p'.format(
             settings.TFET_SIM_CIRCUIT, model_name, tech))
     try:
         pickle_file_mtime = os.path.getmtime(pickle_file)
@@ -69,34 +69,21 @@ for model_file in model_files:
             dynamic_power_dict[tech] = pickle.load(f)
             static_power_dict[tech] = pickle.load(f)
     else:
-        with open(model_file, 'r') as f:
-            freader = csv.reader(f, delimiter='\t')
+        try:
+            df = pd.read_csv(model_file, index_col='vdd')
+        except OSError:
+            raise TechModelError('Model file {0} not found under {1}'.format(model_file, _MODEL_DIR))
+        except ValueError:
+            raise TechModelError('Wrong format, missing "vdd" column in {0}'.format(model_file))
+        df.sort(inplace=True)
 
-            vdd_list = []
-            tp_list = []
-            dp_list = []
-            sp_list = []
-            for row in freader:
-                vdd_list.append(float(row[0]))
-                tp_list.append(float(row[1]))
-                dp_list.append(float(row[2]))
-                sp_list.append(float(row[3]))
+        vdd_to_interp = df.index.values
+        dp_to_interp = df['dp'].values
+        sp_to_interp = df['sp'].values
+        freq_to_interp = (1/df['delay']).values
 
-        vdd = np.array(vdd_list)
-        vdd_to_interp = vdd[::-1]
-
-        dp = np.array(dp_list)
-        dp_to_interp = dp[::-1]
-
-        sp = np.array(sp_list)
-        sp_to_interp = sp[::-1]
-
-        delay = np.array(tp_list)
-        freq = np.reciprocal(delay)
-        freq_to_interp = freq[::-1]
-
-        vmin = int(min(vdd_list) * 1000)
-        vmax = int(max(vdd_list) * 1000)
+        vmin = int(min(df.index) * 1000)
+        vmax = int(max(df.index) * 1000)
         vdd_mv_np = np.arange(vmin, vmax+1)
         vdd_np = np.array([ (float(v)/1000) for v in vdd_mv_np])
 
