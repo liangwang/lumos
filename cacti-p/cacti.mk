@@ -4,8 +4,22 @@ SHELL = /bin/sh
 .PHONY: all depend clean
 .SUFFIXES: .cc .o
 
+NPROCS := 1
+OS := $(shell uname)
+export NPROCS
+
+ifeq ($(OS),Linux)
+  NPROCS := $(shell grep -c ^processor /proc/cpuinfo)
+else ifeq ($(OS),Darwin)
+  NPROCS := $(shell sysctl hw.ncpu | awk '{print $$2}')
+endif # $(OS)
+
+ifeq ($(NUMPROC),0)
+  NUMPROC = 1
+endif 
+
 ifndef NTHREADS
-  NTHREADS = 8
+  NTHREADS = $(NPROCS)
 endif
 
 
@@ -18,7 +32,7 @@ ifeq ($(TAG),dbg)
 else
   DBG = 
   # OPT = -O3 -msse2 -mfpmath=sse -DNTHREADS=$(NTHREADS)
-  OPT = -O3 -mtune=core2 -march=core2 -DNTHREADS=$(NTHREADS)
+  OPT = -O3 -mtune=native -march=native -DNTHREADS=$(NTHREADS)
 endif
 
 #CXXFLAGS = -Wall -Wno-unknown-pragmas -Winline $(DBG) $(OPT) 
