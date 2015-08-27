@@ -20,19 +20,19 @@ class TestAccelerator(unittest.TestCase):
 
     def test_acc_vdd_scale(self):
         self.acc_cmos.vdd = 300
-        self.assertAlmostEqual(self.acc_cmos.perf(), 18.37063799)
+        self.assertAlmostEqual(self.acc_cmos.perf(), 12.6524618)
 
         self.acc_tfet.vdd = 300
         self.assertAlmostEqual(self.acc_tfet.perf(), 1617.87771896)
 
         self.acc_cmos.vdd = 400
-        self.assertAlmostEqual(self.acc_cmos.perf(), 148.34224234)
+        self.assertAlmostEqual(self.acc_cmos.perf(), 102.1681749)
 
         self.acc_tfet.vdd = 400
         self.assertAlmostEqual(self.acc_tfet.perf(), 2644.55958549)
 
         self.acc_cmos.vdd = 500
-        self.assertAlmostEqual(self.acc_cmos.perf(), 807.96122739)
+        self.assertAlmostEqual(self.acc_cmos.perf(), 556.4694366)
 
         self.acc_tfet.vdd = 500
         self.assertAlmostEqual(self.acc_tfet.perf(), 3710.34370167)

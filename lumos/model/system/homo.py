@@ -393,21 +393,31 @@ class HomogSys(object):
                 'vdd': vdd}
 
 from .budget import Sys_L
+from lumos.model import mem
+from lumos.model.mem.cache import get_cache_trait
 class SysConfigDetailed():
     def __init__(self):
-        self.tech = 22
+        # assume l1 have the same technology as cores
+        self.tech = mem.BASELINE_L1_TECH_NODE
         self.core_type = 'io'
-        self.core_tech_name = 'cmos'
-        self.core_tech_variant = 'hp'
+        self.core_tech_name = mem.BASELINE_L1_TECH_NAME
+        self.core_tech_variant = mem.BASELINE_L1_TECH_VARIANT
         self.budget = Sys_L
-        self.delay_l1 = 3
-        self.delay_l2 = 20
-        self.delay_mem = 426
-        self.cache_sz_l1 = 65536
-        # self.cache_sz_l2 = 12582912
-        self.cache_sz_l2 = 33554432 # 32MB
+        self.l2_tech_name = mem.BASELINE_L2_TECH_NAME
+        self.l2_tech_variant = mem.BASELINE_L2_TECH_VARIANT
+        self.delay_mem = mem.BASELINE_L2_DELAY
+        self.cache_sz_l1 = mem.BASELINE_L1_SIZE
+        self.cache_sz_l2 = mem.BASELINE_L2_SIZE
 
-from lumos.model.mem import cache
+    @property
+    def l1_tech_name(self):
+        return self.core_tech_name
+
+    @property
+    def l1_tech_variant(self):
+        return self.core_tech_variant
+
+
 class HomogSysDetailed():
     def __init__(self, sysconfig):
         self.sys_area = sysconfig.budget.area
@@ -416,24 +426,44 @@ class HomogSysDetailed():
 
         self.core = BaseCore(sysconfig.tech, sysconfig.core_tech_name,
                              sysconfig.core_tech_variant, sysconfig.core_type)
-        self.delay_l1 = sysconfig.delay_l1
-        self.delay_l2 = sysconfig.delay_l2
-        self.delay_mem = sysconfig.delay_mem
+
+        baseline_cache_tech = '-'.join((mem.BASELINE_L1_TECH_NAME, mem.BASELINE_L1_TECH_VARIANT))
+        baseline_traits = get_cache_trait(mem.BASELINE_L1_SIZE,
+                                          baseline_cache_tech,
+                                          mem.BASELINE_L1_TECH_NODE)
+
         self.cache_sz_l1 = sysconfig.cache_sz_l1
-        cache_tech_type = '-'.join([sysconfig.core_tech_name, sysconfig.core_tech_variant] )
-        self.l1_traits = cache.CacheTraits(self.cache_sz_l1, cache_tech_type, sysconfig.tech)
+        l1_tech_type = '-'.join([sysconfig.l1_tech_name, sysconfig.l1_tech_variant] )
+        self.l1_traits = get_cache_trait(self.cache_sz_l1, l1_tech_type, sysconfig.tech)
+
+        scale_factor = self.l1_traits['latency'] / baseline_traits['latency']
+        self.delay_l1 = int(mem.BASELINE_L1_DELAY * scale_factor )
+
+        baseline_cache_tech = '-'.join((mem.BASELINE_L2_TECH_NAME, mem.BASELINE_L2_TECH_VARIANT))
+        baseline_traits = get_cache_trait(mem.BASELINE_L2_SIZE,
+                                          baseline_cache_tech,
+                                          mem.BASELINE_L2_TECH_NODE)
         self.cache_sz_l2 = sysconfig.cache_sz_l2
-        self.l2_traits = cache.CacheTraits(self.cache_sz_l2, cache_tech_type, sysconfig.tech)
+        l2_tech_type = '-'.join([sysconfig.l2_tech_name, sysconfig.l2_tech_variant])
+        self.l2_traits = get_cache_trait(self.cache_sz_l2, l2_tech_type, sysconfig.tech)
+
+        scale_factor = self.l2_traits['latency'] / baseline_traits['latency']
+        self.delay_l2 = int(mem.BASELINE_L2_DELAY * scale_factor)
+
+        self.delay_mem = sysconfig.delay_mem
 
     def get_cnum(self, vdd):
         core = self.core
         core_power = core.power(vdd)
         _logger.debug('core_power: {0}'.format(core_power))
-        l2_power = self.l2_traits.power
+        l2_power = self.l2_traits['power']
+        l2_area = self.l2_traits['area']
         _logger.debug('l2_power: {0}'.format(l2_power))
-        l1_power = self.l1_traits.power
+        l1_power = self.l1_traits['power']
+        l1_area = self.l1_traits['area']
         _logger.debug('l1_power: {0}'.format(l1_power))
-        cnum = min((self.sys_power-l2_power)/(core_power+l1_power), self.sys_area/core.area)
+        cnum = min((self.sys_power-l2_power)/(core_power+l1_power),
+                   (self.sys_area-l2_area)/(core.area+l1_area))
         return int(cnum)
 
     def perf(self, vdd, app, cnum=None):

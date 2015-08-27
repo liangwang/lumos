@@ -13,11 +13,17 @@ class Budget:
     def area(self):
         """ Total area of a system, in mili-meters (mm^2)"""
         return self._area
+    @area.setter
+    def area(self, area):
+        self._area = area
 
     @property
     def power(self):
         """ Total TDP of a system, in watts (W)"""
         return self._power
+    @power.setter
+    def power(self, power):
+        self._power = power
 
     @property
     def bw(self):

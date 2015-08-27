@@ -8,8 +8,9 @@ from ..core import BaseCore
 PERF_BASE = 12.92
 # from ..ucore import UCore
 from ..acc import ASAcc, RLAcc
+from lumos.model import mem
+from lumos.model.mem.cache import get_cache_trait
 from lumos import settings
-from lumos.model.mem import cache
 
 VMIN = 300
 VMAX = 1100
@@ -77,7 +78,7 @@ class HeterogSys():
           :class:`~lumos.model.fedcore.FedCore`.
 
     """
-    def __init__(self, sysconfig, kernels):
+    def __init__(self, sysconfig, kernels, _dimperf_preprocessed=True):
         self.sys_area = sysconfig.budget.area
         self.sys_power = sysconfig.budget.power
         self.sys_bw = sysconfig.budget.bw
@@ -124,10 +125,15 @@ class HeterogSys():
         self.thru_core_num = int(self.thru_core_area / self.thru_core.area)
 
         self.thru_core_power = self.sys_power
-        ret = self._dim_perf_opt()
-        self.dim_perf = ret['perf']
-        self.opt_cnum = ret['cnum']
-        self.opt_vdd = ret['vdd']
+        if _dimperf_preprocessed:
+            ret = self._dim_perf_opt()
+            self.dim_perf = ret['perf']
+            self.opt_cnum = ret['cnum']
+            self.opt_vdd = ret['vdd']
+        else:
+            self.dim_perf = None
+            self.opt_cnum = None
+            self.opt_vdd = None
 
         _logger.debug('Serial core: {0}, area: {1}'.format(
             self.serial_core.ctype, self.serial_core.area))
@@ -228,6 +234,8 @@ class HeterogSys():
         cnum_max = int(self.thru_core_area / core.area)
         cnum_list = range(1, cnum_max + 1)
 
+        _logger.debug('_dim_perf_opt: thru_core_area: {0}, core area: {1}, cnum_max: {2}'.format(
+            self.thru_core_area, core.area, cnum_max))
         perf = 0
         for cnum in cnum_list:
             r = self._dim_perf_cnum(cnum)
@@ -296,6 +304,8 @@ class HeterogSys():
         _logger.debug('serial_perf: {0}'.format(serial_perf))
 
         dim_perf = self.dim_perf
+        if not dim_perf:
+            raise HeterogSysError('dim_perf not initialized properly')
         perf = (1 - app.f) / serial_perf + app.f_noacc / dim_perf
         _logger.debug('dim_perf: {0}'.format(dim_perf))
 
@@ -321,39 +331,132 @@ class HeterogSys():
                 'cnum': self.opt_cnum,
                 'vdd': self.opt_vdd}
 
-class SysConfigDetailed(SysConfig):
+class SysConfigDetailed():
     def __init__(self):
-        super().__init__()
+        self.tech = 22
+        self.budget = Sys_L
+
+        self.serial_core_type = None
+        self.serial_core_tech_variant = 'hp'
+        self.thru_core_as_serial = True
+        self.thru_core_type = 'io'
+        self.thru_core_tech_name = 'cmos'
+        self.thru_core_tech_variant = 'hp'
+
+        self.asacc_tech_model = 'cmos'
+        self.asacc_tech_variant = 'hp'
+        # asacc_config = {(ker_id, acc_id): (area_ratio, tech_model)}
+        self.asacc_config = dict()
+
+        self.rlacc_tech_model = 'cmos'
+        self.rlacc_tech_variant = 'hp'
+        self.rlacc_id = 'fpga'
+        self.rlacc_area_ratio = 0
 
         if not self.thru_core_as_serial:
             raise Exception('SysConfigDetailed requires thru_core_as_serial')
 
-        self.delay_l1 = 3
-        self.delay_l2 = 20
-        self.delay_mem = 426
-        self.cache_sz_l1 = 65536
-        # self.cache_sz_l2 = 12582912
-        self.cache_sz_l2 = 33554432 # 32MB
+        self.l2_tech_name = mem.BASELINE_L2_TECH_NAME
+        self.l2_tech_variant = mem.BASELINE_L2_TECH_VARIANT
+        self.delay_mem = mem.BASELINE_L2_DELAY
+        self.cache_sz_l1 = mem.BASELINE_L1_SIZE
+        self.cache_sz_l2 = mem.BASELINE_L2_SIZE
+
+    def add_asacc(self, ker_id, acc_id, area_ratio, tech_name='cmos', tech_variant='hp'):
+        self.asacc_config[(ker_id, acc_id)] = (area_ratio, tech_name, tech_variant)
+
+    @property
+    def l1_tech_name(self):
+        return self.thru_core_tech_name
+
+    @property
+    def l1_tech_variant(self):
+        return self.thru_core_tech_variant
 
 class HeterogSysDetailed(HeterogSys):
     def __init__(self, sysconfig, kernels):
-        super().__init__(sysconfig, kernels)
+        self.sys_area = sysconfig.budget.area
+        self.sys_power = sysconfig.budget.power
+        self.sys_bw = sysconfig.budget.bw
 
-        self.delay_l1 = sysconfig.delay_l1
-        self.delay_l2 = sysconfig.delay_l2
-        self.delay_mem = sysconfig.delay_mem
+        self.tech = sysconfig.tech
+        self.sys_bandwidth = self.sys_bw[self.tech]
+
+        available_area = self.sys_area
+        self.asic_dict = dict()
+        for (key_, value_) in sysconfig.asacc_config.items():
+            ker_id, acc_id = key_
+            area_ratio, tech_name, tech_variant = value_
+            asacc_techmodel = techmodel.get_model(tech_name, tech_variant)
+            ko = kernels[ker_id]
+            asacc_area = self.sys_area * area_ratio
+            asacc = ASAcc(acc_id, ko, asacc_area, self.tech, asacc_techmodel)
+            if ker_id not in self.asic_dict:
+                self.asic_dict[ker_id] = dict()
+            self.asic_dict[ker_id][acc_id] = asacc
+            available_area -= asacc_area
+
+        if sysconfig.rlacc_area_ratio:
+            self.use_rlacc = True
+            rlacc_area = sysconfig.rlacc_area_ratio * self.sys_area
+            rlacc_techmodel = techmodel.get_model(sysconfig.rlacc_tech_model,
+                                                  sysconfig.rlacc_tech_variant)
+            self.rlacc = RLAcc(sysconfig.rlacc_id, rlacc_area, self.tech, rlacc_techmodel)
+            available_area -= rlacc_area
+        else:
+            self.use_rlacc = False
+            self.rlacc = None
+
+        self.thru_core = BaseCore(sysconfig.tech, sysconfig.thru_core_tech_name,
+                                  sysconfig.thru_core_tech_variant, sysconfig.thru_core_type)
+
+        if not sysconfig.thru_core_as_serial:
+            raise Exception('SysConfigDetailed requires thru_core_as_serial')
+
+        self.serial_core = self.thru_core
+
+        self.thru_core_area = available_area
+        self.thru_core_num = int(self.thru_core_area / self.thru_core.area)
+
+        # assume every functional units (cores, accelerators) are power-gated,
+        # therefore consume no power if not activated.
+        self.thru_core_power = self.sys_power
+
+        baseline_cache_tech = '-'.join((mem.BASELINE_L1_TECH_NAME, mem.BASELINE_L1_TECH_VARIANT))
+        baseline_traits = get_cache_trait(mem.BASELINE_L1_SIZE,
+                                          baseline_cache_tech,
+                                          mem.BASELINE_L1_TECH_NODE)
+
         self.cache_sz_l1 = sysconfig.cache_sz_l1
-        cache_tech_type = '-'.join([sysconfig.thru_core_tech_name, sysconfig.thru_core_tech_variant])
-        self.l1_traits = cache.CacheTraits(self.cache_sz_l1, cache_tech_type, sysconfig.tech)
+        l1_tech_type = '-'.join([sysconfig.l1_tech_name, sysconfig.l1_tech_variant] )
+        self.l1_traits = get_cache_trait(self.cache_sz_l1, l1_tech_type, sysconfig.tech)
+
+        scale_factor = self.l1_traits['latency'] / baseline_traits['latency']
+        self.delay_l1 = int(mem.BASELINE_L1_DELAY * scale_factor)
+
+        baseline_cache_tech = '-'.join((mem.BASELINE_L2_TECH_NAME, mem.BASELINE_L2_TECH_VARIANT))
+        baseline_traits = get_cache_trait(mem.BASELINE_L2_SIZE,
+                                          baseline_cache_tech,
+                                          mem.BASELINE_L2_TECH_NODE)
         self.cache_sz_l2 = sysconfig.cache_sz_l2
-        self.l2_traits = cache.CacheTraits(self.cache_sz_l2, cache_tech_type, sysconfig.tech)
+        l2_tech_type = '-'.join([sysconfig.l2_tech_name, sysconfig.l2_tech_variant])
+        self.l2_traits = get_cache_trait(self.cache_sz_l2, l2_tech_type, sysconfig.tech)
+
+        scale_factor = self.l2_traits['latency'] / baseline_traits['latency']
+        self.delay_l2 = int(mem.BASELINE_L2_DELAY * scale_factor)
+        _logger.debug('l2 cache tech: {0}, latency: {1}'.format(l2_tech_type, self.delay_l2))
+
+        self.delay_mem = sysconfig.delay_mem
 
     def get_cnum(self, vdd):
         core = self.thru_core
         core_power = core.power(vdd)
-        l2_power = self.l2_traits.power
-        l1_power = self.l1_traits.power
-        cnum = min((self.sys_power-l2_power)/(core_power+l1_power), self.thru_core_area/core.area)
+        l2_power = self.l2_traits['power']
+        l2_area = self.l2_traits['area']
+        l1_power = self.l1_traits['power']
+        l1_area = self.l1_traits['area']
+        cnum = min((self.sys_power-l2_power)/(core_power+l1_power),
+                   (self.thru_core_area-l2_area)/(core.area+l1_area))
         return int(cnum)
 
     def perf(self, vdd, app, cnum=None, disable_rlacc=False, disable_asacc=False):

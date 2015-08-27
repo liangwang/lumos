@@ -8,7 +8,7 @@
 # 2. Modify c.NotebookApp.password as the comment suggests
 # 3. Modify c.NotebookApp.port if nessesary
 # 4. Modify c.NotebookApp.ip from "localhost" to "*", so that it accepts remote internet connection
-# 5. Modify c.NotebookApp.certfile to the real certificate
+# 5. Modify c.NotebookApp.certfile to the real certificate if prefer https. Otherwise, leave it blank for http
 
 
 export PYTHONPATH=$(pwd):$PYTHONPATH

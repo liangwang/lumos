@@ -1,22 +1,35 @@
+#!/usr/bin/env python
 import re
-from . import cacti
+import csv
+import bz2
+import os
+import logging
+import pickle
+
 
 from functools import lru_cache
 
 @lru_cache(maxsize=1024)
-def _solve_cache(size):
+def _solve_cache(size, line_sz=64, assoc=2, nbanks=1):
     """ solve cache using CACTI interface
 
     Parameters
     ----------
     size : int
       the size of cache in bytes
+    line_sz : int, optional
+      cache line size in bytes, default is 64
+    assoc : int, optional
+      associativity, default is 2
+    nbanks : int, optional
+      number of UCA banks, default is 1
 
     Returns
     -------
     cacti_results
       A structure contains cacti_interface results
     """
+    import lumos.model.mem.cacti as cacti
     ipara = cacti.InputParameter()
 
     # data array tech type
@@ -55,13 +68,13 @@ def _solve_cache(size):
     ipara.cache_sz = size
 
     # line size in bytes
-    ipara.line_sz = 64
+    ipara.line_sz = line_sz
 
     # associativity
-    ipara.assoc = 2
+    ipara.assoc = assoc
 
     # number of UCA banks
-    ipara.nbanks = 1
+    ipara.nbanks = nbanks
 
     # output width (bits)
     ipara.out_w = 512
@@ -229,29 +242,223 @@ def cache_sz_nom(cache_sz_str):
     size_suffix = mo.group(2).lower()
     return cache_size * _size_to_bytes[size_suffix]
 
-def _get_tech_scale(tech_type, tech_node):
-    return None
 
-class CacheTraits():
-    def __init__(self, size, tech_type='cmos-hp', tech_node=22):
-        self._cacti_res = _solve_cache(size)
-        self._tech_scale = _get_tech_scale(tech_type, tech_node)
+# To model cache characteristics (area, power, delay), use cacti-p to calculate
+# characteristics of a cache at 22nm with the given size. Then scale to desired
+# (type, node) using lumos technology library.
+_tech_scale_table = {
+    # 'tech_type': {
+    #     tech_node: {
+    #     'power': 1,
+    #     'area': 1,
+    #     'time': 1,
+    #     },
+    # }
+    # use scale factors in tech/cmos/hp/__init__.py
+    ('cmos-hp', 45): {
+        'power': 4.85,
+        'area': 4,
+        'time': 1.21,
+    },
+    ('cmos-hp', 32): {
+        'power': 2.39,
+        'area': 2,
+        'time': 1.1,
+    },
+    ('cmos-hp', 22): {
+        'power': 1,
+        'area': 1,
+        'time': 1,
+    },
+    ('cmos-hp', 16): {
+        'power': 0.45,
+        'area': 0.5,
+        'time': 0.91,
+    },
+    ('finfet-hp', 20): {
+        # compare RCA circuit simulation of cmos-hp and finfet-hp at nominal supply for 20nm node, or 900mV.
+        # Other nodes will be scaled to 20nm@Finfet accordingly.
+        # This could be improved by more releastic data comparing CMOS to finfet
+        'power': 1.26,
+        'area': 1,
+        'time': 0.8,
+    },
+    ('finfet-hp', 16): {
+        'power': 1.21,
+        'area': 0.53,
+        'time': 0.52,
+    },
+    ('finfet-hp', 14): {
+        'power': 1.15,
+        'area': 0.4,
+        'time': 0.35,
+    },
+    ('finfet-hp', 10): {
+        'power': 0.974,
+        'area': 0.25,
+        'time': 0.305,
+    },
+    ('finfet-hp', 7): {
+        'power': 0.767,
+        'area': 0.125,
+        'time': 0.26,
+    },
+    ('tfet-homo30nm', 22): {
+        # use the same scaling factors of io-tfet-homo30nm in lumos/model/core/base.py
+        'power': 0.337,
+        'area': 1,
+        'time': 1.65,
+    },
+    ('tfet-homo60nm', 22): {
+        'power': 0.337,
+        'area': 1,
+        'time': 1.65,
+    },
+}
 
-    @property
-    def access_time(self):
-        return self._cacti_res.access_time * 1e9
 
-    @property
-    def cycle_time(self):
-        return self._cacti_res.cycle_tiem * 1e9
-
-    @property
-    def power(self):
-        lclr = 0.1+0.9*(0.8*self._cacti_res.data_array2.long_channel_leakage_reduction_memcell + 0.2*self._cacti_res.data_array2.long_channel_leakage_reduction_periperal)
-        return self._cacti_res.power.readOp.dynamic / self._cacti_res.access_time + self._cacti_res.power.readOp.leakage
-
-    @property
-    def area(self):
-        return self._cacti_res.cache_ht*1e-3 * self._cacti_res.cache_len*1e-3
+class CacheError(Exception): pass
 
 
+_cache_db = None
+_dbfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'cache_db.p.bz2')
+
+
+def get_cache_trait(size, tech_type='cmos-hp', tech_node=22, line_sz=64, assoc=2, nbanks=1):
+    global _cache_db, _dbfile
+    if not _cache_db:
+        try:
+            with bz2.open(_dbfile, 'rb') as f:
+                _cache_db = pickle.load(f)
+        except OSError:
+            raise CacheError('Fail to find {0}, go to $LUMOS_HOME and run '
+                             '"python -m lumos.model.mem.cache" to generate '
+                             'cache_db'.format(_dbfile))
+
+    key = (tech_type, tech_node, size, line_sz, assoc, nbanks)
+    try:
+        return _cache_db[key]
+    except KeyError:
+        raise CacheError(
+            'No cache config for tech_type: {tech_type}, tech_node: {tech_node}, '
+            'size: {size}, line_sz: {line_sz}, assoc: {assoc}, nbanks: {nbanks}.'
+            'Add config line to $LUMOS_HOME/lumos/model/mem/cache_db.csv.bz2, '
+            'then rerun "python -m lumos.model.mem.cache" to re-generate cache_db.')
+
+
+if __name__ == '__main__':
+    import argparse
+    from itertools import product
+
+    parser = argparse.ArgumentParser()
+    logging_levels = ('CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG', 'NOTSET')
+    parser.add_argument('-l', '--logging-level', default='NOTSET', choices=logging_levels)
+    parser.add_argument('-f', '--force-update', action='store_true')
+    parser.add_argument('-i', '--ignore-csvfile', action='store_true')
+    args = parser.parse_args()
+
+    _logger = logging.getLogger()
+    _logger.setLevel(args.logging_level)
+
+    csvfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'cache_db.csv.bz2')
+
+    if not args.force_update:
+        try:
+            with bz2.open(_dbfile, 'rb') as f:
+                cachedb = pickle.load(f)
+        except OSError:
+            cachedb = dict()
+    else:
+        cachedb = dict()
+
+    index_fields = ('tech','node','size','line_sz','assoc','nbanks')
+    if os.path.exists(csvfile) and not args.ignore_csvfile:
+        with bz2.open(csvfile, 'rt') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                tech = row['tech']
+                node = int(row['node'])
+                size = int(row['size'])
+                line_sz = int(row['line_sz'])
+                assoc = int(row['assoc'])
+                nbanks = int(row['nbanks'])
+                key = (tech, node, size, line_sz, assoc, nbanks)
+                if key in cachedb and not args.force_update:
+                    continue
+                tech_table_index = (tech, node)
+                area_scale = _tech_scale_table[tech_table_index]['area']
+                power_scale = _tech_scale_table[tech_table_index]['power']
+                time_scale = _tech_scale_table[tech_table_index]['time']
+                print('solve {0} {1} {2} {3}'.format(size, line_sz, assoc, nbanks))
+                res = _solve_cache(size, line_sz=line_sz, assoc=assoc, nbanks=nbanks)
+                cachedb[key] = {
+                    'power': (res.power.readOp.dynamic/res.access_time + res.power.readOp.leakage) * power_scale,
+                    'area': res.cache_ht * 1e-3 * res.cache_len * 1e-3 * area_scale,
+                    'latency': res.access_time * 1e9 * time_scale,
+                }
+
+        with bz2.open(_dbfile, 'wb') as f:
+            pickle.dump(cachedb, f)
+    else:
+        rows = []
+        # small caches, e.g. L1
+        size_list = (16384, 32768, 65536, 131072, 262144, 524288)
+        linesz_list = (64, 128)
+        assoc_list = (1, 2, 4)
+        nbanks_list = (1,)
+        for (tech, node), size, line_sz, assoc, nbanks in product(_tech_scale_table.keys(),
+                                                                size_list, linesz_list,
+                                                                assoc_list, nbanks_list):
+                key = (tech, node, size, line_sz, assoc, nbanks)
+                rows.append(
+                    {'tech': tech, 'node': node, 'size': size,
+                     'line_sz': line_sz, 'assoc': assoc, 'nbanks': nbanks})
+                if key in cachedb and not args.force_update:
+                    continue
+                tech_table_index = (tech, node)
+                area_scale = _tech_scale_table[tech_table_index]['area']
+                power_scale = _tech_scale_table[tech_table_index]['power']
+                time_scale = _tech_scale_table[tech_table_index]['time']
+                print('solve {0} {1} {2} {3}'.format(size, line_sz, assoc, nbanks))
+                res = _solve_cache(size, line_sz=line_sz, assoc=assoc, nbanks=nbanks)
+                cachedb[key] = {
+                    'power': (res.power.readOp.dynamic/res.access_time + res.power.readOp.leakage) * power_scale,
+                    'area': res.cache_ht * 1e-3 * res.cache_len * 1e-3 * area_scale,
+                    'latency': res.access_time * 1e9 * time_scale,
+                }
+
+        # large caches, e.g. L2
+        size_list = (1048576, 2097152, 3145728, 4194304, 5242880, 6291456, 7340032, 8388608,
+                     9437184, 10485760, 11534336, 12582912, 13631488, 14680064, 15728640,
+                     16777216, 33554432, 67108864, 18874368, 134217728)
+        linesz_list = (64, 128, 256)
+        assoc_list = (1, 2, 4, 8)
+        nbanks_list = (1, 2, 4)
+        for (tech, node), size, line_sz, assoc, nbanks in product(_tech_scale_table.keys(),
+                                                                size_list, linesz_list,
+                                                                assoc_list, nbanks_list):
+                key = (tech, node, size, line_sz, assoc, nbanks)
+                rows.append(
+                    {'tech': tech, 'node': node, 'size': size,
+                     'line_sz': line_sz, 'assoc': assoc, 'nbanks': nbanks})
+                if key in cachedb and not args.force_update:
+                    continue
+                tech_table_index = (tech, node)
+                area_scale = _tech_scale_table[tech_table_index]['area']
+                power_scale = _tech_scale_table[tech_table_index]['power']
+                time_scale = _tech_scale_table[tech_table_index]['time']
+                print('solve {0} {1} {2} {3}'.format(size, line_sz, assoc, nbanks))
+                res = _solve_cache(size, line_sz=line_sz, assoc=assoc, nbanks=nbanks)
+                cachedb[key] = {
+                    'power': (res.power.readOp.dynamic/res.access_time + res.power.readOp.leakage) * power_scale,
+                    'area': res.cache_ht * 1e-3 * res.cache_len * 1e-3 * area_scale,
+                    'latency': res.access_time * 1e9 * time_scale,
+                }
+
+        with bz2.open(csvfile, 'wt') as f:
+            csvwriter = csv.DictWriter(f, fieldnames=index_fields)
+            csvwriter.writeheader()
+            csvwriter.writerows(rows)
+
+        with bz2.open(_dbfile, 'wb') as f:
+            pickle.dump(cachedb, f)

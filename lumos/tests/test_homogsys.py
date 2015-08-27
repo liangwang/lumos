@@ -29,4 +29,4 @@ class TestHomogSys(unittest.TestCase):
         sys = HomogSysDetailed(sysconfig)
 
         # test perf score
-        self.assertAlmostEqual(sys.perf(650, app), 1422.7337681)
+        self.assertAlmostEqual(sys.perf(650, app), 992.02310514)
