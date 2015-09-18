@@ -22,10 +22,10 @@ before_install:
 
 # Install packages
 install:
-  - conda install --yes numpy scipy matplotlib lxml nose configobj
+  - conda install --yes numpy scipy matplotlib lxml nose configobj cython
   - pip install python-igraph
   - pip install coveralls
-  - make -C cacti-p
+  - make
 
 # Run test
 script:

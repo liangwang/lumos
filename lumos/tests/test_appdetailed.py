@@ -16,7 +16,7 @@ class TestDetailedApp(unittest.TestCase):
         hetsys = HetSys(HetSysConfig(), _ks)
         homsys = HomSys(HomSysConfig())
         self.assertAlmostEqual(hetsys.perf(650, app),
-                               homsys.perf(650, app))
+                               homsys.perf(650, app), places=2)
 
     def test_homog_vs_heterog_detailed2(self):
         workload_xmlfile = os.path.join(
@@ -32,4 +32,4 @@ class TestDetailedApp(unittest.TestCase):
         config2.budget = Budget(power=config.budget.power, area=config.budget.area*0.8)
         homsys = HomSys(config2)
         self.assertAlmostEqual(hetsys.perf(650, app, disable_rlacc=True),
-                               homsys.perf(650, app))
+                               homsys.perf(650, app), places=2)

@@ -41,7 +41,7 @@ Then scales FPGA speedup by certain performance ratio to get ASIC speedup.
         <pf>0.816</pf>
       </core_perf_config>
     </kernel>
-    <kernel name="dnn-asr">
+    <kernel name="dnnasr">
       <accelerator>
         <fpga perf="16.094"/>
         <asic_5x perf="80.47"/>
@@ -166,7 +166,7 @@ Then scales FPGA speedup by certain performance ratio to get ASIC speedup.
         <kernel name="stemmer" cov="0.115"/>
         <kernel name="regex" cov="0.055"/>
         <kernel name="crf" cov="0.0425"/>
-        <kernel name="dnn-asr" cov="0.195"/>
+        <kernel name="dnnasr" cov="0.195"/>
         <kernel name="gmm" cov="0.305"/>
       </kernel_config>
     </app>
@@ -195,9 +195,9 @@ Then scales FPGA speedup by certain performance ratio to get ASIC speedup.
         <kernel name="crf" cov="1"/>
       </kernel_config>
     </app>
-    <app name="dnn-asr">
+    <app name="dnnasr">
       <kernel_config>
-        <kernel name="dnn-asr" cov="1"/>
+        <kernel name="dnnasr" cov="1"/>
       </kernel_config>
     </app>
     <app name="gmm">

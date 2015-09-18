@@ -7,17 +7,28 @@ in-order core and an out-of-order core respectively.
 
 import abc
 from lumos import settings
+from lumos import BraceMessage as _bm_
 from lumos.model.misc import approx_equal
 from ..tech import get_model as get_tech_model, TechModelError
 import numpy as np
 import math
 
 import logging
-_logger = logging.getLogger('BaseCore')
-_logger.setLevel(logging.INFO)
-if settings.LUMOS_DEBUG and (
-        'all' in settings.LUMOS_DEBUG or 'core' in settings.LUMOS_DEBUG):
-    _logger.setLevel(logging.DEBUG)
+
+__logger = None
+
+def _get_logger():
+    global __logger
+    if __logger:
+        return __logger
+
+    __logger = logging.getLogger('BaseCore')
+    __logger.setLevel(logging.INFO)
+    if settings.LUMOS_DEBUG and (
+            'all' in settings.LUMOS_DEBUG or
+            'core' in settings.LUMOS_DEBUG):
+        __logger.setLevel(logging.DEBUG)
+    return __logger
 
 
 CORE_PARAMS = {
@@ -212,6 +223,7 @@ class BaseCore(object):
     def __init__(self, tech, tech_model_name, tech_model_variant, core_type):
         self._tech = tech
         self._tech_model = get_tech_model(tech_model_name, tech_model_variant)
+        self._vmin = self._tech_model.vmin(self._tech)
         self._core_type = core_type
 
         tech_model = self._tech_model
@@ -256,16 +268,19 @@ class BaseCore(object):
         self._freq_list = np.array([self._tech_model.freq(self._tech, v_)
                                     for v_ in self._vdd_list]) * self._f0
 
-        _logger.debug('a0: {0}, dp0: {1}, sp0: {2}, perf0: {3}'.format(
-            self._area, self._dp0, self._sp0, self._perf0))
+
+        _get_logger().debug(_bm_('a0: {0}, dp0: {1}, sp0: {2}, perf0: {3}',
+                                 self._area, self._dp0, self._sp0, self._perf0))
 
     def freq(self, vdd):
-        if vdd < self.vmin or vdd > self.vmax:
+        try:
+            list_idx = vdd - self.vmin
+            return self._freq_list[list_idx]
+        except IndexError:
             raise BaseCoreError('Vdd {0} not in the range supported by'
                                 ' technology model ({1}mv - {2}mv)'.format(
                                     vdd, self.vmin, self.vmax))
-        list_idx = vdd - self.vmin
-        return self._freq_list[list_idx]
+
 
     def perf_by_vdd(self, vdd):
         """Get performance when the core is operated at the given supply (vdd)
@@ -409,7 +424,7 @@ class BaseCore(object):
 
     @property
     def vmin(self):
-        return self._tech_model.vmin(self._tech)
+        return self._vmin
 
     @property
     def area(self):

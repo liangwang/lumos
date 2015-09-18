@@ -10,18 +10,31 @@ from ..core import BaseCore
 PERF_BASE = 12.92
 from ..acc import ASAcc as Accelerator
 # from ..application import Application
-from lumos import settings
+from lumos.settings import LUMOS_DEBUG
+from lumos import BraceMessage as _bm_
 import math
 
 
 EPSILON = 1e-9   # small number to test float equivalence
 V_PRECISION = 1  # 1mV
 
-_logger = logging.getLogger('MPSoC')
-if settings.LUMOS_DEBUG:
-    _logger.setLevel(logging.DEBUG)
+__logger = None
+
+if LUMOS_DEBUG and ('all' in LUMOS_DEBUG or 'mpsoc' in LUMOS_DEBUG):
+    _debug_enabled = True
 else:
-    _logger.setLevel(logging.INFO)
+    _debug_enabled = False
+
+def _debug(brace_msg):
+    global __logger
+    if not _debug_enabled:
+        return
+
+    if not __logger:
+        __logger = logging.getLogger('MPSoC')
+        __logger.setLevel(logging.DEBUG)
+
+    __logger.debug(brace_msg)
 
 
 class MPSoCError(Exception):
@@ -92,8 +105,8 @@ class MPSoC():
         self.serial_core = serial_core
         if serial_core:
             self.thru_core_area = self.sys_area - serial_core.area
-            _logger.debug('Serial core: {0}, area: {1}'.format(
-                self.serial_core.ctype, self.serial_core.area))
+            _debug(_bm_('Serial core: {0}, area: {1}',
+                                     self.serial_core.ctype, self.serial_core.area))
         else:
             self.thru_core_area = self.sys_area
 
@@ -232,8 +245,8 @@ class MPSoC():
 
     def instantiate(self):
         self._thru_core_num = int(self.thru_core_area / self.thru_core.area)
-        _logger.debug('Tput core: {0}, area: {1}, cnum: {2}'.format(
-            self.thru_core.ctype, self.thru_core.area, self._thru_core_num))
+        _debug(_bm_('Tput core: {0}, area: {1}, cnum: {2}',
+                                 self.thru_core.ctype, self.thru_core.area, self._thru_core_num))
 
     def realloc_gpacc(self, area_ratio):
         """ Adjust the area of a general-purpose accelerator.
@@ -321,16 +334,16 @@ class MPSoC():
         if not vmin:
             vmin = core.vmin
         elif vmin < core.vmin:
-            _logger.warning('Provided vmin {0}mV is lower than core.vmin {1}mV. '
-                            'vmin is set to core.vmin'.format(vmin, core.vmin))
+            _debug(_bm_('Provided vmin {0}mV is lower than core.vmin {1}mV. '
+                        'vmin is set to core.vmin', vmin, core.vmin))
             vmin = core.vmin
 
         # first check whether vmin can meet the power constraint. If not,
         # it is probabaly either due to vmin is too high, or power budget
         # is too constrained, return None in this case.
         if core.power(vmin) > cpower:
-            _logger.warning('Power budget {1:.3g}W is not met even at vmin of {0}mV'.format(
-                vmin, power_budget))
+            _debug(_bm_('Power budget {1:.3g}W is not met even at vmin of {0}mV',
+                                       vmin, power_budget))
             return (0, 0, 0)
 
         # use binary search to find the highest per-core vdd that stays within the power_budget
@@ -379,7 +392,7 @@ class MPSoC():
         if not cnum_max:
             cnum_max = int(self.sys_area / core.area)
 
-        _logger.debug('power budget: {0}'.format(power_budget))
+        _debug(_bm_('power budget: {0}', power_budget))
         perf_opt, vdd_opt, cnum_opt, power_eff = 0, 0, 0, 0
         for cnum in range(1, cnum_max + 1):
             perf_, vdd_, power_ = self._dim_perf_cnum(cnum, power_budget=power_budget)
@@ -392,8 +405,8 @@ class MPSoC():
                 vdd_opt = vdd_
                 cnum_opt = cnum
                 power_eff = power_
-            _logger.debug('cnum: {0}, perf_opt: {1}, power_eff: {2}'.format(
-                cnum, perf_opt, power_eff))
+            _debug(_bm_('cnum: {0}, perf_opt: {1}, power_eff: {2}',
+                                     cnum, perf_opt, power_eff))
         return (perf_opt, vdd_opt, cnum_opt, power_eff)
 
     # def _calc_dim_perf(self, thru_core_power=None, thru_core_area=None):
@@ -492,14 +505,12 @@ class MPSoC():
             runtime = []
             for kl, idx_ in ker_len_sorted:
                 ko = appdag.get_kernel(idx_)
-                _logger.debug('----------{0}----------'.format(ko.name))
                 if self.has_asacc(ko.name):
                     asacc = self.get_asacc(ko.name)
                     asacc_su = asacc.perf(power=power_budget) / PERF_BASE
                     power_budget -= asacc.power_eff
                     rt = kl / asacc_su
                     runtime.append(rt)
-                    _logger.debug('ASACC runtime: {0}'.format(rt))
                 else:
                     perf_, vdd_, cnum_, power_eff = self._dim_perf_opt(power_budget=power_budget)
                     if power_eff == 0:
@@ -511,21 +522,21 @@ class MPSoC():
                         power_budget -= power_eff
                         rt = kl * (1-ko.pf)/serial_su + kl * ko.pf / thru_su
                         runtime.append(rt)
-                        _logger.debug('runtime: {0}'.format(rt))
+                        _debug(_bm_('runtime: {0}', rt))
 
                 if power_budget <= 0.1:
                     finish += max(runtime)
-                    _logger.debug('=====warp finish=====')
-                    _logger.debug('run time of this warp: {0}'.format(max(runtime)))
+                    _debug(_bm_('=====warp finish====='))
+                    _debug(_bm_('run time of this warp: {0}', max(runtime)))
                     runtime = []
                     power_budget = self.sys_power
 
             if runtime:
                 finish += max(runtime)
-                _logger.debug('=====warp finish=====')
-                _logger.debug('run time of this warp: {0}'.format(max(runtime)))
+                _debug(_bm_('=====warp finish====='))
+                _debug(_bm_('run time of this warp: {0}', max(runtime)))
 
-        _logger.debug('baseline: {0}, bench: {1}'.format(baseline, finish))
+        _debug(_bm_('baseline: {0}, bench: {1}', baseline, finish))
         return baseline / finish
 
     def get_speedup_appdag_serial(self, appdag):
@@ -549,25 +560,25 @@ class MPSoC():
         thrucore_serial_su = thru_core.perf_by_vdd(opt_vdd) / PERF_BASE
 
         thrucore_thru_su = dim_perf / PERF_BASE
-        _logger.debug('thrucore serial su: {0}, thrucore parallel su: {1}'.format(
-            thrucore_serial_su, thrucore_thru_su))
+        _debug(_bm_('thrucore serial su: {0}, thrucore parallel su: {1}',
+                                 thrucore_serial_su, thrucore_thru_su))
 
         serial_su = thru_core.perf_by_vdd(thru_core.vnom) / PERF_BASE
-        _logger.debug('serial su: {0}'.format(serial_su))
+        _debug(_bm_('serial su: {0}', serial_su))
 
         ker_lengths = appdag.get_all_kernel_lengths()
         ker_objs = appdag.get_all_kernels(mode='object')
 
-        _logger.debug('dim_perf: {0} cnum: {1}, vdd: {2}'.format(
-            dim_perf, opt_cnum, opt_vdd))
+        _debug(_bm_('dim_perf: {0} cnum: {1}, vdd: {2}',
+                                 dim_perf, opt_cnum, opt_vdd))
         baseline = sum(ker_lengths)
         perf = 0
         for kl, ko in zip(ker_lengths, ker_objs):
-            _logger.debug('-------{0}---------'.format(ko.name))
+            _debug(_bm_('-------{0}---------', ko.name))
             if self.has_asacc(ko.name):
                 acc = self.get_asacc(ko.name)
                 rt = kl / acc.perf()
-                _logger.debug('Accelerator speedup: {0}'.format(acc.perf()))
+                _debug(_bm_('Accelerator speedup: {0}', acc.perf()))
             else:
                 if ko.pf == 0:
                     # this is a serial application
@@ -577,9 +588,9 @@ class MPSoC():
                     rt = kl * (1-ko.pf)/thrucore_serial_su + kl * ko.pf/thrucore_thru_su
 
             perf += rt
-            _logger.debug('runtime: {0}, accu runtime: {1}'.format(rt, perf))
+            _debug(_bm_('runtime: {0}, accu runtime: {1}', rt, perf))
 
-        _logger.debug('baseline: {0}, bench: {1}'.format(baseline, perf))
+        _debug(_bm_('baseline: {0}, bench: {1}', baseline, perf))
 
         return baseline / perf
 

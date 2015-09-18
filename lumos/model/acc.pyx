@@ -10,21 +10,32 @@ The model parameters are similar to u-core described in Chung's paper:
 
 import sys
 from lumos import settings
-# from .core.io_cmos import PERF_BASE
-PERF_BASE = 12.92
 
+from lumos.settings import LUMOS_DEBUG
+from lumos import BraceMessage as _bm_
+import math
 import logging
-_logger_asacc = logging.getLogger('ASAcc')
-_logger_asacc.setLevel(logging.INFO)
-if settings.LUMOS_DEBUG and (
-        'all' in settings.LUMOS_DEBUG or 'asacc' in settings.LUMOS_DEBUG):
-    _logger_asacc.setLevel(logging.DEBUG)
+from libc.math cimport sqrt
 
-_logger_rlacc = logging.getLogger('RLAcc')
-_logger_rlacc.setLevel(logging.INFO)
-if settings.LUMOS_DEBUG and (
-        'all' in settings.LUMOS_DEBUG or 'rlacc' in settings.LUMOS_DEBUG):
-    _logger_rlacc.setLevel(logging.DEBUG)
+__logger = None
+
+
+if LUMOS_DEBUG and ('all' in LUMOS_DEBUG or 'acc' in LUMOS_DEBUG):
+    _debug_enabled = True
+else:
+    _debug_enabled = False
+
+
+def _debug(brace_msg):
+    global __logger
+    if not _debug_enabled:
+        return
+
+    if not __logger:
+        __logger = logging.getLogger('Acc')
+        __logger.setLevel(logging.DEBUG)
+
+    __logger.debug(brace_msg)
 
 try:
     MAXINT = sys.maxint
@@ -123,7 +134,6 @@ class ASAcc(object):
         self._tech = tech
 
         self._tech_model = tech_model
-        self._vdd_mv = tech_model.vnom_dict[tech]
 
         try:
             bce_params = BCE_PARAMS_DICT[tech_model.mnemonic]
@@ -151,29 +161,44 @@ class ASAcc(object):
             self._bw0 = bw_base * tech_model.fnom_scale[tech] / \
                 tech_model.fnom_scale[tech_base]
         self._v0 = tech_model.vnom(tech)
+        self._vdd_mv = self._v0
+        self._freq_factor = 1
+        self._sp_factor = 1
+        self._dp_factor = 1
 
-    def perf(self, power=None, bandwidth=None):
+
+    # def perf(self, power=None, bandwidth=None, perf_scale_mode='linear'):
+    def perf(self, power=None, bandwidth=None, perf_scale_mode='sqrt'):
         kernel = self._ker_obj
         uparam = kernel.get_kernel_param(self._acc_id)
 
-        _logger_asacc.debug('power budget: {0}, acc power: {1}'.format(power, self.power))
+        cdef float area_p, area_b, area_eff, power_eff
+        cdef float area_factor, abs_perf
+
+        _debug(_bm_('power budget: {0}, acc power: {1}', power, self.power))
         if power:
             area_p = (power / self.power) * self.area
         else:
-            area_p = MAXINT
+            area_p = float(MAXINT)
 
         if bandwidth:
             area_b = (bandwidth / self._bw0 / uparam.bw) * self._a0
         else:
-            area_b = MAXINT
+            area_b = float(MAXINT)
 
-        self.area_eff = min(area_p, area_b, self._area)
-        self.power_eff = self.area_eff / self.area * self.power
+        area_eff = min(area_p, area_b, self._area)
+        self.area_eff = area_eff
+        power_eff = area_eff / self.area * self.power
+        self.power_eff = power_eff
 
-        freq_factor = (self._tech_model.freq(self._tech, self._vdd_mv) /
-                       self._tech_model.freq(self._tech, self._tech_model.vnom(self._tech)))
-        area_factor = self.area_eff / self._a0
-        abs_perf = self._perf0 * area_factor * freq_factor * uparam.perf
+        if perf_scale_mode == 'linear':
+            area_factor = area_eff / self._a0
+        elif perf_scale_mode == 'sqrt':
+            area_factor = sqrt(area_eff / self._a0)
+        else:
+            raise ASAccError('perf_scale_mode: {0} not supproted')
+
+        abs_perf = self._perf0 * area_factor * self._freq_factor * uparam.perf
         return abs_perf
 
     def bandwidth(self, app):
@@ -200,13 +225,11 @@ class ASAcc(object):
     def dp(self):
         kernel = self._ker_obj
         uparam = kernel.get_kernel_param(self._acc_id)
-        return self._dp0 * (self._area/self._a0) * uparam.power * \
-            self._tech_model.dynamic_power(self._tech, self._vdd_mv)
+        return self._dp0 * (self._area/self._a0) * uparam.power * self._dp_factor
 
     @property
     def sp(self):
-        return self._sp0 * (self._area/self._a0) * \
-            self._tech_model.static_power(self._tech, self._vdd_mv)
+        return self._sp0 * (self._area/self._a0) * self._sp_factor
 
     @property
     def vdd(self):
@@ -214,7 +237,14 @@ class ASAcc(object):
 
     @vdd.setter
     def vdd(self, vdd_mv):
-        self._vdd_mv = vdd_mv
+        if vdd_mv != self._vdd_mv:
+            self._vdd_mv = vdd_mv
+            self._freq_factor = (self._tech_model.freq(self._tech, vdd_mv) /
+                                 self._tech_model.freq(self._tech, self._v0))
+            self._sp_factor = (self._tech_model.static_power(self._tech, vdd_mv) /
+                               self._tech_model.static_power(self._tech, self._v0))
+            self._dp_factor = (self._tech_model.dynamic_power(self._tech, vdd_mv) /
+                               self._tech_model.dynamic_power(self._tech, self._v0))
 
     @property
     def area(self):
@@ -284,7 +314,6 @@ class RLAcc(object):
         self._tech = tech
 
         self._tech_model = tech_model
-        self._vdd_mv = tech_model.vnom_dict[tech]
 
         try:
             bce_params = BCE_PARAMS_DICT[tech_model.mnemonic]
@@ -312,31 +341,45 @@ class RLAcc(object):
             self._bw0 = bw_base * tech_model.fnom_scale[tech] / \
                 tech_model.fnom_scale[tech_base]
         self._v0 = tech_model.vnom(tech)
-        _logger_rlacc.debug('a0: {0}, dp0: {1}, sp0: {2}, perf0: {3}'.format(
-            self._a0, self._dp0, self._sp0, self._perf0))
+        self._vdd_mv = self._v0
+        self._freq_factor = 1
+        self._dp_factor = 1
+        self._sp_factor = 1
+        _debug(_bm_('a0: {0}, dp0: {1}, sp0: {2}, perf0: {3}',
+                    self._a0, self._dp0, self._sp0, self._perf0))
 
-    def perf(self, ker_obj, power=None, bandwidth=None):
+    # def perf(self, ker_obj, power=None, bandwidth=None, perf_scale_mode='linear'):
+    def perf(self, ker_obj, power=None, bandwidth=None, perf_scale_mode='sqrt'):
         uparam = ker_obj.get_kernel_param(self._acc_id)
 
-        _logger_rlacc.debug('power budget: {0}, acc power: {1}'.format(power, self.power(ker_obj)))
+        cdef float area_p, area_b, area_eff, power_eff
+        cdef float area_factor, abs_perf
+
+        _debug(_bm_('power budget: {0}, acc power: {1}', power, self.power(ker_obj)))
         if power:
             area_p = (power / self.power(ker_obj)) * self.area
         else:
-            area_p = MAXINT
+            area_p = float(MAXINT)
 
         if bandwidth:
             area_b = (bandwidth / self._bw0 / uparam.bw) * self._a0
         else:
-            area_b = MAXINT
+            area_b = float(MAXINT)
 
-        self.area_eff = min(area_p, area_b, self._area)
-        self.power_eff = self.area_eff / self.area * self.power(ker_obj)
+        area_eff = min(area_p, area_b, self._area)
+        self.area_eff = area_eff
+        power_eff = area_eff / self.area * self.power(ker_obj)
+        self.power_eff = power_eff
 
-        freq_factor = (self._tech_model.freq(self._tech, self._vdd_mv) /
-                       self._tech_model.freq(self._tech, self._tech_model.vnom(self._tech)))
-        area_factor = self.area_eff / self._a0
-        abs_perf = self._perf0 * area_factor * freq_factor * uparam.perf
-        _logger_rlacc.debug('RLAcc perf {0}'.format(abs_perf))
+        if perf_scale_mode == 'linear':
+            area_factor = area_eff / self._a0
+        elif perf_scale_mode == 'sqrt':
+            area_factor = sqrt(area_eff / self._a0)
+        else:
+            raise RLAccError('perf_scale_mode: {0} not supproted')
+
+        abs_perf = self._perf0 * area_factor * self._freq_factor * uparam.perf
+        _debug(_bm_('RLAcc perf {0}', abs_perf))
         return abs_perf
 
     def bandwidth(self, app):
@@ -360,12 +403,10 @@ class RLAcc(object):
 
     def dp(self, ker_obj):
         uparam = ker_obj.get_kernel_param(self._acc_id)
-        return self._dp0 * (self._area/self._a0) * uparam.power * \
-            self._tech_model.dynamic_power(self._tech, self._vdd_mv)
+        return self._dp0 * (self._area/self._a0) * uparam.power * self._dp_factor
 
     def sp(self, ker_obj):
-        return self._sp0 * (self._area/self._a0) * \
-            self._tech_model.static_power(self._tech, self._vdd_mv)
+        return self._sp0 * (self._area/self._a0) * self._sp_factor
 
     @property
     def vdd(self):
@@ -373,7 +414,14 @@ class RLAcc(object):
 
     @vdd.setter
     def vdd(self, vdd_mv):
-        self._vdd_mv = vdd_mv
+        if vdd_mv != self._vdd_mv:
+            self._vdd_mv = vdd_mv
+            self._freq_factor = (self._tech_model.freq(self._tech, vdd_mv) /
+                                 self._tech_model.freq(self._tech, self._v0))
+            self._sp_factor = (self._tech_model.static_power(self._tech, vdd_mv) /
+                               self._tech_model.static_power(self._tech, self._v0))
+            self._dp_factor = (self._tech_model.dynamic_power(self._tech, vdd_mv) /
+                               self._tech_model.dynamic_power(self._tech, self._v0))
 
     @property
     def area(self):

@@ -4,6 +4,8 @@ from lumos import settings
 from .. import TechModelError
 
 import logging
+from lumos.settings import LUMOS_DEBUG
+from lumos import BraceMessage as _bm_
 import os
 from scipy.interpolate import interp1d as scipy_interp
 import numpy as np
@@ -15,16 +17,30 @@ try:
 except ImportError:
     import pickle
 
-_logger = logging.getLogger('CMOS_HP')
-_logger.setLevel(logging.INFO)
-if settings.LUMOS_DEBUG and (
-        'all' in settings.LUMOS_DEBUG or 'cmos-hp' in settings.LUMOS_DEBUG):
-    _logger.setLevel(logging.DEBUG)
+
+__logger = None
+
+if LUMOS_DEBUG and ('all' in LUMOS_DEBUG or 'cmos-hp' in LUMOS_DEBUG):
+    _debug_enabled = True
+else:
+    _debug_enabled = False
+
+def _debug(brace_msg):
+    global __logger
+    if not _debug_enabled:
+        return
+
+    if not __logger:
+        __logger = logging.getLogger('CMOS_HP')
+        __logger.setLevel(logging.DEBUG)
+
+    __logger.debug(brace_msg)
 
 _MODEL_DIR = os.path.dirname(__file__)
 
 
-vnom_dict = {45: 1000, 32: 900, 22: 800, 16: 750, 10: 600}
+vnom_dict = {45: 1000, 32: 900, 22: 800, 16: 750, 10: 600}  # new adjusted vdd for 22, 16nm
+# vnom_dict = {45: 1000, 32: 900, 22: 700, 16: 650, 10: 600}
 area_scale = {45: 1, 32: 0.5, 22: 0.25, 16: 0.125, 10: 0.0875}
 fnom_scale = {45: 1, 32: 0.95, 22: 0.7945, 16: 0.664}
 perf_scale = {45: 1, 32: 1.1, 22: 1.21, 16: 1.331}
@@ -52,7 +68,7 @@ model_files = glob.glob(os.path.join(
         settings.CMOS_SIM_CIRCUIT, model_name)))
 
 for model_file in model_files:
-    _logger.debug('found model {0}'.format(model_file))
+    _debug(_bm_('found model {0}', model_file))
     model_file_mtime = os.path.getmtime(model_file)
 
     tech = _get_tech_node(model_file)

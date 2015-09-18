@@ -4,6 +4,8 @@ from lumos import settings
 from .. import TechModelError
 
 import logging
+from lumos.settings import LUMOS_DEBUG
+from lumos import BraceMessage as _bm_
 import os
 from scipy.interpolate import interp1d as scipy_interp
 import numpy as np
@@ -15,11 +17,24 @@ try:
 except ImportError:
     import pickle
 
-_logger = logging.getLogger('homoTFET_30nm')
-_logger.setLevel(logging.INFO)
-if settings.LUMOS_DEBUG and (
-        'all' in settings.LUMOS_DEBUG or 'homotfet30nm' in settings.LUMOS_DEBUG):
-    _logger.setLevel(logging.DEBUG)
+
+__logger = None
+
+if LUMOS_DEBUG and ('all' in LUMOS_DEBUG or 'homotfet30nm' in LUMOS_DEBUG):
+    _debug_enabled = True
+else:
+    _debug_enabled = False
+
+def _debug(brace_msg):
+    global __logger
+    if not _debug_enabled:
+        return
+
+    if not __logger:
+        __logger = logging.getLogger('homotfet30nm')
+        __logger.setLevel(logging.DEBUG)
+
+    __logger.debug(brace_msg)
 
 _MODEL_DIR = os.path.dirname(__file__)
 
@@ -54,7 +69,7 @@ model_files = glob.glob(os.path.join(
         settings.TFET_SIM_CIRCUIT, model_name)))
 
 for model_file in model_files:
-    _logger.debug('found model {0}'.format(model_file))
+    _debug(_bm_('found model {0}', model_file))
     model_file_mtime = os.path.getmtime(model_file)
 
     tech = _get_tech_node(model_file)

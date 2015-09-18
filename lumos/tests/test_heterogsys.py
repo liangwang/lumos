@@ -18,4 +18,4 @@ class TestHomogSys(unittest.TestCase):
         app = _as['synapp_0']
         sysconfig = SysConfigDetailed()
         sys = HeterogSysDetailed(sysconfig, _ks)
-        self.assertAlmostEqual(sys.perf(650, app), 92.11335836)
+        self.assertAlmostEqual(sys.perf(650, app), 92.113, places=2)

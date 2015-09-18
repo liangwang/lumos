@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+import logging
+import numpy
+import scipy
 
 def random_uc_cov(dist, param1, param2):
     """randomly generate kernel coverage that follows the specified distribution
@@ -25,6 +28,7 @@ def random_uc_cov(dist, param1, param2):
       errors
 
     """
+    _logger = logging.getLogger(__name__)
     if dist == 'norm':
         mean = param1
         std = param2
@@ -42,13 +46,14 @@ def random_uc_cov(dist, param1, param2):
         while r < 0:
             r = numpy.random.uniform(rmin, rmax)
     else:
-        _logger.error('Unknown distribution for coverage: %s' % dist)
+        _logger.error('Unknown distribution for coverage: %s', dist)
         r = 0
 
     return r
 
 
 def random_kernel_cov(cov_params):
+    _logger = logging.getLog(__name__)
     dist = cov_params['dist']
 
     if dist == 'norm':
@@ -68,7 +73,7 @@ def random_kernel_cov(cov_params):
         while r < 0:
             r = numpy.random.uniform(rmin, rmax)
     else:
-        _logger.error('Unknown distribution for coverage: %s' % dist)
+        _logger.error('Unknown distribution for coverage: %s', dist)
         r = 0
 
     return r

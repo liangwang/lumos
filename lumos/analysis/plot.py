@@ -6,7 +6,7 @@ from os.path import join as joinpath
 import pandas as pd
 import numpy as np
 
-plt.style.use('ggplot')
+# plt.style.use('ggplot')
 
 marker_cycle = [
     's', 'o', 'v', '*', '<',
@@ -340,16 +340,16 @@ def plot_series2(x_list, y_lists, xlabel, ylabel, legend_labels, legend_loc=None
 
 
 def line_plot(df, x_col, y_col, series_col, xlabel=None,
-              ylabel=None, llabel=None, title=None, lncols=None,
-              lloc=None, figsize=None, marker_list=None,
-              ms_list=None, figdir=None, ofn=None, **kwargs):
+              ylabel=None, llabel=None, title=None, lncols=None, ms=None,
+              lloc=None, figsize=None, marker_list=None, fontsize=None,
+              legend_fontsize=None, figdir=None, ofn=None, **kwargs):
 
     # Setup default values
     if not marker_list:
         marker_list = marker_cycle
 
-    if not ms_list:
-        ms_list = marker_size
+    if not ms:
+        ms = marker_size[0]
 
     if not xlabel:
         xlabel = x_col
@@ -369,35 +369,43 @@ def line_plot(df, x_col, y_col, series_col, xlabel=None,
     if not figsize:
         figsize = (8, 6)
 
-    series = pd.Series(df[series_col]).unique()
+    if not fontsize:
+        fontsize = 14
+
+    if not legend_fontsize:
+        legend_fontsize = fontsize
+
+    df2 = df.pivot(x_col, series_col, y_col)
 
     if not lncols:
         lncols = 1
     elif lncols == 'flat':
-        lncols = len(series)
+        lncols = len(df2.columns)
 
     fig = plt.figure(figsize=figsize)
     axes = fig.add_subplot(111)
-    x = range(1, len(df[x_col])+1)
+    # x = range(1, len(df[x_col])+1)
 
-    if series.dtype == np.dtype('object'):
-        for ser, marker, ms in zip(series, icycle(marker_list), icycle(ms_list)):
-            df2 = df.query('{0} == "{1}"'.format(series_col, ser))[[x_col, y_col]]
-            # axes.plot(df[x_col], df[y_col], marker=marker, ms=ms)
-            df2.plot(x=x_col, y=y_col, axes=axes, marker=marker, ms=ms, **kwargs)
-    else:
-        for ser, marker, ms in zip(series, icycle(marker_list), icycle(ms_list)):
-            df2 = df.query('{0} == {1}'.format(series_col, ser))[[x_col, y_col]]
-            # axes.plot(df[x_col], df[y_col], marker=marker, ms=ms)
-            df2.plot(x=x_col, y=y_col, axes=axes, marker=marker, ms=ms, **kwargs)
+    df2.plot(ax=axes, fontsize=fontsize, linewidth=3, ms=ms,
+             style=['{0}-'.format(m) for _, m in zip(df2.columns, icycle(marker_list))], **kwargs)
+    # if series.dtype == np.dtype('object'):
+    #     for ser, marker, ms in zip(series, icycle(marker_list), icycle(ms_list)):
+    #         df2 = df.query('{0} == "{1}"'.format(series_col, ser))[[x_col, y_col]]
+    #         # axes.plot(df[x_col], df[y_col], marker=marker, ms=ms)
+    #         df2.plot(x=x_col, y=y_col, axes=axes, marker=marker, ms=ms, **kwargs)
+    # else:
+    #     for ser, marker, ms in zip(series, icycle(marker_list), icycle(ms_list)):
+    #         df2 = df.query('{0} == {1}'.format(series_col, ser))[[x_col, y_col]]
+    #         # axes.plot(df[x_col], df[y_col], marker=marker, ms=ms)
+    #         df2.plot(x=x_col, y=y_col, axes=axes, marker=marker, ms=ms, **kwargs)
 
-    axes.legend(series, title=llabel, loc=lloc, ncol=lncols)
-    axes.set_xlabel(xlabel)
-    axes.set_ylabel(ylabel)
+    axes.legend(title=llabel, loc=lloc, ncol=lncols, fontsize=legend_fontsize)
+    axes.set_xlabel(xlabel, fontdict={'fontsize': fontsize})
+    axes.set_ylabel(ylabel, fontdict={'fontsize': fontsize})
 
     if not figdir:
         ofile = ofn
     else:
         ofile = joinpath(figdir, ofn)
-        fig.savefig(ofile, bbox_inches='tight')
+    fig.savefig(ofile, bbox_inches='tight')
 

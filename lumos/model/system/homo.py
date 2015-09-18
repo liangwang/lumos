@@ -10,12 +10,27 @@ VSF_MAX = 1.3  # maxium vdd is 1.3 * vdd_nominal
 V_PRECISION = 1  # 1mV
 
 
-from lumos import settings
-_logger = logging.getLogger('HomogSys')
-_logger.setLevel(logging.INFO)
-if settings.LUMOS_DEBUG:
-    if 'all' in settings.LUMOS_DEBUG or 'homogsys' in settings.LUMOS_DEBUG:
-        _logger.setLevel(logging.DEBUG)
+from lumos.settings import LUMOS_DEBUG
+from lumos import BraceMessage as _bm_
+
+__logger = None
+
+if LUMOS_DEBUG and ('all' in LUMOS_DEBUG or 'homogsys' in LUMOS_DEBUG):
+    _debug_enabled = True
+else:
+    _debug_enabled = False
+
+
+def _debug(brace_msg):
+    global __logger
+    if not _debug_enabled:
+        return
+
+    if not  __logger:
+        __logger = logging.getLogger('HomogSys')
+        __logger.setLevel(logging.DEBUG)
+
+    __logger.debug(brace_msg)
 
 
 class HomogSysError(Exception):
@@ -184,7 +199,7 @@ class HomogSys(object):
             return None
 
         cpower = self.power/float(cnum)
-        _logger.debug('Per-core power budget: {0}'.format(cpower))
+        _debug(_bm_('Per-core power budget: {0}', cpower))
 
         # Serial performance is achieved by the highest vdd
         sperf = core.perf_by_vdd(core.vmax)
@@ -205,7 +220,7 @@ class HomogSys(object):
 
                 perf = 1/((1-f)/sperf + f/(active_cnum*core.perf_by_vdd(vmin)))
                 util = float(100*active_cnum)/float(cnum)
-                _logger.debug('vmin is too high or active_cnum is too large')
+                _debug(_bm_('vmin is too high or active_cnum is too large'))
                 return {'perf': perf/PERF_BASE,
                         'vdd': vmin,
                         'cnum': active_cnum,
@@ -222,7 +237,9 @@ class HomogSys(object):
         while (vr-vl)>V_PRECISION:
             vm = int((vl+vr)/2)
 
-            _logger.debug('[Core]\t:vl: {0}mV, vr: {1}mV, vm: {2}mV, freq: {3}, power: {4}, area: {5}'.format(vl, vr, vm, core.freq(vm), core.power(vm), core.area))
+            _debug(_bm_('[Core]\t:vl: {0}mV, vr: {1}mV, vm: {2}mV, '
+                                     'freq: {3}, power: {4}, area: {5}',
+                                     vl, vr, vm, core.freq(vm), core.power(vm), core.area))
             if core.power(vm) > cpower:
                 vl = vl
                 vr = vm
@@ -230,7 +247,7 @@ class HomogSys(object):
                 vl = vm
                 vr = vr
 
-        _logger.debug('End of bin-search, vl: {0}mV, vr: {1}mV'.format(vl, vr))
+        _debug(_bm_('End of bin-search, vl: {0}mV, vr: {1}mV', vl, vr))
         core.vdd = vl
         lpower = core.power(vl)
         lfreq = core.freq(vl)
@@ -455,13 +472,13 @@ class HomogSysDetailed():
     def get_cnum(self, vdd):
         core = self.core
         core_power = core.power(vdd)
-        _logger.debug('core_power: {0}'.format(core_power))
+        _debug(_bm_('core_power: {0}', core_power))
         l2_power = self.l2_traits['power']
         l2_area = self.l2_traits['area']
-        _logger.debug('l2_power: {0}'.format(l2_power))
+        _debug(_bm_('l2_power: {0}', l2_power))
         l1_power = self.l1_traits['power']
         l1_area = self.l1_traits['area']
-        _logger.debug('l1_power: {0}'.format(l1_power))
+        _debug(_bm_('l1_power: {0}', l1_power))
         cnum = min((self.sys_power-l2_power)/(core_power+l1_power),
                    (self.sys_area-l2_area)/(core.area+l1_area))
         return int(cnum)
@@ -473,9 +490,9 @@ class HomogSysDetailed():
         if not cnum:
             cnum = self.get_cnum(vdd)
 
-        _logger.debug('cnum: {0}'.format(cnum))
+        _debug(_bm_('cnum: {0}', cnum))
         core = self.core
-        _logger.debug('freq: {0}'.format(core.freq(vdd)))
+        _debug(_bm_('freq: {0}', core.freq(vdd)))
         cov = 1
         perf = 0
         # kernels will be accelerated by multi-cores
@@ -488,22 +505,22 @@ class HomogSysDetailed():
             miss_l2 = min(
                 1, kobj.miss_l2 * ((self.cache_sz_l2/(cnum*kobj.cache_sz_l2_nom)) ** (1-kobj.alpha_l2)))
 
-            _logger.debug('l1_miss: {0}, l2_miss: {1}'.format(miss_l1, miss_l2))
+            _debug(_bm_('l1_miss: {0}, l2_miss: {1}', miss_l1, miss_l2))
             t0 = ((1-miss_l1)*self.delay_l1 + miss_l1*(1-miss_l2)*self.delay_l2 +
                   miss_l1*miss_l2*self.delay_mem)
             t = t0 * core.freq(vdd) / core.freq(core.vnom)
-            _logger.debug('t: {0}'.format(t))
+            _debug(_bm_('t: {0}', t))
             eta = 1 / (1 + t * kobj.rm / kobj.cpi_exe)
             eta0 = 1 / (1+ t0 * kobj.rm / kobj.cpi_exe)
-            _logger.debug('eta: {0}, eta0: {1}'.format(eta, eta0))
-            _logger.debug('freq: {0}, freq0: {1}'.format(core.freq(vdd), core.fnom))
-            _logger.debug('vdd: {0}, v0: {1}'.format(vdd, core.vnom))
+            _debug(_bm_('eta: {0}, eta0: {1}', eta, eta0))
+            _debug(_bm_('freq: {0}, freq0: {1}', core.freq(vdd), core.fnom))
+            _debug(_bm_('vdd: {0}, v0: {1}', vdd, core.vnom))
             p_speedup = (core.freq(vdd)/core.fnom) * cnum * (eta/eta0)
-            _logger.debug('p_speedup: {0}'.format(p_speedup))
+            _debug(_bm_('p_speedup: {0}', p_speedup))
 
             vdd_max = min(core.vnom * VSF_MAX, core.vmax)
             s_speedup = 1
-            _logger.debug('s_speedup: {0}'.format(s_speedup))
+            _debug(_bm_('s_speedup: {0}', s_speedup))
 
             perf += kcov * ((1-kobj.pf + kobj.pf/p_speedup))
             cov -= kcov

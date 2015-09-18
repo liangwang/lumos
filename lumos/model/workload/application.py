@@ -3,14 +3,27 @@ import abc
 import logging
 from igraph import Graph, IN as GRAPH_IN
 from lxml import etree
-from lumos import settings
+from lumos.settings import LUMOS_DEBUG
+from lumos import BraceMessage as _bm_
 
-_logger = logging.getLogger('Application')
-_logger.setLevel(logging.INFO)
-debug_tag = settings.LUMOS_DEBUG
-if debug_tag:
-    if 'all' in debug_tag or 'application' in debug_tag:
-        _logger.setLevel(logging.DEBUG)
+
+__logger = None
+
+if LUMOS_DEBUG and ('all' in LUMOS_DEBUG or 'app' in LUMOS_DEBUG):
+    _debug_enabled = True
+else:
+    _debug_enabled = False
+
+def _debug(brace_msg):
+    global __logger
+    if not _debug_enabled:
+        return
+
+    if not __logger:
+        __logger = logging.getLogger('app')
+        __logger.setLevel(logging.DEBUG)
+
+    __logger.debug(brace_msg)
 
 
 
@@ -432,7 +445,7 @@ class SimpleApp(BaseApp):
         """
         name = kernel.name
         if name in self.kernels:
-            _logger.warning('Kernel %s already exist' % name)
+            _debug(_bm_('Kernel {0} already exist', name))
             return False
 
         if cov > self.f_noacc:
@@ -488,10 +501,16 @@ class SimpleApp(BaseApp):
         return self.kernels.keys()
 
     def get_cov(self, name):
-        return self.kernels_coverage[name]
+        try:
+            return self.kernels_coverage[name]
+        except KeyError:
+            return 0
 
     def get_kernel(self, name):
-        return self.kernels[name]
+        try:
+            return self.kernels[name]
+        except KeyError:
+            return None
 
 
 class SyntheticApp(BaseApp):
@@ -550,10 +569,16 @@ class SyntheticApp(BaseApp):
         return self.kernels.keys()
 
     def get_cov(self, name):
-        return self.kernels_coverage[name]
+        try:
+            return self.kernels_coverage[name]
+        except KeyError:
+            return 0
 
     def get_kernel(self, name):
-        return self.kernels[name]
+        try:
+            return self.kernels[name]
+        except KeyError:
+            return None
 
     @classmethod
     def load_from_xmltree(cls, xmltree, kernels):
@@ -565,7 +590,7 @@ class SyntheticApp(BaseApp):
 
         ks = xmltree.find('kernel_config')
         if ks is None:
-            _logger.warning('No kernel config in {0}'.format(name))
+            _debug(_bm_('No kernel config in {0}', name))
         else:
             for ele in ks:
                 kname = ele.get('name')
@@ -579,7 +604,7 @@ class SyntheticApp(BaseApp):
                         kname, name))
                 k_cov = float(val_)
                 a.add_kernel(kernels[kname], k_cov)
-                _logger.debug('Add kernel {0}, cov {1}'.format(kname, k_cov))
+                _debug(_bm_('Add kernel {0}, cov {1}', kname, k_cov))
 
         return a
 
@@ -629,7 +654,7 @@ class DetailedApp(BaseApp):
         self.kernels[name] = kernel
         self.kernels_coverage[name] = cov
         self.f_noacc = f_noacc - cov
-        _logger.debug('f_noacc: {0}'.format(self.f_noacc))
+        _debug(_bm_('f_noacc: {0}', self.f_noacc))
 
     def get_all_kernels(self):
         """ Get all kernels within the application
@@ -667,7 +692,7 @@ class DetailedApp(BaseApp):
 
         ks = xmltree.find('kernel_config')
         if ks is None:
-            _logger.warning('No kernel config in {0}'.format(name))
+            _debug(_bm_('No kernel config in {0}', name))
         else:
             for ele in ks:
                 kname = ele.get('name')

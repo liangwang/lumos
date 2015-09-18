@@ -24,7 +24,7 @@ class TestMPSoC(unittest.TestCase):
         ker_obj = self.ks_['ker3']
         tech_model = get_model('cmos', 'hp')
         sys.add_asic(ker_obj, 'asic_5x', 0.1, tech_model)
-        self.assertAlmostEqual(sys.get_speedup_appdag_serial(app), 3.5730472)
+        self.assertAlmostEqual(sys.get_speedup_appdag_serial(app), 3.573, places=2)
 
     def test_appdag_speedup_parallel(self):
         budget = Sys_L
@@ -41,4 +41,4 @@ class TestMPSoC(unittest.TestCase):
         sys.add_asic(ker_obj, 'asic_5x', 0.1, tech_model)
         ker_obj = self.ks_['ker4']
         sys.add_asic(ker_obj, 'asic_5x', 0.1, tech_model)
-        self.assertAlmostEqual(sys.get_speedup_appdag_parallel_greedy(app), 3.9861510)
+        self.assertAlmostEqual(sys.get_speedup_appdag_parallel_greedy(app), 3.986, places=2)
