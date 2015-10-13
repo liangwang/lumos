@@ -6,13 +6,13 @@ from lxml import etree
 from lumos.settings import LUMOS_DEBUG
 from lumos import BraceMessage as _bm_
 
-
 __logger = None
 
 if LUMOS_DEBUG and ('all' in LUMOS_DEBUG or 'app' in LUMOS_DEBUG):
     _debug_enabled = True
 else:
     _debug_enabled = False
+
 
 def _debug(brace_msg):
     global __logger
@@ -24,7 +24,6 @@ def _debug(brace_msg):
         __logger.setLevel(logging.DEBUG)
 
     __logger.debug(brace_msg)
-
 
 
 class AppError(Exception):
@@ -87,6 +86,7 @@ class DAGApp(BaseApp):
     name : str, read-only
       The name of an application
     """
+
     def __init__(self, name):
         self._g = Graph(directed=True)
         self._kernels = dict()
@@ -247,8 +247,9 @@ class DAGApp(BaseApp):
         return self._kernels[kernel_idx]
 
     def _prep_baseline(self):
-        self._depth_sorted = [[v_.index for v_ in self._g.vs.select(depth_eq=d_)]
-                              for d_ in range(1, self._max_depth+1)]
+        self._depth_sorted = [[v_.index
+                               for v_ in self._g.vs.select(depth_eq=d_)]
+                              for d_ in range(1, self._max_depth + 1)]
         finish_time = dict.fromkeys(self._g.vs.indices, 0)
         for l, node_list in enumerate(self._depth_sorted):
             if l == 0:
@@ -256,8 +257,9 @@ class DAGApp(BaseApp):
                     finish_time[node] = self._length[node]
             else:
                 for node in node_list:
-                    start = max([finish_time[n_]
-                                 for n_ in self._g.neighbors(node, mode=GRAPH_IN)])
+                    start = max([finish_time[n_] for n_ in
+                                 self._g.neighbors(node,
+                                                   mode=GRAPH_IN)])
                     finish_time[node] = start + self._length[node]
         self._baseline_runtime = max(finish_time.values())
 
@@ -327,7 +329,7 @@ class DAGApp(BaseApp):
         """
         speedups = [speedup_dict[idx_] if idx_ in speedup_dict else 1
                     for idx_ in self._g.vs.indices]
-        kernel_runtime = [self._length[idx_]/speedups[idx_]
+        kernel_runtime = [self._length[idx_] / speedups[idx_]
                           for idx_ in self._g.vs.indices]
         finish_time = dict.fromkeys(self._g.vs.indices, 0)
         for l, node_list in enumerate(self._depth_sorted):
@@ -336,8 +338,9 @@ class DAGApp(BaseApp):
                     finish_time[node] = kernel_runtime[node]
             else:
                 for node in node_list:
-                    start = max([finish_time[n_]
-                                for n_ in self._g.neighbors(node, mode=GRAPH_IN)])
+                    start = max([finish_time[n_] for n_ in
+                                 self._g.neighbors(node,
+                                                   mode=GRAPH_IN)])
                     finish_time[node] = start + kernel_runtime[node]
         app_runtime = max(finish_time.values())
         return self._baseline_runtime / app_runtime
@@ -364,6 +367,7 @@ class SimpleApp(BaseApp):
     name: str
       the name (id) of the application
     """
+
     def __init__(self, f=0.9, m=0, name='app'):
         """ Initialize an application
 
@@ -418,11 +422,11 @@ class SimpleApp(BaseApp):
         return self.tag
 
     def tag_update(self):
-        f_str = str(int((self.f-self.f_noacc)*100))
+        f_str = str(int((self.f - self.f_noacc) * 100))
 
         return '-'.join([f_str, ] + [(
-            '%s-%d' % (name, int(self.kernels_coverage[name]*100)))
-            for name in self.kernels_coverage])
+            '%s-%d' % (name, int(self.kernels_coverage[name] * 100))) for name
+                                     in self.kernels_coverage])
 
     def add_kernel(self, kernel, cov):
         """Register a kernel to be accelerate.
@@ -482,7 +486,7 @@ class SimpleApp(BaseApp):
 
         if self.f_noacc + cov_old < cov:
             raise AppError('[set_cov]: cov of {0} is too large to exceed '
-                                   'the overall parallel ratio'.format(name))
+                           'the overall parallel ratio'.format(name))
 
         self.kernels_coverage[name] = cov
         self.f_noacc = self.f_noacc + cov_old - cov
@@ -543,6 +547,9 @@ class SyntheticApp(BaseApp):
           the given coverage (cov) is larger than the overall parallel ratio
 
         """
+        if cov < 1e-9:
+            return
+
         name = kernel.name
         if name in self.kernels:
             raise AppError('Kernel {0} already exist'.format(name))
@@ -550,9 +557,10 @@ class SyntheticApp(BaseApp):
         total_cov = self.kernels_coverage['__total_cov__']
 
         # with regard to float rounding
-        if total_cov + cov -1 > 1e-6:
+        if total_cov + cov - 1 > 1e-6:
             raise AppError(
-                'Total coverage exceed 1 after adding {0}, kernel not added'.format(kernel.name))
+                'Total coverage exceed 1 after adding {0}, kernel not added'.format(
+                    kernel.name))
         self.kernels[name] = kernel
         self.kernels_coverage[name] = cov
         self.kernels_coverage['__total_cov__'] = total_cov + cov
@@ -600,8 +608,9 @@ class SyntheticApp(BaseApp):
 
                 val_ = ele.get('cov')
                 if not val_:
-                    raise Exception('No covreage for kernel {0} in app {1}'.format(
-                        kname, name))
+                    raise Exception(
+                        'No covreage for kernel {0} in app {1}'.format(
+                            kname, name))
                 k_cov = float(val_)
                 a.add_kernel(kernels[kname], k_cov)
                 _debug(_bm_('Add kernel {0}, cov {1}', kname, k_cov))
@@ -612,6 +621,7 @@ class SyntheticApp(BaseApp):
     def load_from_xmlfile(cls, xmlfile, kernels):
         tree_root = etree.parse(xmlfile)
         return cls.load_from_xmltree(tree_root.getroot(), kernels)
+
 
 class DetailedApp(BaseApp):
     def __init__(self, name):
@@ -702,8 +712,9 @@ class DetailedApp(BaseApp):
 
                 val_ = ele.get('cov')
                 if not val_:
-                    raise Exception('No covreage for kernel {0} in app {1}'.format(
-                        kname, name))
+                    raise Exception(
+                        'No covreage for kernel {0} in app {1}'.format(
+                            kname, name))
                 k_cov = float(val_)
                 a_.add_kernel(kernels[kname], k_cov)
 
