@@ -167,8 +167,7 @@ class ASAcc(object):
         self._dp_factor = 1
 
 
-    # def perf(self, power=None, bandwidth=None, perf_scale_mode='linear'):
-    def perf(self, power=None, bandwidth=None, perf_scale_mode='sqrt'):
+    def perf(self, power=None, bandwidth=None, perf_scale_mode='linear'):
         kernel = self._ker_obj
         uparam = kernel.get_kernel_param(self._acc_id)
 
@@ -348,8 +347,7 @@ class RLAcc(object):
         _debug(_bm_('a0: {0}, dp0: {1}, sp0: {2}, perf0: {3}',
                     self._a0, self._dp0, self._sp0, self._perf0))
 
-    # def perf(self, ker_obj, power=None, bandwidth=None, perf_scale_mode='linear'):
-    def perf(self, ker_obj, power=None, bandwidth=None, perf_scale_mode='sqrt'):
+    def perf(self, ker_obj, power=None, bandwidth=None, perf_scale_mode='linear'):
         uparam = ker_obj.get_kernel_param(self._acc_id)
 
         cdef float area_p, area_b, area_eff, power_eff

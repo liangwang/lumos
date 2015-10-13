@@ -20,25 +20,25 @@ class TestAccelerator(unittest.TestCase):
 
     def test_acc_vdd_scale(self):
         self.acc_cmos.vdd = 300
-        self.assertAlmostEqual(self.acc_cmos.perf(), 9.826, places=2)
+        self.assertAlmostEqual(self.acc_cmos.perf(), 12.6524, places=2)
 
         self.acc_tfet.vdd = 300
-        self.assertAlmostEqual(self.acc_tfet.perf(), 1256.462, places=2)
+        self.assertAlmostEqual(self.acc_tfet.perf(), 1617.8776, places=2)
 
         self.acc_cmos.vdd = 400
-        self.assertAlmostEqual(self.acc_cmos.perf(), 79.345, places=2)
+        self.assertAlmostEqual(self.acc_cmos.perf(), 102.1681, places=2)
 
         self.acc_tfet.vdd = 400
-        self.assertAlmostEqual(self.acc_tfet.perf(), 2053.795, places=2)
+        self.assertAlmostEqual(self.acc_tfet.perf(), 2644.5595, places=2)
 
         self.acc_cmos.vdd = 500
-        self.assertAlmostEqual(self.acc_cmos.perf(), 432.16, places=2)
+        self.assertAlmostEqual(self.acc_cmos.perf(), 556.4692, places=2)
 
         self.acc_tfet.vdd = 500
-        self.assertAlmostEqual(self.acc_tfet.perf(), 2881.495, places=2)
+        self.assertAlmostEqual(self.acc_tfet.perf(), 3710.3437, places=2)
 
         self.acc_cmos.vdd = self.acc_cmos.tech_vnom
-        self.assertAlmostEqual(self.acc_cmos.perf(), 3388.761, places=2)
+        self.assertAlmostEqual(self.acc_cmos.perf(), 4363.5234, places=2)
 
         self.acc_tfet.vdd = self.acc_tfet.tech_vnom
-        self.assertAlmostEqual(self.acc_tfet.perf(), 2053.795, places=2)
+        self.assertAlmostEqual(self.acc_tfet.perf(), 2644.5595, places=2)
