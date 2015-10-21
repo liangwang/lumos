@@ -1,0 +1,209 @@
+<workload>
+  <!--
+      Data extracted from table 5 of the paper:
+
+Sirius: An Open End-to-End Voice and Vision Personal Assistant and Its
+Implications for Future Warehouse Scale Computers, ASPLOS'15
+
+The paper use Intel Xeon E3-1240 v3 as the baseline, we scale the performance
+number to Core i7-960 using SPECfp2006 scores.
+
+SPECfp2006 scores for Xeon E3-1240 v3 is 75.6, reference at
+https://www.spec.org/cpu2006/results/res2014q2/cpu2006-20140407-29280.html
+
+SPECfp2006 scores for Core i7-960 is 43.5, reference at
+https://www.spec.org/cpu2006/results/res2011q3/cpu2006-20110718-17508.html 
+
+Therefore, speedup numbers reported in table 5 are scaled by a factor of
+75.6/43.5 = 1.738 for FPGA accelerator.
+
+The FPGA board used in the paper is Xilinx Virtex-6 ML605. According to
+http://www.xilinx.com/products/boards-and-kits/ek-v6-ml605-g.html, the chip used
+in this board is Virtex-6 LXT240T. According to 
+
+Then scales FPGA speedup by certain performance ratio to get ASIC speedup.
+  -->
+  <kernels>
+    <kernel name="gmm">
+      <accelerator>
+        <fpga perf="24.62"/>
+        <asic_5x perf="123.1"/>
+      </accelerator>
+      <core_perf_config>
+        <cache_sz_l1_nom>65536</cache_sz_l1_nom>
+        <cache_sz_l2_nom>18874368</cache_sz_l2_nom>
+        <miss_l1>0.002238</miss_l1>
+        <miss_l2>0.54371</miss_l2>
+        <alpha_l1>5</alpha_l1>
+        <alpha_l2>0.5</alpha_l2>
+        <rm>0.21</rm>
+        <cpi_exe>0.457</cpi_exe>
+        <pf>0.816</pf>
+      </core_perf_config>
+    </kernel>
+    <kernel name="dnnasr">
+      <accelerator>
+        <fpga perf="16.094"/>
+        <asic_5x perf="80.47"/>
+      </accelerator>
+      <core_perf_config>
+        <cache_sz_l1_nom>65536</cache_sz_l1_nom>
+        <cache_sz_l2_nom>18874368</cache_sz_l2_nom>
+        <miss_l1>0.0842</miss_l1>
+        <miss_l2>0.0734</miss_l2>
+        <alpha_l1>5</alpha_l1>
+        <alpha_l2>0.5</alpha_l2>
+        <rm>0.129</rm>
+        <cpi_exe>0.378</cpi_exe>
+        <pf>0.952</pf>
+      </core_perf_config>
+    </kernel>
+    <kernel name="stemmer">
+      <accelerator>
+        <fpga perf="4.37"/>
+        <asic_5x perf="21.85"/>
+      </accelerator>
+      <core_perf_config>
+        <cache_sz_l1_nom>65536</cache_sz_l1_nom>
+        <cache_sz_l2_nom>18874368</cache_sz_l2_nom>
+        <miss_l1>0.0158</miss_l1>
+        <miss_l2>0.931</miss_l2>
+        <alpha_l1>5</alpha_l1>
+        <alpha_l2>0.5</alpha_l2>
+        <rm>0.294</rm>
+        <cpi_exe>0.55</cpi_exe>
+        <pf>0.857</pf>
+      </core_perf_config>
+    </kernel>
+    <kernel name="regex">
+      <accelerator>
+        <fpga perf="24.5"/>
+        <asic_5x perf="122.5"/>
+      </accelerator>
+      <core_perf_config>
+        <cache_sz_l1_nom>65536</cache_sz_l1_nom>
+        <cache_sz_l2_nom>18874368</cache_sz_l2_nom>
+        <miss_l1>0.00059</miss_l1>
+        <miss_l2>0.0196</miss_l2>
+        <alpha_l1>5</alpha_l1>
+        <alpha_l2>0.5</alpha_l2>
+        <rm>0.219</rm>
+        <cpi_exe>0.516</cpi_exe>
+        <pf>0.85</pf>
+      </core_perf_config>
+    </kernel>
+    <kernel name="crf">
+      <accelerator>
+        <fpga perf="10.924"/>
+        <asic_5x perf="54.62"/>
+      </accelerator>
+      <core_perf_config>
+        <cache_sz_l1_nom>65536</cache_sz_l1_nom>
+        <cache_sz_l2_nom>18874368</cache_sz_l2_nom>
+        <miss_l1>0.0164</miss_l1>
+        <miss_l2>0.1396</miss_l2>
+        <alpha_l1>5</alpha_l1>
+        <alpha_l2>0.5</alpha_l2>
+        <rm>0.342</rm>
+        <cpi_exe>0.525</cpi_exe>
+        <pf>0.834</pf>
+      </core_perf_config>
+    </kernel>
+    <kernel name="fe">
+      <accelerator>
+        <fpga perf="50.396"/>
+        <asic_5x perf="251.98"/>
+      </accelerator>
+      <core_perf_config>
+        <cache_sz_l1_nom>65536</cache_sz_l1_nom>
+        <cache_sz_l2_nom>18874368</cache_sz_l2_nom>
+        <miss_l1>0.0684</miss_l1>
+        <miss_l2>0.2484</miss_l2>
+        <alpha_l1>5</alpha_l1>
+        <alpha_l2>0.5</alpha_l2>
+        <rm>0.328</rm>
+        <cpi_exe>0.623</cpi_exe>
+        <pf>0.923</pf>
+      </core_perf_config>
+    </kernel>
+    <kernel name="fd">
+      <accelerator>
+        <fpga perf="109.968"/>
+        <asic_5x perf="549.84"/>
+      </accelerator>
+      <core_perf_config>
+        <cache_sz_l1_nom>65536</cache_sz_l1_nom>
+        <cache_sz_l2_nom>18874368</cache_sz_l2_nom>
+        <miss_l1>0.0642</miss_l1>
+        <miss_l2>0.0223</miss_l2>
+        <alpha_l1>5</alpha_l1>
+        <alpha_l2>0.5</alpha_l2>
+        <rm>0.211</rm>
+        <cpi_exe>0.574</cpi_exe>
+        <pf>0.949</pf>
+      </core_perf_config>
+    </kernel>
+    <kernel name="coreonly">
+      <core_perf_config>
+        <cache_sz_l1_nom>65536</cache_sz_l1_nom>
+        <cache_sz_l2_nom>18874368</cache_sz_l2_nom>
+        <miss_l1>0.0158</miss_l1>
+        <miss_l2>0.931</miss_l2>
+        <alpha_l1>5</alpha_l1>
+        <alpha_l2>0.5</alpha_l2>
+        <rm>0.294</rm>
+        <cpi_exe>0.55</cpi_exe>
+        <pf>1</pf>
+      </core_perf_config>
+    </kernel>
+  </kernels>
+  <apps type="synthetic">
+    <app name="synapp_0">
+      <!-- According to Figure 9 of the paper -->
+      <kernel_config>
+        <kernel name="fe" cov="0.1025"/>
+        <kernel name="fd" cov="0.14"/>
+        <kernel name="stemmer" cov="0.115"/>
+        <kernel name="regex" cov="0.055"/>
+        <kernel name="crf" cov="0.0425"/>
+        <kernel name="dnnasr" cov="0.195"/>
+        <kernel name="gmm" cov="0.305"/>
+      </kernel_config>
+    </app>
+    <app name="fe">
+      <kernel_config>
+        <kernel name="fe" cov="1"/>
+      </kernel_config>
+    </app>
+    <app name="fd">
+      <kernel_config>
+        <kernel name="fd" cov="1"/>
+      </kernel_config>
+    </app>
+    <app name="stemmer">
+      <kernel_config>
+        <kernel name="stemmer" cov="1"/>
+      </kernel_config>
+    </app>
+    <app name="regex">
+      <kernel_config>
+        <kernel name="regex" cov="1"/>
+      </kernel_config>
+    </app>
+    <app name="crf">
+      <kernel_config>
+        <kernel name="crf" cov="1"/>
+      </kernel_config>
+    </app>
+    <app name="dnnasr">
+      <kernel_config>
+        <kernel name="dnnasr" cov="1"/>
+      </kernel_config>
+    </app>
+    <app name="gmm">
+      <kernel_config>
+        <kernel name="gmm" cov="1"/>
+      </kernel_config>
+    </app>
+  </apps>
+</workload>

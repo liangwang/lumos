@@ -1,11 +1,15 @@
 #!/usr/bin/env python
-
+""" Build synthetic applications using kernels in Sirius suite (assumed
+to be at sirius.xml at current directory).
+"""
 import random
 from lxml import etree
 import argparse
 import sys
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(
+    prog="python -m lumos.model.workload.sirius_synapps",
+    description=__doc__)
 parser.add_argument('--napps',
                     type=int,
                     help='number of apps to generate',
@@ -14,17 +18,16 @@ parser.add_argument('--non-kernel',
                     type=int,
                     help='non-kernel portion in permille',
                     default=0)
-parser.add_argument('--kernels',
-                    help='kernels used to generate apps, '
-                    'None (default) if all kernels are used')
-# parser.add_argument('--precision',
-#                     type=int,
-#                     default=3,
-#                     help='number of significant digits for precision')
-parser.add_argument('-o',
-                    '--output-file',
-                    default='sirius_synthetic.xml',
-                    help='output workload in XML file')
+parser.add_argument(
+    '--kernels',
+    help='a comma-separated list of sirius kernels used to generate apps. '
+    'If not specified (default behavior), all sirius kernels will be used')
+parser.add_argument(
+    '--precision',
+    type=int,
+    default=3,
+    help='number of significant digits for precision, default: %(default)s')
+parser.add_argument('-o', '--output-file', help='output workload in XML file')
 args = parser.parse_args()
 
 if not args.kernels:
@@ -43,7 +46,6 @@ parser = etree.XMLParser(remove_blank_text=True)
 root.append(etree.parse('sirius.xml', parser).find('kernels'))
 app_root = etree.SubElement(root, 'apps', type='synthetic')
 
-args.precision = 3
 randrange_min = 0
 randrange_max = 10 ** args.precision - args.non_kernel
 for n in range(args.napps):
