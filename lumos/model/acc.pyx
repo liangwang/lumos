@@ -344,8 +344,13 @@ class RLAcc(object):
         self._freq_factor = 1
         self._dp_factor = 1
         self._sp_factor = 1
+        self._area_nom = self._area / self._a0
         _debug(_bm_('a0: {0}, dp0: {1}, sp0: {2}, perf0: {3}',
                     self._a0, self._dp0, self._sp0, self._perf0))
+
+    @property
+    def area_nom(self):
+        return self._area_nom
 
     def perf(self, ker_obj, power=None, bandwidth=None, perf_scale_mode='linear'):
         uparam = ker_obj.get_kernel_param(self._acc_id)

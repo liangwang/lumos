@@ -529,24 +529,28 @@ class HeterogSysDetailed(HeterogSys):
         cdef float miss_l1, miss_l2, t0, t, eta, eta0
         cov, speedup = 1, 0
         for kid in app.get_all_kernels():
-            kcov = app.get_cov(kid)
+            kcov,k_rc_count, k_rc_time = app.get_kernel_characteristics(kid)
             kobj = app.get_kernel(kid)
-            _debug(_bm_('get_perf: kernel {0}, cov {1}', kid, kcov))
+            _debug(_bm_('get_perf: kernel {0}, cov {1}, rc_count {2}, rc_time {3}', kid, kcov, k_rc_count, k_rc_time))
+
+            # compute ASIC speedup (if available)
             if not disable_asacc and self.has_asacc(kid):
                 asacc = self.get_asacc_list(kid)[0]
                 asacc_perf = asacc.perf(power=self.sys_power, bandwidth=self.sys_bandwidth)
+                asacc_speedup = kcov / (asacc_perf / core.perfnom)
             else:
-                asacc_perf = 0
-            asacc_speedup = asacc_perf / core.perfnom
+                asacc_speedup = 999999999
             _debug(_bm_('get_perf: ASAcc speedup: {0}', asacc_speedup))
 
+            # compute RL speedup (if available)
             if not disable_rlacc and self.has_rlacc() and kobj.accelerated_by('fpga'):
                 rlacc_perf = rlacc.perf(kobj, power=self.sys_power, bandwidth=self.sys_bandwidth)
+                rlacc_speedup = kcov / (rlacc_perf / core.perfnom) + k_rc_count * k_rc_time * rlacc.area_nom
             else:
-                rlacc_perf = 0
-            rlacc_speedup = rlacc_perf / core.perfnom
+                rlacc_speedup = 999999999
             _debug(_bm_('get_perf: RLAcc speedup: {0}', rlacc_speedup))
 
+            # compute multi-core parallelization speedup
             miss_l1 = min(
                 1, kobj.miss_l1 * ((self.cache_sz_l1/(kobj.cache_sz_l1_nom)) ** (1-kobj.alpha_l1)))
             miss_l2 = min(
@@ -568,13 +572,13 @@ class HeterogSysDetailed(HeterogSys):
             # vdd_max = min(core.vnom * VSF_MAX, core.vmax)
             s_speedup = 1
             _debug(_bm_('s_speedup: {0}', s_speedup))
-            core_speedup = 1 / ((1-kobj.pf + kobj.pf/p_speedup))
+            core_speedup = kcov * ((1-kobj.pf + kobj.pf/p_speedup))
             _debug(_bm_('get_perf: Many-core speedup: {0}', core_speedup))
 
-            best_speedup = max(asacc_speedup, rlacc_speedup, core_speedup)
+            best_speedup = min(asacc_speedup, rlacc_speedup, core_speedup)
             _debug(_bm_('get_perf: Best speedup: {0}', best_speedup))
 
-            speedup += kcov / best_speedup
+            speedup += best_speedup
             cov -= kcov
             _debug(_bm_('get_perf: speedup {0}', speedup))
 

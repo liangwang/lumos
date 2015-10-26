@@ -179,7 +179,7 @@ class DAGApp(BaseApp):
 
         Parameters
         ----------
-        kerobj : :class:`~lumos.model.Kernel`
+        kerobj : :class:`~lumos.model.workload.kernel.Kernel`
           The kernel object to be added
         len_ : float
           The run length of a kernel executed on a single base line core
@@ -436,7 +436,7 @@ class SimpleApp(BaseApp):
 
         Parameters
         ----------
-        kernel : :class:`~lumos.model.kernel.Kernel`
+        kernel : :class:`~lumos.model.workload.kernel.Kernel`
           The kernel object
         cov : float
           The coerage of the kernel, relative to the serial execution
@@ -527,8 +527,10 @@ class SyntheticApp(BaseApp):
         super().__init__(name, 'synthetic')
         self.kernels = dict()
         self.kernels_coverage = {'__total_cov__': 0}
+        self.kernels_rc_count = dict()
+        self.kernels_rc_time = dict()
 
-    def add_kernel(self, kernel, cov):
+    def add_kernel(self, kernel, cov, rc_count=1, rc_time=0):
         """Register a kernel to be accelerated.
 
         The kernel could be accelerated by certain ASIC, or more
@@ -536,10 +538,17 @@ class SyntheticApp(BaseApp):
 
         Parameters
         ----------
-        kernel : :class:`~lumos.model.kernel.Kernel`
+        kernel : :class:`~lumos.model.workload.kernel.Kernel`
           The kernel object
         cov : float
           The coerage of the kernel, relative to the serial execution
+        rc_count: int
+          The count of reconfiguration operation, it is at least 1 if cov is
+          none-zero.
+        rc_time: float
+          Reconfiguration timing overhead for a BCE-sized FPGA, relative to the
+          serial execution of the whole application, set this parameter to 0 to
+          ignore the reconfiguration overhead
 
         Raises
         ------
@@ -564,6 +573,8 @@ class SyntheticApp(BaseApp):
         self.kernels[name] = kernel
         self.kernels_coverage[name] = cov
         self.kernels_coverage['__total_cov__'] = total_cov + cov
+        self.kernels_rc_count[name] = rc_count
+        self.kernels_rc_time[name] = rc_time
 
     def get_all_kernels(self):
         """ Get all kernels within the application
@@ -581,6 +592,43 @@ class SyntheticApp(BaseApp):
             return self.kernels_coverage[name]
         except KeyError:
             return 0
+
+    def get_rc_count(self, name):
+        try:
+            return self.kernels_rc_count[name]
+        except KeyError:
+            return 0
+
+    def get_rc_time(self, name):
+        try:
+            return self.kernels_rc_time[name]
+        except KeyError:
+            return 0
+
+    def get_kernel_characteristics(self, name):
+        """ Get all characteristics of a kernel within an application.
+
+        This is equivalent to call
+        :func:`~lumos.model.workload.application.SyntheticApp.get_cov`,
+        :func:`~lumos.model.workload.application.SyntheticApp.get_rc_count`,
+        and :func:`~lumos.model.workload.application.SyntheticApp.get_rc_time`,
+        then pack return values as a tuple.
+
+        Parameters
+        ----------
+        name : str
+          The name of the kernel
+
+        Returns
+        -------
+        tuple
+          a tuple of (cov, rc_count, rc_time)
+        """
+        try:
+            return self.kernels_coverage[name], self.kernels_rc_count[
+                name], self.kernels_rc_time[name]
+        except KeyError:
+            return 0, 0, 0
 
     def get_kernel(self, name):
         try:
@@ -612,8 +660,22 @@ class SyntheticApp(BaseApp):
                         'No covreage for kernel {0} in app {1}'.format(
                             kname, name))
                 k_cov = float(val_)
-                a.add_kernel(kernels[kname], k_cov)
-                _debug(_bm_('Add kernel {0}, cov {1}', kname, k_cov))
+
+                val_ = ele.get('rc_count')
+                if not val_:
+                    k_rc_count = 1
+                else:
+                    k_rc_count = int(val_)
+
+                val_ = ele.get('rc_time')
+                if not val_:
+                    k_rc_time = 0
+                else:
+                    k_rc_time = float(val_)
+                a.add_kernel(kernels[kname], k_cov, k_rc_count, k_rc_time)
+                _debug(
+                    _bm_('Add kernel {0}, cov {1}, rc_count {2}, rc_time {3}',
+                         kname, k_cov, k_rc_count, k_rc_time))
 
         return a
 
@@ -637,7 +699,7 @@ class DetailedApp(BaseApp):
 
         Parameters
         ----------
-        kernel : :class:`~lumos.model.kernel.Kernel`
+        kernel : :class:`~lumos.model.workload.kernel.Kernel`
           The kernel object
         cov : float
           The coerage of the kernel, relative to the serial execution
