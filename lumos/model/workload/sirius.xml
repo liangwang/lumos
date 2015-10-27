@@ -205,5 +205,29 @@ Then scales FPGA speedup by certain performance ratio to get ASIC speedup.
         <kernel name="gmm" cov="1"/>
       </kernel_config>
     </app>
+    <app name="synapp_reconfig_overhead_0">
+      <kernel_config>
+        <kernel cov="0.1" name="fe" rc_count="1" rc_time="1e-4"/>
+        <kernel cov="0.9" name="coreonly"/>
+      </kernel_config>
+    </app>
+    <app name="synapp_reconfig_overhead_1">
+      <kernel_config>
+        <kernel cov="0.1" name="fe" rc_count="1" rc_time="1e-3"/>
+        <kernel cov="0.9" name="coreonly"/>
+      </kernel_config>
+    </app>
+    <app name="synapp_reconfig_overhead_2">
+      <kernel_config>
+        <kernel cov="0.1" name="fe" rc_count="1" rc_time="1e-2"/>
+        <kernel cov="0.9" name="coreonly"/>
+      </kernel_config>
+    </app>
+    <app name="synapp_reconfig_overhead_3">
+      <kernel_config>
+        <kernel cov="0.1" name="fe" rc_count="10" rc_time="1e-3"/>
+        <kernel cov="0.9" name="coreonly"/>
+      </kernel_config>
+    </app>
   </apps>
 </workload>
