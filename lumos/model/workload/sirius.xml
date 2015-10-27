@@ -168,6 +168,7 @@ Then scales FPGA speedup by certain performance ratio to get ASIC speedup.
         <kernel name="crf" cov="0.0425"/>
         <kernel name="dnnasr" cov="0.195"/>
         <kernel name="gmm" cov="0.305"/>
+        <kernel name="coreonly" cov="0.045"/>
       </kernel_config>
     </app>
     <app name="fe">

@@ -18,7 +18,7 @@ class TestHeterogSys(unittest.TestCase):
         app = _as['synapp_0']
         sysconfig = SysConfigDetailed()
         sys = HeterogSysDetailed(sysconfig, _ks)
-        self.assertAlmostEqual(sys.perf(650, app), 92.113, places=2)
+        self.assertAlmostEqual(sys.perf(650, app), 124.692, places=2)
 
     def test_reconfig_overhead(self):
         workload_xmlfile = os.path.join(
