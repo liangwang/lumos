@@ -6,8 +6,8 @@ import os
 import logging
 import pickle
 
-
 from functools import lru_cache
+
 
 @lru_cache(maxsize=1024)
 def _solve_cache(size, line_sz=64, assoc=2, nbanks=1):
@@ -145,8 +145,8 @@ def _solve_cache(size, line_sz=64, assoc=2, nbanks=1):
 
     # repeaters in H-tree
     ipara.rpters_in_htree = True
-    ipara.ver_htree_wires_over_array = False # TODO: what is the default value?
-    ipara.broadcast_addr_din_over_ver_htrees = False # TODO: what is the default value?
+    ipara.ver_htree_wires_over_array = False  # TODO: what is the default value?
+    ipara.broadcast_addr_din_over_ver_htrees = False  # TODO: what is the default value?
 
     # number of ports
     ipara.num_rw_ports = 1
@@ -154,7 +154,6 @@ def _solve_cache(size, line_sz=64, assoc=2, nbanks=1):
     ipara.num_wr_ports = 0
     ipara.num_se_rd_ports = 0
     ipara.num_search_ports = 1
-
 
     # UCA (0) or NUCA (1)
     ipara.nuca = 0
@@ -233,15 +232,18 @@ def _solve_cache(size, line_sz=64, assoc=2, nbanks=1):
     res = cacti.cacti_interface(ipara)
     return res
 
+
 _size_to_bytes = {'b': 1, 'k': 1024, 'm': 1048576, 'g': 1073741824}
+
+
 def cache_sz_nom(cache_sz_str):
     mo = re.match(r'([0-9]+)([BbKkMmGg])', cache_sz_str)
     if not mo:
-        raise Exception('cache size not recognizable: {0}'.format(cache_sz_str))
+        raise Exception('cache size not recognizable: {0}'.format(
+            cache_sz_str))
     cache_size = int(mo.group(1))
     size_suffix = mo.group(2).lower()
     return cache_size * _size_to_bytes[size_suffix]
-
 
 # To model cache characteristics (area, power, delay), use cacti-p to calculate
 # characteristics of a cache at 22nm with the given size. Then scale to desired
@@ -314,17 +316,32 @@ _tech_scale_table = {
         'area': 1,
         'time': 1.65,
     },
+    ('sttram-sttram', 22): {
+        # these scaling data are provisioning, needs further improvement.
+        # extracted from table 1 of
+        # "Low-power non-volatile spintronic memory: STT-RAM and beyond"
+        'power': 5,  # energy/bit is the same as CMOS, while read/write speed is 1-10, use the average as 5
+        'area': 0.33,  # use the density
+        'time': 5,
+    }
 }
 
 
-class CacheError(Exception): pass
+class CacheError(Exception):
+    pass
 
 
 _cache_db = None
-_dbfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'cache_db.p.bz2')
+_dbfile = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                       'cache_db.p.bz2')
 
 
-def get_cache_trait(size, tech_type='cmos-hp', tech_node=22, line_sz=64, assoc=2, nbanks=1):
+def get_cache_trait(size,
+                    tech_type='cmos-hp',
+                    tech_node=22,
+                    line_sz=64,
+                    assoc=2,
+                    nbanks=1):
     global _cache_db, _dbfile
     if not _cache_db:
         try:
@@ -351,8 +368,12 @@ if __name__ == '__main__':
     from itertools import product
 
     parser = argparse.ArgumentParser()
-    logging_levels = ('CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG', 'NOTSET')
-    parser.add_argument('-l', '--logging-level', default='NOTSET', choices=logging_levels)
+    logging_levels = ('CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG',
+                      'NOTSET')
+    parser.add_argument('-l',
+                        '--logging-level',
+                        default='NOTSET',
+                        choices=logging_levels)
     parser.add_argument('-f', '--force-update', action='store_true')
     parser.add_argument('-i', '--ignore-csvfile', action='store_true')
     args = parser.parse_args()
@@ -360,7 +381,8 @@ if __name__ == '__main__':
     _logger = logging.getLogger()
     _logger.setLevel(args.logging_level)
 
-    csvfile = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'cache_db.csv.bz2')
+    csvfile = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                           'cache_db.csv.bz2')
 
     if not args.force_update:
         try:
@@ -371,7 +393,7 @@ if __name__ == '__main__':
     else:
         cachedb = dict()
 
-    index_fields = ('tech','node','size','line_sz','assoc','nbanks')
+    index_fields = ('tech', 'node', 'size', 'line_sz', 'assoc', 'nbanks')
     if os.path.exists(csvfile) and not args.ignore_csvfile:
         with bz2.open(csvfile, 'rt') as f:
             reader = csv.DictReader(f)
@@ -389,11 +411,18 @@ if __name__ == '__main__':
                 area_scale = _tech_scale_table[tech_table_index]['area']
                 power_scale = _tech_scale_table[tech_table_index]['power']
                 time_scale = _tech_scale_table[tech_table_index]['time']
-                print('solve {0} {1} {2} {3}'.format(size, line_sz, assoc, nbanks))
-                res = _solve_cache(size, line_sz=line_sz, assoc=assoc, nbanks=nbanks)
+                print(
+                    'solve {tech} {node} {size} {line_sz} {assoc} {nbanks}'.format(
+                        **row))
+                res = _solve_cache(size,
+                                   line_sz=line_sz,
+                                   assoc=assoc,
+                                   nbanks=nbanks)
                 cachedb[key] = {
-                    'power': (res.power.readOp.dynamic/res.access_time + res.power.readOp.leakage) * power_scale,
-                    'area': res.cache_ht * 1e-3 * res.cache_len * 1e-3 * area_scale,
+                    'power': (res.power.readOp.dynamic / res.access_time +
+                              res.power.readOp.leakage) * power_scale,
+                    'area':
+                    res.cache_ht * 1e-3 * res.cache_len * 1e-3 * area_scale,
                     'latency': res.access_time * 1e9 * time_scale,
                 }
 
@@ -405,55 +434,82 @@ if __name__ == '__main__':
         size_list = (16384, 32768, 65536, 131072, 262144, 524288)
         linesz_list = (64, 128)
         assoc_list = (1, 2, 4)
-        nbanks_list = (1,)
-        for (tech, node), size, line_sz, assoc, nbanks in product(_tech_scale_table.keys(),
-                                                                size_list, linesz_list,
-                                                                assoc_list, nbanks_list):
-                key = (tech, node, size, line_sz, assoc, nbanks)
-                rows.append(
-                    {'tech': tech, 'node': node, 'size': size,
-                     'line_sz': line_sz, 'assoc': assoc, 'nbanks': nbanks})
-                if key in cachedb and not args.force_update:
-                    continue
-                tech_table_index = (tech, node)
-                area_scale = _tech_scale_table[tech_table_index]['area']
-                power_scale = _tech_scale_table[tech_table_index]['power']
-                time_scale = _tech_scale_table[tech_table_index]['time']
-                print('solve {0} {1} {2} {3}'.format(size, line_sz, assoc, nbanks))
-                res = _solve_cache(size, line_sz=line_sz, assoc=assoc, nbanks=nbanks)
-                cachedb[key] = {
-                    'power': (res.power.readOp.dynamic/res.access_time + res.power.readOp.leakage) * power_scale,
-                    'area': res.cache_ht * 1e-3 * res.cache_len * 1e-3 * area_scale,
-                    'latency': res.access_time * 1e9 * time_scale,
-                }
+        nbanks_list = (1, )
+        for (tech, node), size, line_sz, assoc, nbanks in product(
+            _tech_scale_table.keys(), size_list, linesz_list, assoc_list,
+            nbanks_list):
+            key = (tech, node, size, line_sz, assoc, nbanks)
+            row = {
+                'tech': tech,
+                'node': node,
+                'size': size,
+                'line_sz': line_sz,
+                'assoc': assoc,
+                'nbanks': nbanks
+            }
+            rows.append(row)
+            if key in cachedb and not args.force_update:
+                continue
+            tech_table_index = (tech, node)
+            area_scale = _tech_scale_table[tech_table_index]['area']
+            power_scale = _tech_scale_table[tech_table_index]['power']
+            time_scale = _tech_scale_table[tech_table_index]['time']
+            print(
+                'solve {tech} {node} {size} {line_sz} {assoc} {nbanks}'.format(
+                    **row))
+            res = _solve_cache(size,
+                               line_sz=line_sz,
+                               assoc=assoc,
+                               nbanks=nbanks)
+            cachedb[key] = {
+                'power': (res.power.readOp.dynamic / res.access_time +
+                          res.power.readOp.leakage) * power_scale,
+                'area':
+                res.cache_ht * 1e-3 * res.cache_len * 1e-3 * area_scale,
+                'latency': res.access_time * 1e9 * time_scale,
+            }
 
         # large caches, e.g. L2
-        size_list = (1048576, 2097152, 3145728, 4194304, 5242880, 6291456, 7340032, 8388608,
-                     9437184, 10485760, 11534336, 12582912, 13631488, 14680064, 15728640,
-                     16777216, 33554432, 67108864, 18874368, 134217728)
+        size_list = (1048576, 2097152, 3145728, 4194304, 5242880, 6291456,
+                     7340032, 8388608, 9437184, 10485760, 11534336, 12582912,
+                     13631488, 14680064, 15728640, 16777216, 33554432,
+                     67108864, 18874368, 134217728)
         linesz_list = (64, 128, 256)
         assoc_list = (1, 2, 4, 8)
         nbanks_list = (1, 2, 4)
-        for (tech, node), size, line_sz, assoc, nbanks in product(_tech_scale_table.keys(),
-                                                                size_list, linesz_list,
-                                                                assoc_list, nbanks_list):
-                key = (tech, node, size, line_sz, assoc, nbanks)
-                rows.append(
-                    {'tech': tech, 'node': node, 'size': size,
-                     'line_sz': line_sz, 'assoc': assoc, 'nbanks': nbanks})
-                if key in cachedb and not args.force_update:
-                    continue
-                tech_table_index = (tech, node)
-                area_scale = _tech_scale_table[tech_table_index]['area']
-                power_scale = _tech_scale_table[tech_table_index]['power']
-                time_scale = _tech_scale_table[tech_table_index]['time']
-                print('solve {0} {1} {2} {3}'.format(size, line_sz, assoc, nbanks))
-                res = _solve_cache(size, line_sz=line_sz, assoc=assoc, nbanks=nbanks)
-                cachedb[key] = {
-                    'power': (res.power.readOp.dynamic/res.access_time + res.power.readOp.leakage) * power_scale,
-                    'area': res.cache_ht * 1e-3 * res.cache_len * 1e-3 * area_scale,
-                    'latency': res.access_time * 1e9 * time_scale,
-                }
+        for (tech, node), size, line_sz, assoc, nbanks in product(
+            _tech_scale_table.keys(), size_list, linesz_list, assoc_list,
+            nbanks_list):
+            key = (tech, node, size, line_sz, assoc, nbanks)
+            row = {
+                'tech': tech,
+                'node': node,
+                'size': size,
+                'line_sz': line_sz,
+                'assoc': assoc,
+                'nbanks': nbanks
+            }
+            rows.append(row)
+            if key in cachedb and not args.force_update:
+                continue
+            tech_table_index = (tech, node)
+            area_scale = _tech_scale_table[tech_table_index]['area']
+            power_scale = _tech_scale_table[tech_table_index]['power']
+            time_scale = _tech_scale_table[tech_table_index]['time']
+            print(
+                'solve {tech} {node} {size} {line_sz} {assoc} {nbanks}'.format(
+                    **row))
+            res = _solve_cache(size,
+                               line_sz=line_sz,
+                               assoc=assoc,
+                               nbanks=nbanks)
+            cachedb[key] = {
+                'power': (res.power.readOp.dynamic / res.access_time +
+                          res.power.readOp.leakage) * power_scale,
+                'area':
+                res.cache_ht * 1e-3 * res.cache_len * 1e-3 * area_scale,
+                'latency': res.access_time * 1e9 * time_scale,
+            }
 
         with bz2.open(csvfile, 'wt') as f:
             csvwriter = csv.DictWriter(f, fieldnames=index_fields)

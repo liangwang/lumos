@@ -9,7 +9,6 @@ VMAX = 1100
 VSF_MAX = 1.3  # maxium vdd is 1.3 * vdd_nominal
 V_PRECISION = 1  # 1mV
 
-
 from lumos.settings import LUMOS_DEBUG
 from lumos import BraceMessage as _bm_
 
@@ -26,7 +25,7 @@ def _debug(brace_msg):
     if not _debug_enabled:
         return
 
-    if not  __logger:
+    if not __logger:
         __logger = logging.getLogger('HomogSys')
         __logger.setLevel(logging.DEBUG)
 
@@ -49,6 +48,7 @@ class HomogSys(object):
           Power budget of the system.
 
     """
+
     def __init__(self, area=None, power=None):
         if area:
             self.area = area
@@ -105,7 +105,6 @@ class HomogSys(object):
         core = self.core
         return int(self.area / core.area)
 
-
     def perf_by_vdd(self, vdd, app):
         """
         Get the relative performance of the system for a given application, after
@@ -141,20 +140,22 @@ class HomogSys(object):
         core = self.core
         f = app.f
 
-        vdd_max = min(core.vnom*VSF_MAX, core.vmax)
-        sperf=core.perf_by_vdd(vdd_max)
+        vdd_max = min(core.vnom * VSF_MAX, core.vmax)
+        sperf = core.perf_by_vdd(vdd_max)
 
         core.vdd = vdd
         active_num = min(int(self.area / core.area),
                          int(self.power / core.power(vdd)))
 
-        perf = 1/ ((1 - f) / sperf + f / (active_num * core.perf_by_vdd(vdd)))
+        perf = 1 / ((1 - f) / sperf + f / (active_num * core.perf_by_vdd(vdd)))
         core_num = int(self.area / core.area)
-        util = float(100*active_num)/float(core_num)
-        return {'perf': perf/PERF_BASE,
-                'active': active_num,
-                'core' : core_num,
-                'util': util}
+        util = float(100 * active_num) / float(core_num)
+        return {
+            'perf': perf / PERF_BASE,
+            'active': active_num,
+            'core': core_num,
+            'util': util
+        }
 
     def perf_by_cnum(self, cnum, app, vmin=None):
         """
@@ -193,12 +194,12 @@ class HomogSys(object):
         core = self.core
         f = app.f
 
-        cnum_max = int(self.area/core.area)
+        cnum_max = int(self.area / core.area)
 
         if cnum > cnum_max or cnum < 0:
             return None
 
-        cpower = self.power/float(cnum)
+        cpower = self.power / float(cnum)
         _debug(_bm_('Per-core power budget: {0}', cpower))
 
         # Serial performance is achieved by the highest vdd
@@ -215,31 +216,33 @@ class HomogSys(object):
                 # with the minimum vdd. Return the active core number with vmin
                 # Users can capture the exception by comparing the active_cnum
                 # and the returned active_cnum
-                active_cnum = min(int(self.area/core.area),
-                                  int(self.power/core.power(vmin)))
+                active_cnum = min(int(self.area / core.area),
+                                  int(self.power / core.power(vmin)))
 
-                perf = 1/((1-f)/sperf + f/(active_cnum*core.perf_by_vdd(vmin)))
-                util = float(100*active_cnum)/float(cnum)
+                perf = 1 / ((1 - f) / sperf + f /
+                            (active_cnum * core.perf_by_vdd(vmin)))
+                util = float(100 * active_cnum) / float(cnum)
                 _debug(_bm_('vmin is too high or active_cnum is too large'))
-                return {'perf': perf/PERF_BASE,
-                        'vdd': vmin,
-                        'cnum': active_cnum,
-                        'freq': core.freq(vmin),
-                        'util': util}
+                return {
+                    'perf': perf / PERF_BASE,
+                    'vdd': vmin,
+                    'cnum': active_cnum,
+                    'freq': core.freq(vmin),
+                    'util': util
+                }
         else:
             vmin = core.vmin
 
-
         vl = vmin
         vr = core.vmax
-        vm = int((vl+vr)/2)
+        vm = int((vl + vr) / 2)
 
-        while (vr-vl)>V_PRECISION:
-            vm = int((vl+vr)/2)
+        while (vr - vl) > V_PRECISION:
+            vm = int((vl + vr) / 2)
 
             _debug(_bm_('[Core]\t:vl: {0}mV, vr: {1}mV, vm: {2}mV, '
-                                     'freq: {3}, power: {4}, area: {5}',
-                                     vl, vr, vm, core.freq(vm), core.power(vm), core.area))
+                        'freq: {3}, power: {4}, area: {5}', vl, vr, vm,
+                        core.freq(vm), core.power(vm), core.area))
             if core.power(vm) > cpower:
                 vl = vl
                 vr = vm
@@ -251,32 +254,31 @@ class HomogSys(object):
         core.vdd = vl
         lpower = core.power(vl)
         lfreq = core.freq(vl)
-        lcnum = min(int(self.area/core.area),
-                    int(self.power/lpower))
-        lperf = 1/((1-f)/sperf + f/(cnum*core.perf_by_vdd(vl)))
+        lcnum = min(int(self.area / core.area), int(self.power / lpower))
+        lperf = 1 / ((1 - f) / sperf + f / (cnum * core.perf_by_vdd(vl)))
 
         rpower = core.power(vr)
         rfreq = core.freq(vr)
-        rcnum = min(int(self.area/core.area),
-                    int(self.power/rpower))
-        rperf = 1/((1-f)/sperf + f/(cnum*core.perf_by_vdd(vr)))
+        rcnum = min(int(self.area / core.area), int(self.power / rpower))
+        rperf = 1 / ((1 - f) / sperf + f / (cnum * core.perf_by_vdd(vr)))
 
         if rpower <= cpower:
             # right bound meets the power constraint
-            return {'perf': rperf/PERF_BASE,
-                    'vdd': vr,
-                    'cnum': cnum,
-                    'freq': rfreq,
-                    'util': float(100*cnum)/float(cnum_max)}
+            return {
+                'perf': rperf / PERF_BASE,
+                'vdd': vr,
+                'cnum': cnum,
+                'freq': rfreq,
+                'util': float(100 * cnum) / float(cnum_max)
+            }
         else:
-            return {'perf': lperf/PERF_BASE,
-                    'vdd': vl,
-                    'freq': lfreq,
-                    'cnum': cnum,
-                    'util': float(100*cnum)/float(cnum_max)}
-
-
-
+            return {
+                'perf': lperf / PERF_BASE,
+                'vdd': vl,
+                'freq': lfreq,
+                'cnum': cnum,
+                'util': float(100 * cnum) / float(cnum_max)
+            }
 
     def speedup_by_vfslist(self, vfs_list, app):
         raise NotImplementedError()
@@ -296,29 +298,30 @@ class HomogSys(object):
 
         #debug code
         #if self.area == 0 or self.power == 0:
-            #print 'area: %d, power: %d' % (self.area, self.power)
-            #raise Exception('wrong input')
+        #print 'area: %d, power: %d' % (self.area, self.power)
+        #raise Exception('wrong input')
         #end debug
 
         for vfs in vfs_list:
             # FIXME: dvfs_by_volt for future technology
             core.dvfs_by_factor(vfs)
-            active_num = min(self.area/core.area, self.power/core.power(vfs*core.vnom))
+            active_num = min(self.area / core.area, self.power / core.power(
+                vfs * core.vnom))
             #perf = 1/ ((1-f)/sperf + f/(active_num*core.perf0*core.freq))
-            perf = 1/ ((1-f)/sperf + f/(active_num*core.perf))
-            speedup_list.append(perf/PERF_BASE)
-            util = 100*active_num*core.area/self.area
+            perf = 1 / ((1 - f) / sperf + f / (active_num * core.perf))
+            speedup_list.append(perf / PERF_BASE)
+            util = 100 * active_num * core.area / self.area
             util_list.append(util)
 
             # code segment for debug
             #import math
             #if math.fabs(vsf-0.55)<0.01 and self.power==110 and self.area==5000:
-                #print 'area %d: active_num %f, perf %f, core power %f, core area %f, sys util %f' % (self.area, active_num, perf, core.power, core.area, util)
+            #print 'area %d: active_num %f, perf %f, core power %f, core area %f, sys util %f' % (self.area, active_num, perf, core.power, core.area, util)
             #if math.fabs(vsf-0.6)<0.01 and self.power==110 and self.area==4000:
-                #print 'area %d: active_num %f, perf %f, core power %f, core area %f, sys util %f' % (self.area, active_num, perf, core.power, core.area, util)
+            #print 'area %d: active_num %f, perf %f, core power %f, core area %f, sys util %f' % (self.area, active_num, perf, core.power, core.area, util)
             # end debug
 
-        return (speedup_list,util_list)
+        return (speedup_list, util_list)
 
     def speedup_by_vlist(self, v_list, app):
         raise NotImplementedError()
@@ -338,34 +341,34 @@ class HomogSys(object):
 
         #debug code
         #if self.area == 0 or self.power == 0:
-            #print 'area: %d, power: %d' % (self.area, self.power)
-            #raise Exception('wrong input')
+        #print 'area: %d, power: %d' % (self.area, self.power)
+        #raise Exception('wrong input')
         #end debug
 
         for v in v_list:
             # FIXME: dvfs_by_volt for future technology
             core.dvfs_by_volt(v)
-            active_num = min(self.area/core.area, self.power/core.power(v))
+            active_num = min(self.area / core.area, self.power / core.power(v))
             #perf = 1/ ((1-f)/sperf + f/(active_num*core.perf0*core.freq))
-            perf = 1/ ((1-f)/sperf + f/(active_num*core.perf))
-            speedup_list.append(perf/PERF_BASE)
-            util = 100*active_num*core.area/self.area
+            perf = 1 / ((1 - f) / sperf + f / (active_num * core.perf))
+            speedup_list.append(perf / PERF_BASE)
+            util = 100 * active_num * core.area / self.area
             util_list.append(util)
 
             # code segment for debug
             #import math
             #if math.fabs(vsf-0.55)<0.01 and self.power==110 and self.area==5000:
-                #print 'area %d: active_num %f, perf %f, core power %f, core area %f, sys util %f' % (self.area, active_num, perf, core.power, core.area, util)
+            #print 'area %d: active_num %f, perf %f, core power %f, core area %f, sys util %f' % (self.area, active_num, perf, core.power, core.area, util)
             #if math.fabs(vsf-0.6)<0.01 and self.power==110 and self.area==4000:
-                #print 'area %d: active_num %f, perf %f, core power %f, core area %f, sys util %f' % (self.area, active_num, perf, core.power, core.area, util)
+            #print 'area %d: active_num %f, perf %f, core power %f, core area %f, sys util %f' % (self.area, active_num, perf, core.power, core.area, util)
             # end debug
 
-        return (speedup_list,util_list)
+        return (speedup_list, util_list)
 
     def opt_core_num(self, app, vmin=VMIN):
 
         cnum_max = self.get_core_num()
-        cnumList = range(1, cnum_max+1)
+        cnumList = range(1, cnum_max + 1)
 
         perf = 0
         for cnum in cnumList:
@@ -379,39 +382,45 @@ class HomogSys(object):
                 freq = r['freq']
                 optimal_cnum = cnum
 
-        return {'cnum': optimal_cnum,
-                'vdd' : vdd,
-                'freq': freq,
-                'util': util,
-                'perf': perf}
-
+        return {
+            'cnum': optimal_cnum,
+            'vdd': vdd,
+            'freq': freq,
+            'util': util,
+            'perf': perf
+        }
 
     def perf_by_dark(self, app):
         core = self.core
         f = app.f
 
-        #core.dvfs_by_volt(VMAX)
+        # core.dvfs_by_volt(VMAX)
         core.dvfs_by_factor(VSF_MAX)
-        #sperf=core.perf0*core.freq
-        sperf=core.perf
+        # sperf=core.perf0*core.freq
+        sperf = core.perf
 
         vdd = core.v0 * VSF_MAX
 
-        active_num = min(int(self.area/core.area),
-                         int(self.power/core.power(vdd)))
+        active_num = min(int(self.area / core.area),
+                         int(self.power / core.power(vdd)))
         #perf = 1/ ((1-f)/sperf + f/(active_num*core.perf0*core.freq))
-        perf = 1/ ((1-f)/sperf + f/(active_num*core.perf))
-        core_num = int(self.area/core.area)
-        util = float(100*active_num)/float(core_num)
-        return {'perf': perf/PERF_BASE,
-                'active': active_num,
-                'core' : core_num,
-                'util': util,
-                'vdd': vdd}
+        perf = 1 / ((1 - f) / sperf + f / (active_num * core.perf))
+        core_num = int(self.area / core.area)
+        util = float(100 * active_num) / float(core_num)
+        return {
+            'perf': perf / PERF_BASE,
+            'active': active_num,
+            'core': core_num,
+            'util': util,
+            'vdd': vdd
+        }
+
 
 from .budget import Sys_L
 from lumos.model import mem
 from lumos.model.mem.cache import get_cache_trait
+
+
 class SysConfigDetailed():
     def __init__(self):
         # assume l1 have the same technology as cores
@@ -444,25 +453,31 @@ class HomogSysDetailed():
         self.core = BaseCore(sysconfig.tech, sysconfig.core_tech_name,
                              sysconfig.core_tech_variant, sysconfig.core_type)
 
-        baseline_cache_tech = '-'.join((mem.BASELINE_L1_TECH_NAME, mem.BASELINE_L1_TECH_VARIANT))
+        baseline_cache_tech = '-'.join((mem.BASELINE_L1_TECH_NAME,
+                                        mem.BASELINE_L1_TECH_VARIANT))
         baseline_traits = get_cache_trait(mem.BASELINE_L1_SIZE,
                                           baseline_cache_tech,
                                           mem.BASELINE_L1_TECH_NODE)
 
         self.cache_sz_l1 = sysconfig.cache_sz_l1
-        l1_tech_type = '-'.join([sysconfig.l1_tech_name, sysconfig.l1_tech_variant] )
-        self.l1_traits = get_cache_trait(self.cache_sz_l1, l1_tech_type, sysconfig.tech)
+        l1_tech_type = '-'.join([sysconfig.l1_tech_name,
+                                 sysconfig.l1_tech_variant])
+        self.l1_traits = get_cache_trait(self.cache_sz_l1, l1_tech_type,
+                                         sysconfig.tech)
 
         scale_factor = self.l1_traits['latency'] / baseline_traits['latency']
-        self.delay_l1 = int(mem.BASELINE_L1_DELAY * scale_factor )
+        self.delay_l1 = int(mem.BASELINE_L1_DELAY * scale_factor)
 
-        baseline_cache_tech = '-'.join((mem.BASELINE_L2_TECH_NAME, mem.BASELINE_L2_TECH_VARIANT))
+        baseline_cache_tech = '-'.join((mem.BASELINE_L2_TECH_NAME,
+                                        mem.BASELINE_L2_TECH_VARIANT))
         baseline_traits = get_cache_trait(mem.BASELINE_L2_SIZE,
                                           baseline_cache_tech,
                                           mem.BASELINE_L2_TECH_NODE)
         self.cache_sz_l2 = sysconfig.cache_sz_l2
-        l2_tech_type = '-'.join([sysconfig.l2_tech_name, sysconfig.l2_tech_variant])
-        self.l2_traits = get_cache_trait(self.cache_sz_l2, l2_tech_type, sysconfig.tech)
+        l2_tech_type = '-'.join([sysconfig.l2_tech_name,
+                                 sysconfig.l2_tech_variant])
+        self.l2_traits = get_cache_trait(self.cache_sz_l2, l2_tech_type,
+                                         sysconfig.tech)
 
         scale_factor = self.l2_traits['latency'] / baseline_traits['latency']
         self.delay_l2 = int(mem.BASELINE_L2_DELAY * scale_factor)
@@ -479,8 +494,8 @@ class HomogSysDetailed():
         l1_power = self.l1_traits['power']
         l1_area = self.l1_traits['area']
         _debug(_bm_('l1_power: {0}', l1_power))
-        cnum = min((self.sys_power-l2_power)/(core_power+l1_power),
-                   (self.sys_area-l2_area)/(core.area+l1_area))
+        cnum = min((self.sys_power - l2_power) / (core_power + l1_power),
+                   (self.sys_area - l2_area) / (core.area + l1_area))
         return int(cnum)
 
     def perf(self, vdd, app, cnum=None):
@@ -501,28 +516,32 @@ class HomogSysDetailed():
             kobj = app.get_kernel(kid)
 
             miss_l1 = min(
-                1, kobj.miss_l1 * ((self.cache_sz_l1/(kobj.cache_sz_l1_nom)) ** (1-kobj.alpha_l1)))
+                1, kobj.miss_l1 * ((self.cache_sz_l1 /
+                                    (kobj.cache_sz_l1_nom)) **
+                                   (1 - kobj.alpha_l1)))
             miss_l2 = min(
-                1, kobj.miss_l2 * ((self.cache_sz_l2/(cnum*kobj.cache_sz_l2_nom)) ** (1-kobj.alpha_l2)))
+                1, kobj.miss_l2 * ((self.cache_sz_l2 /
+                                    (cnum * kobj.cache_sz_l2_nom)) **
+                                   (1 - kobj.alpha_l2)))
 
             _debug(_bm_('l1_miss: {0}, l2_miss: {1}', miss_l1, miss_l2))
-            t0 = ((1-miss_l1)*self.delay_l1 + miss_l1*(1-miss_l2)*self.delay_l2 +
-                  miss_l1*miss_l2*self.delay_mem)
+            t0 = ((1 - miss_l1) * self.delay_l1 + miss_l1 * (1 - miss_l2) *
+                  self.delay_l2 + miss_l1 * miss_l2 * self.delay_mem)
             t = t0 * core.freq(vdd) / core.freq(core.vnom)
             _debug(_bm_('t: {0}', t))
             eta = 1 / (1 + t * kobj.rm / kobj.cpi_exe)
-            eta0 = 1 / (1+ t0 * kobj.rm / kobj.cpi_exe)
+            eta0 = 1 / (1 + t0 * kobj.rm / kobj.cpi_exe)
             _debug(_bm_('eta: {0}, eta0: {1}', eta, eta0))
             _debug(_bm_('freq: {0}, freq0: {1}', core.freq(vdd), core.fnom))
             _debug(_bm_('vdd: {0}, v0: {1}', vdd, core.vnom))
-            p_speedup = (core.freq(vdd)/core.fnom) * cnum * (eta/eta0)
+            p_speedup = (core.freq(vdd) / core.fnom) * cnum * (eta / eta0)
             _debug(_bm_('p_speedup: {0}', p_speedup))
 
             vdd_max = min(core.vnom * VSF_MAX, core.vmax)
             s_speedup = 1
             _debug(_bm_('s_speedup: {0}', s_speedup))
 
-            perf += kcov * ((1-kobj.pf + kobj.pf/p_speedup))
+            perf += kcov * ((1 - kobj.pf + kobj.pf / p_speedup))
             cov -= kcov
 
         # non-kernels will not be speedup
