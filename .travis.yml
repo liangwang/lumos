@@ -3,6 +3,7 @@ addons:
   apt:
     sources:
       - igraph
+      - sourceline: 'ppa:igraph/ppa'
     packages:
       - swig
       - libigraph
