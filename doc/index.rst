@@ -440,11 +440,13 @@ License
 
 .. include:: ../LICENSE
    :literal:
+   
+Funding Acknowledgement
+=======================
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+This work was supported by the SRC under GRC task 1972.001 and the NSF under grants MCDA-0903471 
+and CNS-0916908 and byDARPA MTO under contract HR0011-13-C-0022 and by NSF grant no. EF-1124931
+and C-FAR, one of six centers of STARnet, a Semiconductor Research Corporation program sponsored 
+by MARCO and DARPA. The views expressed are those of the authors and do not reﬂect the ofﬁcial 
+policy or position of the sponsors.
 
