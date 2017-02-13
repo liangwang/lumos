@@ -60,7 +60,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Lumos'
-copyright = u'2013, Liang Wang'
+copyright = u'2013-2017, Liang Wang and Kevin Skadron'
 author = 'Liang Wang'
 
 # The version info for the project you're documenting, acts as replacement for
